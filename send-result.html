@@ -918,6 +918,18 @@ body {
             flex: 1;
             min-width: 200px;
         }
+        .filter-group.date-range-group-wrapper {
+            flex: 0 0 auto;
+            min-width: 320px;
+            max-width: 400px;
+        }
+        .filter-group.date-range-group-wrapper .date-range-group {
+            width: 100%;
+        }
+        .filter-group.date-range-group-wrapper .date-input-wrapper {
+            flex: 1;
+            min-width: 140px;
+        }
         .status-badge {
             padding: 4px 8px;
             border-radius: var(--radius-sm);
@@ -1035,7 +1047,7 @@ body {
             <!-- 필터 섹션 -->
             <div class="filter-section">
                 <div class="filter-row">
-                    <div class="filter-group">
+                    <div class="filter-group date-range-group-wrapper">
                         <label class="form-label">조회 기간</label>
                         <div class="date-range-group">
                             <div class="date-input-wrapper">
