@@ -4,6 +4,7 @@
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        modal.style.display = 'flex'; // 인라인 스타일 제거 후 다시 설정
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -13,6 +14,7 @@ function closeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
         modal.classList.remove('active');
+        modal.style.display = 'none';
         document.body.style.overflow = '';
     }
 }
