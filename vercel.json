@@ -1,24 +1,14 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "**/*.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
-    }
-  ],
+  "cleanUrls": false,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/css/(.*)",
       "headers": [
         {
           "key": "Content-Type",
-          "value": "text/css"
+          "value": "text/css; charset=utf-8"
         }
       ]
     },
@@ -27,7 +17,7 @@
       "headers": [
         {
           "key": "Content-Type",
-          "value": "application/javascript"
+          "value": "application/javascript; charset=utf-8"
         }
       ]
     }
