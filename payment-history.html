@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충전/사용 내역 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .balance-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .balance-amount {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-completed { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-waiting { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .status-cancelled { background: rgba(100, 116, 139, 0.1); color: var(--secondary-color); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item active">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>충전/사용 내역</h2>
+                <p class="page-description">충전 및 사용 내역을 조회하고 관리합니다</p>
+            </div>
+
+            <!-- 잔액 정보 -->
+            <div class="balance-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div style="font-size: 14px; opacity: 0.9;">잔여포인트</div>
+                        <div class="balance-amount">1,000,000 P</div>
+                        <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">
+                            SMS: 50,000건 / LMS: 20,000건 / MMS: 5,000건 발송 가능
+                        </div>
+                    </div>
+                    <a href="payment-charge.html" class="btn" style="background: white; color: var(--primary-color);">충전하기</a>
+                </div>
+            </div>
+
+            <!-- 조회 기간 -->
+            <div class="card">
+                <div class="search-filter-section">
+                    <div class="flex gap-2">
+                        <button class="btn btn-sm btn-outline" onclick="setPeriod('week')">1주일</button>
+                        <button class="btn btn-sm btn-outline" onclick="setPeriod('month')">1개월</button>
+                        <button class="btn btn-sm btn-outline" onclick="setPeriod('3month')">3개월</button>
+                        <button class="btn btn-sm btn-outline" onclick="setPeriod('6month')">6개월</button>
+                    </div>
+                    <div class="date-range-group">
+                        <div class="date-input-wrapper">
+                            <input type="date" class="form-input" id="startDate">
+                        </div>
+                        <span class="date-range-separator">~</span>
+                        <div class="date-input-wrapper">
+                            <input type="date" class="form-input" id="endDate">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">조회</button>
+                </div>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="card">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('charge')">충전내역</button>
+                    <button class="tab-btn" onclick="switchTab('use')">사용내역</button>
+                    <button class="tab-btn" onclick="switchTab('refund')">환불내역</button>
+                    <button class="tab-btn" onclick="switchTab('bonus')">보너스내역</button>
+                </div>
+
+                <!-- 충전내역 탭 -->
+                <div id="chargeTab" class="tab-content active">
+                    <div class="table-container" style="margin-top: 20px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>충전금액</th>
+                                    <th>충전방법</th>
+                                    <th>충전상태</th>
+                                    <th>비고</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-11-19 14:30</td>
+                                    <td>100,000원</td>
+                                    <td>신용카드</td>
+                                    <td><span class="status-badge status-completed">충전완료</span></td>
+                                    <td>-</td>
+                                    <td><button class="btn btn-sm btn-outline" onclick="viewReceipt(1)">영수증</button></td>
+                                </tr>
+                                <tr>
+                                    <td>2024-11-18 10:20</td>
+                                    <td>500,000원</td>
+                                    <td>무통장입금</td>
+                                    <td><span class="status-badge status-waiting">입금대기</span></td>
+                                    <td>입금 확인 중</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 사용내역 탭 -->
+                <div id="useTab" class="tab-content">
+                    <div style="margin-top: 20px; margin-bottom: 12px;">
+                        <select class="form-select" style="width: 200px;">
+                            <option>전체</option>
+                            <option>SMS</option>
+                            <option>LMS</option>
+                            <option>MMS</option>
+                            <option>알림톡</option>
+                            <option>브랜드톡</option>
+                        </select>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>제목</th>
+                                    <th>내용</th>
+                                    <th>서비스</th>
+                                    <th>사용금액</th>
+                                    <th>잔액</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-11-19 15:30</td>
+                                    <td>SMS 발송</td>
+                                    <td>이벤트 안내 메시지입니다...</td>
+                                    <td>SMS</td>
+                                    <td style="color: var(--danger-color);">-20,000원</td>
+                                    <td>980,000원</td>
+                                    <td><button class="btn btn-sm btn-outline" onclick="viewDetail(1)">상세보기</button></td>
+                                </tr>
+                                <tr>
+                                    <td>2024-11-18 11:20</td>
+                                    <td>알림톡 발송</td>
+                                    <td>주문 확인 알림</td>
+                                    <td>알림톡</td>
+                                    <td style="color: var(--danger-color);">-50,000원</td>
+                                    <td>1,000,000원</td>
+                                    <td><button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-top: 16px; text-align: right; font-weight: 600;">
+                        총 사용금액: <span style="color: var(--danger-color);">-70,000원</span>
+                    </div>
+                </div>
+
+                <!-- 환불내역 탭 -->
+                <div id="refundTab" class="tab-content">
+                    <div style="margin-top: 20px; text-align: right; margin-bottom: 12px;">
+                        <button class="btn btn-primary" onclick="requestRefund()">환불 요청</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>환불금액</th>
+                                    <th>환불사유</th>
+                                    <th>환불상태</th>
+                                    <th>처리일</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                                        환불내역이 없습니다.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 보너스내역 탭 -->
+                <div id="bonusTab" class="tab-content">
+                    <div class="table-container" style="margin-top: 20px;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>지급사유</th>
+                                    <th>보너스금액</th>
+                                    <th>유효기간</th>
+                                    <th>상태</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-11-01</td>
+                                    <td>가입축하</td>
+                                    <td style="color: var(--success-color);">+10,000원</td>
+                                    <td>2024-12-01까지</td>
+                                    <td><span class="status-badge status-completed">사용가능</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 다운로드 -->
+            <div class="card" style="margin-top: 24px;">
+                <div class="flex gap-2">
+                    <button class="btn btn-outline">엑셀 다운로드</button>
+                    <button class="btn btn-outline">PDF 다운로드</button>
+                    <a href="payment-tax.html" class="btn btn-outline" style="margin-left: auto;">세금계산서 발행</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
+        }
+
+        function setPeriod(period) {
+            const end = new Date();
+            const start = new Date();
+            
+            switch(period) {
+                case 'week':
+                    start.setDate(end.getDate() - 7);
+                    break;
+                case 'month':
+                    start.setMonth(end.getMonth() - 1);
+                    break;
+                case '3month':
+                    start.setMonth(end.getMonth() - 3);
+                    break;
+                case '6month':
+                    start.setMonth(end.getMonth() - 6);
+                    break;
+            }
+            
+            document.getElementById('startDate').value = start.toISOString().split('T')[0];
+            document.getElementById('endDate').value = end.toISOString().split('T')[0];
+        }
+
+        function viewReceipt(id) {
+            showToast('영수증을 확인합니다.', 'info');
+        }
+
+        function viewDetail(id) {
+            showToast('상세 내역을 확인합니다.', 'info');
+        }
+
+        function requestRefund() {
+            showToast('환불 요청 페이지로 이동합니다.', 'info');
+        }
+
+        // 초기화
+        setPeriod('month');
+    </script>
+</body>
+</html>
+

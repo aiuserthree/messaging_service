@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>충전하기 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .charge-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        .amount-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .amount-btn {
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--surface-color);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .amount-btn:hover {
+            border-color: var(--primary-color);
+        }
+        .amount-btn.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        .amount-btn-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .amount-btn-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .payment-method {
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .payment-method:hover {
+            border-color: var(--primary-color);
+        }
+        .payment-method.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        .price-info {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .price-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .price-total {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .fee-guide {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+        .fee-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        .fee-table th,
+        .fee-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .fee-table th {
+            background: var(--bg-color);
+            font-weight: 600;
+        }
+        @media (max-width: 1024px) {
+            .charge-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item active">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>충전하기</h2>
+                <p class="page-description">메시지 발송을 위한 포인트를 충전합니다</p>
+            </div>
+
+            <div class="charge-layout">
+                <!-- 충전 폼 -->
+                <div class="card">
+                    <form id="chargeForm">
+                        <!-- 현재 잔액 -->
+                        <div class="alert alert-info">
+                            <strong>현재 보유 포인트: 1,000,000원</strong>
+                        </div>
+
+                        <!-- 충전 금액 선택 -->
+                        <div class="form-group">
+                            <label class="form-label required">충전 금액</label>
+                            <div class="amount-buttons">
+                                <div class="amount-btn" onclick="selectAmount(50000)">
+                                    <div class="amount-btn-value">5만원</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectAmount(100000)">
+                                    <div class="amount-btn-value">10만원</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectAmount(300000)">
+                                    <div class="amount-btn-value">30만원</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectAmount(500000)">
+                                    <div class="amount-btn-value">50만원</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectAmount(1000000)">
+                                    <div class="amount-btn-value">100만원</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectCustomAmount()">
+                                    <div class="amount-btn-value">직접입력</div>
+                                </div>
+                            </div>
+                            <input type="number" class="form-input" id="customAmount" placeholder="직접 입력 (최소 10,000원)" style="display: none; margin-top: 12px;" min="10000" step="1000">
+                        </div>
+
+                        <!-- 결제 수단 선택 -->
+                        <div class="form-group">
+                            <label class="form-label required">결제 수단</label>
+                            <div class="payment-methods">
+                                <div class="payment-method selected" onclick="selectPayment('card')">
+                                    <div style="font-size: 24px; margin-bottom: 8px;">💳</div>
+                                    <div style="font-weight: 600;">신용카드</div>
+                                </div>
+                                <div class="payment-method" onclick="selectPayment('bank')">
+                                    <div style="font-size: 24px; margin-bottom: 8px;">🏦</div>
+                                    <div style="font-weight: 600;">무통장입금</div>
+                                </div>
+                                <div class="payment-method" onclick="selectPayment('virtual')">
+                                    <div style="font-size: 24px; margin-bottom: 8px;">📱</div>
+                                    <div style="font-weight: 600;">가상계좌</div>
+                                </div>
+                                <div class="payment-method" onclick="selectPayment('transfer')">
+                                    <div style="font-size: 24px; margin-bottom: 8px;">💸</div>
+                                    <div style="font-weight: 600;">계좌이체</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 쿠폰 적용 -->
+                        <div class="form-group">
+                            <label class="form-label">쿠폰</label>
+                            <div class="flex gap-2">
+                                <select class="form-select" id="couponSelect">
+                                    <option>쿠폰 선택</option>
+                                    <option>첫 충전 10% 할인</option>
+                                    <option>대량 충전 5% 할인</option>
+                                </select>
+                                <button type="button" class="btn btn-outline" onclick="applyCoupon()">적용</button>
+                            </div>
+                        </div>
+
+                        <!-- 결제 금액 정보 -->
+                        <div class="price-info">
+                            <div class="price-row">
+                                <span>충전 금액</span>
+                                <span id="chargeAmount">0원</span>
+                            </div>
+                            <div class="price-row">
+                                <span>할인 금액</span>
+                                <span id="discountAmount" style="color: var(--success-color);">0원</span>
+                            </div>
+                            <div class="price-row">
+                                <span>부가세 (10%)</span>
+                                <span id="vatAmount">0원</span>
+                            </div>
+                            <div class="price-row price-total">
+                                <span>총 결제 금액</span>
+                                <span id="totalAmount">0원</span>
+                            </div>
+                        </div>
+
+                        <!-- 충전하기 버튼 -->
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 24px;">충전하기</button>
+                    </form>
+                </div>
+
+                <!-- 요금 안내 -->
+                <div>
+                    <div class="fee-guide">
+                        <h3 class="card-title">요금 안내</h3>
+                        <table class="fee-table">
+                            <thead>
+                                <tr>
+                                    <th>메시지 타입</th>
+                                    <th>단가</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SMS</td>
+                                    <td>20원</td>
+                                </tr>
+                                <tr>
+                                    <td>LMS</td>
+                                    <td>50원</td>
+                                </tr>
+                                <tr>
+                                    <td>MMS</td>
+                                    <td>200원</td>
+                                </tr>
+                                <tr>
+                                    <td>알림톡</td>
+                                    <td>30원</td>
+                                </tr>
+                                <tr>
+                                    <td>브랜드톡</td>
+                                    <td>30원</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-outline" onclick="openModal('estimateModal')">견적 문의하기</button>
+                        </div>
+                    </div>
+
+                    <!-- 충전 금액 계산기 -->
+                    <div class="fee-guide" style="margin-top: 24px;">
+                        <h3 class="card-title">충전 금액 계산기</h3>
+                        <div class="form-group">
+                            <label class="form-label">SMS 건수</label>
+                            <input type="number" class="form-input" id="calcSMS" value="0" min="0" oninput="calculateCharge()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LMS 건수</label>
+                            <input type="number" class="form-input" id="calcLMS" value="0" min="0" oninput="calculateCharge()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">MMS 건수</label>
+                            <input type="number" class="form-input" id="calcMMS" value="0" min="0" oninput="calculateCharge()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">알림톡 건수</label>
+                            <input type="number" class="form-input" id="calcAlimtalk" value="0" min="0" oninput="calculateCharge()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">브랜드톡 건수</label>
+                            <input type="number" class="form-input" id="calcBrandtalk" value="0" min="0" oninput="calculateCharge()">
+                        </div>
+                        <div class="price-info">
+                            <div class="price-row price-total">
+                                <span>권장 충전 금액</span>
+                                <span id="recommendedAmount">0원</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="applyRecommended()">권장 금액으로 충전</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 견적 문의 모달 -->
+    <div class="modal-overlay" id="estimateModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">견적 문의</h3>
+                <button class="modal-close" onclick="closeModal('estimateModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="estimateForm">
+                    <div class="form-group">
+                        <label class="form-label required">회사명/단체명</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">담당자명</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">연락처</label>
+                        <input type="tel" class="form-input" placeholder="010-1234-5678" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">이메일</label>
+                        <input type="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">월 예상 발송량</label>
+                        <input type="number" class="form-input" placeholder="건">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">주요 사용 메시지 타입</label>
+                        <div class="flex gap-2" style="flex-wrap: wrap;">
+                            <label style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" value="SMS"> SMS
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" value="LMS"> LMS
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" value="MMS"> MMS
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" value="알림톡"> 알림톡
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 4px;">
+                                <input type="checkbox" value="브랜드톡"> 브랜드톡
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">문의 내용</label>
+                        <textarea class="form-textarea" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" required>
+                            <span>개인정보 수집 및 이용에 동의합니다</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('estimateModal')">취소</button>
+                <button class="btn btn-primary" onclick="submitEstimate()">제출하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        let selectedAmount = 0;
+        let selectedPayment = 'card';
+        let discountAmount = 0;
+
+        function selectAmount(amount) {
+            selectedAmount = amount;
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            document.getElementById('customAmount').style.display = 'none';
+            updatePrice();
+        }
+
+        function selectCustomAmount() {
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            document.getElementById('customAmount').style.display = 'block';
+            document.getElementById('customAmount').focus();
+        }
+
+        document.getElementById('customAmount').addEventListener('input', function() {
+            selectedAmount = parseInt(this.value) || 0;
+            updatePrice();
+        });
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            document.querySelectorAll('.payment-method').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+
+        function applyCoupon() {
+            const coupon = document.getElementById('couponSelect').value;
+            if (coupon === '첫 충전 10% 할인') {
+                discountAmount = selectedAmount * 0.1;
+            } else if (coupon === '대량 충전 5% 할인') {
+                discountAmount = selectedAmount * 0.05;
+            } else {
+                discountAmount = 0;
+            }
+            updatePrice();
+        }
+
+        function updatePrice() {
+            const chargeAmount = selectedAmount - discountAmount;
+            const vatAmount = Math.floor(chargeAmount * 0.1);
+            const totalAmount = chargeAmount + vatAmount;
+
+            document.getElementById('chargeAmount').textContent = formatNumber(selectedAmount) + '원';
+            document.getElementById('discountAmount').textContent = formatNumber(discountAmount) + '원';
+            document.getElementById('vatAmount').textContent = formatNumber(vatAmount) + '원';
+            document.getElementById('totalAmount').textContent = formatNumber(totalAmount) + '원';
+        }
+
+        function calculateCharge() {
+            const sms = parseInt(document.getElementById('calcSMS').value) || 0;
+            const lms = parseInt(document.getElementById('calcLMS').value) || 0;
+            const mms = parseInt(document.getElementById('calcMMS').value) || 0;
+            const alimtalk = parseInt(document.getElementById('calcAlimtalk').value) || 0;
+            const brandtalk = parseInt(document.getElementById('calcBrandtalk').value) || 0;
+
+            const total = (sms * 20) + (lms * 50) + (mms * 200) + (alimtalk * 30) + (brandtalk * 30);
+            document.getElementById('recommendedAmount').textContent = formatNumber(total) + '원';
+        }
+
+        function applyRecommended() {
+            const recommended = document.getElementById('recommendedAmount').textContent.replace(/[^0-9]/g, '');
+            selectedAmount = parseInt(recommended);
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('customAmount').value = recommended;
+            document.getElementById('customAmount').style.display = 'block';
+            updatePrice();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function submitEstimate() {
+            showToast('견적 문의가 접수되었습니다. 영업일 기준 1~2일 내 답변 드리겠습니다.', 'success');
+            closeModal('estimateModal');
+        }
+
+        // 폼 제출
+        document.getElementById('chargeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (selectedAmount < 10000) {
+                showToast('최소 충전 금액은 10,000원입니다.', 'warning');
+                return;
+            }
+            if (selectedPayment === 'bank') {
+                showToast('무통장입금 안내 팝업이 표시됩니다.', 'info');
+                // 무통장입금 안내 모달 표시
+            } else {
+                showToast('결제가 완료되었습니다.', 'success');
+                // 실제 결제 처리
+            }
+        });
+    </script>
+</body>
+</html>
+

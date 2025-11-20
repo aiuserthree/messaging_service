@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발송 결과 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .stat-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .stat-box {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-box-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+        .stat-box-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .filter-section {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .filter-row {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-success { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
+        .status-failed { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
+        .status-sending { background: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item active">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>발송 결과</h2>
+                <p class="page-description">발송한 메시지의 결과를 조회하고 분석합니다</p>
+            </div>
+
+            <!-- 통계 요약 -->
+            <div class="stat-summary">
+                <div class="stat-box">
+                    <div class="stat-box-label">오늘 발송</div>
+                    <div class="stat-box-value" style="color: var(--primary-color);">1,234건</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">성공</div>
+                    <div class="stat-box-value" style="color: var(--success-color);">1,200건</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">실패</div>
+                    <div class="stat-box-value" style="color: var(--danger-color);">34건</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">성공률</div>
+                    <div class="stat-box-value" style="color: var(--success-color);">97.2%</div>
+                </div>
+            </div>
+
+            <!-- 필터 섹션 -->
+            <div class="filter-section">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="form-label">조회 기간</label>
+                        <div class="date-range-group">
+                            <div class="date-input-wrapper">
+                                <input type="date" class="form-input" value="2024-01-01">
+                            </div>
+                            <span class="date-range-separator">~</span>
+                            <div class="date-input-wrapper">
+                                <input type="date" class="form-input" value="2024-01-31">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">메시지 타입</label>
+                        <select class="form-select">
+                            <option>전체</option>
+                            <option>SMS</option>
+                            <option>LMS</option>
+                            <option>MMS</option>
+                            <option>알림톡</option>
+                            <option>브랜드톡</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">발송 상태</label>
+                        <select class="form-select">
+                            <option>전체</option>
+                            <option>성공</option>
+                            <option>실패</option>
+                            <option>대기중</option>
+                            <option>전송중</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label">검색</label>
+                        <input type="text" class="form-input" placeholder="발신번호, 수신번호 검색">
+                    </div>
+                    <div>
+                        <button class="btn btn-primary">조회</button>
+                        <button class="btn btn-outline">초기화</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 발송 내역 목록 -->
+            <div class="card">
+                <div class="flex-between mb-2">
+                    <h3 class="card-title">발송 내역</h3>
+                    <div class="flex gap-2">
+                        <button class="btn btn-outline" onclick="exportExcel()">엑셀 다운로드</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>발송일시</th>
+                                <th>발신번호</th>
+                                <th>메시지 타입</th>
+                                <th>수신번호 수</th>
+                                <th>성공</th>
+                                <th>실패</th>
+                                <th>상태</th>
+                                <th>비용</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-01-15 14:30</td>
+                                <td>010-1234-5678</td>
+                                <td><span class="badge badge-primary">SMS</span></td>
+                                <td>100명</td>
+                                <td style="color: var(--success-color);">98건</td>
+                                <td style="color: var(--danger-color);">2건</td>
+                                <td><span class="status-badge status-success">완료</span></td>
+                                <td>2,000원</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewDetail(1)">상세보기</button>
+                                    <button class="btn btn-sm btn-outline" onclick="resend(1)">재발송</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-15 13:20</td>
+                                <td>010-1234-5678</td>
+                                <td><span class="badge badge-primary">알림톡</span></td>
+                                <td>50명</td>
+                                <td style="color: var(--success-color);">50건</td>
+                                <td style="color: var(--danger-color);">0건</td>
+                                <td><span class="status-badge status-success">완료</span></td>
+                                <td>1,500원</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button>
+                                    <button class="btn btn-sm btn-outline" onclick="resend(2)">재발송</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-15 12:10</td>
+                                <td>02-1234-5678</td>
+                                <td><span class="badge badge-primary">LMS</span></td>
+                                <td>200명</td>
+                                <td style="color: var(--success-color);">195건</td>
+                                <td style="color: var(--danger-color);">5건</td>
+                                <td><span class="status-badge status-sending">전송중</span></td>
+                                <td>10,000원</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewDetail(3)">상세보기</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2024-01-15 11:00</td>
+                                <td>010-1234-5678</td>
+                                <td><span class="badge badge-primary">브랜드톡</span></td>
+                                <td>30명</td>
+                                <td style="color: var(--success-color);">28건</td>
+                                <td style="color: var(--danger-color);">2건</td>
+                                <td><span class="status-badge status-success">완료</span></td>
+                                <td>900원</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewDetail(4)">상세보기</button>
+                                    <button class="btn btn-sm btn-outline" onclick="resend(4)">재발송</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <div id="pagination"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">발송 상세 정보</h3>
+                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <h4 style="margin-bottom: 16px;">발송 정보</h4>
+                    <div class="table-container">
+                        <table class="table">
+                            <tr>
+                                <th style="width: 150px;">발송 ID</th>
+                                <td>SND_20240115_001</td>
+                            </tr>
+                            <tr>
+                                <th>발송일시</th>
+                                <td>2024-01-15 14:30:00</td>
+                            </tr>
+                            <tr>
+                                <th>발신번호</th>
+                                <td>010-1234-5678</td>
+                            </tr>
+                            <tr>
+                                <th>메시지 타입</th>
+                                <td><span class="badge badge-primary">SMS</span></td>
+                            </tr>
+                            <tr>
+                                <th>수신번호 수</th>
+                                <td>100명</td>
+                            </tr>
+                            <tr>
+                                <th>성공</th>
+                                <td style="color: var(--success-color);">98건</td>
+                            </tr>
+                            <tr>
+                                <th>실패</th>
+                                <td style="color: var(--danger-color);">2건</td>
+                            </tr>
+                            <tr>
+                                <th>메시지 내용</th>
+                                <td>주문이 접수되었습니다. 주문번호: ORD123456</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('detailModal')">닫기</button>
+                <button class="btn btn-primary" onclick="resendFromDetail()">재발송</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        function viewDetail(id) {
+            openModal('detailModal');
+        }
+
+        function resend(id) {
+            if (confirm('실패한 번호만 재발송하시겠습니까?')) {
+                showToast('재발송이 시작되었습니다.', 'success');
+            }
+        }
+
+        function resendFromDetail() {
+            closeModal('detailModal');
+            resend(0);
+        }
+
+        function exportExcel() {
+            showToast('엑셀 다운로드가 시작되었습니다.', 'info');
+        }
+
+        // 페이지네이션 생성
+        createPagination(1, 10, 'pagination');
+    </script>
+</body>
+</html>
+

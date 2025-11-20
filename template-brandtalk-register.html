@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>브랜드톡 템플릿 등록 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .register-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        .template-type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .type-card {
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .type-card:hover {
+            border-color: var(--primary-color);
+        }
+        .type-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        .type-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .type-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .type-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .preview-section {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        .preview-kakao {
+            background: #FEE500;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .preview-kakao-header {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .preview-kakao-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+        }
+        .preview-kakao-body {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 200px;
+        }
+        .button-config {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .button-config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .button-preview {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .button-preview-item {
+            padding: 8px 16px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+        }
+        .list-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        @media (max-width: 1024px) {
+            .register-layout {
+                grid-template-columns: 1fr;
+            }
+            .preview-section {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item active">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>브랜드톡 템플릿 등록</h2>
+                <p class="page-description">브랜드톡 메시지 템플릿을 등록합니다 (승인 절차 없이 즉시 사용 가능)</p>
+            </div>
+
+            <div class="register-layout">
+                <!-- 입력 영역 -->
+                <div class="card">
+                    <form id="templateForm">
+                        <!-- 템플릿 타입 선택 -->
+                        <div class="form-group">
+                            <label class="form-label required">템플릿 타입</label>
+                            <div class="template-type-grid">
+                                <div class="type-card" onclick="selectType('text')">
+                                    <div class="type-icon">📝</div>
+                                    <div class="type-name">텍스트</div>
+                                    <div class="type-desc">텍스트만 포함된 기본 메시지</div>
+                                </div>
+                                <div class="type-card" onclick="selectType('image')">
+                                    <div class="type-icon">🖼️</div>
+                                    <div class="type-name">이미지</div>
+                                    <div class="type-desc">정사각형 이미지 + 텍스트</div>
+                                </div>
+                                <div class="type-card" onclick="selectType('wide')">
+                                    <div class="type-icon">📐</div>
+                                    <div class="type-name">와이드 이미지</div>
+                                    <div class="type-desc">와이드 이미지 + 텍스트</div>
+                                </div>
+                                <div class="type-card" onclick="selectType('list')">
+                                    <div class="type-icon">📋</div>
+                                    <div class="type-name">와이드 리스트</div>
+                                    <div class="type-desc">여러 항목 리스트 형태</div>
+                                </div>
+                                <div class="type-card" onclick="selectType('carousel')">
+                                    <div class="type-icon">🎠</div>
+                                    <div class="type-name">캐러셀 카드</div>
+                                    <div class="type-desc">여러 카드 슬라이드</div>
+                                </div>
+                                <div class="type-card" onclick="selectType('commerce')">
+                                    <div class="type-icon">🛒</div>
+                                    <div class="type-name">커머스 카드</div>
+                                    <div class="type-desc">상품 정보 표시</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 기본 정보 -->
+                        <div class="form-group">
+                            <label class="form-label required">카카오 채널</label>
+                            <select class="form-select" required>
+                                <option>마케팅팀 (채널 ID: @marketing)</option>
+                                <option>고객센터 (채널 ID: @support)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">템플릿명</label>
+                            <input type="text" class="form-input" placeholder="템플릿 관리용 이름" maxlength="50" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">템플릿 설명</label>
+                            <textarea class="form-textarea" rows="2" placeholder="템플릿 설명 (선택사항)" maxlength="200"></textarea>
+                        </div>
+
+                        <!-- 메시지 내용 (타입별로 다름) -->
+                        <div id="contentSection">
+                            <div class="form-group">
+                                <label class="form-label required">메시지 내용</label>
+                                <div class="flex gap-2 mb-1">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이벤트명}')">#{이벤트명}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{할인율}')">#{할인율}</button>
+                                </div>
+                                <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요 (최대 1,000자)" maxlength="1000" required oninput="updateCharCounter()"></textarea>
+                                <div class="byte-counter" id="charCounter">0 / 1,000자</div>
+                            </div>
+                        </div>
+
+                        <!-- 이미지 업로드 (이미지 타입) -->
+                        <div class="form-group" id="imageGroup" style="display: none;">
+                            <label class="form-label required">이미지</label>
+                            <input type="file" class="form-input" accept="image/jpeg,image/png" onchange="handleImageUpload(event)">
+                            <div class="form-help">JPG, PNG (최대 2MB, 권장: 800px × 800px)</div>
+                            <div id="imagePreview" style="margin-top: 12px;"></div>
+                        </div>
+
+                        <!-- 와이드 이미지 -->
+                        <div class="form-group" id="wideImageGroup" style="display: none;">
+                            <label class="form-label required">와이드 이미지</label>
+                            <input type="file" class="form-input" accept="image/jpeg,image/png" onchange="handleImageUpload(event)">
+                            <div class="form-help">JPG, PNG (최대 2MB, 권장: 800px × 600px)</div>
+                            <div id="wideImagePreview" style="margin-top: 12px;"></div>
+                            <div class="form-group" style="margin-top: 12px;">
+                                <label class="form-label">제목</label>
+                                <input type="text" class="form-input" placeholder="이미지 위에 표시될 제목 (최대 50자)" maxlength="50">
+                            </div>
+                        </div>
+
+                        <!-- 리스트 아이템 (와이드 리스트) -->
+                        <div class="form-group" id="listGroup" style="display: none;">
+                            <label class="form-label required">리스트 아이템 (최소 2개, 최대 4개)</label>
+                            <div id="listItems"></div>
+                            <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addListItem()">아이템 추가</button>
+                        </div>
+
+                        <!-- 버튼 설정 -->
+                        <div class="form-group">
+                            <label class="form-label">버튼 (최대 5개)</label>
+                            <div id="buttonList"></div>
+                            <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addButton()">버튼 추가</button>
+                        </div>
+
+                        <!-- 상태 설정 -->
+                        <div class="form-group">
+                            <label class="form-label required">상태</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="status" value="active" checked>
+                                    <span>사용중</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="status" value="inactive">
+                                    <span>미사용</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 미리보기 영역 -->
+                <div class="preview-section">
+                    <div class="card">
+                        <h3 class="card-title">템플릿 미리보기</h3>
+                        <div class="preview-kakao">
+                            <div class="preview-kakao-header">
+                                <div class="preview-kakao-profile"></div>
+                                <div>
+                                    <div style="font-weight: 600;">마케팅팀</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
+                                </div>
+                            </div>
+                            <div class="preview-kakao-body">
+                                <div id="previewImage" style="margin-bottom: 12px;"></div>
+                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력하세요</div>
+                                <div class="button-preview" id="previewButtons"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 하단 액션 버튼 -->
+            <div class="card" style="margin-top: 24px;">
+                <div class="flex gap-2">
+                    <button class="btn btn-outline" onclick="saveDraft()">임시저장</button>
+                    <button class="btn btn-outline" onclick="cancel()">취소</button>
+                    <button class="btn btn-primary" style="margin-left: auto;" onclick="saveTemplate()">저장</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        let selectedType = '';
+        let buttonCount = 0;
+        let listItemCount = 0;
+
+        function selectType(type) {
+            selectedType = type;
+            document.querySelectorAll('.type-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            
+            // 타입별 입력 필드 표시/숨김
+            const imageGroup = document.getElementById('imageGroup');
+            const wideImageGroup = document.getElementById('wideImageGroup');
+            const listGroup = document.getElementById('listGroup');
+            
+            imageGroup.style.display = 'none';
+            wideImageGroup.style.display = 'none';
+            listGroup.style.display = 'none';
+            
+            if (type === 'image') {
+                imageGroup.style.display = 'block';
+            } else if (type === 'wide') {
+                wideImageGroup.style.display = 'block';
+            } else if (type === 'list') {
+                listGroup.style.display = 'block';
+                if (listItemCount === 0) {
+                    addListItem();
+                    addListItem();
+                }
+            }
+            
+            updatePreview();
+        }
+
+        function insertVariable(variable) {
+            const textarea = document.getElementById('messageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updatePreview();
+            updateCharCounter();
+        }
+
+        function updateCharCounter() {
+            const content = document.getElementById('messageContent').value;
+            const counter = document.getElementById('charCounter');
+            counter.textContent = `${content.length} / 1,000자`;
+        }
+
+        function updatePreview() {
+            const content = document.getElementById('messageContent').value;
+            let previewText = content
+                .replace(/#{이름}/g, '홍길동')
+                .replace(/#{이벤트명}/g, '신년 특가')
+                .replace(/#{할인율}/g, '30');
+            
+            document.getElementById('previewContent').textContent = previewText || '메시지 내용을 입력하세요';
+            
+            // 이미지 미리보기
+            const imagePreview = document.getElementById('imagePreview').innerHTML;
+            const wideImagePreview = document.getElementById('wideImagePreview').innerHTML;
+            if (imagePreview) {
+                document.getElementById('previewImage').innerHTML = imagePreview;
+            } else if (wideImagePreview) {
+                document.getElementById('previewImage').innerHTML = wideImagePreview;
+            } else {
+                document.getElementById('previewImage').innerHTML = '';
+            }
+            
+            // 버튼 미리보기
+            updateButtonPreview();
+        }
+
+        document.getElementById('messageContent').addEventListener('input', function() {
+            updatePreview();
+            updateCharCounter();
+        });
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewId = event.target.closest('.form-group').querySelector('[id*="Preview"]')?.id || 'imagePreview';
+                const preview = document.getElementById(previewId);
+                if (preview) {
+                    preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: var(--radius-md);">`;
+                }
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function addButton() {
+            if (buttonCount >= 5) {
+                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            const buttonList = document.getElementById('buttonList');
+            const div = document.createElement('div');
+            div.className = 'button-config';
+            div.innerHTML = `
+                <div class="button-config-header">
+                    <strong>버튼 ${buttonCount + 1}</strong>
+                    <button type="button" class="btn btn-sm" onclick="removeButton(this)">삭제</button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼 타입</label>
+                    <select class="form-select" onchange="updateButtonPreview()">
+                        <option value="web">웹 링크</option>
+                        <option value="app">앱 링크</option>
+                        <option value="bot">봇 키워드</option>
+                        <option value="message">메시지 전달</option>
+                        <option value="phone">전화 연결</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼명</label>
+                    <input type="text" class="form-input" placeholder="버튼명 입력 (최대 14자)" maxlength="14" oninput="updateButtonPreview()">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">링크/액션</label>
+                    <input type="text" class="form-input" placeholder="URL 또는 액션 입력">
+                </div>
+            `;
+            buttonList.appendChild(div);
+            buttonCount++;
+            updateButtonPreview();
+        }
+
+        function removeButton(btn) {
+            btn.closest('.button-config').remove();
+            buttonCount--;
+            updateButtonPreview();
+        }
+
+        function updateButtonPreview() {
+            const buttons = Array.from(document.querySelectorAll('.button-config')).map(config => {
+                const name = config.querySelector('input[placeholder*="버튼명"]')?.value || '';
+                return name;
+            }).filter(name => name);
+            
+            const preview = document.getElementById('previewButtons');
+            preview.innerHTML = buttons.map(name => 
+                `<div class="button-preview-item">${name}</div>`
+            ).join('');
+        }
+
+        function addListItem() {
+            if (listItemCount >= 4) {
+                showToast('리스트 아이템은 최대 4개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            const listItems = document.getElementById('listItems');
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `
+                <div class="list-item-header">
+                    <strong>아이템 ${listItemCount + 1}</strong>
+                    <button type="button" class="btn btn-sm" onclick="removeListItem(this)">삭제</button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">제목</label>
+                    <input type="text" class="form-input" placeholder="제목 입력 (최대 30자)" maxlength="30">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">설명</label>
+                    <input type="text" class="form-input" placeholder="설명 입력 (최대 100자)" maxlength="100">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">썸네일 이미지</label>
+                    <input type="file" class="form-input" accept="image/*">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">링크 URL</label>
+                    <input type="text" class="form-input" placeholder="URL 입력 (선택사항)">
+                </div>
+            `;
+            listItems.appendChild(div);
+            listItemCount++;
+        }
+
+        function removeListItem(btn) {
+            if (listItemCount <= 2) {
+                showToast('리스트 아이템은 최소 2개 이상 필요합니다.', 'warning');
+                return;
+            }
+            btn.closest('.list-item').remove();
+            listItemCount--;
+        }
+
+        function saveDraft() {
+            showToast('임시 저장되었습니다.', 'success');
+        }
+
+        function cancel() {
+            if (confirm('작성 중인 내용이 저장되지 않습니다. 정말 나가시겠습니까?')) {
+                window.location.href = 'template-brandtalk.html';
+            }
+        }
+
+        function saveTemplate() {
+            if (!selectedType) {
+                showToast('템플릿 타입을 선택해주세요.', 'warning');
+                return;
+            }
+            showToast('템플릿이 저장되었습니다. 즉시 사용 가능합니다.', 'success');
+            setTimeout(() => {
+                window.location.href = 'template-brandtalk.html';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일반문자 발송 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .send-form-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        .preview-section {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        .preview-phone {
+            background: #f5f5f5;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .preview-phone-header {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            font-size: 12px;
+        }
+        .preview-phone-body {
+            background: white;
+            padding: 16px;
+            border-radius: 0 0 12px 12px;
+            min-height: 200px;
+        }
+        .byte-counter {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .byte-counter.warning {
+            color: var(--warning-color);
+        }
+        .byte-counter.danger {
+            color: var(--danger-color);
+        }
+        .recipient-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-top: 8px;
+        }
+        .recipient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .recipient-item:last-child {
+            border-bottom: none;
+        }
+        .cost-info {
+            background: var(--bg-color);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+        }
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .cost-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-top: 2px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+        .image-preview {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        @media (max-width: 1024px) {
+            .send-form-container {
+                grid-template-columns: 1fr;
+            }
+            .preview-section {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item active">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>일반문자 발송</h2>
+                <p class="page-description">SMS/LMS/MMS 메시지를 발송합니다</p>
+            </div>
+
+            <!-- 발신번호 등록 알림 -->
+            <div class="alert alert-warning" id="callerNumberAlert" style="display: none;">
+                <strong>발신번호를 먼저 등록해주세요.</strong> 발신번호 관리 페이지에서 등록할 수 있습니다.
+                <a href="mypage-caller-number.html" class="btn btn-sm btn-primary" style="margin-left: 12px;">발신번호 등록하기</a>
+            </div>
+
+            <div class="send-form-container">
+                <!-- 입력 영역 -->
+                <div class="card">
+                    <form id="sendForm">
+                        <!-- 발신번호 선택 -->
+                        <div class="form-group">
+                            <label class="form-label required">발신번호</label>
+                            <select class="form-select" id="callerNumber" required>
+                                <option value="">발신번호를 선택하세요</option>
+                                <option value="010-1234-5678">010-1234-5678 (마케팅팀)</option>
+                                <option value="02-1234-5678">02-1234-5678 (고객센터)</option>
+                            </select>
+                            <a href="mypage-caller-number.html" class="form-help">새 발신번호 등록하기</a>
+                        </div>
+
+                        <!-- 수신번호 입력 -->
+                        <div class="form-group">
+                            <label class="form-label required">수신번호</label>
+                            <div class="tabs">
+                                <div class="tab-list">
+                                    <button type="button" class="tab-item active" data-tab="direct">직접입력</button>
+                                    <button type="button" class="tab-item" data-tab="addressbook">주소록</button>
+                                    <button type="button" class="tab-item" data-tab="excel">엑셀 업로드</button>
+                                </div>
+                            </div>
+                            
+                            <div id="direct" class="tab-content active">
+                                <textarea class="form-textarea" id="recipientNumbers" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)&#10;예: 010-1234-5678, 010-9876-5432"></textarea>
+                                <div class="recipient-list" id="recipientList" style="display: none;"></div>
+                                <div class="flex-between mt-1">
+                                    <span class="form-help">총 <strong id="recipientCount">0</strong>명</span>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="clearRecipients()">전체 삭제</button>
+                                </div>
+                            </div>
+                            
+                            <div id="addressbook" class="tab-content">
+                                <div class="form-group">
+                                    <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
+                                        <option value="group1">전체 (1,234명)</option>
+                                        <option value="group2">VIP 고객 (234명)</option>
+                                        <option value="group3">일반 고객 (1,000명)</option>
+                                    </select>
+                                    <a href="addressbook.html" class="form-help">주소록 관리</a>
+                                </div>
+                            </div>
+                            
+                            <div id="excel" class="tab-content">
+                                <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
+                                <a href="#" class="form-help">샘플 파일 다운로드</a>
+                            </div>
+                        </div>
+
+                        <!-- 메시지 타입 -->
+                        <div class="form-group">
+                            <label class="form-label required">메시지 타입</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="SMS" checked>
+                                    <span>SMS (90바이트 이하)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="LMS">
+                                    <span>LMS (2,000바이트 이하)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="MMS">
+                                    <span>MMS (이미지 포함)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 제목 (LMS/MMS만) -->
+                        <div class="form-group" id="titleGroup" style="display: none;">
+                            <label class="form-label">제목</label>
+                            <input type="text" class="form-input" id="messageTitle" placeholder="제목을 입력하세요 (최대 40자)" maxlength="40">
+                        </div>
+
+                        <!-- 메시지 내용 -->
+                        <div class="form-group">
+                            <label class="form-label required">메시지 내용</label>
+                            <div class="flex-between mb-1">
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable()">변수 삽입</button>
+                                </div>
+                            </div>
+                            <textarea class="form-textarea" id="messageContent" rows="8" placeholder="메시지 내용을 입력하세요" required></textarea>
+                            <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
+                        </div>
+
+                        <!-- 이미지 첨부 (MMS만) -->
+                        <div class="form-group" id="imageGroup" style="display: none;">
+                            <label class="form-label">이미지 첨부</label>
+                            <input type="file" class="form-input" id="imageInput" accept="image/*" multiple onchange="handleImageUpload(event)">
+                            <div class="form-help">JPG, PNG, GIF (최대 300KB, 최대 3개)</div>
+                            <div class="image-preview" id="imagePreview"></div>
+                        </div>
+
+                        <!-- 발송 시간 -->
+                        <div class="form-group">
+                            <label class="form-label required">발송 시간</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="sendTime" value="immediate" checked>
+                                    <span>즉시 발송</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="sendTime" value="reserved">
+                                    <span>예약 발송</span>
+                                </label>
+                            </div>
+                            <div id="reservedTimeGroup" style="display: none; margin-top: 12px;">
+                                <input type="datetime-local" class="form-input" id="reservedDateTime">
+                            </div>
+                        </div>
+
+                        <!-- 발송 비용 -->
+                        <div class="cost-info">
+                            <div class="cost-row">
+                                <span>수신번호 개수</span>
+                                <span id="costRecipientCount">0명</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>메시지 타입</span>
+                                <span id="costMessageType">SMS</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>단가</span>
+                                <span id="costUnitPrice">20원</span>
+                            </div>
+                            <div class="cost-row cost-total">
+                                <span>예상 발송 비용</span>
+                                <span id="costTotal">0원</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>현재 잔액</span>
+                                <span>1,000,000원</span>
+                            </div>
+                        </div>
+
+                        <!-- 액션 버튼 -->
+                        <div class="flex gap-2 mt-3">
+                            <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
+                            <button type="button" class="btn btn-outline" onclick="saveDraft()">임시저장</button>
+                            <button type="button" class="btn btn-outline" onclick="saveTemplate()">템플릿으로 저장</button>
+                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 미리보기 영역 -->
+                <div class="preview-section">
+                    <div class="card">
+                        <h3 class="card-title">메시지 미리보기</h3>
+                        <div class="preview-phone">
+                            <div class="preview-phone-header">
+                                <div id="previewCallerNumber">010-1234-5678</div>
+                            </div>
+                            <div class="preview-phone-body">
+                                <div id="previewTitle" style="font-weight: 600; margin-bottom: 8px; display: none;"></div>
+                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;"></div>
+                                <div id="previewImages" style="margin-top: 12px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 템플릿 선택 모달 -->
+    <div class="modal-overlay" id="templateSelectModal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 선택</h3>
+                <button class="modal-close" onclick="closeModal('templateSelectModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="템플릿명 또는 내용으로 검색">
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>템플릿명</th>
+                                <th>타입</th>
+                                <th>내용</th>
+                                <th>등록일</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>주문 확인</td>
+                                <td><span class="badge badge-primary">SMS</span></td>
+                                <td>주문이 접수되었습니다...</td>
+                                <td>2024-01-15</td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('주문 확인', '주문이 접수되었습니다. 주문번호: #{주문번호}')">선택</button></td>
+                            </tr>
+                            <tr>
+                                <td>배송 안내</td>
+                                <td><span class="badge badge-primary">LMS</span></td>
+                                <td>배송이 시작되었습니다...</td>
+                                <td>2024-01-14</td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('배송 안내', '배송이 시작되었습니다. 운송장번호: #{운송장번호}')">선택</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 엑셀 업로드 모달 -->
+    <div class="modal-overlay" id="excelUploadModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">엑셀 업로드</h3>
+                <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">파일 선택</label>
+                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
+                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
+                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+                    </div>
+                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
+                    <a href="#" class="form-help">샘플 파일 다운로드</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
+                <button class="btn btn-primary">업로드</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 발송 확인 모달 -->
+    <div class="modal-overlay" id="sendConfirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">발송 확인</h3>
+                <button class="modal-close" onclick="closeModal('sendConfirmModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="cost-row">
+                        <span>발신번호</span>
+                        <span id="confirmCallerNumber">-</span>
+                    </div>
+                    <div class="cost-row">
+                        <span>수신번호 개수</span>
+                        <span id="confirmRecipientCount">0명</span>
+                    </div>
+                    <div class="cost-row">
+                        <span>메시지 타입</span>
+                        <span id="confirmMessageType">-</span>
+                    </div>
+                    <div class="cost-row">
+                        <span>발송 시간</span>
+                        <span id="confirmSendTime">즉시 발송</span>
+                    </div>
+                    <div class="cost-row cost-total">
+                        <span>예상 발송 비용</span>
+                        <span id="confirmCost">0원</span>
+                    </div>
+                </div>
+                <div class="alert alert-warning">
+                    발송 후에는 취소할 수 없습니다. 수신번호를 다시 한번 확인해주세요.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('sendConfirmModal')">취소</button>
+                <button class="btn btn-primary" onclick="confirmSend()">발송하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        // 탭 전환
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId, 'sendForm');
+            });
+        });
+
+        // 메시지 타입 변경
+        document.querySelectorAll('input[name="messageType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateMessageType(this.value);
+            });
+        });
+
+        // 발송 시간 변경
+        document.querySelectorAll('input[name="sendTime"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('reservedTimeGroup').style.display = 
+                    this.value === 'reserved' ? 'block' : 'none';
+            });
+        });
+
+        // 메시지 내용 입력 시 바이트 계산 및 미리보기 업데이트
+        document.getElementById('messageContent').addEventListener('input', function() {
+            updateByteCounter();
+            updatePreview();
+        });
+
+        // 발신번호 변경 시 미리보기 업데이트
+        document.getElementById('callerNumber').addEventListener('change', function() {
+            document.getElementById('previewCallerNumber').textContent = this.value || '010-1234-5678';
+        });
+
+        // 수신번호 입력 처리
+        document.getElementById('recipientNumbers').addEventListener('input', function() {
+            processRecipients(this.value);
+        });
+
+        // 폼 제출
+        document.getElementById('sendForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showSendConfirm();
+        });
+
+        function updateMessageType(type) {
+            const titleGroup = document.getElementById('titleGroup');
+            const imageGroup = document.getElementById('imageGroup');
+            
+            if (type === 'LMS' || type === 'MMS') {
+                titleGroup.style.display = 'block';
+            } else {
+                titleGroup.style.display = 'none';
+            }
+            
+            if (type === 'MMS') {
+                imageGroup.style.display = 'block';
+            } else {
+                imageGroup.style.display = 'none';
+            }
+            
+            updateByteCounter();
+            updateCost();
+        }
+
+        function updateByteCounter() {
+            const content = document.getElementById('messageContent').value;
+            const title = document.getElementById('messageTitle').value;
+            const type = document.querySelector('input[name="messageType"]:checked').value;
+            
+            let totalBytes = calculateByteLength(content);
+            if (title) {
+                totalBytes += calculateByteLength(title);
+            }
+            
+            const maxBytes = type === 'SMS' ? 90 : 2000;
+            const counter = document.getElementById('byteCounter');
+            counter.textContent = `${totalBytes} / ${maxBytes} 바이트`;
+            
+            counter.className = 'byte-counter';
+            if (totalBytes > maxBytes * 0.9) {
+                counter.classList.add('warning');
+            }
+            if (totalBytes > maxBytes) {
+                counter.classList.add('danger');
+            }
+            
+            // SMS 초과 시 LMS로 자동 전환
+            if (type === 'SMS' && totalBytes > 90) {
+                document.querySelector('input[name="messageType"][value="LMS"]').checked = true;
+                updateMessageType('LMS');
+            }
+        }
+
+        function updatePreview() {
+            const title = document.getElementById('messageTitle').value;
+            const content = document.getElementById('messageContent').value;
+            const titleEl = document.getElementById('previewTitle');
+            const contentEl = document.getElementById('previewContent');
+            
+            if (title) {
+                titleEl.textContent = title;
+                titleEl.style.display = 'block';
+            } else {
+                titleEl.style.display = 'none';
+            }
+            
+            contentEl.textContent = content || '메시지 내용을 입력하세요';
+        }
+
+        function processRecipients(value) {
+            const numbers = value.split(/[,\n]/).map(n => n.trim()).filter(n => n);
+            const uniqueNumbers = [...new Set(numbers)];
+            
+            document.getElementById('recipientCount').textContent = uniqueNumbers.length;
+            updateCost();
+            
+            if (uniqueNumbers.length > 0) {
+                const listEl = document.getElementById('recipientList');
+                listEl.innerHTML = uniqueNumbers.slice(0, 10).map(num => 
+                    `<div class="recipient-item">
+                        <span>${num}</span>
+                        <button type="button" class="btn btn-sm" onclick="removeRecipient('${num}')">삭제</button>
+                    </div>`
+                ).join('');
+                if (uniqueNumbers.length > 10) {
+                    listEl.innerHTML += `<div style="text-align: center; padding: 8px; color: var(--text-secondary);">외 ${uniqueNumbers.length - 10}개</div>`;
+                }
+                listEl.style.display = 'block';
+            } else {
+                document.getElementById('recipientList').style.display = 'none';
+            }
+        }
+
+        function clearRecipients() {
+            document.getElementById('recipientNumbers').value = '';
+            processRecipients('');
+        }
+
+        function removeRecipient(number) {
+            const textarea = document.getElementById('recipientNumbers');
+            const current = textarea.value.split(/[,\n]/).map(n => n.trim()).filter(n => n && n !== number);
+            textarea.value = current.join(', ');
+            processRecipients(textarea.value);
+        }
+
+        function handleImageUpload(event) {
+            const files = Array.from(event.target.files).slice(0, 3);
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'image-preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <button type="button" class="remove-btn" onclick="removeImage(this)">&times;</button>
+                    `;
+                    preview.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(btn) {
+            btn.parentElement.remove();
+        }
+
+        function selectTemplate(name, content) {
+            document.getElementById('messageContent').value = content;
+            updateByteCounter();
+            updatePreview();
+            closeModal('templateSelectModal');
+        }
+
+        function insertVariable() {
+            const variables = ['#{이름}', '#{전화번호}', '#{날짜}', '#{주문번호}'];
+            const selected = prompt('변수를 선택하세요:\n' + variables.map((v, i) => `${i+1}. ${v}`).join('\n'));
+            if (selected) {
+                const index = parseInt(selected) - 1;
+                if (index >= 0 && index < variables.length) {
+                    const textarea = document.getElementById('messageContent');
+                    const start = textarea.selectionStart;
+                    const end = textarea.selectionEnd;
+                    const text = textarea.value;
+                    textarea.value = text.substring(0, start) + variables[index] + text.substring(end);
+                    textarea.focus();
+                    textarea.setSelectionRange(start + variables[index].length, start + variables[index].length);
+                    updateByteCounter();
+                    updatePreview();
+                }
+            }
+        }
+
+        function updateCost() {
+            const count = parseInt(document.getElementById('recipientCount').textContent) || 0;
+            const type = document.querySelector('input[name="messageType"]:checked').value;
+            const unitPrice = type === 'SMS' ? 20 : type === 'LMS' ? 50 : 200;
+            const total = count * unitPrice;
+            
+            document.getElementById('costRecipientCount').textContent = `${count}명`;
+            document.getElementById('costMessageType').textContent = type;
+            document.getElementById('costUnitPrice').textContent = `${unitPrice}원`;
+            document.getElementById('costTotal').textContent = `${formatNumber(total)}원`;
+        }
+
+        function showSendConfirm() {
+            document.getElementById('confirmCallerNumber').textContent = 
+                document.getElementById('callerNumber').value || '-';
+            document.getElementById('confirmRecipientCount').textContent = 
+                document.getElementById('recipientCount').textContent + '명';
+            document.getElementById('confirmMessageType').textContent = 
+                document.querySelector('input[name="messageType"]:checked').value;
+            const sendTime = document.querySelector('input[name="sendTime"]:checked').value;
+            if (sendTime === 'reserved') {
+                document.getElementById('confirmSendTime').textContent = 
+                    document.getElementById('reservedDateTime').value;
+            } else {
+                document.getElementById('confirmSendTime').textContent = '즉시 발송';
+            }
+            document.getElementById('confirmCost').textContent = 
+                document.getElementById('costTotal').textContent;
+            openModal('sendConfirmModal');
+        }
+
+        function confirmSend() {
+            showToast('발송이 완료되었습니다.', 'success');
+            closeModal('sendConfirmModal');
+            // 실제로는 API 호출
+        }
+
+        function testSend() {
+            showToast('테스트 발송 기능은 준비 중입니다.', 'info');
+        }
+
+        function saveDraft() {
+            showToast('임시저장되었습니다.', 'success');
+        }
+
+        function saveTemplate() {
+            const name = prompt('템플릿명을 입력하세요:');
+            if (name) {
+                showToast('템플릿으로 저장되었습니다.', 'success');
+            }
+        }
+
+        // 초기화
+        updateCost();
+        setInterval(updateCost, 1000);
+    </script>
+</body>
+</html>
+

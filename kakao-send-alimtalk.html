@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>알림톡 발송 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .template-check-alert {
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--surface-color);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+        }
+        .template-check-alert-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .template-check-alert h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .template-check-alert p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 8px;
+        }
+        .send-form-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        .preview-section {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        .preview-kakao {
+            background: #FEE500;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .preview-kakao-header {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .preview-kakao-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+        }
+        .preview-kakao-body {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 200px;
+        }
+        .variable-input-group {
+            margin-bottom: 16px;
+        }
+        .variable-input-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .variable-input-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+        }
+        @media (max-width: 1024px) {
+            .send-form-container {
+                grid-template-columns: 1fr;
+            }
+            .preview-section {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item active">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>알림톡 발송</h2>
+                <p class="page-description">카카오톡 알림톡 메시지를 발송합니다</p>
+            </div>
+
+            <!-- 템플릿 확인 영역 -->
+            <div id="templateCheckArea">
+                <!-- 템플릿이 없는 경우 -->
+                <div class="template-check-alert" id="noTemplateAlert">
+                    <div class="template-check-alert-icon">📋</div>
+                    <h3>등록된 알림톡 템플릿이 없습니다</h3>
+                    <p>알림톡 발송을 위해서는 카카오톡 채널에서</p>
+                    <p>템플릿을 등록하고 승인받아야 합니다.</p>
+                    <p style="margin-top: 16px; font-weight: 500;">템플릿 등록 후 1~2 영업일 내 승인됩니다.</p>
+                    <div style="margin-top: 32px;">
+                        <a href="template-alimtalk.html" class="btn btn-primary btn-lg">템플릿 등록하러 가기</a>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <a href="#" class="form-help">템플릿 등록 가이드 보기</a>
+                    </div>
+                </div>
+
+                <!-- 템플릿이 있는 경우 발송 폼 -->
+                <div id="sendFormArea" style="display: none;">
+                    <div class="send-form-container">
+                        <!-- 입력 영역 -->
+                        <div class="card">
+                            <form id="sendForm">
+                                <!-- 발신 프로필 선택 -->
+                                <div class="form-group">
+                                    <label class="form-label required">발신 프로필</label>
+                                    <select class="form-select" id="senderProfile" required>
+                                        <option value="">발신 프로필을 선택하세요</option>
+                                        <option value="profile1">마케팅팀 (승인완료)</option>
+                                        <option value="profile2">고객센터 (승인완료)</option>
+                                    </select>
+                                </div>
+
+                                <!-- 템플릿 선택 -->
+                                <div class="form-group">
+                                    <label class="form-label required">템플릿</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" class="form-input" id="selectedTemplate" placeholder="템플릿을 선택하세요" readonly>
+                                        <button type="button" class="btn btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
+                                    </div>
+                                </div>
+
+                                <!-- 변수 입력 -->
+                                <div class="form-group" id="variableInputArea">
+                                    <label class="form-label">변수 입력</label>
+                                    <div id="variableInputs"></div>
+                                </div>
+
+                                <!-- 수신번호 입력 -->
+                                <div class="form-group">
+                                    <label class="form-label required">수신번호</label>
+                                    <div class="tabs">
+                                        <div class="tab-list">
+                                            <button type="button" class="tab-item active" data-tab="direct">직접입력</button>
+                                            <button type="button" class="tab-item" data-tab="addressbook">주소록</button>
+                                            <button type="button" class="tab-item" data-tab="excel">엑셀 업로드</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="direct" class="tab-content active">
+                                        <textarea class="form-textarea" id="recipientNumbers" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)"></textarea>
+                                        <div class="flex-between mt-1">
+                                            <span class="form-help">총 <strong id="recipientCount">0</strong>명</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="addressbook" class="tab-content">
+                                        <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
+                                            <option value="group1">전체 (1,234명)</option>
+                                            <option value="group2">VIP 고객 (234명)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="excel" class="tab-content">
+                                        <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
+                                    </div>
+                                </div>
+
+                                <!-- 대체 메시지 -->
+                                <div class="form-group">
+                                    <label class="form-label required">대체 메시지</label>
+                                    <textarea class="form-textarea" id="fallbackMessage" rows="4" placeholder="카카오톡 미가입자에게 발송될 SMS/LMS 메시지를 입력하세요" required></textarea>
+                                    <div class="form-help">카카오톡 미가입자에게 자동으로 발송됩니다</div>
+                                </div>
+
+                                <!-- 발송 시간 -->
+                                <div class="form-group">
+                                    <label class="form-label required">발송 시간</label>
+                                    <div class="flex gap-2">
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="radio" name="sendTime" value="immediate" checked>
+                                            <span>즉시 발송</span>
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="radio" name="sendTime" value="reserved">
+                                            <span>예약 발송</span>
+                                        </label>
+                                    </div>
+                                    <div id="reservedTimeGroup" style="display: none; margin-top: 12px;">
+                                        <input type="datetime-local" class="form-input" id="reservedDateTime">
+                                    </div>
+                                </div>
+
+                                <!-- 발송 비용 -->
+                                <div class="cost-info">
+                                    <div class="cost-row">
+                                        <span>수신번호 개수</span>
+                                        <span id="costRecipientCount">0명</span>
+                                    </div>
+                                    <div class="cost-row">
+                                        <span>단가</span>
+                                        <span>30원</span>
+                                    </div>
+                                    <div class="cost-row cost-total">
+                                        <span>예상 발송 비용</span>
+                                        <span id="costTotal">0원</span>
+                                    </div>
+                                </div>
+
+                                <!-- 액션 버튼 -->
+                                <div class="flex gap-2 mt-3">
+                                    <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
+                                    <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 미리보기 영역 -->
+                        <div class="preview-section">
+                            <div class="card">
+                                <h3 class="card-title">메시지 미리보기</h3>
+                                <div class="preview-kakao">
+                                    <div class="preview-kakao-header">
+                                        <div class="preview-kakao-profile"></div>
+                                        <div>
+                                            <div style="font-weight: 600;" id="previewProfileName">마케팅팀</div>
+                                            <div style="font-size: 12px; color: var(--text-secondary);" id="previewTime">오늘 오후 2:30</div>
+                                        </div>
+                                    </div>
+                                    <div class="preview-kakao-body">
+                                        <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 템플릿 선택 모달 -->
+    <div class="modal-overlay" id="templateSelectModal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 선택</h3>
+                <button class="modal-close" onclick="closeModal('templateSelectModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="템플릿명 또는 템플릿 코드로 검색">
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>템플릿 코드</th>
+                                <th>템플릿명</th>
+                                <th>카테고리</th>
+                                <th>변수</th>
+                                <th>상태</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AT001</td>
+                                <td>주문 확인</td>
+                                <td>주문/배송</td>
+                                <td>#{주문번호}, #{상품명}</td>
+                                <td><span class="badge badge-success">승인완료</span></td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('AT001', '주문 확인', ['주문번호', '상품명'], '주문이 접수되었습니다.\n주문번호: #{주문번호}\n상품명: #{상품명}')">선택</button></td>
+                            </tr>
+                            <tr>
+                                <td>AT002</td>
+                                <td>배송 안내</td>
+                                <td>주문/배송</td>
+                                <td>#{운송장번호}</td>
+                                <td><span class="badge badge-success">승인완료</span></td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('AT002', '배송 안내', ['운송장번호'], '배송이 시작되었습니다.\n운송장번호: #{운송장번호}')">선택</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 엑셀 업로드 모달 -->
+    <div class="modal-overlay" id="excelUploadModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">엑셀 업로드</h3>
+                <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">파일 선택</label>
+                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
+                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
+                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+                    </div>
+                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB)</div>
+                    <a href="#" class="form-help">샘플 파일 다운로드</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
+                <button class="btn btn-primary">업로드</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        // 템플릿 존재 여부 확인 (실제로는 API 호출)
+        const hasTemplate = false; // true로 변경하면 발송 폼 표시
+
+        if (hasTemplate) {
+            document.getElementById('noTemplateAlert').style.display = 'none';
+            document.getElementById('sendFormArea').style.display = 'block';
+        }
+
+        // 탭 전환
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId, 'sendForm');
+            });
+        });
+
+        // 발송 시간 변경
+        document.querySelectorAll('input[name="sendTime"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('reservedTimeGroup').style.display = 
+                    this.value === 'reserved' ? 'block' : 'none';
+            });
+        });
+
+        // 수신번호 입력 처리
+        document.getElementById('recipientNumbers').addEventListener('input', function() {
+            const numbers = this.value.split(/[,\n]/).map(n => n.trim()).filter(n => n);
+            const uniqueNumbers = [...new Set(numbers)];
+            document.getElementById('recipientCount').textContent = uniqueNumbers.length;
+            updateCost();
+        });
+
+        // 템플릿 선택
+        function selectTemplate(code, name, variables, content) {
+            document.getElementById('selectedTemplate').value = `${name} (${code})`;
+            
+            // 변수 입력 필드 생성
+            const variableArea = document.getElementById('variableInputs');
+            variableArea.innerHTML = '';
+            
+            variables.forEach(variable => {
+                const div = document.createElement('div');
+                div.className = 'variable-input-group';
+                div.innerHTML = `
+                    <label>${variable}</label>
+                    <input type="text" class="form-input" data-variable="${variable}" placeholder="${variable} 값을 입력하세요" oninput="updatePreview()">
+                `;
+                variableArea.appendChild(div);
+            });
+            
+            // 미리보기 업데이트
+            updatePreviewContent(content);
+            closeModal('templateSelectModal');
+        }
+
+        function updatePreviewContent(templateContent) {
+            const content = document.getElementById('previewContent');
+            let previewText = templateContent;
+            
+            // 변수 치환
+            document.querySelectorAll('[data-variable]').forEach(input => {
+                const variable = input.getAttribute('data-variable');
+                const value = input.value || `#{${variable}}`;
+                previewText = previewText.replace(new RegExp(`#\\{${variable}\\}`, 'g'), value);
+            });
+            
+            content.textContent = previewText;
+        }
+
+        function updatePreview() {
+            const templateContent = document.getElementById('previewContent').textContent;
+            updatePreviewContent(templateContent);
+        }
+
+        function updateCost() {
+            const count = parseInt(document.getElementById('recipientCount').textContent) || 0;
+            const total = count * 30;
+            document.getElementById('costRecipientCount').textContent = `${count}명`;
+            document.getElementById('costTotal').textContent = `${formatNumber(total)}원`;
+        }
+
+        function testSend() {
+            showToast('테스트 발송 기능은 준비 중입니다.', 'info');
+        }
+
+        // 폼 제출
+        document.getElementById('sendForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showToast('발송이 완료되었습니다.', 'success');
+        });
+    </script>
+</body>
+</html>
+

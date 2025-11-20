@@ -1,0 +1,40 @@
+# BE-M007: UserServiceModule 상세 개발 설계서
+
+## 1. 모듈 개요
+
+### 1.1 모듈 식별 정보
+- **모듈 ID**: BE-M007
+- **모듈명**: UserServiceModule (사용자 관리 서비스 모듈)
+- **담당 개발자**: Backend 개발자
+- **예상 개발 기간**: 12일
+- **우선순위**: P0
+
+### 1.2 모듈 목적 및 범위
+- **핵심 기능**: 
+  - 사용자 정보 관리
+  - 발신번호 관리
+  - 잔액 관리
+- **비즈니스 가치**: 사용자 정보 관리 기능 제공
+
+---
+
+## 2. 기술 아키텍처
+
+### 2.1 모듈 구조
+```
+UserServiceModule/
+├── controllers/
+│   └── user.controller.ts
+├── services/
+│   ├── user.service.ts
+│   └── caller-number.service.ts
+└── entities/
+    ├── user.entity.ts
+    └── caller-number.entity.ts
+```
+
+---
+
+**문서 버전**: 1.0  
+**작성일**: 2024-11-19
+

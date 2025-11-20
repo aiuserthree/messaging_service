@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발신번호 관리 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .status-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .status-filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-filter-btn:hover {
+            border-color: var(--primary-color);
+        }
+        .status-filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        .step-item {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            flex: 1;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: 600;
+        }
+        .step-item.active .step-circle {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .step-item.completed .step-circle {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+        .step-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .step-item.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .file-upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        .file-upload-area.drag-over {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+        .uploaded-file {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-color);
+            border-radius: var(--radius-md);
+            margin-top: 12px;
+        }
+        .number-type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .number-type-mobile {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .number-type-landline {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        .auth-completed {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+        }
+        .auth-completed::before {
+            content: '✓';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #2e7d32;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item active">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>발신번호 관리</h2>
+                <p class="page-description">문자 발송을 위한 발신번호를 등록하고 관리합니다</p>
+            </div>
+
+            <!-- 안내 -->
+            <div class="alert alert-info">
+                <strong>발신번호 사전등록제 안내</strong>
+                <p style="margin-top: 8px; font-size: 12px;">
+                    정보통신망법에 따라 발신번호 사전 등록이 의무화되었습니다. 
+                    발신번호 등록 후 영업일 기준 1~3일 이내 승인 처리됩니다.
+                </p>
+            </div>
+
+            <!-- 발신번호 목록 -->
+            <div class="card">
+                <div class="flex-between mb-2">
+                    <h3 class="card-title">발신번호 목록</h3>
+                    <button class="btn btn-primary" onclick="openRegisterModal()">발신번호 등록</button>
+                </div>
+
+                <!-- 상태 필터 -->
+                <div class="status-filter">
+                    <button class="status-filter-btn active" onclick="filterStatus('all')">전체</button>
+                    <button class="status-filter-btn" onclick="filterStatus('pending')">승인대기</button>
+                    <button class="status-filter-btn" onclick="filterStatus('approved')">승인완료</button>
+                    <button class="status-filter-btn" onclick="filterStatus('rejected')">반려</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>발신번호</th>
+                                <th>통신사</th>
+                                <th>용도</th>
+                                <th>상태</th>
+                                <th>등록일</th>
+                                <th>승인일</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>010-1234-5678</td>
+                                <td>SKT</td>
+                                <td>마케팅팀</td>
+                                <td><span class="badge badge-success">승인완료</span></td>
+                                <td>2024-01-10</td>
+                                <td>2024-01-12</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="deleteCallerNumber(1)">삭제</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>02-1234-5678</td>
+                                <td>KT</td>
+                                <td>고객센터</td>
+                                <td><span class="badge badge-warning">승인대기</span></td>
+                                <td>2024-01-15</td>
+                                <td>-</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>010-9876-5432</td>
+                                <td>LG U+</td>
+                                <td>본인 휴대폰</td>
+                                <td><span class="badge badge-danger">반려</span></td>
+                                <td>2024-01-08</td>
+                                <td>-</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewRejectionReason(3)">반려사유</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 발신번호 등록 모달 -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 class="modal-title">발신번호 신규등록</h3>
+                <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 24px; padding: 12px; background: var(--bg-color); border-radius: var(--radius-md);">
+                    <strong>발신번호 등록 문의: 1588-5412</strong><br>
+                    <small>기존 번호 관리는 발신번호관리 메뉴에서 가능합니다</small>
+                </div>
+
+                <!-- STEP 표시 -->
+                <div class="step-indicator">
+                    <div class="step-item active" id="step1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">회원 유형</div>
+                    </div>
+                    <div class="step-item" id="step2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">기본 정보</div>
+                    </div>
+                    <div class="step-item" id="step3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">인증 및 서류</div>
+                    </div>
+                    <div class="step-item" id="step4">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">연락처</div>
+                    </div>
+                    <div class="step-item" id="step5">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">제출</div>
+                    </div>
+                </div>
+
+                <form id="registerForm">
+                    <!-- STEP 1: 회원 유형 -->
+                    <div id="step1Content" class="step-content">
+                        <h3 style="margin-bottom: 20px;">회원 유형 선택</h3>
+                        <div class="form-group">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="card" style="cursor: pointer; border: 2px solid var(--border-color);" onclick="selectMemberType('personal')">
+                                    <h4 style="margin-bottom: 8px;">개인</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                                        개인 명의 발신번호를 등록합니다
+                                    </p>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">
+                                        <strong>필수 서류:</strong><br>
+                                        • 본인인증<br>
+                                        • 통신서비스 이용증명원 또는 통신사 가입증명서
+                                    </div>
+                                </div>
+                                <div class="card" style="cursor: pointer; border: 2px solid var(--border-color);" onclick="selectMemberType('business')">
+                                    <h4 style="margin-bottom: 8px;">기업</h4>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                                        기업/사업자 명의 발신번호를 등록합니다
+                                    </p>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">
+                                        <strong>필수 서류:</strong><br>
+                                        • 본인인증<br>
+                                        • 사업자등록증<br>
+                                        • 재직증명서<br>
+                                        • 통신서비스 이용증명원
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: 기본 정보 -->
+                    <div id="step2Content" class="step-content" style="display: none;">
+                        <h3 style="margin-bottom: 20px;">기본 정보 입력</h3>
+                        <div class="form-group">
+                            <label class="form-label required">발신번호 등록</label>
+                            <div class="flex gap-2">
+                                <input type="tel" id="callerNumberInput" class="form-input" placeholder="010-1234-5678 또는 02-1234-5678" required oninput="detectNumberType()">
+                                <button type="button" class="btn btn-outline" onclick="checkDuplicateNumber()">확인</button>
+                            </div>
+                            <div id="numberTypeBadge" style="margin-top: 8px; display: none;">
+                                <span class="badge" id="numberTypeText"></span>
+                                <span id="authRequirementText" style="margin-left: 8px; font-size: 12px; color: var(--text-secondary);"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">발신번호 용도</label>
+                            <input type="text" id="purposeInput" class="form-input" placeholder="예: 마케팅팀, 고객센터, 본인 휴대폰">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">통합용 사용 여부</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="useIntegration" value="yes" checked>
+                                    <span>사용함</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="useIntegration" value="no">
+                                    <span>사용안함</span>
+                                </label>
+                            </div>
+                            <div class="form-help">본 발송 서비스 이용 시 통합서비스 발신번호로 사용할지 선택 주세요.</div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: 명의 구분 및 서류 -->
+                    <div id="step3Content" class="step-content" style="display: none;">
+                        <h3 style="margin-bottom: 20px;">명의 구분 및 서류 제출</h3>
+                        
+                        <!-- 명의 구분 선택 -->
+                        <div class="form-group">
+                            <label class="form-label required">명의 구분</label>
+                            <div id="ownershipTypeSection">
+                                <!-- 개인/기업에 따라 동적으로 생성 -->
+                            </div>
+                        </div>
+
+                        <!-- 본인인증 (휴대폰 번호인 경우만) -->
+                        <div class="form-group" id="authSection" style="display: none;">
+                            <label class="form-label required">본인인증</label>
+                            <div id="authStatus" style="margin-bottom: 8px;">
+                                <button type="button" class="btn btn-primary" id="authButton" onclick="openPhoneAuth()">휴대폰 본인인증</button>
+                            </div>
+                            <div class="form-help" id="authHelpText">발신번호 명의자 본인인증이 필요합니다</div>
+                        </div>
+
+                        <!-- 서류 제출 섹션 -->
+                        <div class="form-group" id="documentSection">
+                            <!-- 명의 구분에 따라 동적으로 생성 -->
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: 연락처 -->
+                    <div id="step4Content" class="step-content" style="display: none;">
+                        <h3 style="margin-bottom: 20px;">연락처 정보</h3>
+                        <div class="form-group">
+                            <label class="form-label required">휴대폰번호</label>
+                            <input type="tel" id="contactPhoneInput" class="form-input" placeholder="010-1234-5678" required>
+                            <div class="form-help">승인/반려 결과 알림을 받을 연락처입니다</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">결과 수신 이메일</label>
+                            <input type="email" id="contactEmailInput" class="form-input" placeholder="example@email.com">
+                            <div class="form-help">발신번호 등록 결과를 이메일로도 받으시려면 입력해 주세요</div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: 제출 -->
+                    <div id="step5Content" class="step-content" style="display: none;">
+                        <h3 style="margin-bottom: 20px;">최종 확인</h3>
+                        <div class="alert alert-info">
+                            모든 정보를 확인하신 후 제출해주세요. 제출 후 수정이 불가능합니다.
+                        </div>
+                        <div class="card">
+                            <div class="table-container">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width: 150px;">회원 유형</th>
+                                        <td id="reviewMemberType">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>발신번호</th>
+                                        <td id="reviewCallerNumber">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>번호 유형</th>
+                                        <td id="reviewNumberType">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>명의 구분</th>
+                                        <td id="reviewOwnershipType">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th>용도</th>
+                                        <td id="reviewPurpose">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('registerModal')">취소</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" style="display: none;">다음</button>
+                <button class="btn btn-primary" id="submitBtn" onclick="submitRegister()" style="display: none;">승인요청</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        let currentStep = 1;
+        let selectedMemberType = '';
+        let selectedOwnershipType = '';
+        let numberType = null; // 'MOBILE' or 'LANDLINE'
+        let requiresAuth = false;
+        let authCompleted = false;
+        let authInfo = null;
+
+        function filterStatus(status) {
+            document.querySelectorAll('.status-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            // 상태별 필터링 로직
+        }
+
+        function selectMemberType(type) {
+            selectedMemberType = type;
+            document.querySelectorAll('#step1Content .card').forEach(card => {
+                card.style.borderColor = 'var(--border-color)';
+            });
+            event.currentTarget.style.borderColor = 'var(--primary-color)';
+            
+            // STEP 2로 이동
+            nextStep();
+        }
+
+        // 발신번호 유형 자동 인식
+        function detectNumberType() {
+            const input = document.getElementById('callerNumberInput');
+            const number = input.value.replace(/[^0-9]/g, '');
+            const badgeDiv = document.getElementById('numberTypeBadge');
+            const badgeText = document.getElementById('numberTypeText');
+            const authText = document.getElementById('authRequirementText');
+            
+            if (number.startsWith('010')) {
+                numberType = 'MOBILE';
+                requiresAuth = true;
+                badgeDiv.style.display = 'block';
+                badgeText.className = 'number-type-badge number-type-mobile';
+                badgeText.textContent = '휴대폰 번호';
+                authText.textContent = '본인인증이 필요합니다';
+            } else if (/^(02|0[3-6][1-5])/.test(number)) {
+                numberType = 'LANDLINE';
+                requiresAuth = false;
+                badgeDiv.style.display = 'block';
+                badgeText.className = 'number-type-badge number-type-landline';
+                badgeText.textContent = '유선번호';
+                authText.textContent = '본인인증이 필요하지 않습니다';
+            } else if (number.length > 0) {
+                numberType = null;
+                badgeDiv.style.display = 'none';
+            } else {
+                numberType = null;
+                badgeDiv.style.display = 'none';
+            }
+        }
+
+        function checkDuplicateNumber() {
+            const number = document.getElementById('callerNumberInput').value;
+            if (!number) {
+                showToast('발신번호를 입력해주세요.', 'warning');
+                return;
+            }
+            // 중복 확인 로직
+            showToast('사용 가능한 발신번호입니다.', 'success');
+        }
+
+        // STEP 3에서 명의 구분 선택 및 서류 섹션 업데이트
+        function updateOwnershipSection() {
+            const ownershipSection = document.getElementById('ownershipTypeSection');
+            const authSection = document.getElementById('authSection');
+            const docSection = document.getElementById('documentSection');
+            
+            if (selectedMemberType === 'personal') {
+                // 개인 회원 명의 구분
+                ownershipSection.innerHTML = `
+                    <div class="flex gap-2" style="flex-direction: column;">
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="ownershipType" value="self" onchange="selectOwnershipType('self')">
+                            <div>
+                                <strong>본인 명의</strong>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">본인 명의 발신번호를 등록합니다</p>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="ownershipType" value="others" onchange="selectOwnershipType('others')">
+                            <div>
+                                <strong>타인 명의</strong>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">타인 명의 발신번호를 등록합니다. 위임장 및 추가 서류가 필요합니다</p>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            } else {
+                // 기업 회원 명의 구분
+                ownershipSection.innerHTML = `
+                    <div class="flex gap-2" style="flex-direction: column;">
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="ownershipType" value="self" onchange="selectOwnershipType('self')">
+                            <div>
+                                <strong>본인(자사) 명의</strong>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">본인(자사) 명의 발신번호를 등록합니다</p>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="ownershipType" value="others" onchange="selectOwnershipType('others')">
+                            <div>
+                                <strong>타인 명의</strong>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">타인 명의 발신번호를 등록합니다. 위임장 및 추가 서류가 필요합니다</p>
+                            </div>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer;">
+                            <input type="radio" name="ownershipType" value="other_company" onchange="selectOwnershipType('other_company')">
+                            <div>
+                                <strong>타사 명의</strong>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">타사(다른 기업) 명의 발신번호를 등록합니다. 위임장 및 위임하는 업체의 사업자등록증이 필요합니다</p>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            }
+            
+            // 본인인증 섹션 표시/숨김
+            if (requiresAuth && numberType === 'MOBILE') {
+                authSection.style.display = 'block';
+                document.getElementById('authHelpText').textContent = selectedMemberType === 'personal' 
+                    ? '발신번호 명의자 본인인증이 필요합니다' 
+                    : '서류 제출자 본인인증이 필요합니다';
+            } else {
+                authSection.style.display = 'none';
+            }
+        }
+
+        function selectOwnershipType(type) {
+            selectedOwnershipType = type;
+            updateDocumentSection();
+        }
+
+        // 명의 구분별 서류 섹션 업데이트
+        function updateDocumentSection() {
+            const docSection = document.getElementById('documentSection');
+            const fileAccept = '.jpg,.jpeg,.gif,.png,.pdf,.tif,.tiff,.zip';
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            
+            if (!selectedOwnershipType) {
+                docSection.innerHTML = '<p style="color: var(--text-secondary);">명의 구분을 선택해주세요.</p>';
+                return;
+            }
+
+            let html = '';
+            
+            if (selectedMemberType === 'personal') {
+                if (selectedOwnershipType === 'self') {
+                    // 개인 - 본인 명의
+                    html = `
+                        <div style="margin-top: 20px;">
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호 소유 확인을 위한 서류 제출이 필요합니다</p>
+                            <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                            <div class="file-upload-area" onclick="document.getElementById('certFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="certFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                통신사 홈페이지, 고객센터, 대리점에서 발급 가능합니다<br>
+                                발신번호와 명의자 정보가 명확히 표시된 서류를 제출해 주세요<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB<br>
+                                * 서류가 여러 장일 경우 zip 파일로 압축하여 첨부하세요
+                            </div>
+                            <div id="certFileDisplay"></div>
+                        </div>
+                    `;
+                } else {
+                    // 개인 - 타인 명의
+                    html = `
+                        <div style="margin-top: 20px;">
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">타인 명의 발신번호 등록을 위한 서류 제출이 필요합니다</p>
+                            <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                            <div class="file-upload-area" onclick="document.getElementById('certFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="certFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                통신사 홈페이지, 고객센터, 대리점에서 발급 가능합니다<br>
+                                발신번호와 명의자 정보가 명확히 표시된 서류를 제출해 주세요<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="certFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">위임장</label>
+                            <div class="file-upload-area" onclick="document.getElementById('powerOfAttorneyFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="powerOfAttorneyFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'powerOfAttorneyFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                발신번호 명의자의 위임장이 필요합니다<br>
+                                위임자와 수임자 정보가 명확히 기재되어야 합니다<br>
+                                위임자의 서명 또는 날인이 필요합니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="powerOfAttorneyFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">재직증명서 또는 신분증</label>
+                            <div class="file-upload-area" onclick="document.getElementById('employeeCertOrIdFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="employeeCertOrIdFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'employeeCertOrIdFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                재직증명서: 최근 3개월 이내 발급된 서류<br>
+                                신분증: 주민등록증, 운전면허증, 여권 등<br>
+                                수임자(제출자)의 신원 확인을 위한 서류입니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="employeeCertOrIdFileDisplay"></div>
+                        </div>
+                    `;
+                }
+            } else {
+                // 기업 회원
+                if (selectedOwnershipType === 'self') {
+                    // 기업 - 본인(자사) 명의
+                    html = `
+                        <div style="margin-top: 20px;">
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호와 발신번호 소유자(기업)간의 관계를 입증할 수 있는 서류 제출이 필요합니다</p>
+                            <label class="form-label required">사업자 등록증</label>
+                            <div class="file-upload-area" onclick="document.getElementById('businessFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="businessFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'businessFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                국세청 홈택스에서 발급 가능합니다<br>
+                                사업자등록증은 발급일 제한이 없습니다<br>
+                                법인명과 사업자등록번호가 명확히 표시된 서류를 제출해 주세요<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="businessFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">재직증명서</label>
+                            <div class="file-upload-area" onclick="document.getElementById('employeeFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="employeeFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'employeeFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                최근 3개월 이내 발급된 서류를 제출해 주세요<br>
+                                발급일과 직인이 날인된 공식 서류만 인정됩니다<br>
+                                소속 회사(인사팀)에서 발급 가능합니다<br>
+                                제출자의 성명, 생년월일, 소속 부서가 명확히 표시되어야 합니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="employeeFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                            <div class="file-upload-area" onclick="document.getElementById('certFile2').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="certFile2" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile2', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                법인 명의 발신번호의 경우 법인 가입증명서를 제출해 주세요<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="certFile2Display"></div>
+                        </div>
+                    `;
+                } else if (selectedOwnershipType === 'others') {
+                    // 기업 - 타인 명의
+                    html = `
+                        <div style="margin-top: 20px;">
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">타인 명의 발신번호 등록을 위한 서류 제출이 필요합니다</p>
+                            <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                            <div class="file-upload-area" onclick="document.getElementById('certFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="certFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="certFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">위임장</label>
+                            <div class="file-upload-area" onclick="document.getElementById('powerOfAttorneyFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="powerOfAttorneyFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'powerOfAttorneyFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                발신번호 명의자의 위임장이 필요합니다<br>
+                                위임자와 수임자(제출자) 정보가 명확히 기재되어야 합니다<br>
+                                위임자의 서명 또는 날인이 필요합니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="powerOfAttorneyFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">재직증명서 또는 신분증</label>
+                            <div class="file-upload-area" onclick="document.getElementById('employeeCertOrIdFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="employeeCertOrIdFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'employeeCertOrIdFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                재직증명서: 최근 3개월 이내 발급된 서류<br>
+                                신분증: 주민등록증, 운전면허증, 여권 등<br>
+                                수임자(제출자)의 신원 확인을 위한 서류입니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="employeeCertOrIdFileDisplay"></div>
+                        </div>
+                    `;
+                } else {
+                    // 기업 - 타사 명의
+                    html = `
+                        <div style="margin-top: 20px;">
+                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">타사 명의 발신번호 등록을 위한 서류 제출이 필요합니다</p>
+                            <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                            <div class="file-upload-area" onclick="document.getElementById('certFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="certFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="certFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">위임장</label>
+                            <div class="file-upload-area" onclick="document.getElementById('powerOfAttorneyFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="powerOfAttorneyFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'powerOfAttorneyFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                발신번호를 위임하는 기업(타사)의 위임장이 필요합니다<br>
+                                위임 기업과 수임 기업 정보가 명확히 기재되어야 합니다<br>
+                                위임 기업의 법인 직인이 날인되어야 합니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="powerOfAttorneyFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">위임하는 업체의 사업자등록증</label>
+                            <div class="file-upload-area" onclick="document.getElementById('delegatorBusinessFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="delegatorBusinessFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'delegatorBusinessFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                발신번호를 위임하는 기업(타사)의 사업자등록증을 제출해 주세요<br>
+                                국세청 홈택스에서 발급 가능합니다<br>
+                                법인명과 사업자등록번호가 명확히 표시되어야 합니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="delegatorBusinessFileDisplay"></div>
+                        </div>
+                    `;
+                }
+            }
+            
+            docSection.innerHTML = html;
+        }
+
+        function nextStep() {
+            // 현재 단계 검증
+            if (currentStep === 1 && !selectedMemberType) {
+                showToast('회원 유형을 선택해주세요.', 'warning');
+                return;
+            }
+            if (currentStep === 2) {
+                const callerNumber = document.getElementById('callerNumberInput').value;
+                if (!callerNumber) {
+                    showToast('발신번호를 입력해주세요.', 'warning');
+                    return;
+                }
+                if (!numberType) {
+                    showToast('유효한 발신번호를 입력해주세요.', 'warning');
+                    return;
+                }
+            }
+            if (currentStep === 3) {
+                if (!selectedOwnershipType) {
+                    showToast('명의 구분을 선택해주세요.', 'warning');
+                    return;
+                }
+                if (requiresAuth && !authCompleted) {
+                    showToast('본인인증을 완료해주세요.', 'warning');
+                    return;
+                }
+            }
+            if (currentStep === 4) {
+                const contactPhone = document.getElementById('contactPhoneInput').value;
+                if (!contactPhone) {
+                    showToast('연락처를 입력해주세요.', 'warning');
+                    return;
+                }
+            }
+            
+            if (currentStep < 5) {
+                document.getElementById(`step${currentStep}Content`).style.display = 'none';
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                document.getElementById(`step${currentStep}`).classList.add('completed');
+                
+                currentStep++;
+                document.getElementById(`step${currentStep}Content`).style.display = 'block';
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                
+                // STEP 3 진입 시 명의 구분 섹션 업데이트
+                if (currentStep === 3) {
+                    updateOwnershipSection();
+                }
+                
+                if (currentStep === 5) {
+                    document.getElementById('nextBtn').style.display = 'none';
+                    document.getElementById('submitBtn').style.display = 'block';
+                    // 최종 확인 정보 업데이트
+                    updateReviewInfo();
+                } else {
+                    document.getElementById('nextBtn').style.display = 'block';
+                    document.getElementById('submitBtn').style.display = 'none';
+                }
+            }
+        }
+
+        function updateReviewInfo() {
+            document.getElementById('reviewMemberType').textContent = selectedMemberType === 'personal' ? '개인' : '기업';
+            document.getElementById('reviewCallerNumber').textContent = document.getElementById('callerNumberInput').value || '-';
+            document.getElementById('reviewNumberType').textContent = numberType === 'MOBILE' ? '휴대폰 번호' : '유선번호';
+            
+            let ownershipText = '';
+            if (selectedMemberType === 'personal') {
+                ownershipText = selectedOwnershipType === 'self' ? '본인 명의' : '타인 명의';
+            } else {
+                if (selectedOwnershipType === 'self') ownershipText = '본인(자사) 명의';
+                else if (selectedOwnershipType === 'others') ownershipText = '타인 명의';
+                else ownershipText = '타사 명의';
+            }
+            document.getElementById('reviewOwnershipType').textContent = ownershipText;
+            document.getElementById('reviewPurpose').textContent = document.getElementById('purposeInput').value || '-';
+        }
+
+        function handleFileUpload(input, id, maxSize) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            // 파일 크기 검증
+            if (file.size > maxSize) {
+                showToast(`파일 크기는 최대 ${maxSize / 1024 / 1024}MB까지 가능합니다.`, 'error');
+                input.value = '';
+                return;
+            }
+            
+            // 파일 형식 검증
+            const allowedExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.pdf', '.tif', '.tiff', '.zip'];
+            const fileName = file.name.toLowerCase();
+            const isValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
+            
+            if (!isValidExtension) {
+                showToast('허용되지 않은 파일 형식입니다. (jpg, jpeg, gif, png, pdf, tif, tiff, zip만 가능)', 'error');
+                input.value = '';
+                return;
+            }
+            
+            const display = document.getElementById(id + 'Display');
+            const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
+            display.innerHTML = `
+                <div class="uploaded-file">
+                    <span>${file.name} (${fileSizeMB}MB)</span>
+                    <button type="button" class="btn btn-sm" onclick="removeFile('${id}')">삭제</button>
+                </div>
+            `;
+        }
+
+        function removeFile(id) {
+            document.getElementById(id).value = '';
+            const display = document.getElementById(id + 'Display');
+            if (display) {
+                display.innerHTML = '';
+            }
+        }
+
+        function openPhoneAuth() {
+            // 본인인증 팝업 호출 (실제로는 본인인증 서비스 연동)
+            showToast('본인인증 팝업이 열립니다.', 'info');
+            
+            // 시뮬레이션: 인증 완료 처리
+            setTimeout(() => {
+                authCompleted = true;
+                authInfo = {
+                    name: '홍길동',
+                    birthDate: '1990-01-01',
+                    carrier: 'SKT'
+                };
+                
+                const authStatus = document.getElementById('authStatus');
+                authStatus.innerHTML = `
+                    <div class="auth-completed">
+                        <span>인증 완료</span>
+                        <span style="font-size: 12px; color: var(--text-secondary);">(${authInfo.name})</span>
+                    </div>
+                `;
+                document.getElementById('authButton').style.display = 'none';
+                showToast('본인인증이 완료되었습니다.', 'success');
+            }, 1000);
+        }
+
+        function submitRegister() {
+            // 최종 검증
+            if (!selectedMemberType || !selectedOwnershipType || !numberType) {
+                showToast('필수 정보를 모두 입력해주세요.', 'warning');
+                return;
+            }
+            
+            if (requiresAuth && !authCompleted) {
+                showToast('본인인증을 완료해주세요.', 'warning');
+                return;
+            }
+            
+            showToast('발신번호 등록 신청이 완료되었습니다. 영업일 기준 1~3일 이내 승인 처리됩니다.', 'success');
+            closeModal('registerModal');
+            
+            // 폼 초기화
+            resetForm();
+        }
+
+        function resetForm() {
+            currentStep = 1;
+            selectedMemberType = '';
+            selectedOwnershipType = '';
+            numberType = null;
+            requiresAuth = false;
+            authCompleted = false;
+            authInfo = null;
+            
+            // STEP 표시 초기화
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`step${i}`).classList.remove('active', 'completed');
+                document.getElementById(`step${i}Content`).style.display = 'none';
+            }
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step1Content').style.display = 'block';
+            
+            // 버튼 초기화
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            
+            // 입력값 초기화
+            document.getElementById('registerForm').reset();
+            document.getElementById('numberTypeBadge').style.display = 'none';
+        }
+
+        // 발신번호 등록 모달 열기
+        function openRegisterModal() {
+            resetForm();
+            document.getElementById('registerModal').style.display = 'flex';
+        }
+
+        function deleteCallerNumber(id) {
+            if (confirm('정말 삭제하시겠습니까? 삭제 후에는 복구할 수 없습니다.')) {
+                showToast('삭제되었습니다.', 'success');
+            }
+        }
+
+        function viewDetail(id) {
+            showToast('상세보기 기능은 준비 중입니다.', 'info');
+        }
+
+        function viewRejectionReason(id) {
+            alert('반려 사유: 서류가 불명확합니다. 명확한 서류를 다시 제출해주세요.');
+        }
+    </script>
+</body>
+</html>
+

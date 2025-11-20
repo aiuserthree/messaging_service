@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문자 템플릿 관리 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .template-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-filter-section {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .template-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .template-item {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .template-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .template-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .template-type-badge {
+            font-size: 11px;
+            padding: 4px 8px;
+        }
+        .template-content {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .template-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+        .template-actions-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item active">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>문자 템플릿 관리</h2>
+                <p class="page-description">자주 사용하는 메시지를 템플릿으로 저장하고 관리합니다</p>
+            </div>
+
+            <!-- 통계 요약 -->
+            <div class="dashboard-grid" style="margin-bottom: 24px;">
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-content">
+                        <h3>전체 템플릿</h3>
+                        <p class="stat-value">24개</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📱</div>
+                    <div class="stat-content">
+                        <h3>SMS</h3>
+                        <p class="stat-value">12개</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-content">
+                        <h3>LMS</h3>
+                        <p class="stat-value">8개</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🖼️</div>
+                    <div class="stat-content">
+                        <h3>MMS</h3>
+                        <p class="stat-value">4개</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 검색 및 필터 -->
+            <div class="card">
+                <div class="search-filter-section">
+                    <div style="flex: 1; min-width: 200px;">
+                        <input type="text" class="form-input" placeholder="템플릿명 또는 내용으로 검색">
+                    </div>
+                    <div style="width: 150px;">
+                        <select class="form-select">
+                            <option>전체 타입</option>
+                            <option>SMS</option>
+                            <option>LMS</option>
+                            <option>MMS</option>
+                        </select>
+                    </div>
+                    <div style="width: 150px;">
+                        <select class="form-select">
+                            <option>전체 카테고리</option>
+                            <option>일반</option>
+                            <option>광고</option>
+                            <option>공지</option>
+                            <option>이벤트</option>
+                            <option>기타</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">검색</button>
+                    <button class="btn btn-outline">초기화</button>
+                </div>
+            </div>
+
+            <!-- 템플릿 목록 -->
+            <div class="card">
+                <div class="template-actions">
+                    <div>
+                        <button class="btn btn-primary" onclick="openModal('addTemplateModal')">새 템플릿 등록</button>
+                        <button class="btn btn-outline" onclick="openModal('categoryModal')">카테고리 관리</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-outline btn-sm">일괄 삭제</button>
+                        <button class="btn btn-outline btn-sm">내보내기</button>
+                    </div>
+                </div>
+
+                <!-- 템플릿 카드 그리드 -->
+                <div class="template-card">
+                    <div class="template-item" onclick="viewTemplate(1)">
+                        <div class="template-header">
+                            <div>
+                                <div class="template-name">주문 확인</div>
+                                <div style="margin-top: 4px;">
+                                    <span class="badge badge-primary template-type-badge">SMS</span>
+                                    <span class="badge" style="background: rgba(100, 116, 139, 0.1); color: var(--secondary-color);">일반</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="template-content">
+                            주문이 접수되었습니다. 주문번호: #{주문번호} 배송 예정일: #{배송일}
+                        </div>
+                        <div class="template-meta">
+                            <div>
+                                <span>등록일: 2024-01-15</span>
+                                <span style="margin-left: 12px;">사용: 45회</span>
+                            </div>
+                            <div class="template-actions-buttons" onclick="event.stopPropagation()">
+                                <button class="btn btn-sm btn-outline" onclick="previewTemplate(1)">미리보기</button>
+                                <button class="btn btn-sm btn-outline" onclick="editTemplate(1)">수정</button>
+                                <button class="btn btn-sm btn-outline" onclick="copyTemplate(1)">복사</button>
+                                <button class="btn btn-sm btn-outline" onclick="deleteTemplate(1)">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-item" onclick="viewTemplate(2)">
+                        <div class="template-header">
+                            <div>
+                                <div class="template-name">배송 안내</div>
+                                <div style="margin-top: 4px;">
+                                    <span class="badge badge-primary template-type-badge">LMS</span>
+                                    <span class="badge" style="background: rgba(100, 116, 139, 0.1); color: var(--secondary-color);">배송</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="template-content">
+                            안녕하세요. 주문하신 상품이 배송을 시작했습니다. 운송장번호: #{운송장번호} 배송조회: #{배송조회URL}
+                        </div>
+                        <div class="template-meta">
+                            <div>
+                                <span>등록일: 2024-01-14</span>
+                                <span style="margin-left: 12px;">사용: 32회</span>
+                            </div>
+                            <div class="template-actions-buttons" onclick="event.stopPropagation()">
+                                <button class="btn btn-sm btn-outline" onclick="previewTemplate(2)">미리보기</button>
+                                <button class="btn btn-sm btn-outline" onclick="editTemplate(2)">수정</button>
+                                <button class="btn btn-sm btn-outline" onclick="copyTemplate(2)">복사</button>
+                                <button class="btn btn-sm btn-outline" onclick="deleteTemplate(2)">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-item" onclick="viewTemplate(3)">
+                        <div class="template-header">
+                            <div>
+                                <div class="template-name">이벤트 안내</div>
+                                <div style="margin-top: 4px;">
+                                    <span class="badge badge-primary template-type-badge">MMS</span>
+                                    <span class="badge" style="background: rgba(100, 116, 139, 0.1); color: var(--secondary-color);">이벤트</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="template-content">
+                            특별 이벤트가 시작되었습니다! #{이벤트명} 자세한 내용은 이미지를 확인해주세요.
+                        </div>
+                        <div class="template-meta">
+                            <div>
+                                <span>등록일: 2024-01-13</span>
+                                <span style="margin-left: 12px;">사용: 18회</span>
+                            </div>
+                            <div class="template-actions-buttons" onclick="event.stopPropagation()">
+                                <button class="btn btn-sm btn-outline" onclick="previewTemplate(3)">미리보기</button>
+                                <button class="btn btn-sm btn-outline" onclick="editTemplate(3)">수정</button>
+                                <button class="btn btn-sm btn-outline" onclick="copyTemplate(3)">복사</button>
+                                <button class="btn btn-sm btn-outline" onclick="deleteTemplate(3)">삭제</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <div id="pagination" style="margin-top: 24px;"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 템플릿 등록/수정 모달 -->
+    <div class="modal-overlay" id="addTemplateModal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 등록</h3>
+                <button class="modal-close" onclick="closeModal('addTemplateModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px;">
+                    <!-- 입력 영역 -->
+                    <div>
+                        <form id="templateForm">
+                            <div class="form-group">
+                                <label class="form-label required">템플릿명</label>
+                                <input type="text" class="form-input" placeholder="템플릿명을 입력하세요" maxlength="50" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">카테고리</label>
+                                <select class="form-select" required>
+                                    <option>일반</option>
+                                    <option>광고</option>
+                                    <option>공지</option>
+                                    <option>이벤트</option>
+                                    <option>기타</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">메시지 타입</label>
+                                <div class="flex gap-2">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="messageType" value="SMS" checked onchange="updateMessageType('SMS')">
+                                        <span>SMS</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="messageType" value="LMS" onchange="updateMessageType('LMS')">
+                                        <span>LMS</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="messageType" value="MMS" onchange="updateMessageType('MMS')">
+                                        <span>MMS</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" id="titleGroup" style="display: none;">
+                                <label class="form-label">제목</label>
+                                <input type="text" class="form-input" placeholder="제목을 입력하세요 (최대 40자)" maxlength="40">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">메시지 내용</label>
+                                <div class="flex gap-2 mb-1">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{날짜}')">#{날짜}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{주문번호}')">#{주문번호}</button>
+                                </div>
+                                <textarea class="form-textarea" id="templateContent" rows="8" placeholder="메시지 내용을 입력하세요" required oninput="updateByteCounter()"></textarea>
+                                <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
+                            </div>
+                            <div class="form-group" id="imageGroup" style="display: none;">
+                                <label class="form-label">이미지 첨부</label>
+                                <input type="file" class="form-input" accept="image/*" onchange="handleImageUpload(event)">
+                                <div class="form-help">JPG, PNG, GIF (최대 300KB, 권장: 가로 1,000px)</div>
+                                <div id="imagePreview" style="margin-top: 12px;"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">메모</label>
+                                <textarea class="form-textarea" rows="3" placeholder="템플릿 설명이나 용도 메모 (선택사항)" maxlength="200"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- 미리보기 영역 -->
+                    <div>
+                        <div class="card">
+                            <h4 style="margin-bottom: 16px;">미리보기</h4>
+                            <div class="preview-phone">
+                                <div class="preview-phone-header">
+                                    <div>010-1234-5678</div>
+                                </div>
+                                <div class="preview-phone-body">
+                                    <div id="previewTitle" style="font-weight: 600; margin-bottom: 8px; display: none;"></div>
+                                    <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력하세요</div>
+                                    <div id="previewImages" style="margin-top: 12px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addTemplateModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveTemplate()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 템플릿 미리보기 모달 -->
+    <div class="modal-overlay" id="previewModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 미리보기</h3>
+                <button class="modal-close" onclick="closeModal('previewModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-phone">
+                    <div class="preview-phone-header">
+                        <div>010-1234-5678</div>
+                    </div>
+                    <div class="preview-phone-body">
+                        <div id="previewTemplateTitle" style="font-weight: 600; margin-bottom: 8px;"></div>
+                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('previewModal')">닫기</button>
+                <button class="btn btn-primary" onclick="useTemplate()">이 템플릿으로 발송하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 카테고리 관리 모달 -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">카테고리 관리</h3>
+                <button class="modal-close" onclick="closeModal('categoryModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">기본 카테고리</label>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
+                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">일반 (12개)</span>
+                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">광고 (5개)</span>
+                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">공지 (3개)</span>
+                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">이벤트 (4개)</span>
+                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">기타 (0개)</span>
+                    </div>
+                    <div class="form-help">기본 카테고리는 수정/삭제할 수 없습니다</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">사용자 정의 카테고리</label>
+                    <div class="flex gap-2">
+                        <input type="text" class="form-input" placeholder="카테고리명 입력 (최대 20자)" maxlength="20">
+                        <button class="btn btn-primary" onclick="addCategory()">추가</button>
+                    </div>
+                </div>
+                <div class="table-container" style="margin-top: 16px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>카테고리명</th>
+                                <th>템플릿 수</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>배송</td>
+                                <td>3개</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline">수정</button>
+                                    <button class="btn btn-sm btn-outline">삭제</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('categoryModal')">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 삭제 확인 모달 -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 삭제</h3>
+                <button class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>선택한 템플릿을 삭제하시겠습니까?</p>
+                <div class="alert alert-warning" style="margin-top: 16px;">
+                    삭제된 템플릿은 복구할 수 없습니다.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('deleteModal')">취소</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        function updateMessageType(type) {
+            const titleGroup = document.getElementById('titleGroup');
+            const imageGroup = document.getElementById('imageGroup');
+            
+            if (type === 'LMS' || type === 'MMS') {
+                titleGroup.style.display = 'block';
+            } else {
+                titleGroup.style.display = 'none';
+            }
+            
+            if (type === 'MMS') {
+                imageGroup.style.display = 'block';
+            } else {
+                imageGroup.style.display = 'none';
+            }
+            
+            updateByteCounter();
+        }
+
+        function updateByteCounter() {
+            const content = document.getElementById('templateContent').value;
+            const type = document.querySelector('input[name="messageType"]:checked').value;
+            const maxBytes = type === 'SMS' ? 90 : 2000;
+            const currentBytes = calculateByteLength(content);
+            
+            const counter = document.getElementById('byteCounter');
+            counter.textContent = `${currentBytes} / ${maxBytes} 바이트`;
+            counter.className = 'byte-counter';
+            
+            if (currentBytes > maxBytes * 0.9) {
+                counter.classList.add('warning');
+            }
+            if (currentBytes > maxBytes) {
+                counter.classList.add('danger');
+            }
+            
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const content = document.getElementById('templateContent').value;
+            const title = document.querySelector('#titleGroup input')?.value || '';
+            
+            document.getElementById('previewContent').textContent = content || '메시지 내용을 입력하세요';
+            
+            if (title) {
+                document.getElementById('previewTitle').textContent = title;
+                document.getElementById('previewTitle').style.display = 'block';
+            } else {
+                document.getElementById('previewTitle').style.display = 'none';
+            }
+        }
+
+        document.getElementById('templateContent').addEventListener('input', function() {
+            updateByteCounter();
+        });
+
+        function insertVariable(variable) {
+            const textarea = document.getElementById('templateContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateByteCounter();
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = `
+                    <div style="position: relative; display: inline-block;">
+                        <img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border-radius: var(--radius-md);">
+                        <button type="button" class="btn btn-sm" onclick="removeImage()" style="position: absolute; top: 4px; right: 4px;">삭제</button>
+                    </div>
+                `;
+                document.getElementById('previewImages').innerHTML = `<img src="${e.target.result}" style="max-width: 100%; border-radius: var(--radius-md);">`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('previewImages').innerHTML = '';
+            document.querySelector('#imageGroup input[type="file"]').value = '';
+        }
+
+        function viewTemplate(id) {
+            // 템플릿 상세보기
+        }
+
+        function previewTemplate(id) {
+            document.getElementById('previewTemplateContent').textContent = '주문이 접수되었습니다. 주문번호: ORD123456 배송 예정일: 2024-01-20';
+            openModal('previewModal');
+        }
+
+        function editTemplate(id) {
+            openModal('addTemplateModal');
+            // 기존 템플릿 데이터 로드
+        }
+
+        function copyTemplate(id) {
+            showToast('템플릿이 복사되었습니다.', 'success');
+            openModal('addTemplateModal');
+        }
+
+        function deleteTemplate(id) {
+            openModal('deleteModal');
+        }
+
+        function confirmDelete() {
+            showToast('템플릿이 삭제되었습니다.', 'success');
+            closeModal('deleteModal');
+        }
+
+        function saveTemplate() {
+            showToast('템플릿이 저장되었습니다.', 'success');
+            closeModal('addTemplateModal');
+        }
+
+        function useTemplate() {
+            closeModal('previewModal');
+            window.location.href = 'message-send-general.html';
+        }
+
+        function addCategory() {
+            showToast('카테고리가 추가되었습니다.', 'success');
+        }
+
+        // 페이지네이션 생성
+        createPagination(1, 5, 'pagination');
+    </script>
+    <style>
+        .preview-phone {
+            background: #f5f5f5;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .preview-phone-header {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            font-size: 12px;
+        }
+        .preview-phone-body {
+            background: white;
+            padding: 16px;
+            border-radius: 0 0 12px 12px;
+            min-height: 150px;
+        }
+    </style>
+</body>
+</html>
+

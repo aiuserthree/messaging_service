@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공직선거문자 발송 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .send-form-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        .legal-notice {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .legal-notice h4 {
+            color: #721c24;
+            margin-bottom: 8px;
+        }
+        .legal-notice ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #721c24;
+            font-size: 13px;
+        }
+        .election-info {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .election-info h4 {
+            margin-bottom: 12px;
+        }
+        .compliance-checklist {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .compliance-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .compliance-item.valid {
+            color: var(--success-color);
+        }
+        .compliance-item.invalid {
+            color: var(--danger-color);
+        }
+        .forbidden-word-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-top: 12px;
+            display: none;
+        }
+        @media (max-width: 1024px) {
+            .send-form-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item active">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>공직선거문자 발송</h2>
+                <p class="page-description">공직선거법에 따른 선거운동 문자메시지를 발송합니다</p>
+            </div>
+
+            <!-- 법적 안내사항 -->
+            <div class="legal-notice">
+                <h4>⚠️ 공직선거법 준수 안내</h4>
+                <ul>
+                    <li>공직선거법 제82조의4(전화·문자메시지 등을 이용한 선거운동) 준수 필수</li>
+                    <li>허위사실 공표 금지 (제250조) - 3년 이하 징역 또는 600만원 이하 벌금</li>
+                    <li>후보자 비방 금지 (제251조) - 3년 이하 징역 또는 600만원 이하 벌금</li>
+                    <li>발송 가능 시간: 오전 7시 ~ 오후 11시 (선거운동 기간 내)</li>
+                    <li>투표일 당일 발송 불가</li>
+                    <li>선거관리위원회 신고번호 필수</li>
+                </ul>
+            </div>
+
+            <!-- 선거 정보 -->
+            <div class="election-info">
+                <h4>현재 진행 중인 선거 정보</h4>
+                <div class="table-container">
+                    <table class="table">
+                        <tr>
+                            <th style="width: 150px;">선거명</th>
+                            <td>제21대 국회의원 선거</td>
+                        </tr>
+                        <tr>
+                            <th>선거구</th>
+                            <td>서울 강남구 갑</td>
+                        </tr>
+                        <tr>
+                            <th>투표일</th>
+                            <td>2024-04-10</td>
+                        </tr>
+                        <tr>
+                            <th>선거운동 기간</th>
+                            <td>2024-03-27 ~ 2024-04-09</td>
+                        </tr>
+                        <tr>
+                            <th>남은 기간</th>
+                            <td><strong>D-15</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="send-form-container">
+                <!-- 입력 영역 -->
+                <div class="card">
+                    <form id="sendForm">
+                        <!-- 발신번호 설정 -->
+                        <div class="form-group">
+                            <label class="form-label required">발신번호</label>
+                            <select class="form-select" id="senderNumber" required onchange="updateCandidateInfo()">
+                                <option value="">발신번호를 선택하세요</option>
+                                <option value="010-1234-5678" data-candidate="홍길동 후보" data-party="">010-1234-5678 (홍길동 후보)</option>
+                                <option value="02-1234-5678" data-candidate="" data-party="○○당">02-1234-5678 (○○당)</option>
+                            </select>
+                            <div class="form-help">후보자/정당으로 등록된 발신번호만 선택 가능합니다</div>
+                        </div>
+
+                        <!-- 후보자/정당 정보 -->
+                        <div class="form-group" id="candidateInfoGroup" style="display: none;">
+                            <label class="form-label">후보자/정당 정보</label>
+                            <div id="candidateInfo" style="background: var(--bg-color); padding: 12px; border-radius: var(--radius-md);">
+                                <div>후보자명/정당명: <strong id="candidateName">-</strong></div>
+                                <div style="margin-top: 4px;">선거구: 서울 강남구 갑</div>
+                            </div>
+                        </div>
+
+                        <!-- 선거관리위원회 신고번호 -->
+                        <div class="form-group">
+                            <label class="form-label required">선거관리위원회 신고번호</label>
+                            <input type="text" class="form-input" placeholder="신고번호를 입력하세요" required>
+                            <div class="form-help">선거관리위원회에 신고한 문자 발송 신고번호를 입력하세요</div>
+                        </div>
+
+                        <!-- 수신번호 설정 -->
+                        <div class="form-group">
+                            <label class="form-label required">수신번호</label>
+                            <div class="tabs">
+                                <button type="button" class="tab-btn active" onclick="switchTab('direct')">직접입력</button>
+                                <button type="button" class="tab-btn" onclick="switchTab('addressbook')">주소록</button>
+                                <button type="button" class="tab-btn" onclick="switchTab('excel')">엑셀 업로드</button>
+                            </div>
+                            
+                            <div id="directTab" class="tab-content" style="display: block;">
+                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요" oninput="updateRecipientCount()"></textarea>
+                            </div>
+                            
+                            <div id="addressbookTab" class="tab-content" style="display: none;">
+                                <select class="form-select" multiple style="height: 150px;">
+                                    <option>유권자 목록 (5,234명)</option>
+                                </select>
+                            </div>
+                            
+                            <div id="excelTab" class="tab-content" style="display: none;">
+                                <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
+                            </div>
+                            
+                            <div style="margin-top: 12px;">
+                                <span id="recipientCount">0</span>명
+                                <div style="margin-top: 8px; font-size: 13px; color: var(--text-secondary;">
+                                    1일 발송 한도: 10,000건 | 금일 발송: 234건 | 잔여: 9,766건
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 메시지 내용 -->
+                        <div class="form-group">
+                            <label class="form-label required">메시지 내용</label>
+                            <div class="flex gap-2 mb-1">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{유권자명}')">#{유권자명}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{선거구}')">#{선거구}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{투표일}')">#{투표일}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateModal')">템플릿 선택</button>
+                            </div>
+                            <div style="background: var(--bg-color); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 13px;">
+                                <div>[선거]<strong id="candidateNamePreview">후보자명/정당명</strong></div>
+                                <div id="messageContentPreview">메시지 내용을 입력하세요</div>
+                                <div style="margin-top: 4px; color: var(--text-secondary);">수신거부 080-XXX-XXXX</div>
+                            </div>
+                            <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="checkForbiddenWords()"></textarea>
+                            <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
+                            <div class="forbidden-word-warning" id="forbiddenWordWarning">
+                                <strong>⚠️ 금지어가 검출되었습니다</strong>
+                                <div id="forbiddenWordList" style="margin-top: 8px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- 공직선거법 준수 체크리스트 -->
+                        <div class="compliance-checklist">
+                            <h4 style="margin-bottom: 12px;">공직선거법 준수 체크리스트</h4>
+                            <div class="compliance-item" id="checkCandidate">
+                                <span>✓</span>
+                                <span>후보자/정당명 포함</span>
+                            </div>
+                            <div class="compliance-item" id="checkReject">
+                                <span>✓</span>
+                                <span>수신거부 안내 포함</span>
+                            </div>
+                            <div class="compliance-item" id="checkForbidden">
+                                <span>✓</span>
+                                <span>금지어 미검출</span>
+                            </div>
+                            <div class="compliance-item" id="checkTime">
+                                <span>✓</span>
+                                <span>발송 시간 적합</span>
+                            </div>
+                        </div>
+
+                        <!-- 발송 시간 설정 -->
+                        <div class="form-group">
+                            <label class="form-label required">발송 시간</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="sendTime" value="immediate" checked onchange="updateTimeSettings()">
+                                    <span>즉시발송</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="sendTime" value="reserved" onchange="updateTimeSettings()">
+                                    <span>예약발송</span>
+                                </label>
+                            </div>
+                            <div id="reservedTimeGroup" style="display: none; margin-top: 12px;">
+                                <div class="flex gap-2">
+                                    <input type="date" class="form-input" id="reservedDate" onchange="checkTimeRestriction()">
+                                    <input type="time" class="form-input" id="reservedTime" onchange="checkTimeRestriction()">
+                                </div>
+                                <div class="form-help">발송 가능 시간: 오전 7시 ~ 오후 11시 (투표일 발송 불가)</div>
+                            </div>
+                        </div>
+
+                        <!-- 발송 비용 -->
+                        <div class="cost-info">
+                            <div class="cost-row">
+                                <span>수신자 수</span>
+                                <span id="costRecipientCount">0명</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>메시지 타입</span>
+                                <span>SMS</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>단가</span>
+                                <span>20원</span>
+                            </div>
+                            <div class="cost-row cost-total">
+                                <span>예상 비용</span>
+                                <span id="costTotal">0원</span>
+                            </div>
+                        </div>
+
+                        <!-- 발송하기 -->
+                        <div class="flex gap-2">
+                            <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
+                            <button type="submit" class="btn btn-primary" style="flex: 1;">발송하기</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 미리보기 영역 -->
+                <div class="preview-section">
+                    <div class="card">
+                        <h3 class="card-title">메시지 미리보기</h3>
+                        <div class="preview-phone">
+                            <div class="preview-phone-header">
+                                <div id="previewSenderNumber">010-1234-5678</div>
+                            </div>
+                            <div class="preview-phone-body">
+                                <div id="previewMessage" style="white-space: pre-wrap; line-height: 1.6;">
+                                    [선거]후보자명/정당명
+                                    메시지 내용을 입력하세요
+                                    수신거부 080-XXX-XXXX
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 발송 확인 모달 -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">발송 확인</h3>
+                <button class="modal-close" onclick="closeModal('confirmModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <h4 style="margin-bottom: 12px;">발송 정보</h4>
+                    <div class="table-container">
+                        <table class="table">
+                            <tr>
+                                <th style="width: 150px;">후보자/정당</th>
+                                <td id="confirmCandidate">-</td>
+                            </tr>
+                            <tr>
+                                <th>수신번호 개수</th>
+                                <td id="confirmRecipientCount">-</td>
+                            </tr>
+                            <tr>
+                                <th>발송 시간</th>
+                                <td id="confirmSendTime">-</td>
+                            </tr>
+                            <tr>
+                                <th>신고번호</th>
+                                <td id="confirmReportNumber">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="alert alert-danger" style="margin-top: 16px;">
+                    <h4 style="margin-bottom: 12px;">법적 확인 사항 (필수)</h4>
+                    <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; cursor: pointer;">
+                        <input type="checkbox" id="legalConfirm1" required>
+                        <span>공직선거법을 준수하였으며, 허위사실 공표 및 후보자 비방 내용이 없음을 확인합니다</span>
+                    </label>
+                    <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; cursor: pointer;">
+                        <input type="checkbox" id="legalConfirm2" required>
+                        <span>수신자가 선거구 내 유권자이거나 선거운동 목적의 발송임을 확인합니다</span>
+                    </label>
+                    <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="legalConfirm3" required>
+                        <span>선거관리위원회에 문자메시지 발송을 신고하였거나 신고 예정임을 확인합니다</span>
+                    </label>
+                </div>
+                <div class="alert alert-warning" style="margin-top: 12px;">
+                    <strong>주의:</strong> 공직선거법 위반 시 3년 이하 징역 또는 600만원 이하 벌금에 처해질 수 있습니다.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('confirmModal')">취소</button>
+                <button class="btn btn-primary" onclick="confirmSend()">발송하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Tab').style.display = 'block';
+        }
+
+        function updateCandidateInfo() {
+            const select = document.getElementById('senderNumber');
+            const selected = select.options[select.selectedIndex];
+            const candidate = selected.getAttribute('data-candidate');
+            const party = selected.getAttribute('data-party');
+            const candidateName = candidate || party;
+            
+            if (candidateName) {
+                document.getElementById('candidateInfoGroup').style.display = 'block';
+                document.getElementById('candidateName').textContent = candidateName;
+                document.getElementById('candidateNamePreview').textContent = candidateName;
+                document.getElementById('previewSenderNumber').textContent = select.value;
+                updatePreview();
+                document.getElementById('checkCandidate').classList.add('valid');
+            } else {
+                document.getElementById('candidateInfoGroup').style.display = 'none';
+                document.getElementById('checkCandidate').classList.remove('valid');
+            }
+        }
+
+        function updateRecipientCount() {
+            const text = document.getElementById('recipientNumbers').value;
+            const numbers = text.split(/[,\n]/).filter(n => n.trim()).length;
+            document.getElementById('recipientCount').textContent = numbers;
+            document.getElementById('costRecipientCount').textContent = numbers + '명';
+            document.getElementById('costTotal').textContent = (numbers * 20).toLocaleString() + '원';
+        }
+
+        function insertVariable(variable) {
+            const textarea = document.getElementById('messageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updatePreview();
+            checkForbiddenWords();
+        }
+
+        function checkForbiddenWords() {
+            const content = document.getElementById('messageContent').value;
+            const forbiddenWords = ['허위', '비방', '사기', '속임수']; // 예시
+            const found = forbiddenWords.filter(word => content.includes(word));
+            
+            const warning = document.getElementById('forbiddenWordWarning');
+            const list = document.getElementById('forbiddenWordList');
+            const checkItem = document.getElementById('checkForbidden');
+            
+            if (found.length > 0) {
+                warning.style.display = 'block';
+                list.innerHTML = '검출된 단어: ' + found.join(', ');
+                checkItem.classList.remove('valid');
+                checkItem.classList.add('invalid');
+            } else {
+                warning.style.display = 'none';
+                checkItem.classList.add('valid');
+                checkItem.classList.remove('invalid');
+            }
+            
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const content = document.getElementById('messageContent').value;
+            const candidateName = document.getElementById('candidateNamePreview').textContent;
+            const preview = document.getElementById('previewMessage');
+            preview.textContent = `[선거]${candidateName}\n${content || '메시지 내용을 입력하세요'}\n수신거부 080-XXX-XXXX`;
+            
+            document.getElementById('messageContentPreview').textContent = content || '메시지 내용을 입력하세요';
+        }
+
+        function updateTimeSettings() {
+            const reserved = document.querySelector('input[name="sendTime"]:checked').value === 'reserved';
+            document.getElementById('reservedTimeGroup').style.display = reserved ? 'block' : 'none';
+        }
+
+        function checkTimeRestriction() {
+            const date = document.getElementById('reservedDate').value;
+            const time = document.getElementById('reservedTime').value;
+            const checkItem = document.getElementById('checkTime');
+            
+            if (!date || !time) return;
+            
+            const selectedDate = new Date(date + 'T' + time);
+            const hour = selectedDate.getHours();
+            
+            if (hour >= 7 && hour < 23) {
+                checkItem.classList.add('valid');
+                checkItem.classList.remove('invalid');
+            } else {
+                checkItem.classList.remove('valid');
+                checkItem.classList.add('invalid');
+            }
+        }
+
+        function testSend() {
+            showToast('테스트 발송이 완료되었습니다.', 'success');
+        }
+
+        document.getElementById('sendForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!document.getElementById('legalConfirm1').checked || 
+                !document.getElementById('legalConfirm2').checked || 
+                !document.getElementById('legalConfirm3').checked) {
+                showToast('모든 법적 확인 사항에 동의해주세요.', 'warning');
+                return;
+            }
+            
+            document.getElementById('confirmCandidate').textContent = document.getElementById('candidateName').textContent;
+            document.getElementById('confirmRecipientCount').textContent = document.getElementById('recipientCount').textContent + '명';
+            document.getElementById('confirmReportNumber').textContent = document.querySelector('input[placeholder*="신고번호"]').value;
+            
+            const sendTime = document.querySelector('input[name="sendTime"]:checked').value;
+            if (sendTime === 'immediate') {
+                document.getElementById('confirmSendTime').textContent = '즉시 발송';
+            } else {
+                const date = document.getElementById('reservedDate').value;
+                const time = document.getElementById('reservedTime').value;
+                document.getElementById('confirmSendTime').textContent = date + ' ' + time;
+            }
+            
+            openModal('confirmModal');
+        });
+
+        function confirmSend() {
+            if (!document.getElementById('legalConfirm1').checked || 
+                !document.getElementById('legalConfirm2').checked || 
+                !document.getElementById('legalConfirm3').checked) {
+                showToast('모든 법적 확인 사항에 동의해주세요.', 'warning');
+                return;
+            }
+            
+            showToast('발송이 완료되었습니다.', 'success');
+            closeModal('confirmModal');
+            setTimeout(() => {
+                window.location.href = 'send-result.html';
+            }, 2000);
+        }
+
+        // 초기화
+        document.getElementById('messageContent').addEventListener('input', function() {
+            checkForbiddenWords();
+        });
+        
+        document.getElementById('checkReject').classList.add('valid');
+    </script>
+</body>
+</html>
+

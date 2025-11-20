@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주소록 관리 - 메시징 서비스</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .addressbook-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 24px;
+        }
+        .group-sidebar {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+        .group-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .group-item {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .group-item:hover {
+            background: var(--bg-color);
+        }
+        .group-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .group-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .addressbook-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-filter {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        @media (max-width: 1024px) {
+            .addressbook-layout {
+                grid-template-columns: 1fr;
+            }
+            .group-sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item active">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>주소록 관리</h2>
+                <p class="page-description">수신자 주소록을 그룹별로 관리합니다</p>
+            </div>
+
+            <!-- 통계 정보 -->
+            <div class="dashboard-grid" style="margin-bottom: 24px;">
+                <div class="stat-card">
+                    <div class="stat-icon">📇</div>
+                    <div class="stat-content">
+                        <h3>전체 주소</h3>
+                        <p class="stat-value">1,234명</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📁</div>
+                    <div class="stat-content">
+                        <h3>그룹 수</h3>
+                        <p class="stat-value">5개</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <h3>정상 주소</h3>
+                        <p class="stat-value">1,200명</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚫</div>
+                    <div class="stat-content">
+                        <h3>수신거부</h3>
+                        <p class="stat-value">34명</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addressbook-layout">
+                <!-- 그룹 사이드바 -->
+                <div class="group-sidebar">
+                    <div class="flex-between mb-2">
+                        <h3 style="font-size: 16px; font-weight: 600;">그룹</h3>
+                        <button class="btn btn-sm btn-primary" onclick="openModal('addGroupModal')">+ 추가</button>
+                    </div>
+                    <ul class="group-list">
+                        <li class="group-item active" onclick="selectGroup('all')">
+                            <span>전체</span>
+                            <span class="group-count">1,234</span>
+                        </li>
+                        <li class="group-item" onclick="selectGroup('group1')">
+                            <span>VIP 고객</span>
+                            <span class="group-count">234</span>
+                        </li>
+                        <li class="group-item" onclick="selectGroup('group2')">
+                            <span>일반 고객</span>
+                            <span class="group-count">1,000</span>
+                        </li>
+                        <li class="group-item" onclick="selectGroup('group3')">
+                            <span>신규 고객</span>
+                            <span class="group-count">50</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 주소록 목록 -->
+                <div class="card">
+                    <div class="addressbook-actions">
+                        <div class="search-filter">
+                            <input type="text" class="form-input" placeholder="이름 또는 전화번호로 검색" style="width: 300px;">
+                            <select class="form-select" style="width: 150px;">
+                                <option>전체</option>
+                                <option>정상</option>
+                                <option>수신거부</option>
+                            </select>
+                            <button class="btn btn-outline">검색</button>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-primary" onclick="openModal('addAddressModal')">주소 추가</button>
+                            <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
+                            <button class="btn btn-outline" onclick="exportExcel()">엑셀 다운로드</button>
+                            <button class="btn btn-outline" onclick="sendMessage()">문자 보내기</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" onchange="toggleAll(this)"></th>
+                                    <th>이름</th>
+                                    <th>전화번호</th>
+                                    <th>그룹</th>
+                                    <th>이메일</th>
+                                    <th>등록일</th>
+                                    <th>상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>홍길동</td>
+                                    <td>010-1234-5678</td>
+                                    <td>VIP 고객</td>
+                                    <td>hong@example.com</td>
+                                    <td>2024-01-15</td>
+                                    <td><span class="badge badge-success">정상</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="editAddress(1)">수정</button>
+                                        <button class="btn btn-sm btn-outline" onclick="deleteAddress(1)">삭제</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>김철수</td>
+                                    <td>010-9876-5432</td>
+                                    <td>일반 고객</td>
+                                    <td>kim@example.com</td>
+                                    <td>2024-01-14</td>
+                                    <td><span class="badge badge-success">정상</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="editAddress(2)">수정</button>
+                                        <button class="btn btn-sm btn-outline" onclick="deleteAddress(2)">삭제</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>이영희</td>
+                                    <td>010-5555-7777</td>
+                                    <td>신규 고객</td>
+                                    <td>lee@example.com</td>
+                                    <td>2024-01-13</td>
+                                    <td><span class="badge badge-danger">수신거부</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="editAddress(3)">수정</button>
+                                        <button class="btn btn-sm btn-outline" onclick="deleteAddress(3)">삭제</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 페이지네이션 -->
+                    <div id="pagination"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 주소 추가 모달 -->
+    <div class="modal-overlay" id="addAddressModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">주소 추가</h3>
+                <button class="modal-close" onclick="closeModal('addAddressModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addAddressForm">
+                    <div class="form-group">
+                        <label class="form-label required">이름</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">전화번호</label>
+                        <input type="text" class="form-input" placeholder="010-1234-5678" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">그룹</label>
+                        <select class="form-select" required>
+                            <option>VIP 고객</option>
+                            <option>일반 고객</option>
+                            <option>신규 고객</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">이메일</label>
+                        <input type="email" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">메모</label>
+                        <textarea class="form-textarea" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addAddressModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveAddress()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그룹 추가 모달 -->
+    <div class="modal-overlay" id="addGroupModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">그룹 추가</h3>
+                <button class="modal-close" onclick="closeModal('addGroupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addGroupForm">
+                    <div class="form-group">
+                        <label class="form-label required">그룹명</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-textarea" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addGroupModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveGroup()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 엑셀 업로드 모달 -->
+    <div class="modal-overlay" id="excelUploadModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">엑셀 업로드</h3>
+                <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">파일 선택</label>
+                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
+                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
+                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+                    </div>
+                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
+                    <a href="#" class="form-help">샘플 파일 다운로드</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
+                <button class="btn btn-primary">업로드</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script>
+        function selectGroup(groupId) {
+            document.querySelectorAll('.group-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            // 그룹별 주소록 조회
+        }
+
+        function toggleAll(checkbox) {
+            document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+        }
+
+        function editAddress(id) {
+            openModal('addAddressModal');
+            // 주소 정보 로드
+        }
+
+        function deleteAddress(id) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                showToast('삭제되었습니다.', 'success');
+            }
+        }
+
+        function saveAddress() {
+            showToast('저장되었습니다.', 'success');
+            closeModal('addAddressModal');
+        }
+
+        function saveGroup() {
+            showToast('그룹이 추가되었습니다.', 'success');
+            closeModal('addGroupModal');
+        }
+
+        function exportExcel() {
+            showToast('엑셀 다운로드가 시작되었습니다.', 'info');
+        }
+
+        function sendMessage() {
+            const selected = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            if (selected.length === 0) {
+                showToast('선택된 주소가 없습니다.', 'warning');
+                return;
+            }
+            window.location.href = 'message-send-general.html';
+        }
+
+        // 페이지네이션 생성
+        createPagination(1, 10, 'pagination');
+    </script>
+</body>
+</html>
+
