@@ -1601,11 +1601,14 @@ function initDropdownMenus() {
 </script>
     <script>
         // 템플릿 존재 여부 확인 (실제로는 API 호출)
-        const hasTemplate = false; // true로 변경하면 발송 폼 표시
+        const hasTemplate = true; // 템플릿이 등록되어 있는 경우를 기본으로 표시
 
         if (hasTemplate) {
             document.getElementById('noTemplateAlert').style.display = 'none';
             document.getElementById('sendFormArea').style.display = 'block';
+        } else {
+            document.getElementById('noTemplateAlert').style.display = 'block';
+            document.getElementById('sendFormArea').style.display = 'none';
         }
 
         // 탭 전환
