@@ -843,9 +843,6 @@ body {
                     <div class="form-group">
                         <label class="form-label required">발신프로필</label>
                         <input type="text" class="form-input" id="profileId" placeholder="@" required>
-                        <div class="form-help">
-                            카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.
-                        </div>
                         <div class="form-error" id="profileIdError"></div>
                     </div>
 
@@ -1266,8 +1263,8 @@ function initDropdownMenus() {
                 return;
             }
 
-            if (!/^@[a-zA-Z0-9_]+$/.test(profileId)) {
-                document.getElementById('profileIdError').textContent = '발신프로필 ID는 @, 영문, 숫자, 언더스코어만 허용됩니다.';
+            if (!/^@[a-zA-Z0-9_\uAC00-\uD7A3]+$/.test(profileId)) {
+                document.getElementById('profileIdError').textContent = '발신프로필 ID는 @, 영문, 숫자, 언더스코어, 한글만 허용됩니다.';
                 return;
             }
 
