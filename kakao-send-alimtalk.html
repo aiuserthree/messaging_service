@@ -987,6 +987,7 @@ body {
                         <div class="nav-dropdown">
                             <a href="kakao-send-alimtalk.html" class="nav-dropdown-item active">알림톡 발송</a>
                             <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                            <a href="kakao-profile-manage.html" class="nav-dropdown-item">발신프로필 관리</a>
                         </div>
                     </div>
                     <div class="nav-item has-dropdown">
@@ -1057,25 +1058,33 @@ body {
                         <a href="template-alimtalk.html" class="btn btn-primary btn-lg">템플릿 등록하러 가기</a>
                     </div>
                     <div style="margin-top: 16px;">
-                        <a href="#" class="form-help">템플릿 등록 가이드 보기</a>
+                        <a href="https://kakaobusiness.gitbook.io/main/ad/infotalk/content-guide" target="_blank" class="form-help">템플릿 등록 가이드 보기</a>
                     </div>
                 </div>
 
                 <!-- 템플릿이 있는 경우 발송 폼 -->
                 <div id="sendFormArea" style="display: none;">
+                    <!-- 발신프로필 선택 영역 (페이지 상단) -->
+                    <div class="card" style="margin-bottom: 24px;">
+                        <div class="flex-between" style="align-items: flex-end;">
+                            <div style="flex: 1; margin-right: 16px;">
+                                <label class="form-label required">발신프로필</label>
+                                <select class="form-select" id="senderProfile" required>
+                                    <option value="">발신프로필을 선택하세요</option>
+                                    <option value="profile1">마케팅팀 (승인완료)</option>
+                                    <option value="profile2">고객센터 (승인완료)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <a href="kakao-profile-manage.html" class="btn btn-outline">발신프로필 등록</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="send-form-container">
                         <!-- 입력 영역 -->
                         <div class="card">
                             <form id="sendForm">
-                                <!-- 발신 프로필 선택 -->
-                                <div class="form-group">
-                                    <label class="form-label required">발신 프로필</label>
-                                    <select class="form-select" id="senderProfile" required>
-                                        <option value="">발신 프로필을 선택하세요</option>
-                                        <option value="profile1">마케팅팀 (승인완료)</option>
-                                        <option value="profile2">고객센터 (승인완료)</option>
-                                    </select>
-                                </div>
 
                                 <!-- 템플릿 선택 -->
                                 <div class="form-group">

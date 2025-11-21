@@ -22,7 +22,8 @@ function createHeader(activeMenu = '') {
             hasDropdown: true,
             items: [
                 { label: '알림톡 발송', url: 'kakao-send-alimtalk.html' },
-                { label: '브랜드톡 발송', url: 'kakao-send-brandtalk.html' }
+                { label: '브랜드톡 발송', url: 'kakao-send-brandtalk.html' },
+                { label: '발신프로필 관리', url: 'kakao-profile-manage.html' }
             ]
         },
         'template': {

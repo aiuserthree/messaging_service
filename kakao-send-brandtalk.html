@@ -999,6 +999,7 @@ body {
                         <div class="nav-dropdown">
                             <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
                             <a href="kakao-send-brandtalk.html" class="nav-dropdown-item active">브랜드톡 발송</a>
+                            <a href="kakao-profile-manage.html" class="nav-dropdown-item">발신프로필 관리</a>
                         </div>
                     </div>
                     <div class="nav-item has-dropdown">
@@ -1077,26 +1078,40 @@ body {
                     <div style="margin-top: 32px;">
                         <a href="template-brandtalk.html" class="btn btn-primary btn-lg">템플릿 등록하러 가기</a>
                     </div>
-                    <div style="margin-top: 16px;">
-                        <a href="#" class="form-help">템플릿 등록 가이드 보기</a>
-                    </div>
                 </div>
 
                 <!-- 템플릿이 있는 경우 발송 폼 -->
                 <div id="sendFormArea" style="display: none;">
+                    <!-- 발신프로필 선택 영역 (페이지 상단) -->
+                    <div class="card" style="margin-bottom: 24px;">
+                        <div class="flex-between" style="align-items: flex-end;">
+                            <div style="flex: 1; margin-right: 16px;">
+                                <label class="form-label required">발신프로필</label>
+                                <select class="form-select" id="brandChannel" required>
+                                    <option value="">발신프로필을 선택하세요</option>
+                                    <option value="channel1">마케팅팀 (활성)</option>
+                                    <option value="channel2">고객센터 (활성)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <a href="kakao-profile-manage.html" class="btn btn-outline">발신프로필 등록</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 광고성 메시지 안내 -->
+                    <div class="alert alert-warning" style="margin-bottom: 24px;">
+                        <strong>⚠️ 브랜드톡은 광고성 메시지입니다</strong>
+                        <p style="margin-top: 8px; font-size: 13px;">
+                            브랜드톡 발송 시 광고성 메시지임을 명시하고, 수신자 동의를 확보해야 합니다.<br>
+                            광고성 메시지 수신 동의가 없는 경우 발송이 제한될 수 있습니다.
+                        </p>
+                    </div>
+
                     <div class="send-form-container">
                         <!-- 입력 영역 -->
                         <div class="card">
                             <form id="sendForm">
-                                <!-- 브랜드 채널 선택 -->
-                                <div class="form-group">
-                                    <label class="form-label required">브랜드 채널</label>
-                                    <select class="form-select" id="brandChannel" required>
-                                        <option value="">브랜드 채널을 선택하세요</option>
-                                        <option value="channel1">마케팅팀 (활성)</option>
-                                        <option value="channel2">고객센터 (활성)</option>
-                                    </select>
-                                </div>
 
                                 <!-- 템플릿 선택 -->
                                 <div class="form-group">
@@ -1161,6 +1176,15 @@ body {
                                             <input type="radio" name="sendTime" value="reserved">
                                             <span>예약 발송</span>
                                         </label>
+                                    </div>
+                                    <div class="alert alert-info" style="margin-top: 12px; padding: 12px; font-size: 12px;">
+                                        <strong>⚠️ 발송 시간 제한</strong><br>
+                                        브랜드톡은 평일 08:00~21:00에만 발송 가능합니다.<br>
+                                        주말 및 공휴일에는 발송할 수 없습니다.
+                                    </div>
+                                    <div id="reservedTimeGroup" style="display: none; margin-top: 12px;">
+                                        <input type="datetime-local" class="form-input" id="reservedDateTime" min="2024-01-01T08:00" max="2024-12-31T21:00">
+                                        <div class="form-help">평일 08:00~21:00 사이의 시간만 선택 가능합니다</div>
                                     </div>
                                 </div>
 
@@ -1657,6 +1681,35 @@ function initDropdownMenus() {
         // 메시지 내용 입력 시 미리보기 업데이트
         document.getElementById('messageContent').addEventListener('input', updatePreview);
 
+        // 발송 시간 변경
+        document.querySelectorAll('input[name="sendTime"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('reservedTimeGroup').style.display = 
+                    this.value === 'reserved' ? 'block' : 'none';
+            });
+        });
+
+        // 예약 발송 시간 검증 (평일 08:00~21:00만 가능)
+        document.getElementById('reservedDateTime')?.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const dayOfWeek = selectedDate.getDay(); // 0: 일요일, 6: 토요일
+            const hours = selectedDate.getHours();
+            
+            // 주말 체크
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+                showToast('브랜드톡은 주말에 발송할 수 없습니다. 평일을 선택해주세요.', 'warning');
+                this.value = '';
+                return;
+            }
+            
+            // 시간 체크 (08:00~21:00)
+            if (hours < 8 || hours >= 21) {
+                showToast('브랜드톡은 평일 08:00~21:00에만 발송 가능합니다.', 'warning');
+                this.value = '';
+                return;
+            }
+        });
+
         function testSend() {
             showToast('테스트 발송 기능은 준비 중입니다.', 'info');
         }
@@ -1664,6 +1717,46 @@ function initDropdownMenus() {
         // 폼 제출
         document.getElementById('sendForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // 발송 시간 검증
+            const sendTimeType = document.querySelector('input[name="sendTime"]:checked').value;
+            if (sendTimeType === 'reserved') {
+                const reservedDateTime = document.getElementById('reservedDateTime').value;
+                if (!reservedDateTime) {
+                    showToast('예약 발송 시간을 선택해주세요.', 'warning');
+                    return;
+                }
+                
+                const selectedDate = new Date(reservedDateTime);
+                const dayOfWeek = selectedDate.getDay();
+                const hours = selectedDate.getHours();
+                
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    showToast('브랜드톡은 주말에 발송할 수 없습니다.', 'warning');
+                    return;
+                }
+                
+                if (hours < 8 || hours >= 21) {
+                    showToast('브랜드톡은 평일 08:00~21:00에만 발송 가능합니다.', 'warning');
+                    return;
+                }
+            } else {
+                // 즉시 발송 시 현재 시간 검증
+                const now = new Date();
+                const dayOfWeek = now.getDay();
+                const hours = now.getHours();
+                
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    showToast('브랜드톡은 주말에 발송할 수 없습니다. 예약 발송을 이용해주세요.', 'warning');
+                    return;
+                }
+                
+                if (hours < 8 || hours >= 21) {
+                    showToast('브랜드톡은 평일 08:00~21:00에만 발송 가능합니다. 예약 발송을 이용해주세요.', 'warning');
+                    return;
+                }
+            }
+            
             showToast('발송이 완료되었습니다.', 'success');
         });
     </script>
