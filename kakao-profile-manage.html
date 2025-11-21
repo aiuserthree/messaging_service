@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발신프로필 관리 - 메시징 서비스</title>
+    <style>/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--bg-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* 입력 필드 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--danger-color);
+}
+
+.form-help {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 카드 */
+.card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* 배지 */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+}
+
+.badge-primary {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.badge-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.badge-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+/* 테이블 */
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.table tbody tr:hover {
+    background-color: var(--bg-color);
+}
+
+/* 알림 */
+.alert {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background-color: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    color: var(--primary-color);
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+}
+
+/* 유틸리티 */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* 검색/필터 섹션 */
+.search-filter-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-filter-section > div {
+    display: flex;
+    align-items: center;
+}
+
+/* 레이아웃 스타일 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 */
+.header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.logo a:hover h1 {
+    opacity: 0.8;
+}
+
+.main-nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+/* 드롭다운 메뉴 */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.nav-item.open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.nav-dropdown-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.balance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.balance-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 상태 배지 */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-registered {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.status-pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.status-active {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.status-suspended {
+    background-color: rgba(100, 116, 139, 0.1);
+    color: var(--secondary-color);
+}
+
+.status-blocked {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .nav-dropdown {
+        position: static;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+
+    .nav-item.open .nav-dropdown {
+        display: block;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+}
+
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
+                        <h1>iSend</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-item">대시보드</a>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
+                            <a href="kakao-profile-manage.html" class="nav-dropdown-item active">발신프로필 관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="flex-between">
+                    <div>
+                        <h2>발신프로필 관리</h2>
+                        <p class="page-description">카카오톡 채널(발신프로필)을 등록하고 관리합니다</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openModal('registerModal')">신규 등록</button>
+                </div>
+            </div>
+
+            <!-- 안내 영역 -->
+            <div class="alert alert-info">
+                <div class="flex-between">
+                    <div>
+                        <strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank" style="color: var(--primary-color); text-decoration: underline;">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(발신프로필)만 등록 가능합니다.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 검색 및 필터 -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="search-filter-section">
+                    <div style="flex: 1; min-width: 200px;">
+                        <input type="text" class="form-input" id="searchInput" placeholder="발신프로필 ID 또는 채널명으로 검색" onkeyup="handleSearch(event)">
+                    </div>
+                    <div style="width: 150px;">
+                        <select class="form-select" id="statusFilter" onchange="filterProfiles()">
+                            <option value="">전체 상태</option>
+                            <option value="REGISTERED">등록</option>
+                            <option value="PENDING">검수중</option>
+                            <option value="ACTIVE">활성</option>
+                            <option value="SUSPENDED">중단</option>
+                            <option value="BLOCKED">차단</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="searchProfiles()">검색</button>
+                    <button class="btn btn-outline" onclick="resetFilters()">초기화</button>
+                </div>
+            </div>
+
+            <!-- 발신프로필 목록 -->
+            <div class="card">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">NO</th>
+                                <th>발신프로필 ID</th>
+                                <th>카카오톡 채널명</th>
+                                <th>상태</th>
+                                <th>브랜드메시지</th>
+                                <th>등록일</th>
+                                <th style="width: 100px;">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="profileTableBody">
+                            <tr>
+                                <td>1</td>
+                                <td>@조도람</td>
+                                <td>조도람</td>
+                                <td><span class="status-badge status-active">활성</span></td>
+                                <td>Y</td>
+                                <td>2025-11-18</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewProfileDetail('1')">상세</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>@테스트</td>
+                                <td>테스트 채널</td>
+                                <td><span class="status-badge status-pending">검수중</span></td>
+                                <td>N</td>
+                                <td>2025-11-15</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewProfileDetail('2')">상세</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>@마케팅팀</td>
+                                <td>마케팅팀</td>
+                                <td><span class="status-badge status-active">활성</span></td>
+                                <td>Y</td>
+                                <td>2025-11-10</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="viewProfileDetail('3')">상세</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <div id="pagination" style="margin-top: 24px;"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 발신프로필 등록 모달 -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">발신프로필 등록</h3>
+                <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 등록 절차 안내 -->
+                <div class="alert alert-info" style="margin-bottom: 24px;">
+                    <strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank" style="color: var(--primary-color); text-decoration: underline;">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(발신프로필)만 등록 가능합니다.</strong>
+                </div>
+
+                <form id="registerForm">
+                    <!-- 발신프로필 ID -->
+                    <div class="form-group">
+                        <label class="form-label required">발신프로필</label>
+                        <input type="text" class="form-input" id="profileId" placeholder="@" required>
+                        <div class="form-help">
+                            카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.
+                        </div>
+                        <div class="form-error" id="profileIdError"></div>
+                    </div>
+
+                    <!-- 담당자 휴대폰 번호 -->
+                    <div class="form-group">
+                        <label class="form-label">담당자 휴대폰 번호</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" class="form-input" id="phoneNumber" placeholder="- 없이 숫자만 입력해주세요" style="flex: 1;">
+                            <button type="button" class="btn btn-primary" onclick="requestVerification()">인증요청</button>
+                        </div>
+                        <div class="form-help" id="phoneNumberHelp" style="margin-top: 8px;">
+                            카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.
+                        </div>
+                        <div class="form-error" id="phoneNumberError"></div>
+                    </div>
+
+                    <!-- 카테고리 -->
+                    <div class="form-group">
+                        <label class="form-label required">카테고리</label>
+                        <select class="form-select" id="category1" required>
+                            <option value="">선택해주세요</option>
+                            <option value="교육/학원">교육/학원</option>
+                            <option value="금융/보험">금융/보험</option>
+                            <option value="부동산">부동산</option>
+                            <option value="쇼핑/유통">쇼핑/유통</option>
+                            <option value="의료/건강">의료/건강</option>
+                            <option value="이커머스">이커머스</option>
+                            <option value="정보통신">정보통신</option>
+                            <option value="제조/물류">제조/물류</option>
+                            <option value="커뮤니티">커뮤니티</option>
+                            <option value="패션/뷰티">패션/뷰티</option>
+                            <option value="음식점">음식점</option>
+                            <option value="여행/레저">여행/레저</option>
+                            <option value="기타">기타</option>
+                        </select>
+                        <select class="form-select" id="category2" style="margin-top: 8px;">
+                            <option value="">선택해주세요 (선택사항)</option>
+                            <option value="교육/학원">교육/학원</option>
+                            <option value="금융/보험">금융/보험</option>
+                            <option value="부동산">부동산</option>
+                            <option value="쇼핑/유통">쇼핑/유통</option>
+                            <option value="의료/건강">의료/건강</option>
+                            <option value="이커머스">이커머스</option>
+                            <option value="정보통신">정보통신</option>
+                            <option value="제조/물류">제조/물류</option>
+                            <option value="커뮤니티">커뮤니티</option>
+                            <option value="패션/뷰티">패션/뷰티</option>
+                            <option value="음식점">음식점</option>
+                            <option value="여행/레저">여행/레저</option>
+                            <option value="기타">기타</option>
+                        </select>
+                        <select class="form-select" id="category3" style="margin-top: 8px;">
+                            <option value="">선택해주세요 (선택사항)</option>
+                            <option value="교육/학원">교육/학원</option>
+                            <option value="금융/보험">금융/보험</option>
+                            <option value="부동산">부동산</option>
+                            <option value="쇼핑/유통">쇼핑/유통</option>
+                            <option value="의료/건강">의료/건강</option>
+                            <option value="이커머스">이커머스</option>
+                            <option value="정보통신">정보통신</option>
+                            <option value="제조/물류">제조/물류</option>
+                            <option value="커뮤니티">커뮤니티</option>
+                            <option value="패션/뷰티">패션/뷰티</option>
+                            <option value="음식점">음식점</option>
+                            <option value="여행/레저">여행/레저</option>
+                            <option value="기타">기타</option>
+                        </select>
+                        <div class="form-help">
+                            카카오톡 채널 관리자센터에서 발신프로필별 최초 생성 시 선택했던 카테고리와 동일하게 선택해주세요
+                        </div>
+                        <div class="alert alert-warning" style="margin-top: 8px; padding: 12px; font-size: 12px;">
+                            ⚠️ 단, 등록된 카테고리가 잘못된 경우 카테고리로 전환
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('registerModal')">취소</button>
+                <button class="btn btn-primary" onclick="registerProfile()">등록</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 발신프로필 상세 모달 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">발신프로필 상세</h3>
+                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 기본 정보 -->
+                <div class="form-group">
+                    <h4 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">기본 정보</h4>
+                    <div style="background: var(--bg-color); padding: 16px; border-radius: var(--radius-md);">
+                        <div style="margin-bottom: 8px;">
+                            <strong>발신프로필 ID:</strong> <span id="detailProfileId">@조도람</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>카카오톡 채널명:</strong> <span id="detailChannelName">조도람</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>등록일:</strong> <span id="detailRegisterDate">2025-11-18</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>상태:</strong> <span id="detailStatus"><span class="status-badge status-active">활성</span></span>
+                        </div>
+                        <div>
+                            <strong>브랜드메시지 사용여부:</strong> <span id="detailBrandMessage">Y</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 담당자 휴대폰 번호 -->
+                <div class="form-group">
+                    <h4 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">담당자 휴대폰 번호</h4>
+                    <div style="background: var(--bg-color); padding: 16px; border-radius: var(--radius-md);">
+                        <div id="detailPhoneNumber">01012345678</div>
+                    </div>
+                </div>
+
+                <!-- 카테고리 정보 -->
+                <div class="form-group">
+                    <h4 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">카테고리</h4>
+                    <div style="background: var(--bg-color); padding: 16px; border-radius: var(--radius-md);">
+                        <div id="detailCategories">
+                            <span class="badge badge-primary" style="margin-right: 8px;">정보통신</span>
+                            <span class="badge badge-primary" style="margin-right: 8px;">이커머스</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 등록 이력 -->
+                <div class="form-group">
+                    <h4 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">등록 이력</h4>
+                    <div style="background: var(--bg-color); padding: 16px; border-radius: var(--radius-md);">
+                        <div style="margin-bottom: 8px;">
+                            <strong>등록일시:</strong> 2025-11-18 14:30
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>등록자:</strong> 홍길동
+                        </div>
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                            <strong>상태 변경 이력:</strong>
+                            <div style="margin-top: 8px; font-size: 13px;">
+                                <div>2025-11-18 14:30 - 등록 완료</div>
+                                <div>2025-11-19 09:15 - 검수중 → 활성</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 관련 템플릿 정보 -->
+                <div class="form-group">
+                    <h4 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">관련 템플릿</h4>
+                    <div style="background: var(--bg-color); padding: 16px; border-radius: var(--radius-md);">
+                        <div style="margin-bottom: 12px;">
+                            <strong>등록된 템플릿:</strong> <span id="detailTemplateCount">5개</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline" onclick="goToTemplateManage()">템플릿 관리</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="editBtn" onclick="editProfile()" style="display: none;">수정</button>
+                <button class="btn btn-danger" id="deleteBtn" onclick="deleteProfile()" style="display: none;">삭제</button>
+                <button class="btn btn-outline" onclick="closeModal('detailModal')">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 삭제 확인 모달 -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">발신프로필 삭제</h3>
+                <button class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>선택한 발신프로필을 삭제하시겠습니까?</p>
+                <div class="alert alert-warning" style="margin-top: 16px;">
+                    삭제된 발신프로필은 복구할 수 없습니다.<br>
+                    관련 템플릿이 있는 경우 삭제할 수 없습니다.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('deleteModal')">취소</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <script>// 공통 JavaScript 함수
+
+// 모달 열기/닫기
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.modal-overlay.active');
+        if (activeModal) {
+            activeModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+});
+
+// 모달 외부 클릭 시 닫기
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// 토스트 메시지
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 2000;
+        animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// CSS 애니메이션 추가
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// 드롭다운 메뉴 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    initDropdownMenus();
+});
+
+function initDropdownMenus() {
+    const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+    
+    navItems.forEach(item => {
+        const navLink = item.querySelector('.nav-link');
+        
+        if (navLink) {
+            navLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                navItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('open');
+                    }
+                });
+                
+                item.classList.toggle('open');
+            });
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-item.has-dropdown')) {
+            navItems.forEach(item => {
+                item.classList.remove('open');
+            });
+        }
+    });
+    
+    document.querySelectorAll('.nav-dropdown-item').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navItems.forEach(item => {
+                item.classList.remove('open');
+            });
+        });
+    });
+}
+
+</script>
+    <script>
+        // 발신프로필 검색
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                searchProfiles();
+            }
+        }
+
+        function searchProfiles() {
+            const searchTerm = document.getElementById('searchInput').value;
+            const status = document.getElementById('statusFilter').value;
+            // 실제로는 API 호출
+            showToast('검색 기능은 준비 중입니다.', 'info');
+        }
+
+        function filterProfiles() {
+            const status = document.getElementById('statusFilter').value;
+            // 실제로는 API 호출
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            // 실제로는 목록 새로고침
+        }
+
+        // 인증요청
+        function requestVerification() {
+            const profileId = document.getElementById('profileId').value.trim();
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const errorDiv = document.getElementById('phoneNumberError');
+            const helpDiv = document.getElementById('phoneNumberHelp');
+            
+            // 유효성 검증
+            if (!profileId) {
+                errorDiv.textContent = '발신프로필 ID를 먼저 입력해주세요.';
+                return;
+            }
+            
+            if (!phoneNumber) {
+                errorDiv.textContent = '휴대폰 번호를 입력해주세요.';
+                return;
+            }
+            
+            // 숫자만 허용
+            const phoneNumberOnly = phoneNumber.replace(/[^0-9]/g, '');
+            if (phoneNumberOnly.length < 10 || phoneNumberOnly.length > 11) {
+                errorDiv.textContent = '올바른 휴대폰 번호를 입력해주세요.';
+                return;
+            }
+            
+            // 실제로는 API 호출하여 발신프로필과 휴대폰 번호 일치 여부 확인
+            // 예시: 발신프로필과 휴대폰 번호가 일치하는지 확인
+            const isVerified = verifyPhoneNumber(profileId, phoneNumberOnly);
+            
+            if (isVerified) {
+                errorDiv.textContent = '';
+                helpDiv.innerHTML = '<span style="color: var(--success-color);">✓ 인증되었습니다</span>';
+                showToast('인증되었습니다.', 'success');
+            } else {
+                errorDiv.textContent = '발신프로필과 휴대폰 번호가 일치하지 않습니다.';
+                helpDiv.innerHTML = '카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.';
+            }
+        }
+        
+        // 휴대폰 번호 검증 (실제로는 API 호출)
+        function verifyPhoneNumber(profileId, phoneNumber) {
+            // 실제로는 API 호출하여 발신프로필과 휴대폰 번호 일치 여부 확인
+            // 예시: 간단한 검증 로직 (실제로는 서버에서 확인)
+            return true; // 임시로 항상 true 반환
+        }
+
+        // 발신프로필 등록
+        function registerProfile() {
+            const profileId = document.getElementById('profileId').value.trim();
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const category1 = document.getElementById('category1').value;
+            const category2 = document.getElementById('category2').value;
+            const category3 = document.getElementById('category3').value;
+
+            // 유효성 검증
+            if (!profileId) {
+                document.getElementById('profileIdError').textContent = '발신프로필 ID를 입력해주세요.';
+                return;
+            }
+
+            if (!profileId.startsWith('@')) {
+                document.getElementById('profileIdError').textContent = '발신프로필 ID는 @로 시작해야 합니다.';
+                return;
+            }
+
+            if (!/^@[a-zA-Z0-9_]+$/.test(profileId)) {
+                document.getElementById('profileIdError').textContent = '발신프로필 ID는 @, 영문, 숫자, 언더스코어만 허용됩니다.';
+                return;
+            }
+
+            if (!category1) {
+                showToast('카테고리를 최소 1개 이상 선택해주세요.', 'warning');
+                return;
+            }
+
+            // 카테고리 중복 체크
+            const categories = [category1, category2, category3].filter(c => c);
+            const uniqueCategories = [...new Set(categories)];
+            if (categories.length !== uniqueCategories.length) {
+                showToast('중복된 카테고리를 선택할 수 없습니다.', 'warning');
+                return;
+            }
+
+            // 실제로는 API 호출
+            showToast('발신프로필이 등록되었습니다.', 'success');
+            closeModal('registerModal');
+            
+            // 폼 초기화
+            document.getElementById('registerForm').reset();
+            document.getElementById('profileIdError').textContent = '';
+        }
+
+        // 발신프로필 상세보기
+        function viewProfileDetail(profileId) {
+            // 실제로는 API 호출하여 상세 정보 조회
+            // 예시 데이터
+            const profileData = {
+                id: profileId,
+                profileId: '@조도람',
+                channelName: '조도람',
+                status: 'ACTIVE',
+                brandMessage: 'Y',
+                registerDate: '2025-11-18',
+                phoneNumber: '01012345678',
+                categories: ['정보통신', '이커머스'],
+                templateCount: 5
+            };
+
+            // 상세 정보 표시
+            document.getElementById('detailProfileId').textContent = profileData.profileId;
+            document.getElementById('detailChannelName').textContent = profileData.channelName;
+            document.getElementById('detailRegisterDate').textContent = profileData.registerDate;
+            document.getElementById('detailStatus').innerHTML = '<span class="status-badge status-active">활성</span>';
+            document.getElementById('detailBrandMessage').textContent = profileData.brandMessage;
+            document.getElementById('detailPhoneNumber').textContent = profileData.phoneNumber || '등록된 정보가 없습니다.';
+            
+            // 카테고리 표시
+            const categoriesDiv = document.getElementById('detailCategories');
+            categoriesDiv.innerHTML = profileData.categories.map(cat => 
+                `<span class="badge badge-primary" style="margin-right: 8px;">${cat}</span>`
+            ).join('');
+
+            document.getElementById('detailTemplateCount').textContent = `${profileData.templateCount}개`;
+
+            // 상태에 따라 수정/삭제 버튼 표시
+            if (profileData.status === 'ACTIVE') {
+                document.getElementById('editBtn').style.display = 'inline-flex';
+            } else {
+                document.getElementById('editBtn').style.display = 'none';
+            }
+
+            if (profileData.templateCount === 0) {
+                document.getElementById('deleteBtn').style.display = 'inline-flex';
+            } else {
+                document.getElementById('deleteBtn').style.display = 'none';
+            }
+
+            openModal('detailModal');
+        }
+
+        // 발신프로필 수정
+        function editProfile() {
+            showToast('수정 기능은 준비 중입니다.', 'info');
+        }
+
+        // 발신프로필 삭제
+        function deleteProfile() {
+            openModal('deleteModal');
+        }
+
+        function confirmDelete() {
+            showToast('발신프로필이 삭제되었습니다.', 'success');
+            closeModal('deleteModal');
+            closeModal('detailModal');
+        }
+
+        // 템플릿 관리 페이지로 이동
+        function goToTemplateManage() {
+            window.location.href = 'template-alimtalk.html';
+        }
+
+        // 발신프로필 ID 입력 시 @ 자동 추가
+        document.getElementById('profileId')?.addEventListener('input', function(e) {
+            let value = e.target.value;
+            if (value && !value.startsWith('@')) {
+                e.target.value = '@' + value.replace('@', '');
+            }
+        });
+        
+        // 휴대폰 번호 입력 시 숫자만 허용
+        document.getElementById('phoneNumber')?.addEventListener('input', function(e) {
+            let value = e.target.value;
+            // 숫자만 허용
+            value = value.replace(/[^0-9]/g, '');
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
+

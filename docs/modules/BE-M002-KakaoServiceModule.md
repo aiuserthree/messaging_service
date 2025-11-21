@@ -11,14 +11,16 @@
 
 ### 1.2 모듈 목적 및 범위
 - **핵심 기능**: 
+  - 발신프로필 관리 (등록, 조회, 수정, 삭제, 상태 동기화)
   - 알림톡 발송 처리
-  - 브랜드톡 발송 처리
-  - 템플릿 존재 여부 확인
+  - 브랜드톡 발송 처리 (발송 시간 제한 검증)
+  - 템플릿 존재 여부 확인 (페이지 진입 시 최우선)
   - 카카오 API 연동
   - 변수 치환 처리
   - 대체 메시지 처리
   - 엑셀 업로드 데이터 처리
-- **비즈니스 가치**: 카카오톡 메시지 발송 기능 제공, 템플릿 검증 및 발송 처리
+  - 발송 시간 제한 검증 (브랜드톡: 평일 08:00~21:00)
+- **비즈니스 가치**: 카카오톡 메시지 발송 기능 제공, 템플릿 검증 및 발송 처리, 발신프로필 관리
 - **제외 범위**: 템플릿 관리 (BE-M003), 발송 결과 조회 (BE-M005)
 
 ### 1.3 목표 사용자
@@ -35,24 +37,31 @@
 KakaoServiceModule/
 ├── controllers/
 │   ├── kakao.controller.ts
-│   └── template-check.controller.ts
+│   ├── template-check.controller.ts
+│   └── profile.controller.ts
 ├── services/
 │   ├── kakao.service.ts
 │   ├── alimtalk.service.ts
 │   ├── brandtalk.service.ts
 │   ├── template-check.service.ts
-│   └── variable-replacer.service.ts
+│   ├── variable-replacer.service.ts
+│   ├── profile.service.ts
+│   └── send-time-validator.service.ts
 ├── clients/
 │   └── kakao-api.client.ts
 ├── entities/
 │   ├── kakao-message.entity.ts
-│   └── kakao-template.entity.ts
+│   ├── kakao-template.entity.ts
+│   └── kakao-profile.entity.ts
 ├── dto/
 │   ├── send-alimtalk.dto.ts
 │   ├── send-brandtalk.dto.ts
-│   └── template-check.dto.ts
+│   ├── template-check.dto.ts
+│   ├── profile-register.dto.ts
+│   └── profile-update.dto.ts
 ├── repositories/
-│   └── kakao-template.repository.ts
+│   ├── kakao-template.repository.ts
+│   └── kakao-profile.repository.ts
 ├── processors/
 │   ├── alimtalk.processor.ts
 │   └── brandtalk.processor.ts
@@ -104,23 +113,38 @@ interface ExternalDependencies {
 ```typescript
 export interface KakaoServiceInterface {
   services: {
+    ProfileService: {
+      getProfiles: (userId: string, filters?: ProfileFilters) => Promise<Profile[]>;
+      getProfile: (profileId: string, userId: string) => Promise<Profile>;
+      registerProfile: (request: ProfileRegisterRequest, userId: string) => Promise<Profile>;
+      updateProfile: (profileId: string, request: ProfileUpdateRequest, userId: string) => Promise<Profile>;
+      deleteProfile: (profileId: string, userId: string) => Promise<void>;
+      syncProfileStatus: (profileId: string) => Promise<void>;
+    };
+    
     TemplateCheckService: {
-      checkTemplate: (channelId: string, sendType: string) => Promise<TemplateCheckResult>;
+      checkTemplate: (channelId: string, sendType: string, userId: string) => Promise<TemplateCheckResult>;
     };
     
     AlimtalkService: {
-      sendAlimtalk: (request: SendAlimtalkRequest) => Promise<SendAlimtalkResponse>;
+      sendAlimtalk: (request: SendAlimtalkRequest, userId: string) => Promise<SendAlimtalkResponse>;
       validateAlimtalk: (request: SendAlimtalkRequest) => Promise<ValidationResult>;
     };
     
     BrandtalkService: {
-      sendBrandtalk: (request: SendBrandtalkRequest) => Promise<SendBrandtalkResponse>;
+      sendBrandtalk: (request: SendBrandtalkRequest, userId: string) => Promise<SendBrandtalkResponse>;
       validateBrandtalk: (request: SendBrandtalkRequest) => Promise<ValidationResult>;
     };
     
     VariableReplacerService: {
       replaceVariables: (content: string, variables: Record<string, string>) => string;
       validateVariables: (template: Template, variables: Record<string, string>) => ValidationResult;
+    };
+    
+    SendTimeValidatorService: {
+      validateSendTime: (date: Date, sendType: 'ALIMTALK' | 'BRANDTALK') => ValidationResult;
+      isWeekend: (date: Date) => boolean;
+      isHoliday: (date: Date) => boolean;
     };
   };
 }
@@ -130,6 +154,66 @@ export interface KakaoServiceInterface {
 ```typescript
 // REST API 엔드포인트
 interface KakaoAPIEndpoints {
+  'GET /api/v1/kakao/profiles': {
+    method: 'GET';
+    path: '/api/v1/kakao/profiles';
+    request: {
+      status?: 'REGISTERED' | 'PENDING' | 'ACTIVE' | 'SUSPENDED' | 'BLOCKED';
+      search?: string;
+    };
+    response: {
+      profiles: Profile[];
+      total: number;
+    };
+    errors: ['UNAUTHORIZED'];
+  };
+  
+  'POST /api/v1/kakao/profiles/verify-phone': {
+    method: 'POST';
+    path: '/api/v1/kakao/profiles/verify-phone';
+    request: {
+      profileId: string;
+      phoneNumber: string;
+    };
+    response: {
+      verified: boolean;
+      message: string;
+    };
+    errors: ['PROFILE_NOT_FOUND', 'PHONE_MISMATCH', 'INVALID_PHONE_NUMBER', 'UNAUTHORIZED'];
+  };
+  
+  'POST /api/v1/kakao/profiles': {
+    method: 'POST';
+    path: '/api/v1/kakao/profiles';
+    request: ProfileRegisterRequestDTO;
+    response: ProfileDTO;
+    errors: ['DUPLICATE_PROFILE', 'INVALID_PROFILE_ID', 'UNAUTHORIZED'];
+  };
+  
+  'GET /api/v1/kakao/profiles/:id': {
+    method: 'GET';
+    path: '/api/v1/kakao/profiles/:id';
+    request: {};
+    response: ProfileDTO;
+    errors: ['PROFILE_NOT_FOUND', 'UNAUTHORIZED'];
+  };
+  
+  'PUT /api/v1/kakao/profiles/:id': {
+    method: 'PUT';
+    path: '/api/v1/kakao/profiles/:id';
+    request: ProfileUpdateRequestDTO;
+    response: ProfileDTO;
+    errors: ['PROFILE_NOT_FOUND', 'UNAUTHORIZED', 'PROFILE_INACTIVE'];
+  };
+  
+  'DELETE /api/v1/kakao/profiles/:id': {
+    method: 'DELETE';
+    path: '/api/v1/kakao/profiles/:id';
+    request: {};
+    response: { success: boolean };
+    errors: ['PROFILE_NOT_FOUND', 'UNAUTHORIZED', 'HAS_TEMPLATES'];
+  };
+  
   'GET /api/v1/kakao/templates/check': {
     method: 'GET';
     path: '/api/v1/kakao/templates/check';
@@ -171,6 +255,9 @@ interface KakaoAPIEndpoints {
       'INVALID_TEMPLATE_TYPE',
       'INVALID_PHONE_NUMBER',
       'INSUFFICIENT_BALANCE',
+      'INVALID_SEND_TIME',
+      'WEEKEND_SEND_NOT_ALLOWED',
+      'HOLIDAY_SEND_NOT_ALLOWED',
       'UNAUTHORIZED',
     ];
   };
@@ -226,6 +313,26 @@ model KakaoMessageDetail {
   
   @@index([messageId])
   @@index([recipientNumber])
+  @@index([status])
+}
+
+model KakaoProfile {
+  id                String   @id @default(uuid())
+  userId            String
+  profileId         String   // @아이디 형태
+  channelName       String
+  status            String   // REGISTERED, PENDING, ACTIVE, SUSPENDED, BLOCKED
+  brandMessageEnabled Boolean @default(false)
+  phoneNumber       String?
+  categories        String[] // 최대 3개
+  registeredAt      DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  user              User     @relation(fields: [userId], references: [id])
+  templates         KakaoTemplate[]
+  
+  @@unique([userId, profileId])
+  @@index([userId])
   @@index([status])
 }
 ```
@@ -305,6 +412,36 @@ export class SendBrandtalkRequestDTO {
   @IsOptional()
   @IsDateString()
   scheduledAt?: string;
+}
+
+export class ProfileRegisterRequestDTO {
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/^@[a-zA-Z0-9_]+$/, { message: '발신프로필 ID는 @로 시작하고 영문/숫자/언더스코어만 허용됩니다' })
+  profileId: string;
+  
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
+  
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(3)
+  @IsString({ each: true })
+  categories: string[];
+}
+
+export class ProfileUpdateRequestDTO {
+  @IsOptional()
+  @IsString()
+  phoneNumber?: string;
+  
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(3)
+  @IsString({ each: true })
+  categories?: string[];
 }
 ```
 
@@ -520,6 +657,135 @@ export class AlimtalkService {
 }
 ```
 
+#### ProfileService
+```typescript
+@Injectable()
+export class ProfileService {
+  constructor(
+    private readonly profileRepository: KakaoProfileRepository,
+    private readonly kakaoAPIClient: KakaoAPIClient,
+  ) {}
+  
+  async getProfiles(
+    userId: string,
+    filters?: ProfileFilters
+  ): Promise<Profile[]> {
+    return this.profileRepository.findMany({
+      where: {
+        userId,
+        ...(filters?.status && { status: filters.status }),
+        ...(filters?.search && {
+          OR: [
+            { profileId: { contains: filters.search } },
+            { channelName: { contains: filters.search } },
+          ],
+        }),
+      },
+      orderBy: { registeredAt: 'desc' },
+    });
+  }
+  
+  async registerProfile(
+    request: ProfileRegisterRequestDTO,
+    userId: string
+  ): Promise<Profile> {
+    // 중복 체크
+    const existing = await this.profileRepository.findOne({
+      where: {
+        userId,
+        profileId: request.profileId,
+      },
+    });
+    
+    if (existing) {
+      throw new BadRequestException('이미 등록된 발신프로필입니다.');
+    }
+    
+    // 카카오 API로 채널 정보 확인
+    const channelInfo = await this.kakaoAPIClient.getChannelInfo(request.profileId);
+    
+    // 발신프로필 등록
+    const profile = await this.profileRepository.create({
+      userId,
+      profileId: request.profileId,
+      channelName: channelInfo.name,
+      status: 'REGISTERED',
+      phoneNumber: request.phoneNumber,
+      categories: request.categories,
+    });
+    
+    return profile;
+  }
+  
+  async syncProfileStatus(profileId: string): Promise<void> {
+    const profile = await this.profileRepository.findOne({ where: { id: profileId } });
+    if (!profile) {
+      throw new NotFoundException('발신프로필을 찾을 수 없습니다.');
+    }
+    
+    // 카카오 API로 상태 동기화
+    const channelStatus = await this.kakaoAPIClient.getChannelStatus(profile.profileId);
+    
+    await this.profileRepository.update({
+      where: { id: profileId },
+      data: { status: channelStatus },
+    });
+  }
+}
+```
+
+#### SendTimeValidatorService
+```typescript
+@Injectable()
+export class SendTimeValidatorService {
+  async validateSendTime(
+    date: Date,
+    sendType: 'ALIMTALK' | 'BRANDTALK'
+  ): Promise<ValidationResult> {
+    // 알림톡은 24시간 발송 가능
+    if (sendType === 'ALIMTALK') {
+      return { isValid: true, errors: [] };
+    }
+    
+    // 브랜드톡은 평일 08:00~21:00만 가능
+    const errors: string[] = [];
+    const day = date.getDay(); // 0: 일요일, 6: 토요일
+    const hour = date.getHours();
+    
+    // 주말 체크
+    if (day === 0 || day === 6) {
+      errors.push('주말에는 발송할 수 없습니다.');
+    }
+    
+    // 공휴일 체크
+    if (await this.isHoliday(date)) {
+      errors.push('공휴일에는 발송할 수 없습니다.');
+    }
+    
+    // 시간 체크 (08:00~21:00)
+    if (hour < 8 || hour >= 21) {
+      errors.push('평일 08:00~21:00에만 발송 가능합니다.');
+    }
+    
+    return {
+      isValid: errors.length === 0,
+      errors,
+    };
+  }
+  
+  isWeekend(date: Date): boolean {
+    const day = date.getDay();
+    return day === 0 || day === 6;
+  }
+  
+  async isHoliday(date: Date): Promise<boolean> {
+    // 공휴일 체크 로직 (공휴일 API 또는 정적 데이터 사용)
+    // TODO: 공휴일 API 연동
+    return false;
+  }
+}
+```
+
 #### BrandtalkService
 ```typescript
 @Injectable()
@@ -532,6 +798,7 @@ export class BrandtalkService {
     private readonly paymentService: PaymentService,
     private readonly addressBookService: AddressBookService,
     private readonly messageQueueService: MessageQueueService,
+    private readonly sendTimeValidatorService: SendTimeValidatorService,
   ) {}
   
   async sendBrandtalk(
@@ -545,7 +812,7 @@ export class BrandtalkService {
         channelId: request.channelId,
         userId,
         sendType: 'BRANDTALK',
-        status: 'ACTIVE', // 브랜드톡은 활성화된 템플릿만 사용
+        status: 'ACTIVE',
       },
     });
     
@@ -553,10 +820,24 @@ export class BrandtalkService {
       throw new BadRequestException('활성화된 템플릿을 찾을 수 없습니다.');
     }
     
-    // 2. 템플릿 검증 (브랜드톡은 승인 절차 없음)
+    // 2. 발송 시간 검증 (브랜드톡)
+    const sendDate = request.sendMode === 'SCHEDULED' 
+      ? new Date(request.scheduledAt!)
+      : new Date();
+    
+    const timeValidation = await this.sendTimeValidatorService.validateSendTime(
+      sendDate,
+      'BRANDTALK'
+    );
+    
+    if (!timeValidation.isValid) {
+      throw new BadRequestException(timeValidation.errors[0]);
+    }
+    
+    // 3. 템플릿 검증
     await this.validatorService.validateTemplate(template, 'BRANDTALK');
     
-    // 3. 변수 검증 (선택사항)
+    // 4. 변수 검증 (선택사항)
     if (request.variables && Object.keys(request.variables).length > 0) {
       const variableValidation = this.variableReplacerService.validateVariables(
         template,
@@ -568,7 +849,7 @@ export class BrandtalkService {
       }
     }
     
-    // 4. 수신번호 검증 및 필터링
+    // 5. 수신번호 검증 및 필터링
     const validRecipients = await this.validateAndFilterRecipients(
       request.recipientNumbers,
       userId
@@ -578,20 +859,20 @@ export class BrandtalkService {
       throw new BadRequestException('유효한 수신번호가 없습니다.');
     }
     
-    // 5. 비용 계산
+    // 6. 비용 계산
     const cost = await this.calculateCost({
       recipientCount: validRecipients.length,
       sendType: 'BRANDTALK',
       templateType: template.type,
     });
     
-    // 6. 잔액 확인
+    // 7. 잔액 확인
     const balance = await this.paymentService.getBalance(userId);
     if (balance < cost) {
       throw new BadRequestException('잔액이 부족합니다.');
     }
     
-    // 7. 발송 내역 생성
+    // 8. 발송 내역 생성
     const message = await this.messageRepository.create({
       userId,
       sendType: 'BRANDTALK',
@@ -604,7 +885,7 @@ export class BrandtalkService {
       status: request.sendMode === 'SCHEDULED' ? 'PENDING' : 'PROCESSING',
     });
     
-    // 8. 발송 상세 내역 생성
+    // 9. 발송 상세 내역 생성
     await this.messageRepository.createDetails(
       message.id,
       validRecipients.map(recipient => ({
@@ -614,7 +895,7 @@ export class BrandtalkService {
       }))
     );
     
-    // 9. 즉시 발송 또는 예약 발송
+    // 10. 즉시 발송 또는 예약 발송
     if (request.sendMode === 'IMMEDIATE') {
       // 큐에 추가
       await this.messageQueueService.enqueueMessage({
@@ -769,6 +1050,13 @@ enum KakaoServiceErrorCode {
   CHANNEL_NOT_FOUND = 'KKO_SVC_007',
   INVALID_TEMPLATE_TYPE = 'KKO_SVC_008',
   KAKAO_API_ERROR = 'KKO_SVC_009',
+  DUPLICATE_PROFILE = 'KKO_SVC_010',
+  INVALID_PROFILE_ID = 'KKO_SVC_011',
+  PROFILE_NOT_FOUND = 'KKO_SVC_012',
+  HAS_TEMPLATES = 'KKO_SVC_013',
+  INVALID_SEND_TIME = 'KKO_SVC_014',
+  WEEKEND_SEND_NOT_ALLOWED = 'KKO_SVC_015',
+  HOLIDAY_SEND_NOT_ALLOWED = 'KKO_SVC_016',
 }
 ```
 
