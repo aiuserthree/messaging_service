@@ -1006,6 +1006,39 @@ body {
                 </div>
             </div>
 
+            <!-- 발신번호별 잔액 -->
+            <div class="card" style="margin-bottom: 24px;">
+                <h3 class="card-title" style="margin-bottom: 16px;">발신번호별 잔여포인트</h3>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>발신번호</th>
+                                <th>명의자</th>
+                                <th>잔여포인트</th>
+                            </tr>
+                        </thead>
+                        <tbody id="callerNumberBalanceBody">
+                            <tr>
+                                <td>010-1234-5678</td>
+                                <td>홍길동</td>
+                                <td style="font-weight: 600; color: var(--primary-color);">300,000원</td>
+                            </tr>
+                            <tr>
+                                <td>010-2345-6789</td>
+                                <td>김철수</td>
+                                <td style="font-weight: 600; color: var(--primary-color);">500,000원</td>
+                            </tr>
+                            <tr>
+                                <td>010-3456-7890</td>
+                                <td>이영희</td>
+                                <td style="font-weight: 600; color: var(--primary-color);">200,000원</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- 조회 기간 -->
             <div class="card">
                 <div class="search-filter-section">
@@ -1047,6 +1080,7 @@ body {
                                     <th>충전금액</th>
                                     <th>충전방법</th>
                                     <th>충전상태</th>
+                                    <th>발신번호별 분배</th>
                                     <th>비고</th>
                                     <th>관리</th>
                                 </tr>
@@ -1057,6 +1091,9 @@ body {
                                     <td>100,000원</td>
                                     <td>신용카드</td>
                                     <td><span class="status-badge status-completed">충전완료</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="viewDistribution(1)">분배 내역 보기</button>
+                                    </td>
                                     <td>-</td>
                                     <td><button class="btn btn-sm btn-outline" onclick="viewReceipt(1)">영수증</button></td>
                                 </tr>
@@ -1065,6 +1102,7 @@ body {
                                     <td>500,000원</td>
                                     <td>무통장입금</td>
                                     <td><span class="status-badge status-waiting">입금대기</span></td>
+                                    <td>-</td>
                                     <td>입금 확인 중</td>
                                     <td>-</td>
                                 </tr>
@@ -1092,9 +1130,11 @@ body {
                                     <th>날짜</th>
                                     <th>제목</th>
                                     <th>내용</th>
+                                    <th>발신번호</th>
                                     <th>서비스</th>
                                     <th>사용금액</th>
-                                    <th>잔액</th>
+                                    <th>발신번호별 잔액</th>
+                                    <th>전체 잔액</th>
                                     <th>관리</th>
                                 </tr>
                             </thead>
@@ -1103,8 +1143,10 @@ body {
                                     <td>2024-11-19 15:30</td>
                                     <td>SMS 발송</td>
                                     <td>이벤트 안내 메시지입니다...</td>
+                                    <td>010-1234-5678</td>
                                     <td>SMS</td>
                                     <td style="color: var(--danger-color);">-20,000원</td>
+                                    <td style="font-weight: 600;">280,000원</td>
                                     <td>980,000원</td>
                                     <td><button class="btn btn-sm btn-outline" onclick="viewDetail(1)">상세보기</button></td>
                                 </tr>
@@ -1112,8 +1154,10 @@ body {
                                     <td>2024-11-18 11:20</td>
                                     <td>알림톡 발송</td>
                                     <td>주문 확인 알림</td>
+                                    <td>010-2345-6789</td>
                                     <td>알림톡</td>
                                     <td style="color: var(--danger-color);">-50,000원</td>
+                                    <td style="font-weight: 600;">450,000원</td>
                                     <td>1,000,000원</td>
                                     <td><button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button></td>
                                 </tr>
@@ -1554,8 +1598,21 @@ function initDropdownMenus() {
             showToast('환불 요청 페이지로 이동합니다.', 'info');
         }
 
+        function viewDistribution(paymentId) {
+            // 발신번호별 분배 내역 팝업 표시
+            showToast('발신번호별 분배 내역을 확인합니다.', 'info');
+            // 실제로는 모달 팝업으로 분배 내역 표시
+        }
+
+        // 발신번호별 잔액 조회
+        function loadCallerNumberBalances() {
+            // 실제로는 API 호출
+            // 예시 데이터는 이미 HTML에 포함됨
+        }
+
         // 초기화
         setPeriod('month');
+        loadCallerNumberBalances();
     </script>
 </body>
 </html>
