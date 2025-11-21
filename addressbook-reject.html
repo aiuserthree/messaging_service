@@ -1005,17 +1005,13 @@ body {
                         <button class="btn btn-primary" onclick="openModal('addRejectModal')">수신거부 추가</button>
                         <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="btn btn-outline btn-sm" onclick="deleteSelected()">선택 삭제</button>
-                        <button class="btn btn-outline btn-sm">엑셀 다운로드</button>
-                    </div>
                 </div>
 
                 <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="width: 50px;"><input type="checkbox" onclick="toggleAll(this)"></th>
+                                <th style="width: 50px;"><input type="checkbox" id="selectAll" onclick="toggleAll(this)"></th>
                                 <th>전화번호</th>
                                 <th>등록일</th>
                                 <th>등록 경로</th>
@@ -1025,7 +1021,7 @@ body {
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
                                 <td>010-1234-5678</td>
                                 <td>2024-01-15 14:30</td>
                                 <td>수동 등록</td>
@@ -1035,7 +1031,7 @@ body {
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
                                 <td>010-2345-6789</td>
                                 <td>2024-01-14 10:20</td>
                                 <td>080 수신거부</td>
@@ -1046,6 +1042,12 @@ body {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- 선택 삭제, 엑셀 다운로드 버튼 (표 하단) -->
+                <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px;">
+                    <button class="btn btn-outline btn-sm" id="selectDeleteBtn" onclick="deleteSelected()" disabled>선택 삭제</button>
+                    <button class="btn btn-outline btn-sm" onclick="downloadExcel()">엑셀 다운로드</button>
                 </div>
 
                 <!-- 페이지네이션 -->
@@ -1465,19 +1467,79 @@ function initDropdownMenus() {
         }
 
         function confirmDelete() {
-            showToast('수신거부 번호가 삭제되었습니다.', 'success');
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            const count = checkedBoxes.length;
+            
+            if (count > 0) {
+                // 선택된 항목 삭제
+                showToast(`${count}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+                
+                // 체크박스 해제
+                checkedBoxes.forEach(cb => {
+                    cb.checked = false;
+                });
+                document.getElementById('selectAll').checked = false;
+                document.getElementById('selectDeleteBtn').disabled = true;
+            } else {
+                showToast('수신거부 번호가 삭제되었습니다.', 'success');
+            }
+            
             closeModal('deleteModal');
         }
 
         function deleteSelected() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                showToast('삭제할 항목을 선택해주세요.', 'warning');
+                return;
+            }
             openModal('deleteModal');
         }
 
         function toggleAll(checkbox) {
-            document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            rowCheckboxes.forEach(cb => {
                 cb.checked = checkbox.checked;
             });
+            updateSelectDeleteButton();
         }
+
+        function downloadExcel() {
+            showToast('엑셀 다운로드가 시작됩니다.', 'info');
+            // 실제로는 엑셀 다운로드 API 호출
+        }
+
+        // 선택 삭제 버튼 활성화/비활성화
+        function updateSelectDeleteButton() {
+            const selectDeleteBtn = document.getElementById('selectDeleteBtn');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            const hasChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+            if (selectDeleteBtn) {
+                selectDeleteBtn.disabled = !hasChecked;
+            }
+        }
+
+        // 개별 체크박스 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', function() {
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            const selectAllCheckbox = document.getElementById('selectAll');
+
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectDeleteButton();
+                    updateSelectAllCheckbox();
+                });
+            });
+
+            function updateSelectAllCheckbox() {
+                if (selectAllCheckbox) {
+                    const allChecked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
+                    const someChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                }
+            }
+        });
 
         function downloadSample() {
             showToast('샘플 파일 다운로드가 시작됩니다.', 'info');

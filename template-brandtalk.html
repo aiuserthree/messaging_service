@@ -1082,16 +1082,13 @@ body {
                     <div>
                         <a href="template-brandtalk-register.html" class="btn btn-primary">브랜드 메시지 등록</a>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="btn btn-outline btn-sm">일괄 삭제</button>
-                    </div>
                 </div>
 
                 <div class="table-container">
                     <table class="template-table">
                         <thead>
                             <tr>
-                                <th style="width: 50px;"><input type="checkbox"></th>
+                                <th style="width: 50px;"><input type="checkbox" id="selectAll"></th>
                                 <th>템플릿명</th>
                                 <th>템플릿 코드</th>
                                 <th>채널</th>
@@ -1104,7 +1101,7 @@ body {
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
                                 <td>이벤트 안내</td>
                                 <td>BT001</td>
                                 <td>마케팅팀</td>
@@ -1122,7 +1119,7 @@ body {
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
                                 <td>프로모션</td>
                                 <td>BT002</td>
                                 <td>마케팅팀</td>
@@ -1140,7 +1137,7 @@ body {
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="3"></td>
                                 <td>상품 소개</td>
                                 <td>BT003</td>
                                 <td>마케팅팀</td>
@@ -1159,6 +1156,11 @@ body {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- 선택 삭제 버튼 (표 하단) -->
+                <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+                    <button class="btn btn-outline btn-sm" id="batchDeleteBtn" onclick="batchDelete()" disabled>선택 삭제</button>
                 </div>
 
                 <!-- 페이지네이션 -->
@@ -1566,6 +1568,73 @@ function initDropdownMenus() {
         function useTemplate() {
             closeModal('previewModal');
             window.location.href = 'kakao-send-brandtalk.html';
+        }
+
+        // 전체 선택/해제 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            const batchDeleteBtn = document.getElementById('batchDeleteBtn');
+
+            // 전체 선택 체크박스 이벤트
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateBatchDeleteButton();
+                });
+            }
+
+            // 개별 체크박스 이벤트
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectAllCheckbox();
+                    updateBatchDeleteButton();
+                });
+            });
+
+            // 전체 선택 체크박스 상태 업데이트
+            function updateSelectAllCheckbox() {
+                if (selectAllCheckbox) {
+                    const allChecked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
+                    const someChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                }
+            }
+
+            // 선택 삭제 버튼 활성화/비활성화
+            function updateBatchDeleteButton() {
+                if (batchDeleteBtn) {
+                    const hasChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+                    batchDeleteBtn.disabled = !hasChecked;
+                }
+            }
+        });
+
+        // 선택 삭제 함수
+        function batchDelete() {
+            const checkedBoxes = document.querySelectorAll('.row-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                showToast('삭제할 템플릿을 선택해주세요.', 'warning');
+                return;
+            }
+
+            const selectedIds = Array.from(checkedBoxes).map(cb => cb.getAttribute('data-id'));
+            const count = selectedIds.length;
+
+            if (confirm(`선택한 ${count}개의 템플릿을 삭제하시겠습니까?`)) {
+                // 실제로는 API 호출로 삭제 처리
+                showToast(`${count}개의 템플릿이 삭제되었습니다.`, 'success');
+                
+                // 체크박스 해제
+                checkedBoxes.forEach(cb => {
+                    cb.checked = false;
+                });
+                document.getElementById('selectAll').checked = false;
+                document.getElementById('batchDeleteBtn').disabled = true;
+            }
         }
 
         // 페이지네이션 생성

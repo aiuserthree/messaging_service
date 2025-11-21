@@ -1021,20 +1021,11 @@ body {
 
             <!-- 예약내역 목록 -->
             <div class="card">
-                <div class="template-actions">
-                    <div>
-                        <button class="btn btn-outline btn-sm" onclick="cancelSelected()">선택 취소</button>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="btn btn-outline btn-sm">엑셀 다운로드</button>
-                    </div>
-                </div>
-
                 <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="width: 50px;"><input type="checkbox"></th>
+                                <th style="width: 50px;"><input type="checkbox" id="selectAll"></th>
                                 <th>등록일</th>
                                 <th>발송 예정일</th>
                                 <th>제목/내용</th>
@@ -1047,7 +1038,7 @@ body {
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
                                 <td>2024-11-19 14:30</td>
                                 <td>2024-11-20 09:00</td>
                                 <td style="cursor: pointer;" onclick="viewDetail(1)">이벤트 안내 메시지입니다...</td>
@@ -1064,7 +1055,7 @@ body {
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
                                 <td>2024-11-18 10:20</td>
                                 <td>2024-11-19 15:00</td>
                                 <td style="cursor: pointer;" onclick="viewDetail(2)">신제품 출시 안내</td>
@@ -1079,7 +1070,7 @@ body {
                                 </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox" class="row-checkbox" data-id="3"></td>
                                 <td>2024-11-17 16:45</td>
                                 <td>2024-11-18 10:00</td>
                                 <td style="cursor: pointer;" onclick="viewDetail(3)">배송 안내 메시지</td>
@@ -1095,6 +1086,11 @@ body {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- 엑셀 다운로드 버튼 (표 하단) -->
+                <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px;">
+                    <button class="btn btn-outline btn-sm" onclick="downloadExcel()">엑셀 다운로드</button>
                 </div>
 
                 <!-- 페이지네이션 -->
@@ -1530,14 +1526,47 @@ function initDropdownMenus() {
             closeModal('cancelModal');
         }
 
-        function cancelSelected() {
-            openModal('cancelModal');
+        function downloadExcel() {
+            showToast('엑셀 다운로드가 시작됩니다.', 'info');
+            // 실제로는 엑셀 다운로드 API 호출
         }
 
         function copyAndSend() {
             showToast('발송 페이지로 이동합니다.', 'info');
             window.location.href = 'message-send-general.html';
         }
+
+        // 전체 선택/해제 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+
+            // 전체 선택 체크박스 이벤트
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    rowCheckboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+
+            // 개별 체크박스 이벤트
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectAllCheckbox();
+                });
+            });
+
+            // 전체 선택 체크박스 상태 업데이트
+            function updateSelectAllCheckbox() {
+                if (selectAllCheckbox) {
+                    const allChecked = rowCheckboxes.length > 0 && Array.from(rowCheckboxes).every(cb => cb.checked);
+                    const someChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                }
+            }
+        });
 
         // 페이지네이션 생성
         createPagination(1, 5, 'pagination');
