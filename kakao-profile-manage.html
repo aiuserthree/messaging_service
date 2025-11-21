@@ -848,9 +848,9 @@ body {
 
                     <!-- 담당자 휴대폰 번호 -->
                     <div class="form-group">
-                        <label class="form-label">담당자 휴대폰 번호</label>
+                        <label class="form-label required">담당자 휴대폰 번호</label>
                         <div style="display: flex; gap: 8px;">
-                            <input type="text" class="form-input" id="phoneNumber" placeholder="- 없이 숫자만 입력해주세요" style="flex: 1;">
+                            <input type="text" class="form-input" id="phoneNumber" placeholder="- 없이 숫자만 입력해주세요" style="flex: 1;" required>
                             <button type="button" class="btn btn-primary" onclick="requestVerification()">인증요청</button>
                         </div>
                         <div class="form-help" id="phoneNumberHelp" style="margin-top: 8px;">
@@ -1198,6 +1198,9 @@ function initDropdownMenus() {
             // 실제로는 목록 새로고침
         }
 
+        // 인증 상태 추적 변수
+        let isPhoneVerified = false;
+
         // 인증요청
         function requestVerification() {
             const profileId = document.getElementById('profileId').value.trim();
@@ -1208,11 +1211,13 @@ function initDropdownMenus() {
             // 유효성 검증
             if (!profileId) {
                 errorDiv.textContent = '발신프로필 ID를 먼저 입력해주세요.';
+                isPhoneVerified = false;
                 return;
             }
             
             if (!phoneNumber) {
                 errorDiv.textContent = '휴대폰 번호를 입력해주세요.';
+                isPhoneVerified = false;
                 return;
             }
             
@@ -1220,6 +1225,7 @@ function initDropdownMenus() {
             const phoneNumberOnly = phoneNumber.replace(/[^0-9]/g, '');
             if (phoneNumberOnly.length < 10 || phoneNumberOnly.length > 11) {
                 errorDiv.textContent = '올바른 휴대폰 번호를 입력해주세요.';
+                isPhoneVerified = false;
                 return;
             }
             
@@ -1230,10 +1236,12 @@ function initDropdownMenus() {
             if (isVerified) {
                 errorDiv.textContent = '';
                 helpDiv.innerHTML = '<span style="color: var(--success-color);">✓ 인증되었습니다</span>';
+                isPhoneVerified = true;
                 showToast('인증되었습니다.', 'success');
             } else {
                 errorDiv.textContent = '발신프로필과 휴대폰 번호가 일치하지 않습니다.';
                 helpDiv.innerHTML = '카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.';
+                isPhoneVerified = false;
             }
         }
         
@@ -1268,6 +1276,27 @@ function initDropdownMenus() {
                 return;
             }
 
+            // 담당자 휴대폰 번호 필수 검증
+            if (!phoneNumber) {
+                document.getElementById('phoneNumberError').textContent = '담당자 휴대폰 번호를 입력해주세요.';
+                return;
+            }
+
+            // 휴대폰 번호 형식 검증
+            const phoneNumberOnly = phoneNumber.replace(/[^0-9]/g, '');
+            if (phoneNumberOnly.length < 10 || phoneNumberOnly.length > 11) {
+                document.getElementById('phoneNumberError').textContent = '올바른 휴대폰 번호를 입력해주세요. (10~11자리 숫자)';
+                return;
+            }
+
+            // 담당자 휴대폰 번호 인증 여부 확인
+            const helpDiv = document.getElementById('phoneNumberHelp');
+            const isVerified = helpDiv.innerHTML.includes('인증되었습니다');
+            if (!isVerified) {
+                alert('담당자 휴대폰 번호 인증을 완료해주세요.');
+                return;
+            }
+
             if (!category1) {
                 showToast('카테고리를 최소 1개 이상 선택해주세요.', 'warning');
                 return;
@@ -1288,6 +1317,9 @@ function initDropdownMenus() {
             // 폼 초기화
             document.getElementById('registerForm').reset();
             document.getElementById('profileIdError').textContent = '';
+            document.getElementById('phoneNumberError').textContent = '';
+            document.getElementById('phoneNumberHelp').innerHTML = '카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.';
+            isPhoneVerified = false;
         }
 
         // 발신프로필 상세보기
@@ -1359,20 +1391,40 @@ function initDropdownMenus() {
             window.location.href = 'template-alimtalk.html';
         }
 
-        // 발신프로필 ID 입력 시 @ 자동 추가
+        // 발신프로필 ID 입력 시 @ 자동 추가 및 에러 메시지 제거, 인증 상태 초기화
         document.getElementById('profileId')?.addEventListener('input', function(e) {
             let value = e.target.value;
             if (value && !value.startsWith('@')) {
                 e.target.value = '@' + value.replace('@', '');
             }
+            // 입력 시 에러 메시지 제거
+            if (value) {
+                document.getElementById('profileIdError').textContent = '';
+                // 발신프로필 ID가 변경되면 인증 상태 초기화
+                isPhoneVerified = false;
+                const helpDiv = document.getElementById('phoneNumberHelp');
+                if (helpDiv && helpDiv.innerHTML.includes('인증되었습니다')) {
+                    helpDiv.innerHTML = '카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.';
+                }
+            }
         });
         
-        // 휴대폰 번호 입력 시 숫자만 허용
+        // 휴대폰 번호 입력 시 숫자만 허용 및 에러 메시지 제거, 인증 상태 초기화
         document.getElementById('phoneNumber')?.addEventListener('input', function(e) {
             let value = e.target.value;
             // 숫자만 허용
             value = value.replace(/[^0-9]/g, '');
             e.target.value = value;
+            // 입력 시 에러 메시지 제거 및 인증 상태 초기화
+            if (value) {
+                document.getElementById('phoneNumberError').textContent = '';
+                // 입력값이 변경되면 인증 상태 초기화
+                isPhoneVerified = false;
+                const helpDiv = document.getElementById('phoneNumberHelp');
+                if (helpDiv.innerHTML.includes('인증되었습니다')) {
+                    helpDiv.innerHTML = '카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.';
+                }
+            }
         });
     </script>
 </body>
