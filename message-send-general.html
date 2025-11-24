@@ -999,6 +999,7 @@ body {
             }
         }
     </style>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -1098,8 +1099,8 @@ body {
                             <label class="form-label required">발신번호</label>
                             <select class="form-select" id="callerNumber" required>
                                 <option value="">발신번호를 선택하세요</option>
-                                <option value="010-1234-5678">010-1234-5678 (마케팅팀)</option>
-                                <option value="02-1234-5678">02-1234-5678 (고객센터)</option>
+                                <option value="010-1234-5678">010-1234-5678</option>
+                                <option value="02-1234-5678">02-1234-5678</option>
                             </select>
                             <a href="mypage-caller-number.html" class="form-help">새 발신번호 등록하기</a>
                         </div>
@@ -1137,7 +1138,9 @@ body {
                             
                             <div id="excel" class="tab-content">
                                 <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
-                                <a href="#" class="form-help">샘플 파일 다운로드</a>
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <a href="#" onclick="downloadSampleFile(); return false;">엑셀 샘플파일 다운로드</a>
+                                </div>
                             </div>
                         </div>
 
@@ -1321,7 +1324,7 @@ body {
                         <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
                     </div>
                     <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
-                    <a href="#" class="form-help">샘플 파일 다운로드</a>
+                    <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1939,6 +1942,30 @@ function initDropdownMenus() {
             if (name) {
                 showToast('템플릿으로 저장되었습니다.', 'success');
             }
+        }
+
+        // 샘플 파일 다운로드 (주소록 관리와 동일)
+        function downloadSampleFile() {
+            const sampleData = [
+                ['이름', '전화번호', '그룹', '메모'],
+                ['홍길동', '010-1234-5678', 'VIP 고객', ''],
+                ['김철수', '010-9876-5432', '일반 고객', '']
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            ws['!cols'] = [
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 30 }
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
         }
 
         // 초기화

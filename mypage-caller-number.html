@@ -1804,7 +1804,7 @@ function initDropdownMenus() {
                             <input type="radio" name="ownershipType" value="other_company" onchange="selectOwnershipType('other_company')">
                             <div>
                                 <strong>타사 명의</strong>
-                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">타사(다른 기업) 명의 발신번호를 등록합니다. 위임장 및 위임하는 업체의 사업자등록증이 필요합니다</p>
+                                <p style="font-size: 12px; color: var(--text-secondary); margin: 4px 0 0 0;">타사(다른 기업) 명의 발신번호를 등록합니다. 위임장, 위임하는 업체의 사업자등록증 및 수임하는 업체의 사업자등록증이 필요합니다</p>
                             </div>
                         </label>
                     </div>
@@ -2038,6 +2038,19 @@ function initDropdownMenus() {
                                 * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
                             </div>
                             <div id="delegatorBusinessFileDisplay"></div>
+                            
+                            <label class="form-label required" style="margin-top: 20px;">수임하는 업체의 사업자등록증</label>
+                            <div class="file-upload-area" onclick="document.getElementById('delegateeBusinessFile').click()">
+                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                <input type="file" id="delegateeBusinessFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'delegateeBusinessFile', ${maxSize})">
+                            </div>
+                            <div class="form-help">
+                                발신번호를 수임하는 기업(자사)의 사업자등록증을 제출해 주세요<br>
+                                국세청 홈택스에서 발급 가능합니다<br>
+                                법인명과 사업자등록번호가 명확히 표시되어야 합니다<br>
+                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                            </div>
+                            <div id="delegateeBusinessFileDisplay"></div>
                         </div>
                     `;
                 }

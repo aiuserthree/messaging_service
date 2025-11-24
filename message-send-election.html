@@ -884,6 +884,31 @@ body {
             grid-template-columns: 1fr 400px;
             gap: 24px;
         }
+        .preview-section {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        .preview-phone {
+            background: #f5f5f5;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .preview-phone-header {
+            background: #333;
+            color: white;
+            padding: 12px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+            font-size: 12px;
+        }
+        .preview-phone-body {
+            background: white;
+            padding: 16px;
+            border-radius: 0 0 12px 12px;
+            min-height: 200px;
+        }
         .legal-notice {
             background: #f8d7da;
             border: 2px solid #dc3545;
@@ -942,8 +967,12 @@ body {
             .send-form-container {
                 grid-template-columns: 1fr;
             }
+            .preview-section {
+                position: static;
+            }
         }
     </style>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -1037,7 +1066,6 @@ body {
                     <li>후보자 비방 금지 (제251조) - 3년 이하 징역 또는 600만원 이하 벌금</li>
                     <li>발송 가능 시간: 오전 7시 ~ 오후 11시 (선거운동 기간 내)</li>
                     <li>투표일 당일 발송 불가</li>
-                    <li>선거관리위원회 신고번호 필수</li>
                 </ul>
             </div>
 
@@ -1079,55 +1107,63 @@ body {
                             <label class="form-label required">발신번호</label>
                             <select class="form-select" id="senderNumber" required onchange="updateCandidateInfo()">
                                 <option value="">발신번호를 선택하세요</option>
-                                <option value="010-1234-5678" data-candidate="홍길동 후보" data-party="">010-1234-5678 (홍길동 후보)</option>
-                                <option value="02-1234-5678" data-candidate="" data-party="○○당">02-1234-5678 (○○당)</option>
+                                <option value="010-1234-5678" data-candidate="홍길동 후보" data-party="">010-1234-5678</option>
+                                <option value="02-1234-5678" data-candidate="" data-party="○○당">02-1234-5678</option>
                             </select>
-                            <div class="form-help">후보자/정당으로 등록된 발신번호만 선택 가능합니다</div>
+                            <a href="mypage-caller-number.html" class="form-help">새 발신번호 등록하기</a>
                         </div>
 
-                        <!-- 후보자/정당 정보 -->
-                        <div class="form-group" id="candidateInfoGroup" style="display: none;">
-                            <label class="form-label">후보자/정당 정보</label>
-                            <div id="candidateInfo" style="background: var(--bg-color); padding: 12px; border-radius: var(--radius-md);">
-                                <div>후보자명/정당명: <strong id="candidateName">-</strong></div>
-                                <div style="margin-top: 4px;">선거구: 서울 강남구 갑</div>
-                            </div>
-                        </div>
-
-                        <!-- 선거관리위원회 신고번호 -->
+                        <!-- 후보자/정당 정보 입력 -->
                         <div class="form-group">
-                            <label class="form-label required">선거관리위원회 신고번호</label>
-                            <input type="text" class="form-input" placeholder="신고번호를 입력하세요" required>
-                            <div class="form-help">선거관리위원회에 신고한 문자 발송 신고번호를 입력하세요</div>
+                            <label class="form-label required">후보자명/정당명</label>
+                            <input type="text" class="form-input" id="candidateNameInput" placeholder="후보자명/정당명" required oninput="updateCandidateNamePreview()">
+                            <div class="form-help">[선거] 옆에 표시될 후보자명 또는 정당명을 입력하세요</div>
+                        </div>
+
+                        <!-- 080 수신거부 번호 입력 -->
+                        <div class="form-group">
+                            <label class="form-label required">080 수신거부 번호</label>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-weight: 600;">080-</span>
+                                <input type="text" class="form-input" id="rejectNumberInput" placeholder="123-4567" maxlength="8" style="flex: 1;" oninput="updateRejectNumberPreview()" required>
+                            </div>
+                            <div class="form-help">수신거부 번호를 입력하세요 (예: 123-4567)</div>
                         </div>
 
                         <!-- 수신번호 설정 -->
                         <div class="form-group">
                             <label class="form-label required">수신번호</label>
                             <div class="tabs">
-                                <button type="button" class="tab-btn active" onclick="switchTab('direct')">직접입력</button>
-                                <button type="button" class="tab-btn" onclick="switchTab('addressbook')">주소록</button>
-                                <button type="button" class="tab-btn" onclick="switchTab('excel')">엑셀 업로드</button>
+                                <div class="tab-list">
+                                    <button type="button" class="tab-item active" data-tab="direct">직접입력</button>
+                                    <button type="button" class="tab-item" data-tab="addressbook">주소록</button>
+                                    <button type="button" class="tab-item" data-tab="excel">엑셀 업로드</button>
+                                </div>
                             </div>
                             
-                            <div id="directTab" class="tab-content" style="display: block;">
-                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요" oninput="updateRecipientCount()"></textarea>
+                            <div id="direct" class="tab-content active">
+                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)&#10;예: 010-1234-5678, 010-9876-5432" oninput="updateRecipientCount()"></textarea>
+                                <div style="margin-top: 12px;">
+                                    <span id="recipientCount">0</span>명
+                                    <div style="margin-top: 8px; font-size: 13px; color: var(--text-secondary);">
+                                        1일 발송 한도: 10,000건 | 금일 발송: 234건 | 잔여: 9,766건
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div id="addressbookTab" class="tab-content" style="display: none;">
-                                <select class="form-select" multiple style="height: 150px;">
-                                    <option>유권자 목록 (5,234명)</option>
-                                </select>
+                            <div id="addressbook" class="tab-content">
+                                <div class="form-group">
+                                    <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
+                                        <option value="group1">유권자 목록 (5,234명)</option>
+                                    </select>
+                                    <a href="addressbook.html" class="form-help">주소록 관리</a>
+                                </div>
                             </div>
                             
-                            <div id="excelTab" class="tab-content" style="display: none;">
+                            <div id="excel" class="tab-content">
                                 <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
-                            </div>
-                            
-                            <div style="margin-top: 12px;">
-                                <span id="recipientCount">0</span>명
-                                <div style="margin-top: 8px; font-size: 13px; color: var(--text-secondary;">
-                                    1일 발송 한도: 10,000건 | 금일 발송: 234건 | 잔여: 9,766건
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <a href="#" onclick="downloadSampleFile(); return false;">엑셀 샘플파일 다운로드</a>
                                 </div>
                             </div>
                         </div>
@@ -1139,14 +1175,8 @@ body {
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{유권자명}')">#{유권자명}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{선거구}')">#{선거구}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{투표일}')">#{투표일}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateModal')">템플릿 선택</button>
                             </div>
-                            <div style="background: var(--bg-color); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 13px;">
-                                <div>[선거]<strong id="candidateNamePreview">후보자명/정당명</strong></div>
-                                <div id="messageContentPreview">메시지 내용을 입력하세요</div>
-                                <div style="margin-top: 4px; color: var(--text-secondary);">수신거부 080-XXX-XXXX</div>
-                            </div>
-                            <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="checkForbiddenWords()"></textarea>
+                            <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="checkForbiddenWords(); updatePreview();"></textarea>
                             <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
                             <div class="forbidden-word-warning" id="forbiddenWordWarning">
                                 <strong>⚠️ 금지어가 검출되었습니다</strong>
@@ -1235,9 +1265,9 @@ body {
                             </div>
                             <div class="preview-phone-body">
                                 <div id="previewMessage" style="white-space: pre-wrap; line-height: 1.6;">
-                                    [선거]후보자명/정당명
+                                    <span style="color: var(--primary-color); font-weight: 600;">[선거]</span>후보자명/정당명
                                     메시지 내용을 입력하세요
-                                    수신거부 080-XXX-XXXX
+                                    <div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">수신거부 080-</div>
                                 </div>
                             </div>
                         </div>
@@ -1271,10 +1301,6 @@ body {
                                 <th>발송 시간</th>
                                 <td id="confirmSendTime">-</td>
                             </tr>
-                            <tr>
-                                <th>신고번호</th>
-                                <td id="confirmReportNumber">-</td>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -1288,10 +1314,6 @@ body {
                         <input type="checkbox" id="legalConfirm2" required>
                         <span>수신자가 선거구 내 유권자이거나 선거운동 목적의 발송임을 확인합니다</span>
                     </label>
-                    <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
-                        <input type="checkbox" id="legalConfirm3" required>
-                        <span>선거관리위원회에 문자메시지 발송을 신고하였거나 신고 예정임을 확인합니다</span>
-                    </label>
                 </div>
                 <div class="alert alert-warning" style="margin-top: 12px;">
                     <strong>주의:</strong> 공직선거법 위반 시 3년 이하 징역 또는 600만원 이하 벌금에 처해질 수 있습니다.
@@ -1300,6 +1322,31 @@ body {
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('confirmModal')">취소</button>
                 <button class="btn btn-primary" onclick="confirmSend()">발송하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 엑셀 업로드 모달 -->
+    <div class="modal-overlay" id="excelUploadModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">엑셀 업로드</h3>
+                <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">파일 선택</label>
+                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
+                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
+                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+                    </div>
+                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
+                    <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
+                <button class="btn btn-primary">업로드</button>
             </div>
         </div>
     </div>
@@ -1625,32 +1672,41 @@ function initDropdownMenus() {
 
 </script>
     <script>
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
-            
-            event.target.classList.add('active');
-            document.getElementById(tab + 'Tab').style.display = 'block';
-        }
+        // 탭 전환 (일반문자와 동일한 방식)
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId, 'sendForm');
+            });
+        });
 
         function updateCandidateInfo() {
             const select = document.getElementById('senderNumber');
-            const selected = select.options[select.selectedIndex];
-            const candidate = selected.getAttribute('data-candidate');
-            const party = selected.getAttribute('data-party');
-            const candidateName = candidate || party;
-            
+            document.getElementById('previewSenderNumber').textContent = select.value;
+            updateCandidateNamePreview();
+        }
+
+        function updateCandidateNamePreview() {
+            const candidateName = document.getElementById('candidateNameInput').value;
             if (candidateName) {
-                document.getElementById('candidateInfoGroup').style.display = 'block';
-                document.getElementById('candidateName').textContent = candidateName;
-                document.getElementById('candidateNamePreview').textContent = candidateName;
-                document.getElementById('previewSenderNumber').textContent = select.value;
-                updatePreview();
                 document.getElementById('checkCandidate').classList.add('valid');
             } else {
-                document.getElementById('candidateInfoGroup').style.display = 'none';
                 document.getElementById('checkCandidate').classList.remove('valid');
             }
+            updatePreview();
+        }
+
+        function updateRejectNumberPreview() {
+            const rejectInput = document.getElementById('rejectNumberInput').value;
+            const checkItem = document.getElementById('checkReject');
+            if (rejectInput) {
+                checkItem.classList.add('valid');
+                checkItem.classList.remove('invalid');
+            } else {
+                checkItem.classList.remove('valid');
+                checkItem.classList.add('invalid');
+            }
+            updatePreview();
         }
 
         function updateRecipientCount() {
@@ -1698,11 +1754,11 @@ function initDropdownMenus() {
 
         function updatePreview() {
             const content = document.getElementById('messageContent').value;
-            const candidateName = document.getElementById('candidateNamePreview').textContent;
+            const candidateName = document.getElementById('candidateNameInput').value || '후보자명/정당명';
+            const rejectInput = document.getElementById('rejectNumberInput').value;
+            const rejectNumber = rejectInput ? '080-' + rejectInput : '080-';
             const preview = document.getElementById('previewMessage');
-            preview.textContent = `[선거]${candidateName}\n${content || '메시지 내용을 입력하세요'}\n수신거부 080-XXX-XXXX`;
-            
-            document.getElementById('messageContentPreview').textContent = content || '메시지 내용을 입력하세요';
+            preview.innerHTML = `<span style="color: var(--primary-color); font-weight: 600;">[선거]</span>${candidateName}\n${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">수신거부 ${rejectNumber}</div>`;
         }
 
         function updateTimeSettings() {
@@ -1737,15 +1793,13 @@ function initDropdownMenus() {
             e.preventDefault();
             
             if (!document.getElementById('legalConfirm1').checked || 
-                !document.getElementById('legalConfirm2').checked || 
-                !document.getElementById('legalConfirm3').checked) {
+                !document.getElementById('legalConfirm2').checked) {
                 showToast('모든 법적 확인 사항에 동의해주세요.', 'warning');
                 return;
             }
             
-            document.getElementById('confirmCandidate').textContent = document.getElementById('candidateName').textContent;
+            document.getElementById('confirmCandidate').textContent = document.getElementById('candidateNameInput').value;
             document.getElementById('confirmRecipientCount').textContent = document.getElementById('recipientCount').textContent + '명';
-            document.getElementById('confirmReportNumber').textContent = document.querySelector('input[placeholder*="신고번호"]').value;
             
             const sendTime = document.querySelector('input[name="sendTime"]:checked').value;
             if (sendTime === 'immediate') {
@@ -1761,8 +1815,7 @@ function initDropdownMenus() {
 
         function confirmSend() {
             if (!document.getElementById('legalConfirm1').checked || 
-                !document.getElementById('legalConfirm2').checked || 
-                !document.getElementById('legalConfirm3').checked) {
+                !document.getElementById('legalConfirm2').checked) {
                 showToast('모든 법적 확인 사항에 동의해주세요.', 'warning');
                 return;
             }
@@ -1774,12 +1827,32 @@ function initDropdownMenus() {
             }, 2000);
         }
 
-        // 초기화
-        document.getElementById('messageContent').addEventListener('input', function() {
-            checkForbiddenWords();
-        });
-        
-        document.getElementById('checkReject').classList.add('valid');
+
+        // 샘플 파일 다운로드 (주소록 관리와 동일)
+        function downloadSampleFile() {
+            const sampleData = [
+                ['이름', '전화번호', '#{유권자명}', '#{선거구}', '#{투표일}', '메모'],
+                ['홍길동', '010-1234-5678', '홍길동', '서울 강남구 갑', '2024-04-10', ''],
+                ['김철수', '010-9876-5432', '김철수', '서울 강남구 갑', '2024-04-10', '']
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            ws['!cols'] = [
+                { wch: 15 }, // 이름
+                { wch: 20 }, // 전화번호
+                { wch: 15 }, // #{유권자명}
+                { wch: 20 }, // #{선거구}
+                { wch: 15 }, // #{투표일}
+                { wch: 30 }  // 메모
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, '선거문자');
+            XLSX.writeFile(wb, '선거문자_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
     </script>
 </body>
 </html>
