@@ -906,6 +906,7 @@ body {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         .group-item:hover {
             background: var(--bg-color);
@@ -915,9 +916,61 @@ body {
             color: var(--primary-color);
             font-weight: 600;
         }
+        .group-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+        }
         .group-count {
             font-size: 12px;
             color: var(--text-secondary);
+        }
+        .group-menu-btn {
+            padding: 4px 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1;
+            opacity: 0;
+            transition: opacity 0.2s;
+            margin-left: 8px;
+        }
+        .group-item:hover .group-menu-btn {
+            opacity: 1;
+        }
+        .group-menu-btn:hover {
+            color: var(--primary-color);
+        }
+        .group-menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+            margin-top: 4px;
+        }
+        .group-menu-dropdown.show {
+            display: block;
+        }
+        .group-menu-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .group-menu-item:hover {
+            background: var(--bg-color);
+        }
+        .group-menu-item.danger {
+            color: var(--danger-color);
         }
         .addressbook-actions {
             display: flex;
@@ -1069,20 +1122,43 @@ body {
                     </div>
                     <ul class="group-list">
                         <li class="group-item active" onclick="selectGroup('all')">
-                            <span>전체</span>
-                            <span class="group-count">1,234</span>
+                            <div class="group-item-content">
+                                <span>전체</span>
+                                <span class="group-count">1,234</span>
+                            </div>
                         </li>
-                        <li class="group-item" onclick="selectGroup('group1')">
-                            <span>VIP 고객</span>
-                            <span class="group-count">234</span>
+                        <li class="group-item" data-group-id="group1" data-group-name="VIP 고객">
+                            <div class="group-item-content" onclick="selectGroup('group1')">
+                                <span>VIP 고객</span>
+                                <span class="group-count">234</span>
+                            </div>
+                            <button class="group-menu-btn" onclick="event.stopPropagation(); toggleGroupMenu('group1')">⋮</button>
+                            <div class="group-menu-dropdown" id="menu-group1">
+                                <div class="group-menu-item" onclick="editGroupName('group1', 'VIP 고객')">그룹명 수정</div>
+                                <div class="group-menu-item danger" onclick="deleteGroup('group1', 'VIP 고객')">그룹 삭제</div>
+                            </div>
                         </li>
-                        <li class="group-item" onclick="selectGroup('group2')">
-                            <span>일반 고객</span>
-                            <span class="group-count">1,000</span>
+                        <li class="group-item" data-group-id="group2" data-group-name="일반 고객">
+                            <div class="group-item-content" onclick="selectGroup('group2')">
+                                <span>일반 고객</span>
+                                <span class="group-count">1,000</span>
+                            </div>
+                            <button class="group-menu-btn" onclick="event.stopPropagation(); toggleGroupMenu('group2')">⋮</button>
+                            <div class="group-menu-dropdown" id="menu-group2">
+                                <div class="group-menu-item" onclick="editGroupName('group2', '일반 고객')">그룹명 수정</div>
+                                <div class="group-menu-item danger" onclick="deleteGroup('group2', '일반 고객')">그룹 삭제</div>
+                            </div>
                         </li>
-                        <li class="group-item" onclick="selectGroup('group3')">
-                            <span>신규 고객</span>
-                            <span class="group-count">50</span>
+                        <li class="group-item" data-group-id="group3" data-group-name="신규 고객">
+                            <div class="group-item-content" onclick="selectGroup('group3')">
+                                <span>신규 고객</span>
+                                <span class="group-count">50</span>
+                            </div>
+                            <button class="group-menu-btn" onclick="event.stopPropagation(); toggleGroupMenu('group3')">⋮</button>
+                            <div class="group-menu-dropdown" id="menu-group3">
+                                <div class="group-menu-item" onclick="editGroupName('group3', '신규 고객')">그룹명 수정</div>
+                                <div class="group-menu-item danger" onclick="deleteGroup('group3', '신규 고객')">그룹 삭제</div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -1217,17 +1293,70 @@ body {
                 <form id="addGroupForm">
                     <div class="form-group">
                         <label class="form-label required">그룹명</label>
-                        <input type="text" class="form-input" required>
+                        <input type="text" class="form-input" id="newGroupName" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">설명</label>
-                        <textarea class="form-textarea" rows="3"></textarea>
+                        <textarea class="form-textarea" id="newGroupDescription" rows="3"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('addGroupModal')">취소</button>
                 <button class="btn btn-primary" onclick="saveGroup()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그룹명 수정 모달 -->
+    <div class="modal-overlay" id="editGroupNameModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">그룹명 수정</h3>
+                <button class="modal-close" onclick="closeModal('editGroupNameModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editGroupNameForm">
+                    <div class="form-group">
+                        <label class="form-label required">그룹명</label>
+                        <input type="text" class="form-input" id="editGroupNameInput" required>
+                        <input type="hidden" id="editGroupId">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('editGroupNameModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveGroupName()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그룹 삭제 확인 모달 -->
+    <div class="modal-overlay" id="deleteGroupModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">그룹 삭제</h3>
+                <button class="modal-close" onclick="closeModal('deleteGroupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>정말로 "<span id="deleteGroupNameText"></span>" 그룹을 삭제하시겠습니까?</p>
+                <div class="alert alert-warning" style="margin-top: 16px;">
+                    <strong>주의사항</strong>
+                    <ul style="margin: 8px 0 0 20px; padding: 0;">
+                        <li>그룹을 삭제하면 해당 그룹에 속한 주소록은 "전체" 그룹으로 이동됩니다.</li>
+                        <li>이 작업은 되돌릴 수 없습니다.</li>
+                    </ul>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                    <label class="form-label">
+                        <input type="checkbox" id="deleteGroupConfirm"> 위 내용을 확인했습니다.
+                    </label>
+                </div>
+                <input type="hidden" id="deleteGroupId">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('deleteGroupModal')">취소</button>
+                <button class="btn btn-danger" onclick="confirmDeleteGroup()" id="confirmDeleteGroupBtn" disabled>삭제</button>
             </div>
         </div>
     </div>
@@ -1578,12 +1707,114 @@ function initDropdownMenus() {
 
 </script>
     <script>
+        let currentGroupMenu = null;
+
         function selectGroup(groupId) {
             document.querySelectorAll('.group-item').forEach(item => {
                 item.classList.remove('active');
             });
-            event.currentTarget.classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.closest('.group-item').classList.add('active');
+            }
             // 그룹별 주소록 조회
+        }
+
+        function toggleGroupMenu(groupId) {
+            // 다른 메뉴 닫기
+            document.querySelectorAll('.group-menu-dropdown').forEach(menu => {
+                if (menu.id !== 'menu-' + groupId) {
+                    menu.classList.remove('show');
+                }
+            });
+            
+            // 현재 메뉴 토글
+            const menu = document.getElementById('menu-' + groupId);
+            if (menu) {
+                menu.classList.toggle('show');
+                currentGroupMenu = menu.classList.contains('show') ? groupId : null;
+            }
+        }
+
+        // 외부 클릭 시 메뉴 닫기
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.group-menu-btn') && !e.target.closest('.group-menu-dropdown')) {
+                document.querySelectorAll('.group-menu-dropdown').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+                currentGroupMenu = null;
+            }
+        });
+
+        function editGroupName(groupId, currentName) {
+            document.getElementById('editGroupId').value = groupId;
+            document.getElementById('editGroupNameInput').value = currentName;
+            closeAllGroupMenus();
+            openModal('editGroupNameModal');
+        }
+
+        function saveGroupName() {
+            const groupId = document.getElementById('editGroupId').value;
+            const newName = document.getElementById('editGroupNameInput').value;
+            
+            if (!newName.trim()) {
+                showToast('그룹명을 입력해주세요.', 'warning');
+                return;
+            }
+
+            // 그룹명 업데이트
+            const groupItem = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupItem) {
+                groupItem.setAttribute('data-group-name', newName);
+                const nameSpan = groupItem.querySelector('.group-item-content span:first-child');
+                if (nameSpan) {
+                    nameSpan.textContent = newName;
+                }
+            }
+
+            showToast('그룹명이 수정되었습니다.', 'success');
+            closeModal('editGroupNameModal');
+        }
+
+        function deleteGroup(groupId, groupName) {
+            document.getElementById('deleteGroupId').value = groupId;
+            document.getElementById('deleteGroupNameText').textContent = groupName;
+            document.getElementById('deleteGroupConfirm').checked = false;
+            document.getElementById('confirmDeleteGroupBtn').disabled = true;
+            closeAllGroupMenus();
+            openModal('deleteGroupModal');
+        }
+
+        // 삭제 확인 체크박스 이벤트
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmCheckbox = document.getElementById('deleteGroupConfirm');
+            const confirmBtn = document.getElementById('confirmDeleteGroupBtn');
+            if (confirmCheckbox && confirmBtn) {
+                confirmCheckbox.addEventListener('change', function() {
+                    confirmBtn.disabled = !this.checked;
+                });
+            }
+        });
+
+        function confirmDeleteGroup() {
+            const groupId = document.getElementById('deleteGroupId').value;
+            const groupName = document.getElementById('deleteGroupNameText').textContent;
+            
+            // 그룹 삭제 (실제로는 서버에 요청)
+            const groupItem = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupItem) {
+                groupItem.remove();
+            }
+
+            showToast(`"${groupName}" 그룹이 삭제되었습니다.`, 'success');
+            closeModal('deleteGroupModal');
+        }
+
+
+        function closeAllGroupMenus() {
+            document.querySelectorAll('.group-menu-dropdown').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            currentGroupMenu = null;
         }
 
         function toggleAll(checkbox) {
