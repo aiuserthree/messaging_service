@@ -968,6 +968,7 @@ body {
             }
         }
     </style>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -1072,51 +1073,60 @@ body {
                             <label class="form-label required">발신번호</label>
                             <select class="form-select" id="senderNumber" required onchange="updateRejectNumber()">
                                 <option value="">발신번호를 선택하세요</option>
-                                <option value="010-1234-5678" data-reject="080-123-4567">010-1234-5678 (마케팅팀) - 080 연동</option>
-                                <option value="02-1234-5678" data-reject="080-123-4567">02-1234-5678 (고객센터) - 080 연동</option>
+                                <option value="010-1234-5678" data-reject="080-123-4567">010-1234-5678</option>
+                                <option value="02-1234-5678" data-reject="080-123-4567">02-1234-5678</option>
                             </select>
-                            <div class="form-help">080 수신거부 번호가 연동된 발신번호만 선택 가능합니다</div>
+                            <a href="mypage-caller-number.html" class="form-help">새 발신번호 등록하기</a>
                         </div>
 
-                        <!-- 080 수신거부 번호 표시 -->
-                        <div class="form-group" id="rejectNumberGroup" style="display: none;">
-                            <label class="form-label">080 수신거부 번호</label>
-                            <div class="reject-number" id="rejectNumber">-</div>
+                        <!-- 080 수신거부 번호 입력 -->
+                        <div class="form-group">
+                            <label class="form-label required">080 수신거부 번호</label>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-weight: 600;">080-</span>
+                                <input type="text" class="form-input" id="rejectNumberInput" placeholder="123-4567" maxlength="8" style="flex: 1;" oninput="updateRejectNumberPreview()" required>
+                            </div>
+                            <div class="form-help">수신거부 번호를 입력하세요 (예: 123-4567)</div>
                         </div>
 
                         <!-- 수신번호 설정 -->
                         <div class="form-group">
                             <label class="form-label required">수신번호</label>
                             <div class="tabs">
-                                <button type="button" class="tab-btn active" onclick="switchTab('direct')">직접입력</button>
-                                <button type="button" class="tab-btn" onclick="switchTab('addressbook')">주소록</button>
-                                <button type="button" class="tab-btn" onclick="switchTab('excel')">엑셀 업로드</button>
+                                <div class="tab-list">
+                                    <button type="button" class="tab-item active" data-tab="direct">직접입력</button>
+                                    <button type="button" class="tab-item" data-tab="addressbook">주소록</button>
+                                    <button type="button" class="tab-item" data-tab="excel">엑셀 업로드</button>
+                                </div>
                             </div>
                             
-                            <div id="directTab" class="tab-content" style="display: block;">
-                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)" oninput="updateRecipientCount()"></textarea>
+                            <div id="direct" class="tab-content active">
+                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)&#10;예: 010-1234-5678, 010-9876-5432" oninput="updateRecipientCount()"></textarea>
                                 <div class="form-help">콤마(,) 또는 엔터(Enter)로 구분하여 입력하세요</div>
+                                <div style="margin-top: 12px;">
+                                    <span id="recipientCount">0</span>명
+                                    <span id="excludedCount" style="margin-left: 12px; color: var(--text-secondary); display: none;">
+                                        (수신거부 제외: <span id="excludedNumber">0</span>명)
+                                    </span>
+                                </div>
                             </div>
                             
-                            <div id="addressbookTab" class="tab-content" style="display: none;">
-                                <select class="form-select" multiple style="height: 150px;">
-                                    <option>전체 주소록 (1,234명)</option>
-                                    <option>VIP 고객 (234명)</option>
-                                    <option>일반 고객 (1,000명)</option>
-                                </select>
-                                <div class="form-help">Ctrl(또는 Cmd) 키를 누른 채로 여러 그룹을 선택할 수 있습니다</div>
+                            <div id="addressbook" class="tab-content">
+                                <div class="form-group">
+                                    <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
+                                        <option value="group1">전체 주소록 (1,234명)</option>
+                                        <option value="group2">VIP 고객 (234명)</option>
+                                        <option value="group3">일반 고객 (1,000명)</option>
+                                    </select>
+                                    <a href="addressbook.html" class="form-help">주소록 관리</a>
+                                </div>
                             </div>
                             
-                            <div id="excelTab" class="tab-content" style="display: none;">
+                            <div id="excel" class="tab-content">
                                 <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
-                                <div class="form-help">엑셀 샘플 다운로드 후 업로드하세요</div>
-                            </div>
-                            
-                            <div style="margin-top: 12px;">
-                                <span id="recipientCount">0</span>명
-                                <span id="excludedCount" style="margin-left: 12px; color: var(--text-secondary); display: none;">
-                                    (수신거부 제외: <span id="excludedNumber">0</span>명)
-                                </span>
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <a href="#" onclick="downloadSampleFile(); return false;">엑셀 샘플파일 다운로드</a>
+                                </div>
                             </div>
                         </div>
 
@@ -1126,11 +1136,11 @@ body {
                             <div class="flex gap-2 mb-1">
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateModal')">템플릿 선택</button>
                             </div>
-                            <div style="background: var(--bg-color); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 8px; font-size: 13px;">
-                                <span class="ad-prefix">(광고)</span> <span id="messageContentPreview">메시지 내용을 입력하세요</span>
-                                <div class="reject-number" style="margin-top: 4px;">무료수신거부 <span id="rejectNumberPreview">080-XXX-XXXX</span></div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label required">(광고) 옆 문구</label>
+                                <input type="text" class="form-input" id="adPrefixText" placeholder="(광고) 옆에 표시할 문구를 입력하세요" oninput="updateAdPrefixPreview()" required>
+                                <div class="form-help">(광고) 문구 옆에 추가로 표시할 내용을 입력하세요 (필수사항)</div>
                             </div>
                             <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="updateByteCounter()"></textarea>
                             <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
@@ -1218,7 +1228,7 @@ body {
                             <div class="preview-phone-body">
                                 <div id="previewMessage" style="white-space: pre-wrap; line-height: 1.6;">
                                     <span class="ad-prefix">(광고)</span> 메시지 내용을 입력하세요
-                                    <div class="reject-number" style="margin-top: 8px;">무료수신거부 080-XXX-XXXX</div>
+                                    <div class="reject-number" style="margin-top: 8px;">무료수신거부 080-</div>
                                 </div>
                                 <div id="previewImage" class="image-preview" style="margin-top: 12px;"></div>
                             </div>
@@ -1272,35 +1282,25 @@ body {
 
     <!-- 엑셀 업로드 모달 -->
     <div class="modal-overlay" id="excelUploadModal">
-        <div class="modal" style="max-width: 600px;">
+        <div class="modal" style="max-width: 700px;">
             <div class="modal-header">
                 <h3 class="modal-title">엑셀 업로드</h3>
                 <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <button type="button" class="btn btn-outline" onclick="downloadSample()">샘플 다운로드</button>
-                    <div class="form-help">엑셀 샘플 파일을 다운로드하여 양식에 맞게 작성하세요</div>
-                </div>
-                <div class="form-group">
                     <label class="form-label">파일 선택</label>
-                    <input type="file" class="form-input" accept=".xlsx,.xls,.csv" onchange="handleExcelUpload(event)">
-                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB)</div>
-                </div>
-                <div id="excelResult" style="display: none; margin-top: 16px;">
-                    <div class="alert alert-success">
-                        <strong>업로드 완료</strong>
-                        <div style="margin-top: 8px;">
-                            전체 <span id="excelTotal">0</span>건 중 <span id="excelValid">0</span>건 등록 가능<br>
-                            중복 제외: <span id="excelDuplicate">0</span>건<br>
-                            형식 오류: <span id="excelError">0</span>건
-                        </div>
+                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
+                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
+                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
                     </div>
+                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
+                    <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
-                <button class="btn btn-primary" onclick="applyExcelData()">적용</button>
+                <button class="btn btn-primary">업로드</button>
             </div>
         </div>
     </div>
@@ -1675,30 +1675,25 @@ function initDropdownMenus() {
 
 </script>
     <script>
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
-            
-            event.target.classList.add('active');
-            document.getElementById(tab + 'Tab').style.display = 'block';
-        }
+        // 탭 전환 (일반문자와 동일한 방식)
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId, 'sendForm');
+            });
+        });
 
         function updateRejectNumber() {
             const select = document.getElementById('senderNumber');
-            const selected = select.options[select.selectedIndex];
-            const rejectNumber = selected.getAttribute('data-reject');
-            const rejectGroup = document.getElementById('rejectNumberGroup');
-            const rejectDisplay = document.getElementById('rejectNumber');
-            const rejectPreview = document.getElementById('rejectNumberPreview');
-            
-            if (rejectNumber) {
-                rejectGroup.style.display = 'block';
-                rejectDisplay.textContent = rejectNumber;
-                rejectPreview.textContent = rejectNumber;
-                document.getElementById('previewSenderNumber').textContent = select.value;
-            } else {
-                rejectGroup.style.display = 'none';
-            }
+            document.getElementById('previewSenderNumber').textContent = select.value;
+            updatePreview();
+        }
+
+        function updateRejectNumberPreview() {
+            updatePreview();
+        }
+
+        function updateAdPrefixPreview() {
             updatePreview();
         }
 
@@ -1723,9 +1718,12 @@ function initDropdownMenus() {
 
         function updateByteCounter() {
             const content = document.getElementById('messageContent').value;
-            const rejectText = '무료수신거부 080-XXX-XXXX';
+            const adPrefixText = document.getElementById('adPrefixText').value;
+            const rejectInput = document.getElementById('rejectNumberInput').value;
+            const rejectText = rejectInput ? '무료수신거부 080-' + rejectInput : '무료수신거부 080-';
             const adPrefix = '(광고)';
-            const totalBytes = calculateByteLength(adPrefix + content + rejectText);
+            const fullText = adPrefix + (adPrefixText ? ' ' + adPrefixText : '') + ' ' + content + ' ' + rejectText;
+            const totalBytes = calculateByteLength(fullText);
             const maxBytes = 90;
             
             const counter = document.getElementById('byteCounter');
@@ -1744,11 +1742,12 @@ function initDropdownMenus() {
 
         function updatePreview() {
             const content = document.getElementById('messageContent').value;
-            const rejectNumber = document.getElementById('rejectNumberPreview').textContent;
+            const adPrefixText = document.getElementById('adPrefixText').value;
+            const rejectInput = document.getElementById('rejectNumberInput').value;
+            const rejectNumber = rejectInput ? '080-' + rejectInput : '080-';
             const preview = document.getElementById('previewMessage');
-            preview.innerHTML = `<span class="ad-prefix">(광고)</span> ${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px;">무료수신거부 ${rejectNumber}</div>`;
-            
-            document.getElementById('messageContentPreview').textContent = content || '메시지 내용을 입력하세요';
+            const adPrefixTextDisplay = adPrefixText ? adPrefixText + ' ' : '';
+            preview.innerHTML = `<span class="ad-prefix">(광고)</span> ${adPrefixTextDisplay}\n${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px;">무료수신거부 ${rejectNumber}</div>`;
         }
 
         function handleImageUpload(event) {
@@ -1809,29 +1808,30 @@ function initDropdownMenus() {
             closeModal('templateModal');
         }
 
-        function downloadSample() {
-            showToast('샘플 파일 다운로드가 시작됩니다.', 'info');
-        }
-
-        function handleExcelUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        // 샘플 파일 다운로드 (주소록 관리와 동일)
+        function downloadSampleFile() {
+            const sampleData = [
+                ['이름', '전화번호', '그룹', '메모'],
+                ['홍길동', '010-1234-5678', 'VIP 고객', ''],
+                ['김철수', '010-9876-5432', '일반 고객', '']
+            ];
             
-            // 엑셀 파싱 시뮬레이션
-            setTimeout(() => {
-                document.getElementById('excelResult').style.display = 'block';
-                document.getElementById('excelTotal').textContent = '100';
-                document.getElementById('excelValid').textContent = '95';
-                document.getElementById('excelDuplicate').textContent = '3';
-                document.getElementById('excelError').textContent = '2';
-            }, 1000);
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            ws['!cols'] = [
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 30 }
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
         }
 
-        function applyExcelData() {
-            showToast('수신번호가 추가되었습니다.', 'success');
-            closeModal('excelUploadModal');
-            updateRecipientCount();
-        }
 
         function testSend() {
             showToast('테스트 발송이 완료되었습니다.', 'success');

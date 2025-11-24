@@ -1,26 +1,25 @@
 {
   "version": 2,
-  "cleanUrls": false,
-  "trailingSlash": false,
-  "headers": [
+  "builds": [
     {
-      "source": "/css/(.*)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/css; charset=utf-8"
-        }
-      ]
+      "src": "admin/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/admin/index.html"
     },
     {
-      "source": "/js/(.*)",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript; charset=utf-8"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/admin/$1"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/admin/$1"
     }
   ]
 }
-

@@ -943,6 +943,7 @@ body {
             }
         }
     </style>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -1101,7 +1102,7 @@ body {
                         <div class="table-actions">
                             <button class="btn btn-primary" onclick="openModal('addAddressModal')">주소 추가</button>
                             <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
-                            <button class="btn btn-outline" onclick="exportExcel()">엑셀 다운로드</button>
+                            <button class="btn btn-outline" onclick="downloadSampleFile()">엑셀 샘플파일</button>
                             <button class="btn btn-outline" onclick="sendMessage()">문자 보내기</button>
                         </div>
                     </div>
@@ -1114,7 +1115,6 @@ body {
                                     <th>이름</th>
                                     <th>전화번호</th>
                                     <th>그룹</th>
-                                    <th>이메일</th>
                                     <th>등록일</th>
                                     <th>상태</th>
                                     <th>관리</th>
@@ -1126,7 +1126,6 @@ body {
                                     <td>홍길동</td>
                                     <td>010-1234-5678</td>
                                     <td>VIP 고객</td>
-                                    <td>hong@example.com</td>
                                     <td>2024-01-15</td>
                                     <td><span class="badge badge-success">정상</span></td>
                                     <td>
@@ -1139,7 +1138,6 @@ body {
                                     <td>김철수</td>
                                     <td>010-9876-5432</td>
                                     <td>일반 고객</td>
-                                    <td>kim@example.com</td>
                                     <td>2024-01-14</td>
                                     <td><span class="badge badge-success">정상</span></td>
                                     <td>
@@ -1152,7 +1150,6 @@ body {
                                     <td>이영희</td>
                                     <td>010-5555-7777</td>
                                     <td>신규 고객</td>
-                                    <td>lee@example.com</td>
                                     <td>2024-01-13</td>
                                     <td><span class="badge badge-danger">수신거부</span></td>
                                     <td>
@@ -1195,10 +1192,6 @@ body {
                             <option>일반 고객</option>
                             <option>신규 고객</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">이메일</label>
-                        <input type="email" class="form-input">
                     </div>
                     <div class="form-group">
                         <label class="form-label">메모</label>
@@ -1254,7 +1247,7 @@ body {
                         <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
                     </div>
                     <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
-                    <a href="#" class="form-help">샘플 파일 다운로드</a>
+                    <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1620,8 +1613,33 @@ function initDropdownMenus() {
             closeModal('addGroupModal');
         }
 
-        function exportExcel() {
-            showToast('엑셀 다운로드가 시작되었습니다.', 'info');
+        function downloadSampleFile() {
+            // 샘플 파일 다운로드
+            const sampleData = [
+                ['이름', '전화번호', '그룹', '메모'],
+                ['홍길동', '010-1234-5678', 'VIP 고객', ''],
+                ['김철수', '010-9876-5432', '일반 고객', '']
+            ];
+            
+            // 워크북 생성
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            // 컬럼 너비 설정
+            ws['!cols'] = [
+                { wch: 15 }, // 이름
+                { wch: 20 }, // 전화번호
+                { wch: 15 }, // 그룹
+                { wch: 30 }  // 메모
+            ];
+            
+            // 워크시트를 워크북에 추가
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            
+            // XLSX 파일로 다운로드
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
         }
 
         function sendMessage() {
