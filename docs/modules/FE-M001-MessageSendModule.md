@@ -151,7 +151,12 @@ interface SendMessageAPI {
       sendMode: 'IMMEDIATE' | 'SCHEDULED';
       scheduledAt?: string;
       templateId?: string;
-      electionReportNumber?: string; // 공직선거용
+      // 광고문자용
+      adPrefixText?: string; // (광고) 옆 문구
+      reject080Number?: string; // 080 수신거부 번호
+      // 공직선거문자용
+      candidateName?: string; // [선거] 옆 문구
+      electionReject080Number?: string; // 080 수신거부 번호
     };
     response: {
       sendId: string;
@@ -205,7 +210,12 @@ interface MessageSendForm {
   sendMode: 'IMMEDIATE' | 'SCHEDULED';
   scheduledAt?: Date;
   templateId?: string;
-  electionReportNumber?: string;
+  // 광고문자용
+  adPrefixText?: string; // (광고) 옆 문구
+  reject080Number?: string; // 080 수신거부 번호
+  // 공직선거문자용
+  candidateName?: string; // [선거] 옆 문구 (후보자명/정당명)
+  electionReject080Number?: string; // 080 수신거부 번호
 }
 
 interface CallerNumber {
@@ -428,7 +438,7 @@ const CallerNumberSelect: React.FC = () => {
       onChange={(value) => sendStore.setCallerNumber(value)}
       options={availableNumbers.map(cn => ({
         value: cn.number,
-        label: `${cn.number}${cn.purpose ? ` (${cn.purpose})` : ''}`,
+        label: cn.number, // 번호만 표시 (용도 제외)
       }))}
       placeholder="발신번호를 선택하세요"
       required
@@ -488,6 +498,7 @@ const RecipientInput: React.FC = () => {
             onUpload={handleExcelUpload}
             maxSize={10 * 1024 * 1024} // 10MB
           />
+          <a href="#" onClick={downloadSampleFile}>샘플 파일 다운로드</a>
         </TabsContent>
       </Tabs>
       
@@ -735,6 +746,16 @@ describe('useMessageSend', () => {
 
 ---
 
-**문서 버전**: 1.0  
-**작성일**: 2024-11-19
+**문서 버전**: 1.1  
+**작성일**: 2024-11-19  
+**최종 수정일**: 2024-11-19
+
+## 변경 이력
+
+### 버전 1.1 (2024-11-19)
+- CallerNumberSelect 컴포넌트: 발신번호 표시 형식 변경 (번호만 표시, 용도 제외)
+- 엑셀 샘플 파일 다운로드 기능 추가
+- 광고문자 발송: (광고) 옆 문구 입력 필드 추가, 080 수신거부 번호 입력 필드 추가
+- 공직선거문자 발송: [선거] 옆 문구 입력 필드 추가, 080 수신거부 번호 입력 필드 추가, 선거관리위원회 신고번호 제거
+- MessageSendForm 인터페이스에 광고/선거 관련 필드 추가
 

@@ -12,8 +12,9 @@
 ### 1.2 모듈 목적 및 범위
 - **핵심 기능**: 
   - 주소록 CRUD
-  - 그룹 관리
-  - 엑셀 업로드/다운로드 처리
+  - 그룹 관리 (그룹명 수정, 그룹 삭제)
+  - 엑셀 업로드/다운로드 처리 (XLSX 형식)
+  - 엑셀 샘플 파일 생성
   - 수신거부 번호 필터링
   - 중복 번호 처리
 - **비즈니스 가치**: 수신자 정보 관리 및 발송 시 활용
@@ -83,6 +84,11 @@ export interface AddressBookServiceInterface {
       updateGroup: (userId: string, id: string, data: UpdateGroupDTO) => Promise<Group>;
       deleteGroup: (userId: string, id: string) => Promise<void>;
     };
+    
+    ExcelService: {
+      downloadSample: () => Promise<Buffer>;
+      parseExcelFile: (file: Express.Multer.File) => Promise<ExcelRow[]>;
+    };
   };
 }
 ```
@@ -100,7 +106,6 @@ model Address {
   groupId       String
   name          String
   phoneNumber   String
-  email         String?
   memo          String?
   isBlocked     Boolean  @default(false)
   createdAt     DateTime @default(now())
@@ -232,7 +237,6 @@ export class AddressBookService {
         groupId: row.groupId,
         name: row.name,
         phoneNumber: row.phoneNumber,
-        email: row.email,
         memo: row.memo,
       });
     }
@@ -275,6 +279,9 @@ enum AddressBookEvents {
   ADDRESS_CREATED = 'addressbook.address.created',
   ADDRESS_UPDATED = 'addressbook.address.updated',
   ADDRESS_DELETED = 'addressbook.address.deleted',
+  GROUP_CREATED = 'addressbook.group.created',
+  GROUP_UPDATED = 'addressbook.group.updated',
+  GROUP_DELETED = 'addressbook.group.deleted',
 }
 ```
 
@@ -323,6 +330,15 @@ enum AddressBookErrorCode {
 
 ---
 
-**문서 버전**: 1.0  
-**작성일**: 2024-11-19
+**문서 버전**: 1.1  
+**작성일**: 2024-11-19  
+**최종 수정일**: 2024-11-19
+
+## 변경 이력
+
+### 버전 1.1 (2024-11-19)
+- Address 엔티티에서 email 필드 제거
+- 그룹 관리 기능 추가 (그룹명 수정, 그룹 삭제)
+- 엑셀 샘플 파일 생성 기능 추가 (XLSX 형식)
+- ExcelService 인터페이스 추가
 
