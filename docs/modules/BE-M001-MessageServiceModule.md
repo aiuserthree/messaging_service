@@ -12,8 +12,9 @@
 ### 1.2 모듈 목적 및 범위
 - **핵심 기능**: 
   - 일반문자 발송 처리
-  - 광고문자 발송 처리 (법적 규정 검증)
-  - 공직선거문자 발송 처리 (선거법 검증)
+  - 광고문자 발송 처리 (법적 규정 검증, (광고) 옆 문구 입력, 080 수신거부 번호 입력)
+  - 공직선거문자 발송 처리 (선거법 검증, [선거] 옆 문구 입력, 080 수신거부 번호 입력)
+  - 발신번호 선택 시 번호만 표시 (용도 제외)
   - 발송 큐 관리
   - 통신사 API 연동
   - 발송 결과 처리
@@ -188,7 +189,9 @@ model Message {
   failCount         Int      @default(0)
   cost              Decimal
   templateId        String?
-  electionReportNumber String?
+  adPrefixText      String?  // 광고문자: (광고) 옆 문구
+  candidateName     String?  // 선거문자: [선거] 옆 문구 (후보자명/정당명)
+  rejectNumber      String?  // 광고/선거문자: 080 수신거부 번호
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   
@@ -281,7 +284,15 @@ export class SendMessageRequestDTO {
   
   @IsOptional()
   @IsString()
-  electionReportNumber?: string;
+  adPrefixText?: string;  // 광고문자: (광고) 옆 문구
+  
+  @IsOptional()
+  @IsString()
+  candidateName?: string;  // 선거문자: [선거] 옆 문구 (후보자명/정당명)
+  
+  @IsOptional()
+  @IsString()
+  rejectNumber?: string;  // 광고/선거문자: 080 수신거부 번호 (080- 뒤 8자리)
 }
 
 export class SendMessageResponseDTO {
@@ -362,7 +373,9 @@ export class MessageService {
       totalCount: validRecipients.length,
       cost,
       templateId: request.templateId,
-      electionReportNumber: request.electionReportNumber,
+      adPrefixText: request.adPrefixText,
+      candidateName: request.candidateName,
+      rejectNumber: request.rejectNumber,
       status: request.sendMode === 'SCHEDULED' ? 'PENDING' : 'PROCESSING',
     });
     
@@ -425,13 +438,8 @@ export class MessageService {
       throw new BadRequestException('승인되지 않은 발신번호입니다.');
     }
     
-    if (sendType === 'AD' && !callerNumberEntity.has080Number) {
-      throw new BadRequestException('광고문자 발송을 위해서는 080 수신거부 번호가 필요합니다.');
-    }
-    
-    if (sendType === 'ELECTION' && !callerNumberEntity.isElectionNumber) {
-      throw new BadRequestException('공직선거문자 발송을 위해서는 후보자/정당 발신번호가 필요합니다.');
-    }
+    // 광고문자/선거문자는 발신번호 선택 시 080번호 연동 여부 체크 제거
+    // 대신 발송 시 요청에 포함된 080 수신거부 번호로 처리
   }
   
   private async validateAndFilterRecipients(
@@ -671,6 +679,7 @@ describe('MessageService', () => {
 
 ---
 
-**문서 버전**: 1.0  
-**작성일**: 2024-11-19
+**문서 버전**: 1.1  
+**작성일**: 2024-11-19  
+**최종 수정일**: 2024-11-19
 

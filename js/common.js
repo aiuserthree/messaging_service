@@ -267,53 +267,5 @@ document.addEventListener('DOMContentLoaded', function() {
     initDropdownMenus();
 });
 
-function initDropdownMenus() {
-    const navItems = document.querySelectorAll('.nav-item.has-dropdown');
-    
-    navItems.forEach(item => {
-        const navLink = item.querySelector('.nav-link');
-        
-        // Depth 1 메뉴 링크 클릭 이벤트 (드롭다운 토글)
-        if (navLink) {
-            navLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // 다른 드롭다운 닫기
-                navItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('open');
-                    }
-                });
-                
-                // 현재 드롭다운 토글
-                item.classList.toggle('open');
-            });
-        }
-    });
-    
-    // 외부 클릭 시 드롭다운 닫기
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item.has-dropdown')) {
-            navItems.forEach(item => {
-                item.classList.remove('open');
-            });
-        }
-    });
-    
-    // Depth 2 메뉴 링크 클릭 시 드롭다운 닫기 (페이지 이동은 정상 작동)
-    document.querySelectorAll('.nav-dropdown-item').forEach(link => {
-        link.addEventListener('click', function(e) {
-            // 이벤트 버블링 방지 (Depth 1 메뉴의 이벤트가 실행되지 않도록)
-            e.stopPropagation();
-            
-            // 드롭다운 닫기
-            navItems.forEach(item => {
-                item.classList.remove('open');
-            });
-            
-            // 링크의 기본 동작(페이지 이동)은 정상적으로 작동
-        });
-    });
-}
+// initDropdownMenus 함수는 header.js에서 제공됩니다
 

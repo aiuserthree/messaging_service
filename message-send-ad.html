@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>광고문자 발송 - 메시징 서비스</title>
+    <script src="js/header.js"></script>
     <style>/* 공통 스타일 */
 * {
     margin: 0;
@@ -972,85 +973,24 @@ body {
 </head>
 <body>
     <div class="app-container">
-        <!-- 헤더 -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="index.html" style="text-decoration: none; color: inherit;">
-                        <h1>iSend</h1>
-                    </a>
-                </div>
-                <nav class="main-nav">
-                    <a href="index.html" class="nav-item">대시보드</a>
-                    <div class="nav-item has-dropdown active">
-                        <a href="#" class="nav-link">문자 발송</a>
-                        <div class="nav-dropdown">
-                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
-                            <a href="message-send-ad.html" class="nav-dropdown-item active">광고문자 발송</a>
-                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
-                        </div>
-                    </div>
-                    <div class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">카톡 발송</a>
-                        <div class="nav-dropdown">
-                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
-                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드톡 발송</a>
-                            <a href="kakao-profile-manage.html" class="nav-dropdown-item">발신프로필 관리</a>
-                        </div>
-                    </div>
-                    <div class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">템플릿</a>
-                        <div class="nav-dropdown">
-                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
-                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
-                            <a href="template-brandtalk.html" class="nav-dropdown-item">브랜드톡</a>
-                        </div>
-                    </div>
-                    <div class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">주소록</a>
-                        <div class="nav-dropdown">
-                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
-                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
-                        </div>
-                    </div>
-                    <div class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">발송 관리</a>
-                        <div class="nav-dropdown">
-                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
-                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
-                        </div>
-                    </div>
-                    <div class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">결제 관리</a>
-                        <div class="nav-dropdown">
-                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
-                            <a href="payment-history.html" class="nav-dropdown-item">충전/사용 내역</a>
-                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
-                        </div>
-                    </div>
-                    <div class="nav-item has-dropdown">
-                        <a href="#" class="nav-link">마이페이지</a>
-                        <div class="nav-dropdown">
-                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
-                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
-                        </div>
-                    </div>
-                </nav>
-                <div class="header-actions">
-                    <div class="balance-info">
-                        <span class="balance-label">잔액</span>
-                        <span class="balance-amount">1,000,000원</span>
-                    </div>
-                    <button class="btn btn-sm btn-outline">로그아웃</button>
-                </div>
-            </div>
-        </header>
+        <script>
+            document.write(createHeader());
+        </script>
 
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
             <div class="page-header">
-                <h2>광고문자 발송</h2>
+                <h2>문자 발송</h2>
                 <p class="page-description">정보통신망법에 따른 광고성 문자메시지를 발송합니다</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="tabs">
+                <div class="tab-list">
+                    <button class="tab-item" onclick="window.location.href='message-send-general.html'">일반문자 발송</button>
+                    <button class="tab-item active" onclick="window.location.href='message-send-ad.html'">광고문자 발송</button>
+                    <button class="tab-item" onclick="window.location.href='message-send-election.html'">공직선거문자 발송</button>
+                </div>
             </div>
 
             <!-- 법적 안내사항 -->
@@ -1354,6 +1294,76 @@ body {
         </div>
     </div>
 
+    <!-- 테스트 발송 모달 -->
+    <div class="modal-overlay" id="testSendModal">
+        <div class="modal" style="width: 500px; max-height: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title">테스트 발송</h3>
+                <button class="modal-close" onclick="closeModal('testSendModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
+                <!-- 테스트 번호 입력 -->
+                <div class="form-group">
+                    <label class="form-label required">테스트 수신번호</label>
+                    <div id="testPhoneNumbers">
+                        <div class="flex gap-2 mb-2">
+                            <input type="text" class="form-input test-phone-input" placeholder="010-1234-5678" value="010-1234-5678">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="removeTestPhone(this)" style="display: none;">삭제</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="addTestPhone()" id="addTestPhoneBtn">추가</button>
+                    <div class="form-help">최대 3개 번호까지 입력 가능합니다</div>
+                </div>
+
+                <!-- 테스트 내용 확인 -->
+                <div class="form-group">
+                    <label class="form-label">발송될 메시지 미리보기</label>
+                    <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; background-color: var(--bg-color);">
+                        <div style="margin-bottom: 8px;">
+                            <strong>발신번호:</strong> <span id="testPreviewCallerNumber">-</span>
+                        </div>
+                        <div id="testPreviewTitle" style="margin-bottom: 8px; display: none;">
+                            <strong>제목:</strong> <span id="testPreviewTitleText">-</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>내용:</strong>
+                            <div id="testPreviewContent" style="margin-top: 4px; white-space: pre-wrap; word-break: break-word;">메시지 내용을 입력하세요</div>
+                        </div>
+                        <div id="testPreviewImage" style="margin-top: 8px; display: none;">
+                            <strong>이미지:</strong>
+                            <div id="testPreviewImageList" style="margin-top: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 비용 안내 -->
+                <div class="form-group">
+                    <div class="alert alert-warning" style="margin-bottom: 8px;">
+                        테스트 발송도 포인트가 차감됩니다
+                    </div>
+                    <div class="cost-row">
+                        <span>예상 차감 포인트</span>
+                        <span id="testCost">0원</span>
+                    </div>
+                    <div class="cost-row">
+                        <span>현재 잔액</span>
+                        <span id="testBalance">1,000,000원</span>
+                    </div>
+                </div>
+
+                <!-- 발송 완료/실패 메시지 -->
+                <div id="testSendResult" style="display: none;">
+                    <div class="alert" id="testSendResultAlert" style="margin-top: 16px;"></div>
+                    <div id="testSendTime" style="text-align: center; margin-top: 8px; color: var(--text-secondary); font-size: 12px;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('testSendModal')" id="testSendCancelBtn">취소</button>
+                <button class="btn btn-primary" onclick="confirmTestSend()" id="testSendSubmitBtn">테스트 발송</button>
+            </div>
+        </div>
+    </div>
+
     <script>// 공통 JavaScript 함수
 
 // 모달 열기/닫기
@@ -1623,56 +1633,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initDropdownMenus();
 });
 
-function initDropdownMenus() {
-    const navItems = document.querySelectorAll('.nav-item.has-dropdown');
-    
-    navItems.forEach(item => {
-        const navLink = item.querySelector('.nav-link');
-        
-        // Depth 1 메뉴 링크 클릭 이벤트 (드롭다운 토글)
-        if (navLink) {
-            navLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                // 다른 드롭다운 닫기
-                navItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('open');
-                    }
-                });
-                
-                // 현재 드롭다운 토글
-                item.classList.toggle('open');
-            });
-        }
-    });
-    
-    // 외부 클릭 시 드롭다운 닫기
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-item.has-dropdown')) {
-            navItems.forEach(item => {
-                item.classList.remove('open');
-            });
-        }
-    });
-    
-    // Depth 2 메뉴 링크 클릭 시 드롭다운 닫기 (페이지 이동은 정상 작동)
-    document.querySelectorAll('.nav-dropdown-item').forEach(link => {
-        link.addEventListener('click', function(e) {
-            // 이벤트 버블링 방지 (Depth 1 메뉴의 이벤트가 실행되지 않도록)
-            e.stopPropagation();
-            
-            // 드롭다운 닫기
-            navItems.forEach(item => {
-                item.classList.remove('open');
-            });
-            
-            // 링크의 기본 동작(페이지 이동)은 정상적으로 작동
-        });
-    });
-}
-
 </script>
     <script>
         // 탭 전환 (일반문자와 동일한 방식)
@@ -1834,7 +1794,201 @@ function initDropdownMenus() {
 
 
         function testSend() {
-            showToast('테스트 발송이 완료되었습니다.', 'success');
+            // 기본값: 로그인한 회원의 휴대폰번호 (예시: 010-1234-5678)
+            const defaultPhone = '010-1234-5678'; // 실제로는 API에서 가져와야 함
+            
+            // 테스트 번호 입력 필드 초기화
+            const testPhoneNumbers = document.getElementById('testPhoneNumbers');
+            testPhoneNumbers.innerHTML = `
+                <div class="flex gap-2 mb-2">
+                    <input type="text" class="form-input test-phone-input" placeholder="010-1234-5678" value="${defaultPhone}">
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeTestPhone(this)" style="display: none;">삭제</button>
+                </div>
+            `;
+            
+            // 미리보기 업데이트
+            updateTestPreview();
+            
+            // 비용 계산
+            updateTestCost();
+            
+            // 결과 메시지 숨기기
+            document.getElementById('testSendResult').style.display = 'none';
+            
+            // 버튼 상태 초기화
+            document.getElementById('testSendSubmitBtn').disabled = false;
+            document.getElementById('testSendSubmitBtn').textContent = '테스트 발송';
+            
+            openModal('testSendModal');
+        }
+
+        function addTestPhone() {
+            const testPhoneNumbers = document.getElementById('testPhoneNumbers');
+            const phoneCount = testPhoneNumbers.querySelectorAll('.test-phone-input').length;
+            
+            if (phoneCount >= 3) {
+                showToast('최대 3개 번호까지 입력 가능합니다.', 'warning');
+                return;
+            }
+            
+            const newPhoneDiv = document.createElement('div');
+            newPhoneDiv.className = 'flex gap-2 mb-2';
+            newPhoneDiv.innerHTML = `
+                <input type="text" class="form-input test-phone-input" placeholder="010-1234-5678" oninput="updateTestCost()">
+                <button type="button" class="btn btn-sm btn-outline" onclick="removeTestPhone(this)">삭제</button>
+            `;
+            testPhoneNumbers.appendChild(newPhoneDiv);
+            
+            // 첫 번째 번호에도 삭제 버튼 표시
+            if (phoneCount === 0) {
+                const firstDiv = testPhoneNumbers.querySelector('.flex');
+                if (firstDiv) {
+                    const deleteBtn = firstDiv.querySelector('button');
+                    if (deleteBtn) deleteBtn.style.display = 'inline-flex';
+                }
+            }
+            
+            // 추가 버튼 숨기기 (3개일 때)
+            if (phoneCount + 1 >= 3) {
+                document.getElementById('addTestPhoneBtn').style.display = 'none';
+            }
+        }
+
+        function removeTestPhone(btn) {
+            const testPhoneNumbers = document.getElementById('testPhoneNumbers');
+            const phoneCount = testPhoneNumbers.querySelectorAll('.test-phone-input').length;
+            
+            if (phoneCount <= 1) {
+                showToast('최소 1개 번호는 입력해야 합니다.', 'warning');
+                return;
+            }
+            
+            btn.parentElement.remove();
+            
+            // 추가 버튼 표시
+            if (phoneCount - 1 < 3) {
+                document.getElementById('addTestPhoneBtn').style.display = 'inline-flex';
+            }
+            
+            updateTestCost();
+        }
+
+        function updateTestPreview() {
+            // 발신번호
+            const callerNumber = document.getElementById('senderNumber').value || '-';
+            document.getElementById('testPreviewCallerNumber').textContent = callerNumber;
+            
+            // 제목 (LMS/MMS인 경우)
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            const titleInput = document.getElementById('messageTitle');
+            if ((messageType === 'LMS' || messageType === 'MMS') && titleInput && titleInput.value) {
+                document.getElementById('testPreviewTitle').style.display = 'block';
+                document.getElementById('testPreviewTitleText').textContent = titleInput.value;
+            } else {
+                document.getElementById('testPreviewTitle').style.display = 'none';
+            }
+            
+            // 내용 (광고 문구 포함)
+            const adPrefixText = document.getElementById('adPrefixText').value || '';
+            const content = document.getElementById('messageContent').value || '메시지 내용을 입력하세요';
+            const rejectInput = document.getElementById('rejectNumberInput').value || '';
+            const rejectNumber = rejectInput ? '080-' + rejectInput : '080-';
+            
+            let previewContent = '';
+            if (adPrefixText) {
+                previewContent = `(광고) ${adPrefixText}\n${content}`;
+            } else {
+                previewContent = `(광고) ${content}`;
+            }
+            
+            // 변수 치환 예시
+            previewContent = previewContent.replace(/#{이름}/g, '홍길동');
+            previewContent = previewContent.replace(/#{전화번호}/g, '010-1234-5678');
+            
+            previewContent += `\n\n무료수신거부 ${rejectNumber}`;
+            
+            document.getElementById('testPreviewContent').textContent = previewContent;
+            
+            // 이미지 (MMS인 경우)
+            const imagePreview = document.getElementById('testPreviewImage');
+            const imageList = document.getElementById('testPreviewImageList');
+            const imageInputs = document.querySelectorAll('input[type="file"][accept*="image"]');
+            const hasImages = Array.from(imageInputs).some(input => input.files && input.files.length > 0);
+            
+            if (messageType === 'MMS' && hasImages) {
+                imagePreview.style.display = 'block';
+                imageList.innerHTML = '<span style="color: var(--text-secondary);">이미지 첨부됨</span>';
+            } else {
+                imagePreview.style.display = 'none';
+            }
+        }
+
+        function updateTestCost() {
+            const testPhoneInputs = document.querySelectorAll('.test-phone-input');
+            const validPhones = Array.from(testPhoneInputs).filter(input => {
+                const value = input.value.trim();
+                return value && /^010-\d{4}-\d{4}$/.test(value);
+            }).length;
+            
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            const unitPrice = messageType === 'SMS' ? 20 : messageType === 'LMS' ? 50 : 200;
+            const totalCost = validPhones * unitPrice;
+            
+            document.getElementById('testCost').textContent = totalCost.toLocaleString() + '원';
+        }
+
+        function confirmTestSend() {
+            const testPhoneInputs = document.querySelectorAll('.test-phone-input');
+            const phoneNumbers = Array.from(testPhoneInputs)
+                .map(input => input.value.trim())
+                .filter(value => value);
+            
+            if (phoneNumbers.length === 0) {
+                showToast('테스트 수신번호를 입력해주세요.', 'warning');
+                return;
+            }
+            
+            // 전화번호 형식 검증
+            const phoneRegex = /^010-\d{4}-\d{4}$/;
+            const invalidPhones = phoneNumbers.filter(phone => !phoneRegex.test(phone));
+            if (invalidPhones.length > 0) {
+                showToast('올바른 전화번호 형식이 아닙니다. (010-XXXX-XXXX)', 'warning');
+                return;
+            }
+            
+            // 발송 버튼 비활성화 및 로딩 표시
+            const submitBtn = document.getElementById('testSendSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '발송 중...';
+            
+            // 결과 메시지 숨기기
+            document.getElementById('testSendResult').style.display = 'none';
+            
+            // 실제로는 API 호출
+            // 시뮬레이션: 2초 후 완료
+            setTimeout(() => {
+                // 성공 처리
+                const resultDiv = document.getElementById('testSendResult');
+                const resultAlert = document.getElementById('testSendResultAlert');
+                const sendTime = document.getElementById('testSendTime');
+                
+                resultAlert.className = 'alert alert-success';
+                resultAlert.textContent = '테스트 발송이 완료되었습니다';
+                sendTime.textContent = '발송 시간: ' + new Date().toLocaleString('ko-KR');
+                
+                resultDiv.style.display = 'block';
+                
+                // 버튼 상태 변경
+                submitBtn.textContent = '확인';
+                submitBtn.onclick = function() {
+                    closeModal('testSendModal');
+                };
+                
+                // 취소 버튼 숨기기
+                document.getElementById('testSendCancelBtn').style.display = 'none';
+                
+                showToast('테스트 발송이 완료되었습니다.', 'success');
+            }, 2000);
         }
 
         function saveDraft() {
@@ -1886,6 +2040,9 @@ function initDropdownMenus() {
             updateByteCounter();
             updatePreview();
         });
+    </script>
+    <script>
+        document.write(createFloatingMenu());
     </script>
 </body>
 </html>

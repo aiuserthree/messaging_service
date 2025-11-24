@@ -11,9 +11,10 @@
 
 ### 1.2 모듈 목적 및 범위
 - **핵심 기능**: 
-  - 주소록 그룹 관리
+  - 주소록 그룹 관리 (그룹명 수정, 그룹 삭제)
   - 주소록 조회/추가/수정/삭제
-  - 엑셀 업로드/다운로드
+  - 엑셀 업로드/다운로드 (XLSX 형식)
+  - 엑셀 샘플 파일 다운로드
   - 주소록 검색 및 필터링
   - 수신거부 번호 연동
 - **비즈니스 가치**: 수신자 정보를 효율적으로 관리하고 발송 시 활용
@@ -34,6 +35,8 @@ AddressBookModule/
 ├── components/
 │   ├── AddressBookPage.tsx          # 메인 페이지
 │   ├── GroupList.tsx                # 그룹 목록
+│   ├── GroupEditModal.tsx           # 그룹명 수정 모달
+│   ├── GroupDeleteModal.tsx         # 그룹 삭제 모달
 │   ├── AddressList.tsx              # 주소록 목록
 │   ├── AddressForm.tsx              # 주소록 입력 폼
 │   ├── ExcelUploadModal.tsx         # 엑셀 업로드 모달
@@ -111,7 +114,6 @@ interface Address {
   groupId: string;
   name: string;
   phoneNumber: string;
-  email?: string;
   memo?: string;
   isBlocked: boolean;
   createdAt: Date;
@@ -176,6 +178,8 @@ enum AddressBookEvents {
   ADDRESS_UPDATED = 'addressbook.address.updated',
   ADDRESS_DELETED = 'addressbook.address.deleted',
   GROUP_CREATED = 'addressbook.group.created',
+  GROUP_UPDATED = 'addressbook.group.updated',
+  GROUP_DELETED = 'addressbook.group.deleted',
 }
 ```
 
@@ -224,6 +228,15 @@ enum AddressBookErrorCode {
 
 ---
 
-**문서 버전**: 1.0  
-**작성일**: 2024-11-19
+**문서 버전**: 1.1  
+**작성일**: 2024-11-19  
+**최종 수정일**: 2024-11-19
+
+## 변경 이력
+
+### 버전 1.1 (2024-11-19)
+- Address 엔티티에서 email 필드 제거
+- 그룹 관리 기능 추가 (그룹명 수정, 그룹 삭제)
+- 엑셀 샘플 파일 다운로드 기능 추가 (XLSX 형식)
+- GroupEditModal, GroupDeleteModal 컴포넌트 추가
 
