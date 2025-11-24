@@ -1172,11 +1172,10 @@ body {
                         <!-- 메시지 내용 -->
                         <div class="form-group">
                             <label class="form-label required">메시지 내용</label>
-                            <div class="flex-between mb-1">
-                                <div>
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable()">변수 삽입</button>
-                                </div>
+                            <div class="flex gap-2 mb-1">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
                             </div>
                             <textarea class="form-textarea" id="messageContent" rows="8" placeholder="메시지 내용을 입력하세요" required></textarea>
                             <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
@@ -1277,6 +1276,7 @@ body {
                     <table class="table">
                         <thead>
                             <tr>
+                                <th>카테고리</th>
                                 <th>템플릿명</th>
                                 <th>타입</th>
                                 <th>내용</th>
@@ -1286,6 +1286,7 @@ body {
                         </thead>
                         <tbody>
                             <tr>
+                                <td><span class="badge badge-secondary">일반</span></td>
                                 <td>주문 확인</td>
                                 <td><span class="badge badge-primary">SMS</span></td>
                                 <td>주문이 접수되었습니다...</td>
@@ -1293,6 +1294,7 @@ body {
                                 <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('주문 확인', '주문이 접수되었습니다. 주문번호: #{주문번호}')">선택</button></td>
                             </tr>
                             <tr>
+                                <td><span class="badge badge-secondary">일반</span></td>
                                 <td>배송 안내</td>
                                 <td><span class="badge badge-primary">LMS</span></td>
                                 <td>배송이 시작되었습니다...</td>
@@ -1305,6 +1307,37 @@ body {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('templateSelectModal')">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 템플릿 저장 모달 -->
+    <div class="modal-overlay" id="templateSaveModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿으로 저장</h3>
+                <button class="modal-close" onclick="closeModal('templateSaveModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">템플릿명</label>
+                    <input type="text" class="form-input" id="templateName" placeholder="템플릿명을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">카테고리</label>
+                    <select class="form-select" id="templateCategory" required>
+                        <option value="">카테고리를 선택하세요</option>
+                        <option value="일반">일반</option>
+                        <option value="광고">광고</option>
+                        <option value="공지">공지</option>
+                        <option value="이벤트">이벤트</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('templateSaveModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveTemplateConfirm()">저장</button>
             </div>
         </div>
     </div>
@@ -1873,23 +1906,16 @@ function initDropdownMenus() {
             closeModal('templateSelectModal');
         }
 
-        function insertVariable() {
-            const variables = ['#{이름}', '#{전화번호}', '#{날짜}', '#{주문번호}'];
-            const selected = prompt('변수를 선택하세요:\n' + variables.map((v, i) => `${i+1}. ${v}`).join('\n'));
-            if (selected) {
-                const index = parseInt(selected) - 1;
-                if (index >= 0 && index < variables.length) {
-                    const textarea = document.getElementById('messageContent');
-                    const start = textarea.selectionStart;
-                    const end = textarea.selectionEnd;
-                    const text = textarea.value;
-                    textarea.value = text.substring(0, start) + variables[index] + text.substring(end);
-                    textarea.focus();
-                    textarea.setSelectionRange(start + variables[index].length, start + variables[index].length);
-                    updateByteCounter();
-                    updatePreview();
-                }
-            }
+        function insertVariable(variable) {
+            const textarea = document.getElementById('messageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateByteCounter();
+            updatePreview();
         }
 
         function updateCost() {
@@ -1938,10 +1964,23 @@ function initDropdownMenus() {
         }
 
         function saveTemplate() {
-            const name = prompt('템플릿명을 입력하세요:');
-            if (name) {
-                showToast('템플릿으로 저장되었습니다.', 'success');
+            // 템플릿 저장 모달 열기
+            document.getElementById('templateName').value = '';
+            document.getElementById('templateCategory').value = '';
+            openModal('templateSaveModal');
+        }
+
+        function saveTemplateConfirm() {
+            const name = document.getElementById('templateName').value;
+            const category = document.getElementById('templateCategory').value;
+            
+            if (!name || !category) {
+                showToast('템플릿명과 카테고리를 모두 입력해주세요.', 'warning');
+                return;
             }
+            
+            showToast('템플릿으로 저장되었습니다.', 'success');
+            closeModal('templateSaveModal');
         }
 
         // 샘플 파일 다운로드 (주소록 관리와 동일)
