@@ -136,7 +136,7 @@ function createHeader(activeMenu = '') {
             <div class="header-content">
                 <div class="logo">
                     <a href="send-result.html" style="text-decoration: none; color: inherit;">
-                        <h1>iSend</h1>
+                        <h1>Tokbell</h1>
                     </a>
                 </div>
                 <nav class="main-nav">
