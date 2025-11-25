@@ -3,7 +3,7 @@ function getSidebarHTML(activeMenu) {
     return `
         <aside class="admin-sidebar">
             <div class="sidebar-header">
-                <h1>iSend Admin</h1>
+                <h1>Tokbell Admin</h1>
                 <div class="subtitle">관리자 시스템</div>
             </div>
             <nav class="sidebar-menu">
