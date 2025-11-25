@@ -235,18 +235,23 @@ function createFloatingMenu() {
             </button>
             <div class="floating-menu-items" id="floatingMenuItems">
                 <a href="message-send-general.html" class="floating-menu-item" title="일반문자 발송">
+                    <span class="floating-menu-icon-item"><img src="img/text.png" alt="일반문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">일반문자 발송</span>
                 </a>
                 <a href="message-send-ad.html" class="floating-menu-item" title="광고문자 발송">
+                    <span class="floating-menu-icon-item"><img src="img/ad.png" alt="광고문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">광고문자 발송</span>
                 </a>
                 <a href="message-send-election.html" class="floating-menu-item" title="공직선거문자 발송">
+                    <span class="floating-menu-icon-item"><img src="img/elect.png" alt="공직선거문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">공직선거문자 발송</span>
                 </a>
                 <a href="kakao-send-alimtalk.html" class="floating-menu-item" title="알림톡 발송">
+                    <span class="floating-menu-icon-item"><img src="img/2111683.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">알림톡 발송</span>
                 </a>
                 <a href="kakao-send-brandtalk.html" class="floating-menu-item" title="브랜드톡 발송">
+                    <span class="floating-menu-icon-item"><img src="img/2111683.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">브랜드톡 발송</span>
                 </a>
             </div>
@@ -308,7 +313,7 @@ function createFloatingMenu() {
             .floating-menu-item {
                 display: flex;
                 align-items: center;
-                justify-content: flex-end;
+                justify-content: flex-start;
                 gap: 12px;
                 text-decoration: none;
                 color: var(--text-primary);
@@ -319,7 +324,6 @@ function createFloatingMenu() {
                 transition: all 0.2s ease;
                 white-space: nowrap;
                 min-width: 180px;
-                justify-content: flex-end;
             }
             
             .floating-menu-item:hover {
@@ -327,6 +331,22 @@ function createFloatingMenu() {
                 color: white;
                 transform: translateX(-4px);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+            
+            .floating-menu-icon-item {
+                font-size: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+            }
+            
+            .floating-menu-icon-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
             }
             
             .floating-menu-label {
