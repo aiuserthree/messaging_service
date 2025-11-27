@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분배 관리 - 메시징 서비스</title>
+    <script src="js/header.js"></script>
+    <style>/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--bg-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* 입력 필드 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--danger-color);
+}
+
+.form-help {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 카드 */
+.card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+
+.card-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 테이블 */
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.table tbody tr:hover {
+    background-color: var(--bg-color);
+}
+
+/* 알림 */
+.alert {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background-color: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    color: var(--primary-color);
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+}
+
+/* 레이아웃 스타일 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 */
+.header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.logo a:hover h1 {
+    opacity: 0.8;
+}
+
+.main-nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+/* 드롭다운 메뉴 */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.nav-item.open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.nav-dropdown-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.balance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.balance-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 디파짓 잔액 카드 */
+.deposit-balance-card {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    color: white;
+    padding: 32px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+}
+
+.deposit-balance-label {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.deposit-balance-amount {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.deposit-balance-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* 분배 테이블 */
+.distribution-table-wrapper {
+    margin-top: 20px;
+}
+
+.distribution-summary {
+    background-color: var(--bg-color);
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.distribution-summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.distribution-summary-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.distribution-summary-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.distribution-summary-value.remaining {
+    color: var(--success-color);
+}
+
+.distribution-summary-value.over {
+    color: var(--danger-color);
+}
+
+/* 탭 */
+.tabs {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.tab-list {
+    display: flex;
+    gap: 8px;
+}
+
+.tab-item {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    color: var(--text-primary);
+}
+
+.tab-item.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 히스토리 테이블 */
+.history-table {
+    margin-top: 24px;
+}
+
+.history-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+}
+
+.history-badge.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.history-badge.pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .nav-dropdown {
+        position: static;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+
+    .nav-item.open .nav-dropdown {
+        display: block;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+    
+    .deposit-balance-actions {
+        flex-direction: column;
+    }
+    
+    .distribution-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader());
+        </script>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>결제 관리</h2>
+                <p class="page-description">디파짓 잔액을 발신번호별로 분배하고 관리합니다</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="tabs">
+                <div class="tab-list">
+                    <button class="tab-item" onclick="window.location.href='payment-charge.html'">충전하기</button>
+                    <button class="tab-item active" onclick="window.location.href='payment-deposit-distribution.html'">분배 관리</button>
+                    <button class="tab-item" onclick="window.location.href='payment-history.html'">충전/사용 내역</button>
+                    <button class="tab-item" onclick="window.location.href='payment-tax.html'">세금계산서 발행</button>
+                </div>
+            </div>
+
+            <!-- 디파짓 잔액 카드 -->
+            <div class="deposit-balance-card">
+                <div class="deposit-balance-label">현재 디파짓 잔액</div>
+                <div class="deposit-balance-amount" id="depositBalance">₩1,500,000</div>
+                <div class="deposit-balance-actions">
+                    <a href="payment-charge.html" class="btn" style="background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);">충전하기</a>
+                    <a href="payment-history.html" class="btn" style="background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);">충전 내역</a>
+                </div>
+            </div>
+
+            <!-- 발신번호별 분배 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">발신번호별 금액 분배</h3>
+                </div>
+                
+                <div id="noCallerNumberAlert" class="alert alert-info" style="display: none;">
+                    등록된 발신번호가 없습니다. 
+                    <a href="mypage-caller-number.html" style="color: var(--primary-color); text-decoration: underline;">발신번호를 먼저 등록해주세요</a>
+                </div>
+
+                <div id="distributionSection" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <span style="font-size: 14px; color: var(--text-secondary);">디파짓 잔액을 발신번호별로 분배하세요</span>
+                        <button type="button" class="btn btn-outline btn-sm" onclick="equalDistribution()">균등 분배</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>발신번호</th>
+                                    <th>명의자</th>
+                                    <th>현재 잔액</th>
+                                    <th>분배 금액</th>
+                                </tr>
+                            </thead>
+                            <tbody id="distributionTableBody">
+                                <!-- 동적으로 생성됨 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 분배 요약 -->
+                    <div class="distribution-summary">
+                        <div class="distribution-summary-item">
+                            <span class="distribution-summary-label">디파짓 잔액</span>
+                            <span class="distribution-summary-value" id="depositBalanceSummary">₩1,500,000</span>
+                        </div>
+                        <div class="distribution-summary-item">
+                            <span class="distribution-summary-label">분배 금액 합계</span>
+                            <span class="distribution-summary-value" id="distributionSum">₩0</span>
+                        </div>
+                        <div class="distribution-summary-item">
+                            <span class="distribution-summary-label">잔여 포인트</span>
+                            <span class="distribution-summary-value" id="remainingBalance">₩1,500,000</span>
+                        </div>
+                    </div>
+
+                    <div id="distributionWarning" class="alert alert-warning" style="display: none; margin-top: 16px;">
+                        분배 금액 합계가 디파짓 잔액을 초과할 수 없습니다.
+                    </div>
+
+                    <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+                        <button type="button" class="btn btn-outline" onclick="resetDistribution()">초기화</button>
+                        <button type="button" class="btn btn-primary" onclick="executeDistribution()">분배 실행</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 분배 히스토리 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">분배 히스토리</h3>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table history-table">
+                        <thead>
+                            <tr>
+                                <th>분배 일시</th>
+                                <th>발신번호</th>
+                                <th>명의자</th>
+                                <th>분배 금액</th>
+                                <th>분배 후 잔액</th>
+                                <th>상태</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            <!-- 동적으로 생성됨 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 공통 JavaScript 함수들 (payment-charge.html과 동일)
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background-color: var(--surface-color);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 전역 변수
+        let depositBalance = 1500000; // 디파짓 잔액
+        let callerNumbers = []; // 발신번호 목록
+        let distributions = {}; // 발신번호별 분배 금액 { callerNumberId: amount }
+        let distributionHistory = []; // 분배 히스토리
+
+        // 발신번호 목록 조회
+        function loadCallerNumbers() {
+            // 실제로는 API 호출
+            // 예시 데이터
+            callerNumbers = [
+                { id: 'CN001', callerNumber: '010-1234-5678', ownerName: '홍길동', status: 'APPROVED', balance: 500000 },
+                { id: 'CN002', callerNumber: '010-2345-6789', ownerName: '김철수', status: 'APPROVED', balance: 300000 },
+                { id: 'CN003', callerNumber: '010-3456-7890', ownerName: '이영희', status: 'APPROVED', balance: 200000 }
+            ];
+            
+            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
+            
+            if (approvedNumbers.length === 0) {
+                document.getElementById('noCallerNumberAlert').style.display = 'block';
+                document.getElementById('distributionSection').style.display = 'none';
+            } else {
+                document.getElementById('noCallerNumberAlert').style.display = 'none';
+                document.getElementById('distributionSection').style.display = 'block';
+                renderDistributionTable();
+            }
+        }
+        
+        // 분배 테이블 렌더링
+        function renderDistributionTable() {
+            const tbody = document.getElementById('distributionTableBody');
+            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
+            
+            tbody.innerHTML = approvedNumbers.map(cn => `
+                <tr>
+                    <td>${cn.callerNumber}</td>
+                    <td>${cn.ownerName}</td>
+                    <td>₩${formatNumber(cn.balance)}</td>
+                    <td>
+                        <input 
+                            type="number" 
+                            class="form-input" 
+                            style="width: 100%; padding: 8px; font-size: 14px;"
+                            value="${distributions[cn.id] || 0}" 
+                            min="0"
+                            oninput="updateDistribution('${cn.id}', this.value)"
+                        />
+                    </td>
+                </tr>
+            `).join('');
+            
+            updateDistributionSummary();
+        }
+        
+        // 분배 금액 업데이트
+        function updateDistribution(callerNumberId, amount) {
+            distributions[callerNumberId] = parseInt(amount) || 0;
+            updateDistributionSummary();
+        }
+        
+        // 분배 금액 합계 업데이트
+        function updateDistributionSummary() {
+            const totalDistributed = Object.values(distributions).reduce((sum, val) => sum + (val || 0), 0);
+            const remaining = depositBalance - totalDistributed;
+            
+            document.getElementById('distributionSum').textContent = '₩' + formatNumber(totalDistributed);
+            
+            const remainingElement = document.getElementById('remainingBalance');
+            const warningElement = document.getElementById('distributionWarning');
+            
+            if (remaining >= 0) {
+                remainingElement.textContent = '₩' + formatNumber(remaining);
+                remainingElement.className = 'distribution-summary-value remaining';
+                warningElement.style.display = 'none';
+            } else {
+                remainingElement.textContent = '₩' + formatNumber(Math.abs(remaining)) + ' 초과';
+                remainingElement.className = 'distribution-summary-value over';
+                warningElement.style.display = 'block';
+            }
+        }
+        
+        // 균등 분배
+        function equalDistribution() {
+            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
+            if (approvedNumbers.length === 0 || depositBalance === 0) return;
+            
+            const equalAmount = Math.floor(depositBalance / approvedNumbers.length);
+            const remainder = depositBalance % approvedNumbers.length;
+            
+            approvedNumbers.forEach((cn, index) => {
+                distributions[cn.id] = equalAmount + (index < remainder ? 1 : 0);
+            });
+            
+            renderDistributionTable();
+        }
+
+        // 초기화
+        function resetDistribution() {
+            distributions = {};
+            renderDistributionTable();
+        }
+
+        // 분배 실행
+        function executeDistribution() {
+            const totalDistributed = Object.values(distributions).reduce((sum, val) => sum + (val || 0), 0);
+            
+            if (totalDistributed === 0) {
+                showToast('분배할 금액을 입력해주세요.', 'warning');
+                return;
+            }
+            
+            if (totalDistributed > depositBalance) {
+                showToast('분배 금액 합계가 디파짓 잔액을 초과할 수 없습니다.', 'warning');
+                return;
+            }
+
+            // 확인 다이얼로그
+            if (!confirm(`총 ₩${formatNumber(totalDistributed)}을 발신번호별로 분배하시겠습니까?`)) {
+                return;
+            }
+
+            // 실제로는 API 호출
+            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
+            
+            // 분배 전 디파짓 잔액 저장
+            let currentDepositBalance = depositBalance;
+            
+            // 분배 처리
+            approvedNumbers.forEach(cn => {
+                if (distributions[cn.id] && distributions[cn.id] > 0) {
+                    // 발신번호별 잔액 업데이트
+                    cn.balance += distributions[cn.id];
+                    
+                    // 디파짓 잔액에서 분배 금액 차감
+                    currentDepositBalance -= distributions[cn.id];
+                    
+                    // 히스토리 추가 (분배 후 디파짓 잔액 저장)
+                    distributionHistory.unshift({
+                        id: 'DH' + Date.now() + Math.random().toString(36).substr(2, 9),
+                        date: new Date(),
+                        callerNumberId: cn.id,
+                        callerNumber: cn.callerNumber,
+                        ownerName: cn.ownerName,
+                        amount: distributions[cn.id],
+                        balanceAfter: currentDepositBalance, // 분배 후 디파짓 잔액
+                        status: 'SUCCESS'
+                    });
+                }
+            });
+
+            // 디파짓 잔액 업데이트
+            depositBalance = currentDepositBalance;
+            
+            // UI 업데이트
+            document.getElementById('depositBalance').textContent = '₩' + formatNumber(depositBalance);
+            document.getElementById('depositBalanceSummary').textContent = '₩' + formatNumber(depositBalance);
+            
+            // 분배 초기화
+            distributions = {};
+            renderDistributionTable();
+            renderHistoryTable();
+            
+            showToast('분배가 완료되었습니다.', 'success');
+        }
+
+        // 히스토리 테이블 렌더링
+        function renderHistoryTable() {
+            const tbody = document.getElementById('historyTableBody');
+            
+            if (distributionHistory.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: var(--text-secondary);">분배 내역이 없습니다.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = distributionHistory.map(history => {
+                const date = new Date(history.date);
+                const dateStr = date.toLocaleDateString('ko-KR') + ' ' + date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+                
+                return `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${history.callerNumber}</td>
+                        <td>${history.ownerName}</td>
+                        <td style="font-weight: 600;">₩${formatNumber(history.amount)}</td>
+                        <td>₩${formatNumber(history.balanceAfter)}</td>
+                        <td><span class="history-badge success">완료</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+            // 초기 히스토리 데이터 로드
+        function loadHistory() {
+            // 실제로는 API 호출
+            // 예시 데이터 (분배 후 잔액은 디파짓 잔액에서 분배 금액을 차감한 값)
+            // 초기 디파짓 잔액이 1,500,000원이라고 가정
+            distributionHistory = [
+                {
+                    id: 'DH001',
+                    date: new Date('2024-11-19T10:30:00'),
+                    callerNumberId: 'CN001',
+                    callerNumber: '010-1234-5678',
+                    ownerName: '홍길동',
+                    amount: 200000,
+                    balanceAfter: 1300000, // 1,500,000 - 200,000 = 1,300,000
+                    status: 'SUCCESS'
+                },
+                {
+                    id: 'DH002',
+                    date: new Date('2024-11-19T09:15:00'),
+                    callerNumberId: 'CN002',
+                    callerNumber: '010-2345-6789',
+                    ownerName: '김철수',
+                    amount: 150000,
+                    balanceAfter: 1350000, // 1,500,000 - 150,000 = 1,350,000
+                    status: 'SUCCESS'
+                }
+            ];
+            
+            renderHistoryTable();
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initDropdownMenus();
+            loadCallerNumbers();
+            loadHistory();
+        });
+    </script>
+    <script src="js/footer.js"></script>
+    <script>
+        document.write(createFloatingMenu());
+        document.write(createFooter());
+    </script>
+</body>
+</html>
+

@@ -1006,6 +1006,7 @@ body {
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item active" onclick="window.location.href='payment-charge.html'">충전하기</button>
+                    <button class="tab-item" onclick="window.location.href='payment-deposit-distribution.html'">분배 관리</button>
                     <button class="tab-item" onclick="window.location.href='payment-history.html'">충전/사용 내역</button>
                     <button class="tab-item" onclick="window.location.href='payment-tax.html'">세금계산서 발행</button>
                 </div>
@@ -1069,50 +1070,11 @@ body {
                             </div>
                         </div>
 
-                        <!-- 발신번호별 금액 분배 -->
-                        <div class="form-group">
-                            <label class="form-label">발신번호별 금액 분배</label>
-                            <div id="callerNumberDistribution" style="margin-top: 12px;">
-                                <!-- 발신번호 목록이 없을 때 -->
-                                <div id="noCallerNumberAlert" class="alert alert-info" style="display: none;">
-                                    등록된 발신번호가 없습니다. 
-                                    <a href="mypage-caller-number.html" style="color: var(--primary-color); text-decoration: underline;">발신번호를 먼저 등록해주세요</a>
-                                </div>
-                                <!-- 발신번호 분배 테이블 -->
-                                <div id="distributionTable" style="display: none;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                        <span style="font-size: 12px; color: var(--text-secondary);">총 충전 금액을 발신번호별로 분배하세요</span>
-                                        <button type="button" class="btn btn-outline btn-sm" onclick="equalDistribution()">균등 분배</button>
-                                    </div>
-                                    <div class="table-container" style="max-height: 300px; overflow-y: auto;">
-                                        <table style="width: 100%; border-collapse: collapse;">
-                                            <thead style="position: sticky; top: 0; background: var(--bg-color);">
-                                                <tr>
-                                                    <th style="padding: 8px; text-align: left; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--border-color);">발신번호</th>
-                                                    <th style="padding: 8px; text-align: left; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--border-color);">명의자</th>
-                                                    <th style="padding: 8px; text-align: left; font-size: 12px; font-weight: 600; border-bottom: 1px solid var(--border-color);">분배 금액</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="distributionTableBody">
-                                                <!-- 동적으로 생성됨 -->
-                                            </tbody>
-                                            <tfoot style="background: var(--bg-color);">
-                                                <tr>
-                                                    <td colspan="2" style="padding: 8px; font-weight: 600; border-top: 1px solid var(--border-color);">합계</td>
-                                                    <td style="padding: 8px; font-weight: 600; border-top: 1px solid var(--border-color);" id="distributionSum">0원</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="padding: 8px; font-weight: 600;">차이</td>
-                                                    <td style="padding: 8px; font-weight: 600;" id="distributionDiff">0원</td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                    <div id="distributionWarning" class="alert alert-warning" style="display: none; margin-top: 12px; font-size: 12px;">
-                                        분배 금액 합계가 총 충전 금액과 일치하지 않습니다.
-                                    </div>
-                                </div>
-                            </div>
+                        <!-- 디파짓 안내 -->
+                        <div class="alert alert-info">
+                            <strong>💡 디파짓 충전 안내</strong><br>
+                            충전된 금액은 디파짓(예치금)에 저장되며, 발신번호별 분배는 별도 페이지에서 관리할 수 있습니다.<br>
+                            <a href="payment-deposit-distribution.html" style="color: var(--primary-color); text-decoration: underline; margin-top: 8px; display: inline-block;">분배 관리 페이지로 이동</a>
                         </div>
 
                         <!-- 결제 금액 정보 -->
@@ -1557,8 +1519,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let selectedAmount = 0;
         let selectedPayment = 'card';
         let discountAmount = 0;
-        let callerNumbers = []; // 발신번호 목록
-        let distributions = {}; // 발신번호별 분배 금액 { callerNumberId: amount }
 
         function selectAmount(amount) {
             selectedAmount = amount;
@@ -1592,94 +1552,6 @@ document.addEventListener('DOMContentLoaded', function() {
             event.currentTarget.classList.add('selected');
         }
 
-        // 발신번호 목록 조회
-        function loadCallerNumbers() {
-            // 실제로는 API 호출
-            // 예시 데이터
-            callerNumbers = [
-                { id: 'CN001', callerNumber: '010-1234-5678', ownerName: '홍길동', status: 'APPROVED' },
-                { id: 'CN002', callerNumber: '010-2345-6789', ownerName: '김철수', status: 'APPROVED' },
-                { id: 'CN003', callerNumber: '010-3456-7890', ownerName: '이영희', status: 'APPROVED' }
-            ];
-            
-            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
-            
-            if (approvedNumbers.length === 0) {
-                document.getElementById('noCallerNumberAlert').style.display = 'block';
-                document.getElementById('distributionTable').style.display = 'none';
-            } else {
-                document.getElementById('noCallerNumberAlert').style.display = 'none';
-                document.getElementById('distributionTable').style.display = 'block';
-                renderDistributionTable();
-            }
-        }
-        
-        // 분배 테이블 렌더링
-        function renderDistributionTable() {
-            const tbody = document.getElementById('distributionTableBody');
-            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
-            
-            tbody.innerHTML = approvedNumbers.map(cn => `
-                <tr>
-                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">${cn.callerNumber}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">${cn.ownerName}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
-                        <input 
-                            type="number" 
-                            class="form-input" 
-                            style="width: 100%; padding: 6px; font-size: 12px;"
-                            value="${distributions[cn.id] || 0}" 
-                            min="0"
-                            oninput="updateDistribution('${cn.id}', this.value)"
-                        />
-                    </td>
-                </tr>
-            `).join('');
-            
-            updateDistributionSummary();
-        }
-        
-        // 분배 금액 업데이트
-        function updateDistribution(callerNumberId, amount) {
-            distributions[callerNumberId] = parseInt(amount) || 0;
-            updateDistributionSummary();
-        }
-        
-        // 분배 금액 합계 업데이트
-        function updateDistributionSummary() {
-            const totalDistributed = Object.values(distributions).reduce((sum, val) => sum + (val || 0), 0);
-            const difference = selectedAmount - totalDistributed;
-            
-            document.getElementById('distributionSum').textContent = formatNumber(totalDistributed) + '원';
-            
-            const diffElement = document.getElementById('distributionDiff');
-            const warningElement = document.getElementById('distributionWarning');
-            
-            if (difference === 0) {
-                diffElement.textContent = '일치';
-                diffElement.style.color = 'var(--success-color)';
-                warningElement.style.display = 'none';
-            } else {
-                diffElement.textContent = formatNumber(Math.abs(difference)) + '원 ' + (difference > 0 ? '부족' : '초과');
-                diffElement.style.color = 'var(--danger-color)';
-                warningElement.style.display = 'block';
-            }
-        }
-        
-        // 균등 분배
-        function equalDistribution() {
-            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
-            if (approvedNumbers.length === 0 || selectedAmount === 0) return;
-            
-            const equalAmount = Math.floor(selectedAmount / approvedNumbers.length);
-            const remainder = selectedAmount % approvedNumbers.length;
-            
-            approvedNumbers.forEach((cn, index) => {
-                distributions[cn.id] = equalAmount + (index < remainder ? 1 : 0);
-            });
-            
-            renderDistributionTable();
-        }
 
         function updatePrice() {
             const chargeAmount = selectedAmount - discountAmount;
@@ -1690,9 +1562,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('discountAmount').textContent = formatNumber(discountAmount) + '원';
             document.getElementById('vatAmount').textContent = formatNumber(vatAmount) + '원';
             document.getElementById('totalAmount').textContent = formatNumber(totalAmount) + '원';
-            
-            // 분배 금액 합계 업데이트
-            updateDistributionSummary();
         }
 
         function calculateCharge() {
@@ -1731,33 +1600,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // 발신번호별 분배 금액 검증
-            const approvedNumbers = callerNumbers.filter(cn => cn.status === 'APPROVED');
-            if (approvedNumbers.length > 0) {
-                const totalDistributed = Object.values(distributions).reduce((sum, val) => sum + (val || 0), 0);
-                if (totalDistributed !== selectedAmount) {
-                    showToast('분배 금액 합계가 총 충전 금액과 일치하지 않습니다.', 'warning');
-                    return;
-                }
-            }
-            
             if (selectedPayment === 'bank') {
                 showToast('무통장입금 안내 팝업이 표시됩니다.', 'info');
                 // 무통장입금 안내 모달 표시
             } else {
-                showToast('결제가 완료되었습니다.', 'success');
+                showToast('결제가 완료되었습니다. 디파짓에 충전되었습니다.', 'success');
                 // 실제 결제 처리
-                // distributions 객체를 서버로 전송
+                // 충전 금액을 디파짓에 저장
             }
         });
-        
-        // 페이지 로드 시 발신번호 목록 조회
-        document.addEventListener('DOMContentLoaded', function() {
-            loadCallerNumbers();
-        });
     </script>
+    <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
+        document.write(createFooter());
     </script>
 </body>
 </html>

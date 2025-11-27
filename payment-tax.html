@@ -908,6 +908,7 @@ body {
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item" onclick="window.location.href='payment-charge.html'">충전하기</button>
+                    <button class="tab-item" onclick="window.location.href='payment-deposit-distribution.html'">분배 관리</button>
                     <button class="tab-item" onclick="window.location.href='payment-history.html'">충전/사용 내역</button>
                     <button class="tab-item active" onclick="window.location.href='payment-tax.html'">세금계산서 발행</button>
                 </div>
@@ -924,7 +925,7 @@ body {
 
             <!-- 기업 정보 -->
             <div class="card">
-                <h3 class="card-title">기업 정보</h3>
+                <h3 class="card-title" style="margin-bottom: 24px;">기업 정보</h3>
                 <div class="table-container">
                     <table class="table">
                         <tr>
@@ -952,7 +953,7 @@ body {
 
             <!-- 계산서 수신 정보 -->
             <div class="card" style="margin-top: 24px;">
-                <h3 class="card-title">계산서 수신 정보</h3>
+                <h3 class="card-title" style="margin-bottom: 24px;">계산서 수신 정보</h3>
                 <div class="form-group">
                     <label class="form-label required">담당자 이름</label>
                     <input type="text" class="form-input" value="홍길동" required>
@@ -974,21 +975,15 @@ body {
                     </label>
                     <div class="form-help">체크 시 매월 설정일에 전월 내역이 자동으로 발행됩니다</div>
                 </div>
-                <button class="btn btn-primary">계산서 정보 수정하기</button>
+                <button class="btn btn-primary" onclick="updateContactInfo()">계산서 정보 수정하기</button>
             </div>
 
             <!-- 세금계산서 신청 -->
             <div class="card" style="margin-top: 24px;">
-                <h3 class="card-title">세금계산서 신청</h3>
+                <h3 class="card-title" style="margin-bottom: 24px;">세금계산서 신청</h3>
                 <div class="form-group">
                     <label class="form-label required">발행 대상 기간</label>
                     <div class="flex gap-2">
-                        <select class="form-select">
-                            <option>2024년 11월</option>
-                            <option>2024년 10월</option>
-                            <option>2024년 9월</option>
-                        </select>
-                        <span style="line-height: 40px;">또는</span>
                         <div class="date-range-group">
                             <div class="date-input-wrapper">
                                 <input type="date" class="form-input" placeholder="시작일">
@@ -998,6 +993,7 @@ body {
                                 <input type="date" class="form-input" placeholder="종료일">
                             </div>
                         </div>
+                        <button class="btn btn-primary">조회</button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -1041,7 +1037,7 @@ body {
 
             <!-- 세금계산서 조회 -->
             <div class="card" style="margin-top: 24px;">
-                <h3 class="card-title">세금계산서 조회</h3>
+                <h3 class="card-title" style="margin-bottom: 24px;">세금계산서 조회</h3>
                 <div class="search-filter-section">
                     <div class="date-range-group">
                         <div class="date-input-wrapper">
@@ -1091,7 +1087,7 @@ body {
                                 <td>
                                     <div class="flex gap-2">
                                         <button class="btn btn-sm btn-outline" onclick="viewDetail(1)">상세보기</button>
-                                        <button class="btn btn-sm btn-outline" onclick="downloadPDF(1)">출력</button>
+                                        <button class="btn btn-sm btn-outline" onclick="printTaxInvoice(1)">출력</button>
                                         <button class="btn btn-sm btn-outline" onclick="resendEmail(1)">이메일 재전송</button>
                                     </div>
                                 </td>
@@ -1503,6 +1499,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
     <script>
+        function updateContactInfo() {
+            // 계산서 수신 정보 카드 찾기
+            const cards = document.querySelectorAll('.card');
+            let contactCard = null;
+            
+            for (let card of cards) {
+                const title = card.querySelector('.card-title');
+                if (title && title.textContent.includes('계산서 수신 정보')) {
+                    contactCard = card;
+                    break;
+                }
+            }
+            
+            if (!contactCard) {
+                showToast('정보를 불러올 수 없습니다.', 'error');
+                return;
+            }
+            
+            // 입력값 가져오기
+            const inputs = contactCard.querySelectorAll('.form-input');
+            
+            if (inputs.length >= 3) {
+                const name = inputs[0].value.trim();
+                const phone = inputs[1].value.trim();
+                const email = inputs[2].value.trim();
+                
+                if (!name) {
+                    showToast('담당자 이름을 입력해주세요.', 'warning');
+                    inputs[0].focus();
+                    return;
+                }
+                
+                if (!phone) {
+                    showToast('담당자 연락처를 입력해주세요.', 'warning');
+                    inputs[1].focus();
+                    return;
+                }
+                
+                if (!email) {
+                    showToast('수신 이메일을 입력해주세요.', 'warning');
+                    inputs[2].focus();
+                    return;
+                }
+                
+                // 이메일 형식 검증
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('올바른 이메일 형식을 입력해주세요.', 'warning');
+                    inputs[2].focus();
+                    return;
+                }
+                
+                // 실제로는 API 호출하여 정보 업데이트
+                showToast('계산서 수신 정보가 수정되었습니다.', 'success');
+            } else {
+                showToast('정보를 불러올 수 없습니다.', 'error');
+            }
+        }
+
         function confirmRequest() {
             if (!document.getElementById('infoConfirm').checked) {
                 showToast('정보 확인에 동의해주세요.', 'warning');
@@ -1529,6 +1584,187 @@ document.addEventListener('DOMContentLoaded', function() {
             window.print();
         }
 
+        function printTaxInvoice(id) {
+            // 실제로는 API 호출하여 세금계산서 데이터를 가져옴
+            // 예시 데이터
+            const taxInvoiceData = {
+                1: {
+                    approvalNumber: '1234567890123',
+                    issueDate: '2024-11-15',
+                    supplyAmount: '909,091',
+                    vatAmount: '90,909',
+                    totalAmount: '1,000,000',
+                    companyName: '주식회사 예시',
+                    businessNumber: '123-45-67890',
+                    ceoName: '홍길동',
+                    address: '서울시 강남구 테헤란로 123'
+                }
+            };
+
+            const data = taxInvoiceData[id];
+            if (!data) {
+                showToast('세금계산서 정보를 불러올 수 없습니다.', 'error');
+                return;
+            }
+
+            // 세금계산서 프린트용 HTML 생성
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="ko">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>세금계산서</title>
+                    <style>
+                        @media print {
+                            @page {
+                                size: A4;
+                                margin: 20mm;
+                            }
+                            body {
+                                margin: 0;
+                                padding: 0;
+                            }
+                        }
+                        body {
+                            font-family: 'Malgun Gothic', sans-serif;
+                            font-size: 12px;
+                            line-height: 1.6;
+                            padding: 20px;
+                        }
+                        .tax-invoice {
+                            width: 100%;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            border: 2px solid #000;
+                            padding: 20px;
+                        }
+                        .header {
+                            text-align: center;
+                            border-bottom: 2px solid #000;
+                            padding-bottom: 15px;
+                            margin-bottom: 20px;
+                        }
+                        .header h1 {
+                            font-size: 24px;
+                            font-weight: bold;
+                            margin: 0 0 10px 0;
+                        }
+                        .info-section {
+                            display: table;
+                            width: 100%;
+                            margin-bottom: 20px;
+                        }
+                        .info-row {
+                            display: table-row;
+                        }
+                        .info-label {
+                            display: table-cell;
+                            width: 120px;
+                            font-weight: bold;
+                            padding: 8px;
+                            border: 1px solid #ddd;
+                            background-color: #f5f5f5;
+                        }
+                        .info-value {
+                            display: table-cell;
+                            padding: 8px;
+                            border: 1px solid #ddd;
+                        }
+                        .amount-section {
+                            margin-top: 30px;
+                            border-top: 2px solid #000;
+                            padding-top: 20px;
+                        }
+                        .amount-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 10px;
+                        }
+                        .amount-table th,
+                        .amount-table td {
+                            padding: 12px;
+                            border: 1px solid #000;
+                            text-align: right;
+                        }
+                        .amount-table th {
+                            background-color: #f5f5f5;
+                            text-align: center;
+                            font-weight: bold;
+                        }
+                        .footer {
+                            margin-top: 40px;
+                            text-align: center;
+                            font-size: 11px;
+                            color: #666;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="tax-invoice">
+                        <div class="header">
+                            <h1>세금계산서</h1>
+                            <div>승인번호: ${data.approvalNumber}</div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <div class="info-row">
+                                <div class="info-label">공급받는자</div>
+                                <div class="info-value">${data.companyName}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">사업자등록번호</div>
+                                <div class="info-value">${data.businessNumber}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">대표자명</div>
+                                <div class="info-value">${data.ceoName}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">주소</div>
+                                <div class="info-value">${data.address}</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">발행일</div>
+                                <div class="info-value">${data.issueDate}</div>
+                            </div>
+                        </div>
+
+                        <div class="amount-section">
+                            <table class="amount-table">
+                                <thead>
+                                    <tr>
+                                        <th>공급가액</th>
+                                        <th>부가세</th>
+                                        <th>합계금액</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>${data.supplyAmount}원</td>
+                                        <td>${data.vatAmount}원</td>
+                                        <td><strong>${data.totalAmount}원</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="footer">
+                            <p>위와 같이 세금계산서를 발행합니다.</p>
+                            <p>${new Date().toLocaleDateString('ko-KR')}</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            
+            // 프린트 다이얼로그 열기
+            setTimeout(() => {
+                printWindow.print();
+            }, 250);
+        }
+
         // 초기화
         const today = new Date();
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -1540,8 +1776,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // 페이지네이션 생성
         createPagination(1, 5, 'pagination');
     </script>
+    <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
+        document.write(createFooter());
     </script>
 </body>
 </html>
