@@ -882,24 +882,35 @@ body {
 
 </style>
     <style>
-        .balance-card {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-            color: white;
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        .balance-card .balance-amount {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 12px 0;
-            color: white;
-        }
         .tab-content {
             display: none;
+            margin-top: 24px;
         }
         .tab-content.active {
             display: block;
+        }
+        .card .tabs {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+        }
+        .tab-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .tab-btn:hover {
+            border-color: var(--primary-color);
+        }
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
         }
         .status-badge {
             padding: 4px 8px;
@@ -929,55 +940,9 @@ body {
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item" onclick="window.location.href='payment-charge.html'">충전하기</button>
+                    <button class="tab-item" onclick="window.location.href='payment-deposit-distribution.html'">분배 관리</button>
                     <button class="tab-item active" onclick="window.location.href='payment-history.html'">충전/사용 내역</button>
                     <button class="tab-item" onclick="window.location.href='payment-tax.html'">세금계산서 발행</button>
-                </div>
-            </div>
-
-            <!-- 잔액 정보 -->
-            <div class="balance-card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-size: 14px; opacity: 0.9;">잔여포인트</div>
-                        <div class="balance-amount">1,000,000 P</div>
-                        <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">
-                            SMS: 50,000건 / LMS: 20,000건 / MMS: 5,000건 발송 가능
-                        </div>
-                    </div>
-                    <a href="payment-charge.html" class="btn" style="background: white; color: var(--primary-color);">충전하기</a>
-                </div>
-            </div>
-
-            <!-- 발신번호별 잔액 -->
-            <div class="card" style="margin-bottom: 24px;">
-                <h3 class="card-title" style="margin-bottom: 16px;">발신번호별 잔여포인트</h3>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>발신번호</th>
-                                <th>명의자</th>
-                                <th>잔여포인트</th>
-                            </tr>
-                        </thead>
-                        <tbody id="callerNumberBalanceBody">
-                            <tr>
-                                <td>010-1234-5678</td>
-                                <td>홍길동</td>
-                                <td style="font-weight: 600; color: var(--primary-color);">300,000원</td>
-                            </tr>
-                            <tr>
-                                <td>010-2345-6789</td>
-                                <td>김철수</td>
-                                <td style="font-weight: 600; color: var(--primary-color);">500,000원</td>
-                            </tr>
-                            <tr>
-                                <td>010-3456-7890</td>
-                                <td>이영희</td>
-                                <td style="font-weight: 600; color: var(--primary-color);">200,000원</td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
 
@@ -1022,7 +987,6 @@ body {
                                     <th>충전금액</th>
                                     <th>충전방법</th>
                                     <th>충전상태</th>
-                                    <th>발신번호별 분배</th>
                                     <th>비고</th>
                                     <th>관리</th>
                                 </tr>
@@ -1033,9 +997,6 @@ body {
                                     <td>100,000원</td>
                                     <td>신용카드</td>
                                     <td><span class="status-badge status-completed">충전완료</span></td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline" onclick="viewDistribution(1)">분배 내역 보기</button>
-                                    </td>
                                     <td>-</td>
                                     <td><button class="btn btn-sm btn-outline" onclick="viewReceipt(1)">영수증</button></td>
                                 </tr>
@@ -1044,7 +1005,6 @@ body {
                                     <td>500,000원</td>
                                     <td>무통장입금</td>
                                     <td><span class="status-badge status-waiting">입금대기</span></td>
-                                    <td>-</td>
                                     <td>입금 확인 중</td>
                                     <td>-</td>
                                 </tr>
@@ -1168,8 +1128,8 @@ body {
             <!-- 다운로드 -->
             <div class="card" style="margin-top: 24px;">
                 <div class="flex gap-2">
-                    <button class="btn btn-outline">엑셀 다운로드</button>
-                    <button class="btn btn-outline">PDF 다운로드</button>
+                    <button class="btn btn-outline" onclick="downloadExcel()">엑셀 다운로드</button>
+                    <button class="btn btn-outline" onclick="downloadPDF()">PDF 다운로드</button>
                     <a href="payment-tax.html" class="btn btn-outline" style="margin-left: auto;">세금계산서 발행</a>
                 </div>
             </div>
@@ -1480,35 +1440,219 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function viewReceipt(id) {
-            showToast('영수증을 확인합니다.', 'info');
+            // 실제로는 API 호출하여 영수증 데이터 조회
+            // 예시 데이터
+            const receiptData = {
+                1: {
+                    date: '2024-11-19 14:30',
+                    amount: '100,000원',
+                    method: '신용카드',
+                    status: '충전완료',
+                    receiptNumber: 'RCP-2024-001234'
+                }
+            };
+            
+            const data = receiptData[id] || receiptData[1];
+            
+            // 모달에 데이터 채우기
+            document.getElementById('receiptDate').textContent = data.date;
+            document.getElementById('receiptAmount').textContent = data.amount;
+            document.getElementById('receiptMethod').textContent = data.method;
+            document.getElementById('receiptStatus').textContent = data.status;
+            document.getElementById('receiptNumber').textContent = data.receiptNumber;
+            
+            openModal('receiptModal');
         }
 
         function viewDetail(id) {
-            showToast('상세 내역을 확인합니다.', 'info');
+            // 실제로는 API 호출하여 상세 내역 조회
+            // 예시 데이터
+            const detailData = {
+                1: {
+                    date: '2024-11-19 15:30',
+                    title: 'SMS 발송',
+                    content: '이벤트 안내 메시지입니다...',
+                    callerNumber: '010-1234-5678',
+                    service: 'SMS',
+                    amount: '20,000원',
+                    callerBalance: '280,000원',
+                    totalBalance: '980,000원',
+                    sendCount: '1,000건',
+                    successCount: '998건',
+                    failCount: '2건'
+                },
+                2: {
+                    date: '2024-11-18 11:20',
+                    title: '알림톡 발송',
+                    content: '주문 확인 알림',
+                    callerNumber: '010-2345-6789',
+                    service: '알림톡',
+                    amount: '50,000원',
+                    callerBalance: '450,000원',
+                    totalBalance: '1,000,000원',
+                    sendCount: '1,667건',
+                    successCount: '1,665건',
+                    failCount: '2건'
+                }
+            };
+            
+            const data = detailData[id] || detailData[1];
+            
+            // 모달에 데이터 채우기
+            document.getElementById('detailDate').textContent = data.date;
+            document.getElementById('detailTitle').textContent = data.title;
+            document.getElementById('detailContent').textContent = data.content;
+            document.getElementById('detailCallerNumber').textContent = data.callerNumber;
+            document.getElementById('detailService').textContent = data.service;
+            document.getElementById('detailAmount').textContent = data.amount;
+            document.getElementById('detailCallerBalance').textContent = data.callerBalance;
+            document.getElementById('detailTotalBalance').textContent = data.totalBalance;
+            document.getElementById('detailSendCount').textContent = data.sendCount;
+            document.getElementById('detailSuccessCount').textContent = data.successCount;
+            document.getElementById('detailFailCount').textContent = data.failCount;
+            
+            openModal('detailModal');
         }
 
         function requestRefund() {
             showToast('환불 요청 페이지로 이동합니다.', 'info');
         }
 
-        function viewDistribution(paymentId) {
-            // 발신번호별 분배 내역 팝업 표시
-            showToast('발신번호별 분배 내역을 확인합니다.', 'info');
-            // 실제로는 모달 팝업으로 분배 내역 표시
-        }
-
-        // 발신번호별 잔액 조회
-        function loadCallerNumberBalances() {
-            // 실제로는 API 호출
-            // 예시 데이터는 이미 HTML에 포함됨
-        }
-
         // 초기화
         setPeriod('month');
-        loadCallerNumberBalances();
     </script>
+
+    <!-- 영수증 모달 -->
+    <div class="modal-overlay" id="receiptModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">영수증</h3>
+                <button class="modal-close" onclick="closeModal('receiptModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">영수증 번호</label>
+                    <div class="form-input" style="background-color: var(--bg-color);" id="receiptNumber">RCP-2024-001234</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">충전 일시</label>
+                    <div class="form-input" style="background-color: var(--bg-color);" id="receiptDate">2024-11-19 14:30</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">충전 금액</label>
+                    <div class="form-input" style="background-color: var(--bg-color); font-size: 20px; font-weight: 600;" id="receiptAmount">100,000원</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">충전 방법</label>
+                    <div class="form-input" style="background-color: var(--bg-color);" id="receiptMethod">신용카드</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">충전 상태</label>
+                    <div class="form-input" style="background-color: var(--bg-color);" id="receiptStatus">충전완료</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('receiptModal')">닫기</button>
+                <button class="btn btn-primary" onclick="printReceipt()">인쇄</button>
+                <button class="btn btn-primary" onclick="downloadReceipt()">다운로드</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세보기 모달 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">사용 내역 상세</h3>
+                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">사용 일시</label>
+                        <div class="form-input" style="background-color: var(--bg-color);" id="detailDate">2024-11-19 15:30</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">서비스</label>
+                        <div class="form-input" style="background-color: var(--bg-color);" id="detailService">SMS</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">제목</label>
+                    <div class="form-input" style="background-color: var(--bg-color);" id="detailTitle">SMS 발송</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">내용</label>
+                    <div class="form-input" style="background-color: var(--bg-color); min-height: 80px;" id="detailContent">이벤트 안내 메시지입니다...</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">발신번호</label>
+                        <div class="form-input" style="background-color: var(--bg-color);" id="detailCallerNumber">010-1234-5678</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">사용 금액</label>
+                        <div class="form-input" style="background-color: var(--bg-color); font-size: 18px; font-weight: 600; color: var(--danger-color);" id="detailAmount">-20,000원</div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">발신번호별 잔액</label>
+                        <div class="form-input" style="background-color: var(--bg-color); font-weight: 600;" id="detailCallerBalance">280,000원</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">전체 잔액</label>
+                        <div class="form-input" style="background-color: var(--bg-color); font-weight: 600;" id="detailTotalBalance">980,000원</div>
+                    </div>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
+                    <h4 style="margin-bottom: 16px; font-size: 16px; font-weight: 600;">발송 통계</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">발송 건수</label>
+                            <div class="form-input" style="background-color: var(--bg-color); text-align: center; font-weight: 600;" id="detailSendCount">1,000건</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">성공 건수</label>
+                            <div class="form-input" style="background-color: var(--bg-color); text-align: center; font-weight: 600; color: var(--success-color);" id="detailSuccessCount">998건</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">실패 건수</label>
+                            <div class="form-input" style="background-color: var(--bg-color); text-align: center; font-weight: 600; color: var(--danger-color);" id="detailFailCount">2건</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('detailModal')">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function printReceipt() {
+            window.print();
+        }
+
+        function downloadReceipt() {
+            showToast('영수증 다운로드가 시작됩니다.', 'info');
+            // 실제로는 PDF 다운로드 기능 구현
+        }
+
+        function downloadExcel() {
+            showToast('엑셀 다운로드가 시작됩니다.', 'info');
+            // 실제로는 엑셀 다운로드 기능 구현
+        }
+
+        function downloadPDF() {
+            showToast('PDF 다운로드가 시작됩니다.', 'info');
+            // 실제로는 PDF 다운로드 기능 구현
+        }
+    </script>
+    <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
+        document.write(createFooter());
     </script>
 </body>
 </html>

@@ -940,7 +940,7 @@ body {
 
             <!-- 수신거부 목록 -->
             <div class="card">
-                <div class="template-actions">
+                <div class="template-actions" style="margin-bottom: 24px;">
                     <div>
                         <button class="btn btn-primary" onclick="openModal('addRejectModal')">수신거부 추가</button>
                         <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
@@ -1502,8 +1502,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // 페이지네이션 생성
         createPagination(1, 5, 'pagination');
     </script>
+    <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
+        document.write(createFooter());
     </script>
 </body>
 </html>

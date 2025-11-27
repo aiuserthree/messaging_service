@@ -929,13 +929,6 @@ body {
             <!-- 조회 조건 -->
             <div class="card">
                 <div class="search-filter-section">
-                    <div style="min-width: 150px;">
-                        <select class="form-select">
-                            <option>2024년 11월</option>
-                            <option>2024년 10월</option>
-                            <option>2024년 9월</option>
-                        </select>
-                    </div>
                     <div class="date-range-group">
                         <div class="date-input-wrapper">
                             <input type="date" class="form-input" value="2024-11-01">
@@ -1468,8 +1461,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // 페이지네이션 생성
         createPagination(1, 5, 'pagination');
     </script>
+    <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
+        document.write(createFooter());
     </script>
 </body>
 </html>

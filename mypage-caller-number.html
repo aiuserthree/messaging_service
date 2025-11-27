@@ -1076,8 +1076,8 @@ body {
                                 <th>관리</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody id="callerNumberTableBody">
+                            <tr data-status="approved">
                                 <td>010-1234-5678</td>
                                 <td>SKT</td>
                                 <td>마케팅팀</td>
@@ -1088,7 +1088,7 @@ body {
                                     <button class="btn btn-sm btn-outline" onclick="deleteCallerNumber(1)">삭제</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr data-status="pending">
                                 <td>02-1234-5678</td>
                                 <td>KT</td>
                                 <td>고객센터</td>
@@ -1099,7 +1099,7 @@ body {
                                     <button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr data-status="rejected">
                                 <td>010-9876-5432</td>
                                 <td>LG U+</td>
                                 <td>본인 휴대폰</td>
@@ -1303,6 +1303,99 @@ body {
                 <button class="btn btn-outline" onclick="closeModal('registerModal')">취소</button>
                 <button class="btn btn-primary" id="nextBtn" onclick="nextStep()" style="display: none;">다음</button>
                 <button class="btn btn-primary" id="submitBtn" onclick="submitRegister()" style="display: none;">승인요청</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 발신번호 상세보기 모달 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 class="modal-title">발신번호 상세 정보</h3>
+                <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 16px; font-size: 16px; font-weight: 600;">기본 정보</h4>
+                    <div class="table-container">
+                        <table class="table">
+                            <tr>
+                                <th style="width: 150px;">발신번호</th>
+                                <td id="detailCallerNumber">-</td>
+                            </tr>
+                            <tr>
+                                <th>통신사</th>
+                                <td id="detailCarrier">-</td>
+                            </tr>
+                            <tr>
+                                <th>용도</th>
+                                <td id="detailPurpose">-</td>
+                            </tr>
+                            <tr>
+                                <th>상태</th>
+                                <td id="detailStatus">-</td>
+                            </tr>
+                            <tr>
+                                <th>등록일</th>
+                                <td id="detailRegisterDate">-</td>
+                            </tr>
+                            <tr>
+                                <th>승인일</th>
+                                <td id="detailApproveDate">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 16px; font-size: 16px; font-weight: 600;">신청 정보</h4>
+                    <div class="table-container">
+                        <table class="table">
+                            <tr>
+                                <th style="width: 150px;">회원 유형</th>
+                                <td id="detailMemberType">-</td>
+                            </tr>
+                            <tr>
+                                <th>명의 구분</th>
+                                <td id="detailOwnershipType">-</td>
+                            </tr>
+                            <tr>
+                                <th>번호 유형</th>
+                                <td id="detailNumberType">-</td>
+                            </tr>
+                            <tr>
+                                <th>통합용 사용</th>
+                                <td id="detailUseIntegration">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 16px; font-size: 16px; font-weight: 600;">연락처 정보</h4>
+                    <div class="table-container">
+                        <table class="table">
+                            <tr>
+                                <th style="width: 150px;">결과 수신 휴대폰</th>
+                                <td id="detailContactPhone">-</td>
+                            </tr>
+                            <tr>
+                                <th>결과 수신 이메일</th>
+                                <td id="detailContactEmail">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card" id="documentSection" style="display: none;">
+                    <h4 style="margin-bottom: 16px; font-size: 16px; font-weight: 600;">제출 서류</h4>
+                    <div id="documentList">
+                        <!-- 동적으로 생성됨 -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('detailModal')">닫기</button>
             </div>
         </div>
     </div>
@@ -1589,11 +1682,35 @@ document.addEventListener('DOMContentLoaded', function() {
         let authInfo = null;
 
         function filterStatus(status) {
+            // 모든 필터 버튼에서 active 클래스 제거
             document.querySelectorAll('.status-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
+            
+            // 클릭한 버튼에 active 클래스 추가
             event.currentTarget.classList.add('active');
-            // 상태별 필터링 로직
+            
+            // 테이블 행 필터링
+            const tbody = document.getElementById('callerNumberTableBody');
+            if (!tbody) return;
+            
+            const rows = tbody.querySelectorAll('tr[data-status]');
+            
+            rows.forEach(row => {
+                const rowStatus = row.getAttribute('data-status');
+                
+                if (status === 'all') {
+                    // 전체: 모든 행 표시
+                    row.style.display = '';
+                } else {
+                    // 선택한 상태와 일치하는 행만 표시
+                    if (rowStatus === status) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
         }
 
         function selectMemberType(type) {
@@ -2152,15 +2269,99 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function viewDetail(id) {
-            showToast('상세보기 기능은 준비 중입니다.', 'info');
+            // 실제로는 API 호출하여 데이터를 가져옴
+            // 예시 데이터
+            const detailData = {
+                2: {
+                    callerNumber: '02-1234-5678',
+                    carrier: 'KT',
+                    purpose: '고객센터',
+                    status: '승인대기',
+                    registerDate: '2024-01-15',
+                    approveDate: '-',
+                    memberType: '기업',
+                    ownershipType: '본인(자사) 명의',
+                    numberType: '유선번호',
+                    useIntegration: '사용함',
+                    contactPhone: '010-1111-2222',
+                    contactEmail: 'contact@example.com',
+                    documents: [
+                        { name: '사업자 등록증', fileName: 'business_registration.pdf', uploadDate: '2024-01-15' },
+                        { name: '재직증명서', fileName: 'employment_certificate.pdf', uploadDate: '2024-01-15' },
+                        { name: '통신서비스 이용증명원', fileName: 'telecom_certificate.pdf', uploadDate: '2024-01-15' }
+                    ]
+                }
+            };
+
+            const data = detailData[id];
+            if (!data) {
+                showToast('상세 정보를 불러올 수 없습니다.', 'error');
+                return;
+            }
+
+            // 모달에 데이터 채우기
+            document.getElementById('detailCallerNumber').textContent = data.callerNumber;
+            document.getElementById('detailCarrier').textContent = data.carrier;
+            document.getElementById('detailPurpose').textContent = data.purpose;
+            
+            // 상태 배지 생성
+            let statusBadge = '';
+            if (data.status === '승인완료') {
+                statusBadge = '<span class="badge badge-success">승인완료</span>';
+            } else if (data.status === '승인대기') {
+                statusBadge = '<span class="badge badge-warning">승인대기</span>';
+            } else if (data.status === '반려') {
+                statusBadge = '<span class="badge badge-danger">반려</span>';
+            }
+            document.getElementById('detailStatus').innerHTML = statusBadge;
+            
+            document.getElementById('detailRegisterDate').textContent = data.registerDate;
+            document.getElementById('detailApproveDate').textContent = data.approveDate;
+            document.getElementById('detailMemberType').textContent = data.memberType;
+            document.getElementById('detailOwnershipType').textContent = data.ownershipType;
+            document.getElementById('detailNumberType').textContent = data.numberType;
+            document.getElementById('detailUseIntegration').textContent = data.useIntegration;
+            document.getElementById('detailContactPhone').textContent = data.contactPhone;
+            document.getElementById('detailContactEmail').textContent = data.contactEmail || '-';
+
+            // 서류 목록 표시
+            if (data.documents && data.documents.length > 0) {
+                const documentList = document.getElementById('documentList');
+                documentList.innerHTML = data.documents.map(doc => `
+                    <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${doc.name}</strong>
+                                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                                    ${doc.fileName} · 업로드일: ${doc.uploadDate}
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="downloadDocument('${doc.fileName}')">다운로드</button>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('documentSection').style.display = 'block';
+            } else {
+                document.getElementById('documentSection').style.display = 'none';
+            }
+
+            // 모달 열기
+            openModal('detailModal');
+        }
+
+        function downloadDocument(fileName) {
+            // 실제로는 파일 다운로드 API 호출
+            showToast(`${fileName} 다운로드를 시작합니다.`, 'info');
         }
 
         function viewRejectionReason(id) {
             alert('반려 사유: 서류가 불명확합니다. 명확한 서류를 다시 제출해주세요.');
         }
     </script>
+    <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
+        document.write(createFooter());
     </script>
 </body>
 </html>

@@ -55,6 +55,7 @@ function createHeader(activeMenu = '') {
             hasDropdown: true,
             items: [
                 { label: '충전하기', url: 'payment-charge.html' },
+                { label: '분배 관리', url: 'payment-deposit-distribution.html' },
                 { label: '충전/사용 내역', url: 'payment-history.html' },
                 { label: '세금계산서 발행', url: 'payment-tax.html' }
             ]
@@ -78,6 +79,7 @@ function createHeader(activeMenu = '') {
         'message-send-election.html': 'message',
         'kakao-send-alimtalk.html': 'kakao',
         'kakao-send-brandtalk.html': 'kakao',
+        'kakao-profile-manage.html': 'kakao',
         'template-message.html': 'template',
         'template-alimtalk.html': 'template',
         'template-brandtalk.html': 'template',
@@ -86,6 +88,7 @@ function createHeader(activeMenu = '') {
         'send-result.html': 'send',
         'send-reservation.html': 'send',
         'payment-charge.html': 'payment',
+        'payment-deposit-distribution.html': 'payment',
         'payment-history.html': 'payment',
         'payment-tax.html': 'payment',
         'mypage-profile.html': 'mypage',
@@ -247,11 +250,11 @@ function createFloatingMenu() {
                     <span class="floating-menu-label">공직선거문자 발송</span>
                 </a>
                 <a href="kakao-send-alimtalk.html" class="floating-menu-item" title="알림톡 발송">
-                    <span class="floating-menu-icon-item"><img src="img/2111683.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">알림톡 발송</span>
                 </a>
                 <a href="kakao-send-brandtalk.html" class="floating-menu-item" title="브랜드톡 발송">
-                    <span class="floating-menu-icon-item"><img src="img/2111683.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">브랜드톡 발송</span>
                 </a>
             </div>
