@@ -964,16 +964,26 @@ body {
         }
         .button-preview {
             display: flex;
+            flex-direction: column;
             gap: 8px;
+            margin-top: 12px;
             margin-top: 12px;
             flex-wrap: wrap;
         }
         .button-preview-item {
             padding: 8px 16px;
-            background: var(--primary-color);
-            color: white;
+            background: white;
+            color: var(--text-primary);
             border-radius: var(--radius-md);
             font-size: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .button-preview-channel {
+            background: #FEE500;
+            color: var(--text-primary);
+            border: none;
+            font-weight: 500;
         }
         .list-item {
             border: 1px solid var(--border-color);
@@ -1182,9 +1192,18 @@ body {
 
                         <!-- 버튼 설정 -->
                         <div class="form-group">
-                            <label class="form-label">버튼 (최대 5개)</label>
+                            <label class="form-label">버튼(변수사용불가)</label>
+                            
+                            <!-- 전역 버튼 옵션 -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
+                                    <span>채널추가버튼 사용</span>
+                                </label>
+                            </div>
+                            
                             <div id="buttonList"></div>
-                            <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addButton()">버튼 추가</button>
+                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">버튼 추가</button>
                         </div>
 
                         <!-- 상태 설정 -->
@@ -1207,7 +1226,7 @@ body {
                 <!-- 미리보기 영역 -->
                 <div class="preview-section">
                     <div class="card">
-                        <h3 class="card-title">템플릿 미리보기</h3>
+                        <h3 class="card-title" style="margin-bottom: 20px;">템플릿 미리보기</h3>
                         <div class="preview-kakao">
                             <div class="preview-kakao-header">
                                 <div class="preview-kakao-profile"></div>
@@ -1615,34 +1634,81 @@ document.addEventListener('DOMContentLoaded', function() {
             const buttonList = document.getElementById('buttonList');
             const div = document.createElement('div');
             div.className = 'button-config';
+            div.setAttribute('data-button-index', buttonCount + 1);
             div.innerHTML = `
                 <div class="button-config-header">
                     <strong>버튼 ${buttonCount + 1}</strong>
-                    <button type="button" class="btn btn-sm" onclick="removeButton(this)">삭제</button>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
+                        <span style="font-size: 16px;">🗑️</span>
+                    </button>
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label">버튼 타입</label>
-                    <select class="form-select" onchange="updateButtonPreview()">
-                        <option value="web">웹 링크</option>
-                        <option value="app">앱 링크</option>
-                        <option value="bot">봇 키워드</option>
-                        <option value="message">메시지 전달</option>
+                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                        <option value="web">웹링크</option>
+                        <option value="app">앱링크</option>
                         <option value="phone">전화 연결</option>
                     </select>
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">버튼명</label>
-                    <input type="text" class="form-input" placeholder="버튼명 입력 (최대 14자)" maxlength="14" oninput="updateButtonPreview()">
+                <div class="form-group button-name-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼명 최대 14자</label>
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">링크/액션</label>
-                    <input type="text" class="form-input" placeholder="URL 또는 액션 입력">
-                </div>
+                <div class="button-link-config"></div>
             `;
             buttonList.appendChild(div);
             buttonCount++;
+            updateButtonConfig(div.querySelector('.button-type-select'));
             updateButtonPreview();
         }
+        
+        function updateButtonConfig(selectElement) {
+            const buttonConfig = selectElement.closest('.button-config');
+            const type = selectElement.value;
+            const linkConfig = buttonConfig.querySelector('.button-link-config');
+            
+            let linkHTML = '';
+            
+            if (type === 'web') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Mobile(필수)</label>
+                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">PC(선택)</label>
+                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
+                    </div>
+                `;
+            } else if (type === 'app') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Android(필수)</label>
+                        <input type="text" class="form-input" placeholder="Android URL 입력">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">IOS(필수)</label>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력">
+                    </div>
+                `;
+            } else if (type === 'phone') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">전화번호</label>
+                        <input type="text" class="form-input" placeholder="전화번호 입력 (예: 010-1234-5678)">
+                    </div>
+                `;
+            }
+            
+            linkConfig.innerHTML = linkHTML;
+            updateButtonPreview();
+        }
+        
+        function toggleChannelButton() {
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            updateButtonPreview();
+        }
+        
 
         function removeButton(btn) {
             btn.closest('.button-config').remove();
@@ -1651,15 +1717,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function updateButtonPreview() {
-            const buttons = Array.from(document.querySelectorAll('.button-config')).map(config => {
-                const name = config.querySelector('input[placeholder*="버튼명"]')?.value || '';
-                return name;
-            }).filter(name => name);
+            const buttons = [];
+            
+            // 채널추가 버튼이 체크되어 있으면 먼저 추가
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            if (useChannelButton) {
+                buttons.push({ name: '채널추가', type: 'channel', isChannel: true });
+            }
+            
+            // 일반 버튼들 추가
+            Array.from(document.querySelectorAll('.button-config')).forEach(config => {
+                const nameInput = config.querySelector('.button-name-input');
+                const name = nameInput?.value || '';
+                const typeSelect = config.querySelector('.button-type-select');
+                const type = typeSelect?.value || 'web';
+                
+                // 버튼명이 있으면 버튼명을, 없으면 타입에 따른 기본 텍스트 사용
+                let buttonName = name;
+                if (!buttonName) {
+                    const typeNames = {
+                        'web': '웹링크',
+                        'app': '앱링크',
+                        'phone': '전화 연결'
+                    };
+                    buttonName = typeNames[type] || '버튼';
+                }
+                
+                buttons.push({ name: buttonName, type: type, isChannel: false });
+            });
             
             const preview = document.getElementById('previewButtons');
-            preview.innerHTML = buttons.map(name => 
-                `<div class="button-preview-item">${name}</div>`
-            ).join('');
+            preview.innerHTML = buttons.map(btn => {
+                if (btn.isChannel) {
+                    return `<div class="button-preview-item button-preview-channel">Ch+ ${btn.name}</div>`;
+                } else {
+                    return `<div class="button-preview-item">${btn.name}</div>`;
+                }
+            }).join('');
         }
 
         function addListItem() {
