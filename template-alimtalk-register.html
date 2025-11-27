@@ -948,16 +948,26 @@ body {
         }
         .button-preview {
             display: flex;
+            flex-direction: column;
             gap: 8px;
+            margin-top: 12px;
             margin-top: 12px;
             flex-wrap: wrap;
         }
         .button-preview-item {
             padding: 8px 16px;
-            background: var(--primary-color);
-            color: white;
+            background: white;
+            color: var(--text-primary);
             border-radius: var(--radius-md);
             font-size: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .button-preview-channel {
+            background: #FEE500;
+            color: var(--text-primary);
+            border: none;
+            font-weight: 500;
         }
         @media (max-width: 1024px) {
             .register-layout {
@@ -1113,34 +1123,65 @@ body {
 
                         <!-- 메시지 유형 -->
                         <div class="form-group">
-                            <label class="form-label required">메시지 유형</label>
+                            <label class="form-label required">템플릿 유형</label>
                             <div class="flex gap-2">
                                 <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="messageType" value="basic" checked>
+                                    <input type="radio" name="messageType" value="basic" checked onchange="toggleMessageType()">
                                     <span>기본형</span>
                                 </label>
                                 <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="messageType" value="emphasis">
-                                    <span>강조형</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="messageType" value="image">
+                                    <input type="radio" name="messageType" value="image" onchange="toggleMessageType()">
                                     <span>이미지형</span>
                                 </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="emphasis" onchange="toggleMessageType()">
+                                    <span>강조표기형</span>
+                                </label>
+                            </div>
+                            <div id="emphasisHelp" style="display: none; margin-top: 8px;">
+                                <div style="color: var(--danger-color); font-size: 12px;">본문 중, 강조가 필요한 내용을 말풍선 상단 영역에 표시합니다.</div>
+                            </div>
+                        </div>
+
+                        <!-- 강조표기 필드 (강조표기형) -->
+                        <div class="form-group" id="emphasisGroup" style="display: none;">
+                            <div class="form-group" style="margin-bottom: 16px;">
+                                <label class="form-label required">강조표기 보조문구</label>
+                                <div style="position: relative;">
+                                    <input type="text" class="form-input" id="emphasisSubText" placeholder="템플릿 내용과 관련된 내용만 입력 가능, 변수 불가" maxlength="18" oninput="updateEmphasisCounter('sub')">
+                                    <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 12px; pointer-events: none;">
+                                        <span id="emphasisSubCounter">0</span>/18자
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label required">강조표기 문구</label>
+                                <div class="flex gap-2 mb-1">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertEmphasisVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertEmphasisVariable('#{전화번호}')">#{전화번호}</button>
+                                </div>
+                                <div style="position: relative;">
+                                    <input type="text" class="form-input" id="emphasisText" placeholder="템플릿 내용과 관련된 내용만 입력 가능, 변수 가능" maxlength="23" oninput="updateEmphasisCounter('main')">
+                                    <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 12px; pointer-events: none;">
+                                        <span id="emphasisMainCounter">0</span>/23자
+                                    </div>
+                                </div>
+                                <div style="color: var(--danger-color); font-size: 12px; margin-top: 4px;">변수값을 포함하여 23자를 초과할 경우, 발송 시 말줄임 처리되어 보여질 수 있습니다.</div>
                             </div>
                         </div>
 
                         <!-- 메시지 내용 -->
                         <div class="form-group">
-                            <label class="form-label required">메시지 내용</label>
+                            <label class="form-label required">템플릿 내용</label>
                             <div class="flex gap-2 mb-1">
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{고객명}')">#{고객명}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{주문번호}')">#{주문번호}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{배송일자}')">#{배송일자}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{금액}')">#{금액}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
                             </div>
-                            <textarea class="form-textarea" id="messageContent" rows="8" placeholder="메시지 내용을 입력하세요 (최대 1,000자)" maxlength="1000" required oninput="updateCharCounter()"></textarea>
-                            <div class="byte-counter" id="charCounter">0 / 1,000자</div>
+                            <textarea class="form-textarea" id="messageContent" rows="8" placeholder="내용을 입력해주세요." maxlength="1000" required oninput="updateCharCounter(); updatePreview();"></textarea>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                                <div></div>
+                                <div class="byte-counter" id="charCounter">0 / 1000자</div>
+                            </div>
                         </div>
 
                         <!-- 이미지 첨부 (이미지형) -->
@@ -1159,9 +1200,18 @@ body {
 
                         <!-- 버튼 설정 -->
                         <div class="form-group">
-                            <label class="form-label">버튼 (최대 5개)</label>
+                            <label class="form-label">버튼(변수사용불가)</label>
+                            
+                            <!-- 전역 버튼 옵션 -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
+                                    <span>채널추가버튼 사용</span>
+                                </label>
+                            </div>
+                            
                             <div id="buttonList"></div>
-                            <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addButton()">버튼 추가</button>
+                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">버튼 추가</button>
                         </div>
 
                         <!-- 바로연결 설정 -->
@@ -1207,7 +1257,7 @@ body {
                 <!-- 미리보기 영역 -->
                 <div class="preview-section">
                     <div class="card">
-                        <h3 class="card-title">템플릿 미리보기</h3>
+                        <h3 class="card-title" style="margin-bottom: 20px;">템플릿 미리보기</h3>
                         <div class="preview-kakao">
                             <div class="preview-kakao-header">
                                 <div class="preview-kakao-profile"></div>
@@ -1217,7 +1267,30 @@ body {
                                 </div>
                             </div>
                             <div class="preview-kakao-body">
-                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력하세요</div>
+                                <!-- 이미지형/강조표기형 공통: 알림톡 도착 바 -->
+                                <div id="previewAlimtalkBar" style="display: none; background: #FEE500; padding: 10px 12px; border-radius: 8px 8px 0 0; margin: -16px -16px 12px -16px; position: relative;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 13px; font-weight: 500; color: var(--text-primary);">알림톡 도착</span>
+                                        <div style="width: 18px; height: 18px; background: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 8px; font-weight: 600;">kakao</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 강조표기형: 강조 표기 영역 -->
+                                <div id="previewEmphasis" style="display: none; padding: 0 0 12px 0;">
+                                    <div id="previewEmphasisSub" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.4;"></div>
+                                    <div id="previewEmphasisMain" style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; line-height: 1.4;"></div>
+                                    <div style="border-top: 1px solid var(--border-color); margin-bottom: 12px;"></div>
+                                </div>
+                                
+                                <!-- 이미지형: 이미지 미리보기 -->
+                                <div id="previewImageContainer" style="display: none; margin-bottom: 12px;">
+                                    <div id="previewImagePlaceholder" style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">
+                                        이미지 미리보기
+                                    </div>
+                                    <div id="previewImageContent" style="display: none;"></div>
+                                </div>
+                                
+                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6; color: var(--text-secondary); font-size: 13px;">템플릿 내용을 입력해주세요.</div>
                                 <div class="button-preview" id="previewButtons"></div>
                             </div>
                         </div>
@@ -1559,16 +1632,34 @@ document.addEventListener('DOMContentLoaded', function() {
         let buttonCount = 0;
 
         // 메시지 유형 변경
+        function toggleMessageType() {
+            const messageType = document.querySelector('input[name="messageType"]:checked').value;
+            const imageGroup = document.getElementById('imageGroup');
+            const emphasisGroup = document.getElementById('emphasisGroup');
+            const emphasisHelp = document.getElementById('emphasisHelp');
+            
+            if (messageType === 'image') {
+                imageGroup.style.display = 'block';
+                emphasisGroup.style.display = 'none';
+                emphasisHelp.style.display = 'none';
+            } else if (messageType === 'emphasis') {
+                imageGroup.style.display = 'none';
+                emphasisGroup.style.display = 'block';
+                emphasisHelp.style.display = 'block';
+            } else {
+                imageGroup.style.display = 'none';
+                emphasisGroup.style.display = 'none';
+                emphasisHelp.style.display = 'none';
+            }
+            updatePreview();
+        }
+        
         document.querySelectorAll('input[name="messageType"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const imageGroup = document.getElementById('imageGroup');
-                if (this.value === 'image') {
-                    imageGroup.style.display = 'block';
-                } else {
-                    imageGroup.style.display = 'none';
-                }
-            });
+            radio.addEventListener('change', toggleMessageType);
         });
+        
+        // 페이지 로드 시 초기화
+        toggleMessageType();
 
         // 바로연결 설정
         document.querySelectorAll('input[name="quickReply"]').forEach(radio => {
@@ -1608,16 +1699,104 @@ document.addEventListener('DOMContentLoaded', function() {
             updateCharCounter();
         }
 
-        function updatePreview() {
-            const content = document.getElementById('messageContent').value;
-            // 변수 치환 예시
-            let previewText = content
-                .replace(/#{고객명}/g, '홍길동')
-                .replace(/#{주문번호}/g, 'ORD123456')
-                .replace(/#{배송일자}/g, '2024-01-20')
-                .replace(/#{금액}/g, '50,000원');
+        function insertEmphasisVariable(variable) {
+            const input = document.getElementById('emphasisText');
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+            const currentValue = input.value;
+            const newValue = currentValue.substring(0, start) + variable + currentValue.substring(end);
             
-            document.getElementById('previewContent').textContent = previewText || '메시지 내용을 입력하세요';
+            if (newValue.length > 23) {
+                showToast('23자를 초과할 수 없습니다.', 'warning');
+                return;
+            }
+            
+            input.value = newValue;
+            input.focus();
+            input.setSelectionRange(start + variable.length, start + variable.length);
+            updateEmphasisCounter('main');
+        }
+        
+        function updateEmphasisCounter(type) {
+            if (type === 'sub') {
+                const value = document.getElementById('emphasisSubText').value;
+                document.getElementById('emphasisSubCounter').textContent = value.length;
+            } else if (type === 'main') {
+                const value = document.getElementById('emphasisText').value;
+                document.getElementById('emphasisMainCounter').textContent = value.length;
+            }
+            updatePreview();
+        }
+        
+        function updatePreview() {
+            const messageType = document.querySelector('input[name="messageType"]:checked').value;
+            const content = document.getElementById('messageContent').value;
+            const previewAlimtalkBar = document.getElementById('previewAlimtalkBar');
+            const previewEmphasis = document.getElementById('previewEmphasis');
+            const previewImageContainer = document.getElementById('previewImageContainer');
+            const previewContent = document.getElementById('previewContent');
+            
+            // 변수 치환 예시 (#{이름}, #{전화번호}만)
+            let previewText = content
+                .replace(/#{이름}/g, '홍길동')
+                .replace(/#{전화번호}/g, '010-1234-5678');
+            
+            // 이미지형 또는 강조표기형인 경우 알림톡 도착 바 표시
+            if (messageType === 'image' || messageType === 'emphasis') {
+                previewAlimtalkBar.style.display = 'block';
+            } else {
+                previewAlimtalkBar.style.display = 'none';
+            }
+            
+            // 강조표기형인 경우
+            if (messageType === 'emphasis') {
+                const emphasisSub = document.getElementById('emphasisSubText').value;
+                const emphasisMain = document.getElementById('emphasisText').value;
+                
+                // 변수 치환 (#{이름}, #{전화번호}만)
+                let emphasisSubText = emphasisSub;
+                let emphasisMainText = emphasisMain
+                    .replace(/#{이름}/g, '홍길동')
+                    .replace(/#{전화번호}/g, '010-1234-5678');
+                
+                if (emphasisSub || emphasisMain) {
+                    previewEmphasis.style.display = 'block';
+                    document.getElementById('previewEmphasisSub').textContent = emphasisSubText || '';
+                    document.getElementById('previewEmphasisMain').textContent = emphasisMainText || '';
+                } else {
+                    previewEmphasis.style.display = 'none';
+                }
+                previewImageContainer.style.display = 'none';
+            } else {
+                previewEmphasis.style.display = 'none';
+            }
+            
+            // 이미지형인 경우
+            if (messageType === 'image') {
+                const imagePreview = document.getElementById('imagePreview');
+                const previewImagePlaceholder = document.getElementById('previewImagePlaceholder');
+                const previewImageContent = document.getElementById('previewImageContent');
+                
+                previewImageContainer.style.display = 'block';
+                
+                if (imagePreview && imagePreview.querySelector('img')) {
+                    const img = imagePreview.querySelector('img');
+                    previewImagePlaceholder.style.display = 'none';
+                    previewImageContent.style.display = 'block';
+                    previewImageContent.innerHTML = '';
+                    const newImg = document.createElement('img');
+                    newImg.src = img.src;
+                    newImg.style.cssText = 'max-width: 100%; max-height: 200px; border-radius: var(--radius-md);';
+                    previewImageContent.appendChild(newImg);
+                } else {
+                    previewImagePlaceholder.style.display = 'block';
+                    previewImageContent.style.display = 'none';
+                }
+            } else {
+                previewImageContainer.style.display = 'none';
+            }
+            
+            previewContent.textContent = previewText || '템플릿 내용을 입력해주세요.';
         }
 
         function handleImageUpload(event) {
@@ -1628,6 +1807,7 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(e) {
                 const preview = document.getElementById('imagePreview');
                 preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: var(--radius-md);">`;
+                updatePreview();
             };
             reader.readAsDataURL(file);
         }
@@ -1641,34 +1821,73 @@ document.addEventListener('DOMContentLoaded', function() {
             const buttonList = document.getElementById('buttonList');
             const div = document.createElement('div');
             div.className = 'button-config';
+            div.setAttribute('data-button-index', buttonCount + 1);
             div.innerHTML = `
                 <div class="button-config-header">
                     <strong>버튼 ${buttonCount + 1}</strong>
-                    <button type="button" class="btn btn-sm" onclick="removeButton(this)">삭제</button>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
+                        <span style="font-size: 16px;">🗑️</span>
+                    </button>
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label">버튼 타입</label>
-                    <select class="form-select" onchange="updateButtonPreview(this)">
-                        <option value="web">웹 링크</option>
-                        <option value="app">앱 링크</option>
-                        <option value="channel">채널 추가</option>
-                        <option value="message">메시지 전달</option>
-                        <option value="bot">봇 키워드</option>
+                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                        <option value="web">웹링크</option>
+                        <option value="app">앱링크</option>
                     </select>
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">버튼명</label>
-                    <input type="text" class="form-input" placeholder="버튼명 입력 (최대 14자)" maxlength="14" oninput="updateButtonPreview(this)">
+                <div class="form-group button-name-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼명 최대 14자</label>
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">링크/액션</label>
-                    <input type="text" class="form-input" placeholder="URL 또는 액션 입력">
-                </div>
+                <div class="button-link-config"></div>
             `;
             buttonList.appendChild(div);
             buttonCount++;
+            updateButtonConfig(div.querySelector('.button-type-select'));
             updateButtonPreview();
         }
+        
+        function updateButtonConfig(selectElement) {
+            const buttonConfig = selectElement.closest('.button-config');
+            const type = selectElement.value;
+            const linkConfig = buttonConfig.querySelector('.button-link-config');
+            
+            let linkHTML = '';
+            
+            if (type === 'web') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Mobile(필수)</label>
+                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">PC(선택)</label>
+                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
+                    </div>
+                `;
+            } else if (type === 'app') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Android(필수)</label>
+                        <input type="text" class="form-input" placeholder="Android URL 입력">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">IOS(필수)</label>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력">
+                    </div>
+                `;
+            }
+            
+            linkConfig.innerHTML = linkHTML;
+            updateButtonPreview();
+        }
+        
+        function toggleChannelButton() {
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            updateButtonPreview();
+        }
+        
 
         function removeButton(btn) {
             btn.closest('.button-config').remove();
@@ -1677,15 +1896,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function updateButtonPreview() {
-            const buttons = Array.from(document.querySelectorAll('.button-config')).map(config => {
-                const name = config.querySelector('input[placeholder*="버튼명"]')?.value || '';
-                return name;
-            }).filter(name => name);
+            const buttons = [];
+            
+            // 채널추가 버튼이 체크되어 있으면 먼저 추가
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            if (useChannelButton) {
+                buttons.push({ name: '채널추가', type: 'channel', isChannel: true });
+            }
+            
+            // 일반 버튼들 추가
+            Array.from(document.querySelectorAll('.button-config')).forEach(config => {
+                const nameInput = config.querySelector('.button-name-input');
+                const name = nameInput?.value || '';
+                const typeSelect = config.querySelector('.button-type-select');
+                const type = typeSelect?.value || 'web';
+                
+                // 버튼명이 있으면 버튼명을, 없으면 타입에 따른 기본 텍스트 사용
+                let buttonName = name;
+                if (!buttonName) {
+                    const typeNames = {
+                        'web': '웹링크',
+                        'app': '앱링크'
+                    };
+                    buttonName = typeNames[type] || '버튼';
+                }
+                
+                buttons.push({ name: buttonName, type: type, isChannel: false });
+            });
             
             const preview = document.getElementById('previewButtons');
-            preview.innerHTML = buttons.map(name => 
-                `<div class="button-preview-item">${name}</div>`
-            ).join('');
+            preview.innerHTML = buttons.map(btn => {
+                if (btn.isChannel) {
+                    return `<div class="button-preview-item button-preview-channel">Ch+ ${btn.name}</div>`;
+                } else {
+                    return `<div class="button-preview-item">${btn.name}</div>`;
+                }
+            }).join('');
         }
 
         function checkCode() {
