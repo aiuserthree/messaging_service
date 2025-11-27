@@ -1050,7 +1050,9 @@ body {
                                 <option value="010-1234-5678" data-candidate="홍길동 후보" data-party="">010-1234-5678</option>
                                 <option value="02-1234-5678" data-candidate="" data-party="○○당">02-1234-5678</option>
                             </select>
-                            <a href="mypage-caller-number.html" class="form-help">새 발신번호 등록하기</a>
+                        </div>
+                        <div style="margin-top: 16px; text-align: right;">
+                            <a href="mypage-caller-number.html" class="btn btn-primary btn-lg">새 발신번호 등록하기</a>
                         </div>
 
                         <!-- 후보자/정당 정보 입력 -->
@@ -1145,45 +1147,45 @@ body {
                             </div>
                         </div>
 
-                        <!-- 발송 시간 설정 -->
+                        <!-- 발송 시간 -->
                         <div class="form-group">
                             <label class="form-label required">발송 시간</label>
                             <div class="flex gap-2">
                                 <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="sendTime" value="immediate" checked onchange="updateTimeSettings()">
-                                    <span>즉시발송</span>
+                                    <input type="radio" name="sendTime" value="immediate" checked>
+                                    <span>즉시 발송</span>
                                 </label>
                                 <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="sendTime" value="reserved" onchange="updateTimeSettings()">
-                                    <span>예약발송</span>
+                                    <input type="radio" name="sendTime" value="reserved">
+                                    <span>예약 발송</span>
                                 </label>
                             </div>
                             <div id="reservedTimeGroup" style="display: none; margin-top: 12px;">
-                                <div class="flex gap-2">
-                                    <input type="date" class="form-input" id="reservedDate" onchange="checkTimeRestriction()">
-                                    <input type="time" class="form-input" id="reservedTime" onchange="checkTimeRestriction()">
-                                </div>
-                                <div class="form-help">발송 가능 시간: 오전 7시 ~ 오후 11시 (투표일 발송 불가)</div>
+                                <input type="datetime-local" class="form-input" id="reservedDateTime">
                             </div>
                         </div>
 
                         <!-- 발송 비용 -->
                         <div class="cost-info">
                             <div class="cost-row">
-                                <span>수신자 수</span>
+                                <span>수신번호 개수</span>
                                 <span id="costRecipientCount">0명</span>
                             </div>
                             <div class="cost-row">
                                 <span>메시지 타입</span>
-                                <span>SMS</span>
+                                <span id="costMessageType">SMS</span>
                             </div>
                             <div class="cost-row">
                                 <span>단가</span>
-                                <span>20원</span>
+                                <span id="costUnitPrice">20원</span>
                             </div>
                             <div class="cost-row cost-total">
-                                <span>예상 비용</span>
+                                <span>예상 발송 비용</span>
                                 <span id="costTotal">0원</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>현재 잔액</span>
+                                <span>1,000,000원</span>
                             </div>
                         </div>
 
@@ -1721,29 +1723,13 @@ document.addEventListener('DOMContentLoaded', function() {
             preview.innerHTML = `<span style="color: var(--primary-color); font-weight: 600;">[선거]</span>${candidateName}\n${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">수신거부 ${rejectNumber}</div>`;
         }
 
-        function updateTimeSettings() {
-            const reserved = document.querySelector('input[name="sendTime"]:checked').value === 'reserved';
-            document.getElementById('reservedTimeGroup').style.display = reserved ? 'block' : 'none';
-        }
-
-        function checkTimeRestriction() {
-            const date = document.getElementById('reservedDate').value;
-            const time = document.getElementById('reservedTime').value;
-            const checkItem = document.getElementById('checkTime');
-            
-            if (!date || !time) return;
-            
-            const selectedDate = new Date(date + 'T' + time);
-            const hour = selectedDate.getHours();
-            
-            if (hour >= 7 && hour < 23) {
-                checkItem.classList.add('valid');
-                checkItem.classList.remove('invalid');
-            } else {
-                checkItem.classList.remove('valid');
-                checkItem.classList.add('invalid');
-            }
-        }
+        // 발송 시간 변경
+        document.querySelectorAll('input[name="sendTime"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('reservedTimeGroup').style.display = 
+                    this.value === 'reserved' ? 'block' : 'none';
+            });
+        });
 
         function testSend() {
             // 기본값: 로그인한 회원의 휴대폰번호 (예시: 010-1234-5678)
@@ -1952,12 +1938,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('confirmRecipientCount').textContent = document.getElementById('recipientCount').textContent + '명';
             
             const sendTime = document.querySelector('input[name="sendTime"]:checked').value;
-            if (sendTime === 'immediate') {
-                document.getElementById('confirmSendTime').textContent = '즉시 발송';
+            if (sendTime === 'reserved') {
+                document.getElementById('confirmSendTime').textContent = 
+                    document.getElementById('reservedDateTime').value;
             } else {
-                const date = document.getElementById('reservedDate').value;
-                const time = document.getElementById('reservedTime').value;
-                document.getElementById('confirmSendTime').textContent = date + ' ' + time;
+                document.getElementById('confirmSendTime').textContent = '즉시 발송';
             }
             
             openModal('confirmModal');
