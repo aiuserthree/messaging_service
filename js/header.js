@@ -112,14 +112,14 @@ function createHeader(activeMenu = '') {
             const firstItemUrl = menu.items[0]?.url || '#';
             navHTML += `
                 <div class="nav-item has-dropdown ${isActive ? 'active' : ''}">
-                    <a href="${firstItemUrl}" class="nav-link">${menu.label}</a>
+                    <a href="#" class="nav-link" onclick="return checkLoginAndNavigate('${firstItemUrl}', event)">${menu.label}</a>
                     <div class="nav-dropdown">
             `;
             
             menu.items.forEach(item => {
                 const isItemActive = window.location.pathname.includes(item.url);
                 navHTML += `
-                    <a href="${item.url}" class="nav-dropdown-item ${isItemActive ? 'active' : ''}">${item.label}</a>
+                    <a href="#" class="nav-dropdown-item ${isItemActive ? 'active' : ''}" onclick="return checkLoginAndNavigate('${item.url}', event)">${item.label}</a>
                 `;
             });
             
@@ -150,7 +150,7 @@ function createHeader(activeMenu = '') {
                         <span class="balance-label">잔액</span>
                         <span class="balance-amount">1,000,000원</span>
                     </div>
-                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                    <button class="btn btn-sm btn-outline" onclick="handleLogout()">로그아웃</button>
                 </div>
             </div>
         </header>
@@ -404,5 +404,30 @@ function createFloatingMenu() {
             });
         </script>
     `;
+}
+
+// 로그아웃 처리 함수
+function handleLogout() {
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = 'index.html';
+}
+
+// 로그인 상태 확인 및 네비게이션 함수
+function checkLoginAndNavigate(url, event) {
+    if (event) {
+        event.preventDefault();
+    }
+    
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    
+    // 로그인하지 않은 상태(로그아웃 상태)에서만 알림 표시하고 이동하지 않음
+    if (!isLoggedIn) {
+        alert('로그인을 하시면 해당 메뉴를 이용하실 수 있습니다.');
+        return false;
+    }
+    
+    // 로그인된 상태에서만 페이지 이동
+    window.location.href = url;
+    return false;
 }
 
