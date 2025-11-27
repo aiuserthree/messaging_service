@@ -944,6 +944,25 @@ body {
             padding: 16px;
             margin-top: 16px;
         }
+        .cost-info {
+            background: var(--bg-color);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+        }
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .cost-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-top: 2px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
         .compliance-item {
             display: flex;
             align-items: center;
@@ -1189,10 +1208,11 @@ body {
                             </div>
                         </div>
 
-                        <!-- 발송하기 -->
-                        <div class="flex gap-2">
+                        <!-- 액션 버튼 -->
+                        <div class="flex gap-2 mt-3">
                             <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
-                            <button type="submit" class="btn btn-primary" style="flex: 1;">발송하기</button>
+                            <button type="button" class="btn btn-outline" onclick="saveDraft()">임시저장</button>
+                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
                         </div>
                     </form>
                 </div>

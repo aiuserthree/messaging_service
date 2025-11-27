@@ -947,6 +947,25 @@ body {
             color: var(--primary-color);
             font-size: 12px;
         }
+        .cost-info {
+            background: var(--bg-color);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-top: 20px;
+        }
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .cost-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-top: 2px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
         .time-restriction {
             background: var(--bg-color);
             padding: 12px;
@@ -1139,16 +1158,11 @@ body {
                             </div>
                         </div>
 
-                        <!-- 테스트 발송 -->
-                        <div class="form-group">
+                        <!-- 액션 버튼 -->
+                        <div class="flex gap-2 mt-3">
                             <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
-                            <div class="form-help">본인 번호로 테스트 발송합니다 (포인트 차감)</div>
-                        </div>
-
-                        <!-- 발송하기 -->
-                        <div class="flex gap-2">
                             <button type="button" class="btn btn-outline" onclick="saveDraft()">임시저장</button>
-                            <button type="submit" class="btn btn-primary" style="flex: 1;">발송하기</button>
+                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
                         </div>
                     </form>
                 </div>
