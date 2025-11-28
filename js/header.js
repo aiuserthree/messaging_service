@@ -35,7 +35,9 @@ function createHeader(activeMenu = '') {
             url: '#',
             hasDropdown: true,
             items: [
-                { label: '문자', url: 'template-message.html' },
+                { label: '일반문자', url: 'template-message.html' },
+                { label: '광고문자', url: 'template-message-ad.html' },
+                { label: '공직선거문자', url: 'template-message-election.html' },
                 { label: '알림톡', url: 'template-alimtalk.html' },
                 { label: '브랜드톡', url: 'template-brandtalk.html' }
             ]
@@ -81,6 +83,8 @@ function createHeader(activeMenu = '') {
         'kakao-send-brandtalk.html': 'kakao',
         'kakao-profile-manage.html': 'kakao',
         'template-message.html': 'template',
+        'template-message-ad.html': 'template',
+        'template-message-election.html': 'template',
         'template-alimtalk.html': 'template',
         'template-brandtalk.html': 'template',
         'addressbook.html': 'addressbook',
@@ -147,8 +151,8 @@ function createHeader(activeMenu = '') {
                 </nav>
                 <div class="header-actions">
                     <div class="balance-info">
-                        <span class="balance-label">잔액</span>
-                        <span class="balance-amount">1,000,000원</span>
+                        <span class="balance-label">전체 포인트</span>
+                        <span class="balance-amount">1,000,000</span>
                     </div>
                     <button class="btn btn-sm btn-outline" onclick="handleLogout()">로그아웃</button>
                 </div>

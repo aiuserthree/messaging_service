@@ -887,7 +887,6 @@ body {
             font-weight: 500;
         }
         .status-waiting { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-        .status-sending { background: rgba(16, 185, 129, 0.1); color: var(--success-color); }
         .status-completed { background: rgba(100, 116, 139, 0.1); color: var(--secondary-color); }
         .status-cancelled { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
         .status-failed { background: rgba(245, 158, 11, 0.1); color: var(--warning-color); }
@@ -985,23 +984,7 @@ body {
                                 <td>
                                     <div class="flex gap-2">
                                         <button class="btn btn-sm btn-outline" onclick="viewDetail(1)">상세보기</button>
-                                        <button class="btn btn-sm btn-outline" onclick="editReservation(1)">수정</button>
                                         <button class="btn btn-sm btn-outline" onclick="cancelReservation(1)">취소</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
-                                <td>2024-11-18 10:20</td>
-                                <td>2024-11-19 15:00</td>
-                                <td style="cursor: pointer;" onclick="viewDetail(2)">신제품 출시 안내</td>
-                                <td><span class="badge badge-primary">LMS</span></td>
-                                <td>500건</td>
-                                <td>500건</td>
-                                <td><span class="status-badge status-sending">발송중</span></td>
-                                <td>
-                                    <div class="flex gap-2">
-                                        <button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button>
                                     </div>
                                 </td>
                             </tr>
@@ -1098,7 +1081,6 @@ body {
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('detailModal')">닫기</button>
-                <button class="btn btn-outline" onclick="editReservation(1)">수정하기</button>
                 <button class="btn btn-outline" onclick="cancelReservation(1)">취소하기</button>
                 <button class="btn btn-primary" onclick="copyAndSend()">복사하여 새로 보내기</button>
             </div>

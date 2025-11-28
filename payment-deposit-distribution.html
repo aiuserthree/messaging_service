@@ -623,7 +623,7 @@ body {
         <main class="main-content">
             <div class="page-header">
                 <h2>결제 관리</h2>
-                <p class="page-description">디파짓 잔액을 발신번호별로 분배하고 관리합니다</p>
+                <p class="page-description">잔여 포인트를 발신번호별로 분배하고 관리합니다</p>
             </div>
 
             <!-- 탭 메뉴 -->
@@ -638,8 +638,8 @@ body {
 
             <!-- 디파짓 잔액 카드 -->
             <div class="deposit-balance-card">
-                <div class="deposit-balance-label">현재 디파짓 잔액</div>
-                <div class="deposit-balance-amount" id="depositBalance">₩1,500,000</div>
+                <div class="deposit-balance-label">현재 잔여 포인트</div>
+                <div class="deposit-balance-amount" id="depositBalance">1,500,000</div>
                 <div class="deposit-balance-actions">
                     <a href="payment-charge.html" class="btn" style="background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);">충전하기</a>
                     <a href="payment-history.html" class="btn" style="background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);">충전 내역</a>
@@ -649,7 +649,7 @@ body {
             <!-- 발신번호별 분배 -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">발신번호별 금액 분배</h3>
+                    <h3 class="card-title">발신번호별 포인트 분배</h3>
                 </div>
                 
                 <div id="noCallerNumberAlert" class="alert alert-info" style="display: none;">
@@ -659,7 +659,7 @@ body {
 
                 <div id="distributionSection" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                        <span style="font-size: 14px; color: var(--text-secondary);">디파짓 잔액을 발신번호별로 분배하세요</span>
+                        <span style="font-size: 14px; color: var(--text-secondary);">잔여 포인트를 발신번호별로 분배하세요</span>
                         <button type="button" class="btn btn-outline btn-sm" onclick="equalDistribution()">균등 분배</button>
                     </div>
                     
@@ -669,8 +669,8 @@ body {
                                 <tr>
                                     <th>발신번호</th>
                                     <th>명의자</th>
-                                    <th>현재 잔액</th>
-                                    <th>분배 금액</th>
+                                    <th>현재 잔여 포인트</th>
+                                    <th>분배 포인트</th>
                                 </tr>
                             </thead>
                             <tbody id="distributionTableBody">
@@ -682,21 +682,21 @@ body {
                     <!-- 분배 요약 -->
                     <div class="distribution-summary">
                         <div class="distribution-summary-item">
-                            <span class="distribution-summary-label">디파짓 잔액</span>
-                            <span class="distribution-summary-value" id="depositBalanceSummary">₩1,500,000</span>
+                            <span class="distribution-summary-label">잔여 포인트</span>
+                            <span class="distribution-summary-value" id="depositBalanceSummary">1,500,000</span>
                         </div>
                         <div class="distribution-summary-item">
-                            <span class="distribution-summary-label">분배 금액 합계</span>
-                            <span class="distribution-summary-value" id="distributionSum">₩0</span>
+                            <span class="distribution-summary-label">분배 포인트 합계</span>
+                            <span class="distribution-summary-value" id="distributionSum">0</span>
                         </div>
                         <div class="distribution-summary-item">
                             <span class="distribution-summary-label">잔여 포인트</span>
-                            <span class="distribution-summary-value" id="remainingBalance">₩1,500,000</span>
+                            <span class="distribution-summary-value" id="remainingBalance">1,500,000</span>
                         </div>
                     </div>
 
                     <div id="distributionWarning" class="alert alert-warning" style="display: none; margin-top: 16px;">
-                        분배 금액 합계가 디파짓 잔액을 초과할 수 없습니다.
+                        분배 포인트 합계가 잔여 포인트를 초과할 수 없습니다.
                     </div>
 
                     <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
@@ -719,8 +719,8 @@ body {
                                 <th>분배 일시</th>
                                 <th>발신번호</th>
                                 <th>명의자</th>
-                                <th>분배 금액</th>
-                                <th>분배 후 잔액</th>
+                                <th>분배 포인트</th>
+                                <th>분배 후 잔여 포인트</th>
                                 <th>상태</th>
                             </tr>
                         </thead>
@@ -800,7 +800,7 @@ body {
                 <tr>
                     <td>${cn.callerNumber}</td>
                     <td>${cn.ownerName}</td>
-                    <td>₩${formatNumber(cn.balance)}</td>
+                    <td>${formatNumber(cn.balance)}</td>
                     <td>
                         <input 
                             type="number" 
@@ -828,17 +828,17 @@ body {
             const totalDistributed = Object.values(distributions).reduce((sum, val) => sum + (val || 0), 0);
             const remaining = depositBalance - totalDistributed;
             
-            document.getElementById('distributionSum').textContent = '₩' + formatNumber(totalDistributed);
+            document.getElementById('distributionSum').textContent = formatNumber(totalDistributed);
             
             const remainingElement = document.getElementById('remainingBalance');
             const warningElement = document.getElementById('distributionWarning');
             
             if (remaining >= 0) {
-                remainingElement.textContent = '₩' + formatNumber(remaining);
+                remainingElement.textContent = formatNumber(remaining);
                 remainingElement.className = 'distribution-summary-value remaining';
                 warningElement.style.display = 'none';
             } else {
-                remainingElement.textContent = '₩' + formatNumber(Math.abs(remaining)) + ' 초과';
+                remainingElement.textContent = formatNumber(Math.abs(remaining)) + ' 초과';
                 remainingElement.className = 'distribution-summary-value over';
                 warningElement.style.display = 'block';
             }
@@ -870,17 +870,17 @@ body {
             const totalDistributed = Object.values(distributions).reduce((sum, val) => sum + (val || 0), 0);
             
             if (totalDistributed === 0) {
-                showToast('분배할 금액을 입력해주세요.', 'warning');
+                showToast('분배할 포인트를 입력해주세요.', 'warning');
                 return;
             }
             
             if (totalDistributed > depositBalance) {
-                showToast('분배 금액 합계가 디파짓 잔액을 초과할 수 없습니다.', 'warning');
+                showToast('분배 포인트 합계가 잔여 포인트를 초과할 수 없습니다.', 'warning');
                 return;
             }
 
             // 확인 다이얼로그
-            if (!confirm(`총 ₩${formatNumber(totalDistributed)}을 발신번호별로 분배하시겠습니까?`)) {
+            if (!confirm(`총 ${formatNumber(totalDistributed)} 포인트를 발신번호별로 분배하시겠습니까?`)) {
                 return;
             }
 
@@ -917,8 +917,8 @@ body {
             depositBalance = currentDepositBalance;
             
             // UI 업데이트
-            document.getElementById('depositBalance').textContent = '₩' + formatNumber(depositBalance);
-            document.getElementById('depositBalanceSummary').textContent = '₩' + formatNumber(depositBalance);
+            document.getElementById('depositBalance').textContent = formatNumber(depositBalance);
+            document.getElementById('depositBalanceSummary').textContent = formatNumber(depositBalance);
             
             // 분배 초기화
             distributions = {};
@@ -946,8 +946,8 @@ body {
                         <td>${dateStr}</td>
                         <td>${history.callerNumber}</td>
                         <td>${history.ownerName}</td>
-                        <td style="font-weight: 600;">₩${formatNumber(history.amount)}</td>
-                        <td>₩${formatNumber(history.balanceAfter)}</td>
+                        <td style="font-weight: 600;">${formatNumber(history.amount)}</td>
+                        <td>${formatNumber(history.balanceAfter)}</td>
                         <td><span class="history-badge success">완료</span></td>
                     </tr>
                 `;

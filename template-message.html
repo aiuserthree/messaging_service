@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>문자 템플릿 관리 - 메시징 서비스</title>
+    <title>일반문자 템플릿 관리 - 메시징 서비스</title>
     <script src="js/header.js"></script>
     <style>/* 공통 스타일 */
 * {
@@ -974,6 +974,42 @@ body {
             font-size: 64px;
             margin-bottom: 20px;
         }
+        .image-preview {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -992,7 +1028,9 @@ body {
             <!-- 탭 메뉴 -->
             <div class="tabs">
                 <div class="tab-list">
-                    <button class="tab-item active" onclick="window.location.href='template-message.html'">문자</button>
+                    <button class="tab-item active" onclick="window.location.href='template-message.html'">일반문자</button>
+                    <button class="tab-item" onclick="window.location.href='template-message-ad.html'">광고문자</button>
+                    <button class="tab-item" onclick="window.location.href='template-message-election.html'">공직선거문자</button>
                     <button class="tab-item" onclick="window.location.href='template-alimtalk.html'">알림톡</button>
                     <button class="tab-item" onclick="window.location.href='template-brandtalk.html'">브랜드톡</button>
                 </div>
@@ -1220,9 +1258,10 @@ body {
                             </div>
                             <div class="form-group" id="imageGroup" style="display: none;">
                                 <label class="form-label">이미지 첨부</label>
-                                <input type="file" class="form-input" accept="image/*" onchange="handleImageUpload(event)">
-                                <div class="form-help">JPG, PNG, GIF (최대 300KB, 권장: 가로 1,000px)</div>
-                                <div id="imagePreview" style="margin-top: 12px;"></div>
+                                <input type="file" class="form-input" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                                <button type="button" class="btn btn-outline" id="addImageBtn" onclick="document.getElementById('imageInput').click()">이미지 추가</button>
+                                <div class="form-help">JPG, PNG, GIF (최대 300KB, 최대 3개)</div>
+                                <div id="imagePreview" class="image-preview"></div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">메모</label>
@@ -1638,6 +1677,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (type === 'MMS') {
                 imageGroup.style.display = 'block';
+                updateAddImageButton();
             } else {
                 imageGroup.style.display = 'none';
             }
@@ -1698,24 +1738,69 @@ document.addEventListener('DOMContentLoaded', function() {
             const file = event.target.files[0];
             if (!file) return;
             
+            const preview = document.getElementById('imagePreview');
+            const currentImages = preview.querySelectorAll('.image-preview-item').length;
+            
+            if (currentImages >= 3) {
+                showToast('최대 3개까지 첨부 가능합니다.', 'warning');
+                event.target.value = '';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                const preview = document.getElementById('imagePreview');
-                preview.innerHTML = `
-                    <div style="position: relative; display: inline-block;">
-                        <img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border-radius: var(--radius-md);">
-                        <button type="button" class="btn btn-sm" onclick="removeImage()" style="position: absolute; top: 4px; right: 4px;">삭제</button>
-                    </div>
+                const div = document.createElement('div');
+                div.className = 'image-preview-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <button type="button" class="remove-btn" onclick="removeImage(this)">&times;</button>
                 `;
-                document.getElementById('previewImages').innerHTML = `<img src="${e.target.result}" style="max-width: 100%; border-radius: var(--radius-md);">`;
+                preview.appendChild(div);
+                
+                // 미리보기에도 추가
+                const previewImages = document.getElementById('previewImages');
+                if (previewImages) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.style.marginTop = '8px';
+                    imgDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; border-radius: var(--radius-md);">`;
+                    previewImages.appendChild(imgDiv);
+                }
+                
+                // 이미지가 3개가 되면 추가 버튼 숨기기
+                updateAddImageButton();
             };
             reader.readAsDataURL(file);
+            
+            // 파일 input 초기화
+            event.target.value = '';
         }
 
-        function removeImage() {
-            document.getElementById('imagePreview').innerHTML = '';
-            document.getElementById('previewImages').innerHTML = '';
-            document.querySelector('#imageGroup input[type="file"]').value = '';
+        function removeImage(btn) {
+            const preview = document.getElementById('imagePreview');
+            const previewImages = document.getElementById('previewImages');
+            const item = btn.parentElement;
+            const index = Array.from(preview.children).indexOf(item);
+            
+            item.remove();
+            if (previewImages && previewImages.children[index]) {
+                previewImages.children[index].remove();
+            }
+            
+            updateAddImageButton();
+        }
+
+        function updateAddImageButton() {
+            const preview = document.getElementById('imagePreview');
+            const addBtn = document.getElementById('addImageBtn');
+            const currentImages = preview.querySelectorAll('.image-preview-item').length;
+            
+            if (addBtn) {
+                if (currentImages >= 3) {
+                    addBtn.style.display = 'none';
+                } else {
+                    addBtn.style.display = 'inline-flex';
+                }
+            }
         }
 
         function viewTemplate(id) {
