@@ -149,13 +149,13 @@ function createHeader(activeMenu = '') {
                 <nav class="main-nav">
                     ${navHTML}
                 </nav>
-                <div class="header-actions">
+                <div class="header-actions" style="gap: 4px;">
                     <div class="balance-info">
                         <span class="balance-label">전체 포인트</span>
                         <span class="balance-amount">1,000,000</span>
-                        <a href="payment-charge.html" class="btn btn-sm btn-primary" style="margin-left: 12px;">충전하기</a>
+                        <a href="payment-charge.html" class="btn btn-sm btn-primary" style="margin-left: 12px; padding: 6px 12px; font-size: 12px;">충전하기</a>
                     </div>
-                    <button class="btn btn-sm btn-outline" onclick="handleLogout()">로그아웃</button>
+                    <button class="btn btn-sm btn-outline" onclick="handleLogout()" style="padding: 6px 12px; font-size: 12px;">로그아웃</button>
                 </div>
             </div>
         </header>
