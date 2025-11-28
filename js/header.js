@@ -153,6 +153,7 @@ function createHeader(activeMenu = '') {
                     <div class="balance-info">
                         <span class="balance-label">전체 포인트</span>
                         <span class="balance-amount">1,000,000</span>
+                        <a href="payment-charge.html" class="btn btn-sm btn-primary" style="margin-left: 12px;">충전하기</a>
                     </div>
                     <button class="btn btn-sm btn-outline" onclick="handleLogout()">로그아웃</button>
                 </div>
