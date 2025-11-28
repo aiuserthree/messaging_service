@@ -973,8 +973,6 @@ body {
                 <div class="tabs">
                     <button class="tab-btn active" onclick="switchTab('charge')">충전내역</button>
                     <button class="tab-btn" onclick="switchTab('use')">사용내역</button>
-                    <button class="tab-btn" onclick="switchTab('refund')">환불내역</button>
-                    <button class="tab-btn" onclick="switchTab('bonus')">보너스내역</button>
                 </div>
 
                 <!-- 충전내역 탭 -->
@@ -984,7 +982,7 @@ body {
                             <thead>
                                 <tr>
                                     <th>날짜</th>
-                                    <th>충전금액</th>
+                                    <th>충전 포인트</th>
                                     <th>충전방법</th>
                                     <th>충전상태</th>
                                     <th>비고</th>
@@ -994,7 +992,7 @@ body {
                             <tbody>
                                 <tr>
                                     <td>2024-11-19 14:30</td>
-                                    <td>100,000원</td>
+                                    <td>100,000 포인트</td>
                                     <td>신용카드</td>
                                     <td><span class="status-badge status-completed">충전완료</span></td>
                                     <td>-</td>
@@ -1002,7 +1000,7 @@ body {
                                 </tr>
                                 <tr>
                                     <td>2024-11-18 10:20</td>
-                                    <td>500,000원</td>
+                                    <td>500,000 포인트</td>
                                     <td>무통장입금</td>
                                     <td><span class="status-badge status-waiting">입금대기</span></td>
                                     <td>입금 확인 중</td>
@@ -1034,9 +1032,9 @@ body {
                                     <th>내용</th>
                                     <th>발신번호</th>
                                     <th>서비스</th>
-                                    <th>사용금액</th>
-                                    <th>발신번호별 잔액</th>
-                                    <th>전체 잔액</th>
+                                    <th>사용 포인트</th>
+                                    <th>발신번호별 잔여 포인트</th>
+                                    <th>전체 잔여 포인트</th>
                                     <th>관리</th>
                                 </tr>
                             </thead>
@@ -1047,9 +1045,9 @@ body {
                                     <td>이벤트 안내 메시지입니다...</td>
                                     <td>010-1234-5678</td>
                                     <td>SMS</td>
-                                    <td style="color: var(--danger-color);">-20,000원</td>
-                                    <td style="font-weight: 600;">280,000원</td>
-                                    <td>980,000원</td>
+                                    <td style="color: var(--danger-color);">-20,000 포인트</td>
+                                    <td style="font-weight: 600;">280,000 포인트</td>
+                                    <td>980,000 포인트</td>
                                     <td><button class="btn btn-sm btn-outline" onclick="viewDetail(1)">상세보기</button></td>
                                 </tr>
                                 <tr>
@@ -1058,81 +1056,20 @@ body {
                                     <td>주문 확인 알림</td>
                                     <td>010-2345-6789</td>
                                     <td>알림톡</td>
-                                    <td style="color: var(--danger-color);">-50,000원</td>
-                                    <td style="font-weight: 600;">450,000원</td>
-                                    <td>1,000,000원</td>
+                                    <td style="color: var(--danger-color);">-50,000 포인트</td>
+                                    <td style="font-weight: 600;">450,000 포인트</td>
+                                    <td>1,000,000 포인트</td>
                                     <td><button class="btn btn-sm btn-outline" onclick="viewDetail(2)">상세보기</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div style="margin-top: 16px; text-align: right; font-weight: 600;">
-                        총 사용금액: <span style="color: var(--danger-color);">-70,000원</span>
-                    </div>
-                </div>
-
-                <!-- 환불내역 탭 -->
-                <div id="refundTab" class="tab-content">
-                    <div style="margin-top: 20px; text-align: right; margin-bottom: 12px;">
-                        <button class="btn btn-primary" onclick="requestRefund()">환불 요청</button>
-                    </div>
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>날짜</th>
-                                    <th>환불금액</th>
-                                    <th>환불사유</th>
-                                    <th>환불상태</th>
-                                    <th>처리일</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-secondary);">
-                                        환불내역이 없습니다.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- 보너스내역 탭 -->
-                <div id="bonusTab" class="tab-content">
-                    <div class="table-container" style="margin-top: 20px;">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>날짜</th>
-                                    <th>지급사유</th>
-                                    <th>보너스금액</th>
-                                    <th>유효기간</th>
-                                    <th>상태</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2024-11-01</td>
-                                    <td>가입축하</td>
-                                    <td style="color: var(--success-color);">+10,000원</td>
-                                    <td>2024-12-01까지</td>
-                                    <td><span class="status-badge status-completed">사용가능</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        총 사용 포인트 : <span style="color: var(--danger-color);">-70,000 포인트</span>
                     </div>
                 </div>
             </div>
 
-            <!-- 다운로드 -->
-            <div class="card" style="margin-top: 24px;">
-                <div class="flex gap-2">
-                    <button class="btn btn-outline" onclick="downloadExcel()">엑셀 다운로드</button>
-                    <button class="btn btn-outline" onclick="downloadPDF()">PDF 다운로드</button>
-                    <a href="payment-tax.html" class="btn btn-outline" style="margin-left: auto;">세금계산서 발행</a>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -1445,7 +1382,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const receiptData = {
                 1: {
                     date: '2024-11-19 14:30',
-                    amount: '100,000원',
+                    amount: '100,000 포인트',
                     method: '신용카드',
                     status: '충전완료',
                     receiptNumber: 'RCP-2024-001234'
@@ -1474,9 +1411,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     content: '이벤트 안내 메시지입니다...',
                     callerNumber: '010-1234-5678',
                     service: 'SMS',
-                    amount: '20,000원',
-                    callerBalance: '280,000원',
-                    totalBalance: '980,000원',
+                    amount: '20,000 포인트',
+                    callerBalance: '280,000 포인트',
+                    totalBalance: '980,000 포인트',
                     sendCount: '1,000건',
                     successCount: '998건',
                     failCount: '2건'
@@ -1487,9 +1424,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     content: '주문 확인 알림',
                     callerNumber: '010-2345-6789',
                     service: '알림톡',
-                    amount: '50,000원',
-                    callerBalance: '450,000원',
-                    totalBalance: '1,000,000원',
+                    amount: '50,000 포인트',
+                    callerBalance: '450,000 포인트',
+                    totalBalance: '1,000,000 포인트',
                     sendCount: '1,667건',
                     successCount: '1,665건',
                     failCount: '2건'
@@ -1539,8 +1476,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="form-input" style="background-color: var(--bg-color);" id="receiptDate">2024-11-19 14:30</div>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">충전 금액</label>
-                    <div class="form-input" style="background-color: var(--bg-color); font-size: 20px; font-weight: 600;" id="receiptAmount">100,000원</div>
+                    <label class="form-label">충전 포인트</label>
+                    <div class="form-input" style="background-color: var(--bg-color); font-size: 20px; font-weight: 600;" id="receiptAmount">100,000 포인트</div>
                 </div>
                 <div class="form-group">
                     <label class="form-label">충전 방법</label>
@@ -1591,18 +1528,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="form-input" style="background-color: var(--bg-color);" id="detailCallerNumber">010-1234-5678</div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">사용 금액</label>
-                        <div class="form-input" style="background-color: var(--bg-color); font-size: 18px; font-weight: 600; color: var(--danger-color);" id="detailAmount">-20,000원</div>
+                        <label class="form-label">사용 포인트</label>
+                        <div class="form-input" style="background-color: var(--bg-color); font-size: 18px; font-weight: 600; color: var(--danger-color);" id="detailAmount">-20,000 포인트</div>
                     </div>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
                     <div class="form-group">
-                        <label class="form-label">발신번호별 잔액</label>
-                        <div class="form-input" style="background-color: var(--bg-color); font-weight: 600;" id="detailCallerBalance">280,000원</div>
+                        <label class="form-label">발신번호별 잔여 포인트</label>
+                        <div class="form-input" style="background-color: var(--bg-color); font-weight: 600;" id="detailCallerBalance">280,000 포인트</div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">전체 잔액</label>
-                        <div class="form-input" style="background-color: var(--bg-color); font-weight: 600;" id="detailTotalBalance">980,000원</div>
+                        <label class="form-label">전체 잔여 포인트</label>
+                        <div class="form-input" style="background-color: var(--bg-color); font-weight: 600;" id="detailTotalBalance">980,000 포인트</div>
                     </div>
                 </div>
                 <div style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">

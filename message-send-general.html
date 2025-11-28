@@ -991,6 +991,23 @@ body {
             cursor: pointer;
             font-size: 14px;
         }
+        .current-balance-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--bg-color);
+            border-radius: var(--radius-md);
+        }
+        .current-balance-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .current-balance-amount {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
         @media (max-width: 1024px) {
             .send-form-container {
                 grid-template-columns: 1fr;
@@ -1011,8 +1028,12 @@ body {
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
             <div class="page-header">
-                <h2>문자 발송</h2>
-                <p class="page-description">SMS/LMS/MMS 메시지를 발송합니다</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2>문자 발송</h2>
+                        <p class="page-description">SMS/LMS/MMS 메시지를 발송합니다</p>
+                    </div>
+                </div>
             </div>
 
             <!-- 탭 메뉴 -->
@@ -1043,7 +1064,11 @@ body {
                                 <option value="02-1234-5678">02-1234-5678</option>
                             </select>
                         </div>
-                        <div style="margin-top: 16px; text-align: right;">
+                        <div style="margin-top: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: flex-end;">
+                            <div class="current-balance-display" id="currentBalanceDisplay" style="display: none; margin-right: auto;">
+                                <span class="current-balance-label">현재 잔여 포인트:</span>
+                                <span class="current-balance-amount" id="currentBalanceAmount">-</span>
+                            </div>
                             <a href="mypage-caller-number.html" class="btn btn-primary btn-lg">새 발신번호 등록하기</a>
                         </div>
 
@@ -1070,7 +1095,6 @@ body {
                             <div id="addressbook" class="tab-content">
                                 <div class="form-group">
                                     <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
-                                        <option value="group1">전체 (1,234명)</option>
                                         <option value="group2">VIP 고객 (234명)</option>
                                         <option value="group3">일반 고객 (1,000명)</option>
                                     </select>
@@ -1117,6 +1141,9 @@ body {
                             <div class="flex gap-2 mb-1">
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수1}')">#{변수1}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수2}')">#{변수2}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수3}')">#{변수3}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
                             </div>
                             <textarea class="form-textarea" id="messageContent" rows="8" placeholder="메시지 내용을 입력하세요" required></textarea>
@@ -1126,7 +1153,8 @@ body {
                         <!-- 이미지 첨부 (MMS만) -->
                         <div class="form-group" id="imageGroup" style="display: none;">
                             <label class="form-label">이미지 첨부</label>
-                            <input type="file" class="form-input" id="imageInput" accept="image/*" multiple onchange="handleImageUpload(event)">
+                            <input type="file" class="form-input" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                            <button type="button" class="btn btn-outline" id="addImageBtn" onclick="document.getElementById('imageInput').click()">이미지 추가</button>
                             <div class="form-help">JPG, PNG, GIF (최대 300KB, 최대 3개)</div>
                             <div class="image-preview" id="imagePreview"></div>
                         </div>
@@ -1168,15 +1196,14 @@ body {
                                 <span id="costTotal">0원</span>
                             </div>
                             <div class="cost-row">
-                                <span>현재 잔액</span>
-                                <span>1,000,000원</span>
+                                <span>발송 후 예상 잔액</span>
+                                <span id="expectedBalance">1,000,000원</span>
                             </div>
                         </div>
 
                         <!-- 액션 버튼 -->
                         <div class="flex gap-2 mt-3">
                             <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
-                            <button type="button" class="btn btn-outline" onclick="saveDraft()">임시저장</button>
                             <button type="button" class="btn btn-outline" onclick="saveTemplate()">템플릿으로 저장</button>
                             <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
                         </div>
@@ -1301,10 +1328,30 @@ body {
                     <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
                     <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
                 </div>
+                
+                <!-- 주소록에 추가하기 -->
+                <div class="form-group" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="addToAddressbook" onchange="toggleGroupCreation()">
+                        <span>주소록에 추가하기</span>
+                    </label>
+                    
+                    <!-- 그룹 생성 영역 (체크박스 체크 시 표시) -->
+                    <div id="groupCreationArea" style="display: none; margin-top: 16px; padding: 16px; background-color: var(--bg-color); border-radius: var(--radius-md);">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">그룹명</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" class="form-input" id="newGroupName" placeholder="그룹명을 입력하세요" style="flex: 1;">
+                                <button type="button" class="btn btn-primary" onclick="createGroup()">생성</button>
+                            </div>
+                            <div class="form-help" id="groupCreationStatus" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
-                <button class="btn btn-primary">업로드</button>
+                <button class="btn btn-primary" onclick="uploadExcelFile()">업로드</button>
             </div>
         </div>
     </div>
@@ -1725,7 +1772,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // 발신번호 변경 시 미리보기 업데이트
         document.getElementById('callerNumber').addEventListener('change', function() {
             document.getElementById('previewCallerNumber').textContent = this.value || '010-1234-5678';
+            updateCurrentBalance();
         });
+
+        function updateCurrentBalance() {
+            const select = document.getElementById('callerNumber');
+            const balanceDisplay = document.getElementById('currentBalanceDisplay');
+            const balanceAmount = document.getElementById('currentBalanceAmount');
+            
+            if (select.value) {
+                // 발신번호에 따른 잔액 조회 (예시: 실제로는 API 호출)
+                const balance = '1,000,000'; // 실제로는 API에서 가져와야 함
+                balanceAmount.textContent = balance;
+                balanceDisplay.style.display = 'flex';
+            } else {
+                balanceDisplay.style.display = 'none';
+            }
+        }
 
         // 수신번호 입력 처리
         document.getElementById('recipientNumbers').addEventListener('input', function() {
@@ -1750,6 +1813,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (type === 'MMS') {
                 imageGroup.style.display = 'block';
+                updateAddImageButton();
             } else {
                 imageGroup.style.display = 'none';
             }
@@ -1840,27 +1904,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function handleImageUpload(event) {
-            const files = Array.from(event.target.files).slice(0, 3);
-            const preview = document.getElementById('imagePreview');
-            preview.innerHTML = '';
+            const file = event.target.files[0];
+            if (!file) return;
             
-            files.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const div = document.createElement('div');
-                    div.className = 'image-preview-item';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" alt="${file.name}">
-                        <button type="button" class="remove-btn" onclick="removeImage(this)">&times;</button>
-                    `;
-                    preview.appendChild(div);
-                };
-                reader.readAsDataURL(file);
-            });
+            const preview = document.getElementById('imagePreview');
+            const currentImages = preview.querySelectorAll('.image-preview-item').length;
+            
+            if (currentImages >= 3) {
+                showToast('최대 3개까지 첨부 가능합니다.', 'warning');
+                event.target.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const div = document.createElement('div');
+                div.className = 'image-preview-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <button type="button" class="remove-btn" onclick="removeImage(this)">&times;</button>
+                `;
+                preview.appendChild(div);
+                
+                // 이미지가 3개가 되면 추가 버튼 숨기기
+                updateAddImageButton();
+            };
+            reader.readAsDataURL(file);
+            
+            // 파일 input 초기화
+            event.target.value = '';
         }
 
         function removeImage(btn) {
             btn.parentElement.remove();
+            updateAddImageButton();
+        }
+
+        function updateAddImageButton() {
+            const preview = document.getElementById('imagePreview');
+            const addBtn = document.getElementById('addImageBtn');
+            const currentImages = preview.querySelectorAll('.image-preview-item').length;
+            
+            if (addBtn) {
+                if (currentImages >= 3) {
+                    addBtn.style.display = 'none';
+                } else {
+                    addBtn.style.display = 'inline-flex';
+                }
+            }
         }
 
         function selectTemplate(name, content) {
@@ -1887,11 +1978,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const type = document.querySelector('input[name="messageType"]:checked').value;
             const unitPrice = type === 'SMS' ? 20 : type === 'LMS' ? 50 : 200;
             const total = count * unitPrice;
+            const currentBalance = 1000000; // 실제로는 API에서 가져와야 함
+            const expectedBalance = currentBalance - total;
             
             document.getElementById('costRecipientCount').textContent = `${count}명`;
             document.getElementById('costMessageType').textContent = type;
             document.getElementById('costUnitPrice').textContent = `${unitPrice}원`;
             document.getElementById('costTotal').textContent = `${formatNumber(total)}원`;
+            document.getElementById('expectedBalance').textContent = `${formatNumber(expectedBalance)}원`;
         }
 
         function showSendConfirm() {
@@ -2106,9 +2200,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 2000);
         }
 
-        function saveDraft() {
-            showToast('임시저장되었습니다.', 'success');
-        }
 
         function saveTemplate() {
             // 템플릿 저장 모달 열기
@@ -2133,9 +2224,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // 샘플 파일 다운로드 (주소록 관리와 동일)
         function downloadSampleFile() {
             const sampleData = [
-                ['이름', '전화번호', '그룹', '메모'],
-                ['홍길동', '010-1234-5678', 'VIP 고객', ''],
-                ['김철수', '010-9876-5432', '일반 고객', '']
+                ['이름', '전화번호', '변수 1', '변수 2', '변수 3'],
+                ['홍길동', '010-1234-5678', '홍길동', '서울시 강남구', 'VIP'],
+                ['김철수', '010-9876-5432', '김철수', '서울시 서초구', '일반']
             ];
             
             const wb = XLSX.utils.book_new();
@@ -2145,13 +2236,168 @@ document.addEventListener('DOMContentLoaded', function() {
                 { wch: 15 },
                 { wch: 20 },
                 { wch: 15 },
-                { wch: 30 }
+                { wch: 20 },
+                { wch: 15 }
             ];
             
             XLSX.utils.book_append_sheet(wb, ws, '주소록');
             XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
             
             showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+
+        // 엑셀 업로드 관련 변수
+        let createdGroupName = null;
+        let excelFileData = null;
+
+        // 그룹 생성 영역 표시/숨김
+        function toggleGroupCreation() {
+            const checkbox = document.getElementById('addToAddressbook');
+            const groupArea = document.getElementById('groupCreationArea');
+            const groupNameInput = document.getElementById('newGroupName');
+            const statusDiv = document.getElementById('groupCreationStatus');
+            
+            if (checkbox.checked) {
+                groupArea.style.display = 'block';
+                groupNameInput.value = '';
+                createdGroupName = null;
+                statusDiv.textContent = '';
+            } else {
+                groupArea.style.display = 'none';
+                groupNameInput.value = '';
+                createdGroupName = null;
+                statusDiv.textContent = '';
+            }
+        }
+
+        // 그룹 생성
+        function createGroup() {
+            const groupNameInput = document.getElementById('newGroupName');
+            const groupName = groupNameInput.value.trim();
+            const statusDiv = document.getElementById('groupCreationStatus');
+            
+            if (!groupName) {
+                statusDiv.textContent = '그룹명을 입력해주세요.';
+                statusDiv.style.color = 'var(--danger-color)';
+                return;
+            }
+            
+            // 그룹명 유효성 검사
+            if (groupName.length > 50) {
+                statusDiv.textContent = '그룹명은 50자 이하로 입력해주세요.';
+                statusDiv.style.color = 'var(--danger-color)';
+                return;
+            }
+            
+            // 그룹 생성 (실제로는 API 호출)
+            createdGroupName = groupName;
+            statusDiv.textContent = `그룹 "${groupName}"이(가) 생성되었습니다. (업로드 시 주소록에 추가됩니다)`;
+            statusDiv.style.color = 'var(--success-color)';
+            
+            showToast(`그룹 "${groupName}"이(가) 생성되었습니다.`, 'success');
+        }
+
+        // 엑셀 파일 업로드
+        function uploadExcelFile() {
+            const fileInput = document.querySelector('#excelUploadModal input[type="file"]');
+            const file = fileInput.files[0];
+            const addToAddressbook = document.getElementById('addToAddressbook').checked;
+            
+            if (!file) {
+                showToast('파일을 선택해주세요.', 'warning');
+                return;
+            }
+            
+            // 파일 읽기
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다. 헤더를 포함하여 최소 1개 이상의 데이터가 필요합니다.', 'warning');
+                        return;
+                    }
+                    
+                    // 헤더 제거
+                    const headers = jsonData[0];
+                    const rows = jsonData.slice(1);
+                    
+                    // 수신번호 추출 및 파싱
+                    const phoneIndex = headers.indexOf('전화번호');
+                    if (phoneIndex === -1) {
+                        showToast('전화번호 컬럼을 찾을 수 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const phoneNumbers = rows
+                        .map(row => row[phoneIndex])
+                        .filter(phone => phone && phone.toString().trim())
+                        .map(phone => phone.toString().trim().replace(/[^\d]/g, ''))
+                        .filter(phone => phone.length >= 10 && phone.length <= 11);
+                    
+                    if (phoneNumbers.length === 0) {
+                        showToast('유효한 전화번호를 찾을 수 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    // 수신번호 목록에 추가
+                    const recipientTextarea = document.getElementById('recipientNumbers');
+                    const existingNumbers = recipientTextarea.value.split(/[,\n]/).map(n => n.trim()).filter(n => n);
+                    const allNumbers = [...new Set([...existingNumbers, ...phoneNumbers])];
+                    recipientTextarea.value = allNumbers.join('\n');
+                    
+                    // 수신번호 개수 업데이트
+                    const recipientCount = document.getElementById('recipientCount');
+                    if (recipientCount) {
+                        recipientCount.textContent = allNumbers.length;
+                    }
+                    
+                    // 수신번호 개수 변경 이벤트 트리거 (다른 함수들이 업데이트를 감지할 수 있도록)
+                    if (recipientTextarea) {
+                        recipientTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+                    
+                    // 주소록에 추가하기가 체크되어 있고 그룹이 생성된 경우
+                    if (addToAddressbook && createdGroupName) {
+                        // 실제로는 API를 호출하여 주소록에 그룹과 목록을 추가해야 함
+                        // 여기서는 시뮬레이션으로 처리
+                        excelFileData = {
+                            groupName: createdGroupName,
+                            data: rows.map((row, index) => {
+                                const rowData = {};
+                                headers.forEach((header, colIndex) => {
+                                    rowData[header] = row[colIndex] || '';
+                                });
+                                return rowData;
+                            })
+                        };
+                        
+                        showToast(`엑셀 파일이 업로드되었고, "${createdGroupName}" 그룹에 ${excelFileData.data.length}명이 추가되었습니다.`, 'success');
+                    } else {
+                        showToast(`엑셀 파일이 업로드되었습니다. (${phoneNumbers.length}명)`, 'success');
+                    }
+                    
+                    // 모달 닫기
+                    closeModal('excelUploadModal');
+                    
+                    // 파일 입력 초기화
+                    fileInput.value = '';
+                    document.getElementById('addToAddressbook').checked = false;
+                    toggleGroupCreation();
+                    createdGroupName = null;
+                    excelFileData = null;
+                    
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
         }
 
         // 초기화

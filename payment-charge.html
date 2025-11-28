@@ -887,7 +887,7 @@ body {
         }
         .amount-buttons {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
             margin-bottom: 20px;
         }
@@ -1018,33 +1018,38 @@ body {
                     <form id="chargeForm">
                         <!-- 현재 잔액 -->
                         <div class="alert alert-info">
-                            <strong>현재 보유 포인트: 1,000,000원</strong>
+                            <strong>현재 보유 포인트: 1,000,000포인트</strong>
                         </div>
 
-                        <!-- 충전 금액 선택 -->
+                        <!-- 충전 포인트 선택 -->
                         <div class="form-group">
-                            <label class="form-label required">충전 금액</label>
+                            <label class="form-label required">충전 포인트</label>
                             <div class="amount-buttons">
                                 <div class="amount-btn" onclick="selectAmount(50000)">
-                                    <div class="amount-btn-value">5만원</div>
+                                    <div class="amount-btn-value">5만</div>
                                 </div>
                                 <div class="amount-btn" onclick="selectAmount(100000)">
-                                    <div class="amount-btn-value">10만원</div>
+                                    <div class="amount-btn-value">10만</div>
                                 </div>
                                 <div class="amount-btn" onclick="selectAmount(300000)">
-                                    <div class="amount-btn-value">30만원</div>
+                                    <div class="amount-btn-value">30만</div>
                                 </div>
                                 <div class="amount-btn" onclick="selectAmount(500000)">
-                                    <div class="amount-btn-value">50만원</div>
+                                    <div class="amount-btn-value">50만</div>
                                 </div>
                                 <div class="amount-btn" onclick="selectAmount(1000000)">
-                                    <div class="amount-btn-value">100만원</div>
+                                    <div class="amount-btn-value">100만</div>
                                 </div>
-                                <div class="amount-btn" onclick="selectCustomAmount()">
-                                    <div class="amount-btn-value">직접입력</div>
+                                <div class="amount-btn" onclick="selectAmount(2000000)">
+                                    <div class="amount-btn-value">200만</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectAmount(3000000)">
+                                    <div class="amount-btn-value">300만</div>
+                                </div>
+                                <div class="amount-btn" onclick="selectAmount(5000000)">
+                                    <div class="amount-btn-value">500만</div>
                                 </div>
                             </div>
-                            <input type="number" class="form-input" id="customAmount" placeholder="직접 입력 (최소 10,000원)" style="display: none; margin-top: 12px;" min="10000" step="1000">
                         </div>
 
                         <!-- 결제 수단 선택 -->
@@ -1080,12 +1085,8 @@ body {
                         <!-- 결제 금액 정보 -->
                         <div class="price-info">
                             <div class="price-row">
-                                <span>충전 금액</span>
-                                <span id="chargeAmount">0원</span>
-                            </div>
-                            <div class="price-row">
-                                <span>할인 금액</span>
-                                <span id="discountAmount" style="color: var(--success-color);">0원</span>
+                                <span>충전 포인트</span>
+                                <span id="chargeAmount">0포인트</span>
                             </div>
                             <div class="price-row">
                                 <span>부가세 (10%)</span>
@@ -1136,9 +1137,6 @@ body {
                                 </tr>
                             </tbody>
                         </table>
-                        <div style="margin-top: 20px;">
-                            <button class="btn btn-outline" onclick="openModal('estimateModal')">견적 문의하기</button>
-                        </div>
                     </div>
 
                     <!-- 충전 금액 계산기 -->
@@ -1518,7 +1516,6 @@ document.addEventListener('DOMContentLoaded', function() {
     <script>
         let selectedAmount = 0;
         let selectedPayment = 'card';
-        let discountAmount = 0;
 
         function selectAmount(amount) {
             selectedAmount = amount;
@@ -1526,23 +1523,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.classList.remove('selected');
             });
             event.currentTarget.classList.add('selected');
-            document.getElementById('customAmount').style.display = 'none';
             updatePrice();
         }
-
-        function selectCustomAmount() {
-            document.querySelectorAll('.amount-btn').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
-            document.getElementById('customAmount').style.display = 'block';
-            document.getElementById('customAmount').focus();
-        }
-
-        document.getElementById('customAmount').addEventListener('input', function() {
-            selectedAmount = parseInt(this.value) || 0;
-            updatePrice();
-        });
 
         function selectPayment(method) {
             selectedPayment = method;
@@ -1554,12 +1536,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         function updatePrice() {
-            const chargeAmount = selectedAmount - discountAmount;
+            const chargeAmount = selectedAmount;
             const vatAmount = Math.floor(chargeAmount * 0.1);
             const totalAmount = chargeAmount + vatAmount;
 
-            document.getElementById('chargeAmount').textContent = formatNumber(selectedAmount) + '원';
-            document.getElementById('discountAmount').textContent = formatNumber(discountAmount) + '원';
+            document.getElementById('chargeAmount').textContent = formatNumber(selectedAmount) + '포인트';
             document.getElementById('vatAmount').textContent = formatNumber(vatAmount) + '원';
             document.getElementById('totalAmount').textContent = formatNumber(totalAmount) + '원';
         }

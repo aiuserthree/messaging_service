@@ -979,6 +979,55 @@ body {
             border: 1px solid #ffc107;
             color: #856404;
         }
+        .current-balance-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--bg-color);
+            border-radius: var(--radius-md);
+        }
+        .current-balance-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .current-balance-amount {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+        .image-preview {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .image-preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview-item .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 14px;
+        }
         @media (max-width: 1024px) {
             .send-form-container {
                 grid-template-columns: 1fr;
@@ -999,8 +1048,12 @@ body {
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
             <div class="page-header">
-                <h2>문자 발송</h2>
-                <p class="page-description">정보통신망법에 따른 광고성 문자메시지를 발송합니다</p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2>문자 발송</h2>
+                        <p class="page-description">정보통신망법에 따른 광고성 문자메시지를 발송합니다</p>
+                    </div>
+                </div>
             </div>
 
             <!-- 탭 메뉴 -->
@@ -1036,18 +1089,12 @@ body {
                                 <option value="02-1234-5678" data-reject="080-123-4567">02-1234-5678</option>
                             </select>
                         </div>
-                        <div style="margin-top: 16px; text-align: right;">
-                            <a href="mypage-caller-number.html" class="btn btn-primary btn-lg">새 발신번호 등록하기</a>
-                        </div>
-
-                        <!-- 080 수신거부 번호 입력 -->
-                        <div class="form-group">
-                            <label class="form-label required">080 수신거부 번호</label>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-weight: 600;">080-</span>
-                                <input type="text" class="form-input" id="rejectNumberInput" placeholder="123-4567" maxlength="8" style="flex: 1;" oninput="updateRejectNumberPreview()" required>
+                        <div style="margin-top: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: flex-end;">
+                            <div class="current-balance-display" id="currentBalanceDisplay" style="display: none; margin-right: auto;">
+                                <span class="current-balance-label">현재 잔여 포인트:</span>
+                                <span class="current-balance-amount" id="currentBalanceAmount">-</span>
                             </div>
-                            <div class="form-help">수신거부 번호를 입력하세요 (예: 123-4567)</div>
+                            <a href="mypage-caller-number.html" class="btn btn-primary btn-lg">새 발신번호 등록하기</a>
                         </div>
 
                         <!-- 수신번호 설정 -->
@@ -1075,7 +1122,6 @@ body {
                             <div id="addressbook" class="tab-content">
                                 <div class="form-group">
                                     <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
-                                        <option value="group1">전체 주소록 (1,234명)</option>
                                         <option value="group2">VIP 고객 (234명)</option>
                                         <option value="group3">일반 고객 (1,000명)</option>
                                     </select>
@@ -1091,12 +1137,41 @@ body {
                             </div>
                         </div>
 
+                        <!-- 메시지 타입 -->
+                        <div class="form-group">
+                            <label class="form-label required">메시지 타입</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="SMS" checked>
+                                    <span>SMS (90바이트 이하)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="LMS">
+                                    <span>LMS (2,000바이트 이하)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="MMS">
+                                    <span>MMS (이미지 포함)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 제목 (LMS/MMS만) -->
+                        <div class="form-group" id="titleGroup" style="display: none;">
+                            <label class="form-label">제목</label>
+                            <input type="text" class="form-input" id="messageTitle" placeholder="제목을 입력하세요 (최대 40자)" maxlength="40">
+                        </div>
+
                         <!-- 메시지 내용 -->
                         <div class="form-group">
                             <label class="form-label required">메시지 내용</label>
                             <div class="flex gap-2 mb-1">
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수1}')">#{변수1}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수2}')">#{변수2}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수3}')">#{변수3}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
                             </div>
                             <div class="form-group" style="margin-bottom: 12px;">
                                 <label class="form-label required">(광고) 옆 문구</label>
@@ -1108,11 +1183,29 @@ body {
                             <div class="form-help">(광고) 문구와 수신거부 안내는 자동으로 추가됩니다</div>
                         </div>
 
-                        <!-- 이미지 첨부 (MMS) -->
+                        <!-- 080 수신거부 번호 입력 -->
                         <div class="form-group">
+                            <label class="form-label required">080 수신거부 번호</label>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-weight: 600;">080-</span>
+                                <select class="form-select" id="rejectNumberInput" style="flex: 1;" onchange="updateRejectNumberPreview()" required>
+                                    <option value="">번호를 선택하세요</option>
+                                    <option value="123-4567">123-4567</option>
+                                    <option value="234-5678">234-5678</option>
+                                    <option value="345-6789">345-6789</option>
+                                    <option value="456-7890">456-7890</option>
+                                    <option value="567-8901">567-8901</option>
+                                </select>
+                            </div>
+                            <div class="form-help">수신거부 번호를 선택하세요</div>
+                        </div>
+
+                        <!-- 이미지 첨부 (MMS만) -->
+                        <div class="form-group" id="imageGroup" style="display: none;">
                             <label class="form-label">이미지 첨부</label>
-                            <input type="file" class="form-input" accept="image/*" onchange="handleImageUpload(event)">
-                            <div class="form-help">JPG, PNG, GIF (최대 300KB, 권장: 가로 1,000px)</div>
+                            <input type="file" class="form-input" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                            <button type="button" class="btn btn-outline" id="addImageBtn" onclick="document.getElementById('imageInput').click()">이미지 추가</button>
+                            <div class="form-help">JPG, PNG, GIF (최대 300KB, 최대 3개)</div>
                             <div id="imagePreview" class="image-preview"></div>
                         </div>
 
@@ -1153,15 +1246,15 @@ body {
                                 <span id="costTotal">0원</span>
                             </div>
                             <div class="cost-row">
-                                <span>현재 잔액</span>
-                                <span>1,000,000원</span>
+                                <span>발송 후 예상 잔액</span>
+                                <span id="expectedBalance">1,000,000원</span>
                             </div>
                         </div>
 
                         <!-- 액션 버튼 -->
                         <div class="flex gap-2 mt-3">
                             <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
-                            <button type="button" class="btn btn-outline" onclick="saveDraft()">임시저장</button>
+                            <button type="button" class="btn btn-outline" onclick="saveTemplate()">템플릿으로 저장</button>
                             <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
                         </div>
                     </form>
@@ -1212,13 +1305,13 @@ body {
                                 <td>이벤트 안내</td>
                                 <td>특별 이벤트가 시작되었습니다! 할인율: #{할인율}%</td>
                                 <td>2024-01-15</td>
-                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('특별 이벤트가 시작되었습니다! 할인율: #{할인율}%')">선택</button></td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('이벤트 안내', '특별 이벤트가 시작되었습니다! 할인율: #{할인율}%')">선택</button></td>
                             </tr>
                             <tr>
                                 <td>신제품 출시</td>
                                 <td>새로운 제품이 출시되었습니다. 자세한 내용은 홈페이지를 확인해주세요.</td>
                                 <td>2024-01-14</td>
-                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('새로운 제품이 출시되었습니다. 자세한 내용은 홈페이지를 확인해주세요.')">선택</button></td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('신제품 출시', '새로운 제품이 출시되었습니다. 자세한 내용은 홈페이지를 확인해주세요.')">선택</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1247,10 +1340,30 @@ body {
                     <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
                     <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
                 </div>
+                
+                <!-- 주소록에 추가하기 -->
+                <div class="form-group" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="addToAddressbook" onchange="toggleGroupCreation()">
+                        <span>주소록에 추가하기</span>
+                    </label>
+                    
+                    <!-- 그룹 생성 영역 (체크박스 체크 시 표시) -->
+                    <div id="groupCreationArea" style="display: none; margin-top: 16px; padding: 16px; background-color: var(--bg-color); border-radius: var(--radius-md);">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">그룹명</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" class="form-input" id="newGroupName" placeholder="그룹명을 입력하세요" style="flex: 1;">
+                                <button type="button" class="btn btn-primary" onclick="createGroup()">생성</button>
+                            </div>
+                            <div class="form-help" id="groupCreationStatus" style="margin-top: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
-                <button class="btn btn-primary">업로드</button>
+                <button class="btn btn-primary" onclick="uploadExcelFile()">업로드</button>
             </div>
         </div>
     </div>
@@ -1370,6 +1483,87 @@ body {
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('testSendModal')" id="testSendCancelBtn">취소</button>
                 <button class="btn btn-primary" onclick="confirmTestSend()" id="testSendSubmitBtn">테스트 발송</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 템플릿 선택 모달 -->
+    <div class="modal-overlay" id="templateSelectModal">
+        <div class="modal" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 선택</h3>
+                <button class="modal-close" onclick="closeModal('templateSelectModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="템플릿명 또는 내용으로 검색">
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>카테고리</th>
+                                <th>템플릿명</th>
+                                <th>타입</th>
+                                <th>내용</th>
+                                <th>등록일</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-secondary">광고</span></td>
+                                <td>이벤트 안내</td>
+                                <td><span class="badge badge-primary">SMS</span></td>
+                                <td>특별 이벤트가 시작되었습니다...</td>
+                                <td>2024-01-15</td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('이벤트 안내', '특별 이벤트가 시작되었습니다. #{이름}님께서는 #{변수1}에서 확인해주세요.')">선택</button></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-secondary">광고</span></td>
+                                <td>프로모션 안내</td>
+                                <td><span class="badge badge-primary">LMS</span></td>
+                                <td>프로모션 안내 메시지입니다...</td>
+                                <td>2024-01-14</td>
+                                <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('프로모션 안내', '프로모션 안내 메시지입니다. #{이름}님께서는 #{변수1}에서 확인해주세요.')">선택</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('templateSelectModal')">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 템플릿 저장 모달 -->
+    <div class="modal-overlay" id="templateSaveModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿으로 저장</h3>
+                <button class="modal-close" onclick="closeModal('templateSaveModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">템플릿명</label>
+                    <input type="text" class="form-input" id="templateName" placeholder="템플릿명을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">카테고리</label>
+                    <select class="form-select" id="templateCategory" required>
+                        <option value="">카테고리를 선택하세요</option>
+                        <option value="일반">일반</option>
+                        <option value="광고">광고</option>
+                        <option value="선거">선거</option>
+                        <option value="공지">공지</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('templateSaveModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveTemplateConfirm()">저장</button>
             </div>
         </div>
     </div>
@@ -1653,10 +1847,54 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        // 메시지 타입 변경
+        document.querySelectorAll('input[name="messageType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateMessageType(this.value);
+            });
+        });
+
+        function updateMessageType(type) {
+            const titleGroup = document.getElementById('titleGroup');
+            const imageGroup = document.getElementById('imageGroup');
+            
+            if (type === 'LMS' || type === 'MMS') {
+                titleGroup.style.display = 'block';
+            } else {
+                titleGroup.style.display = 'none';
+            }
+            
+            if (type === 'MMS') {
+                imageGroup.style.display = 'block';
+                updateAddImageButton();
+            } else {
+                imageGroup.style.display = 'none';
+            }
+            
+            updateByteCounter();
+            updateCost();
+        }
+
         function updateRejectNumber() {
             const select = document.getElementById('senderNumber');
             document.getElementById('previewSenderNumber').textContent = select.value;
             updatePreview();
+            updateCurrentBalance();
+        }
+
+        function updateCurrentBalance() {
+            const select = document.getElementById('senderNumber');
+            const balanceDisplay = document.getElementById('currentBalanceDisplay');
+            const balanceAmount = document.getElementById('currentBalanceAmount');
+            
+            if (select.value) {
+                // 발신번호에 따른 잔액 조회 (예시: 실제로는 API 호출)
+                const balance = '1,000,000'; // 실제로는 API에서 가져와야 함
+                balanceAmount.textContent = balance;
+                balanceDisplay.style.display = 'flex';
+            } else {
+                balanceDisplay.style.display = 'none';
+            }
         }
 
         function updateRejectNumberPreview() {
@@ -1688,13 +1926,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function updateByteCounter() {
             const content = document.getElementById('messageContent').value;
+            const title = document.getElementById('messageTitle').value;
             const adPrefixText = document.getElementById('adPrefixText').value;
             const rejectInput = document.getElementById('rejectNumberInput').value;
             const rejectText = rejectInput ? '무료수신거부 080-' + rejectInput : '무료수신거부 080-';
             const adPrefix = '(광고)';
             const fullText = adPrefix + (adPrefixText ? ' ' + adPrefixText : '') + ' ' + content + ' ' + rejectText;
-            const totalBytes = calculateByteLength(fullText);
-            const maxBytes = 90;
+            let totalBytes = calculateByteLength(fullText);
+            if (title) {
+                totalBytes += calculateByteLength(title);
+            }
+            
+            const type = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            const maxBytes = type === 'SMS' ? 90 : 2000;
             
             const counter = document.getElementById('byteCounter');
             counter.textContent = `${totalBytes} / ${maxBytes} 바이트`;
@@ -1712,25 +1956,87 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function updatePreview() {
             const content = document.getElementById('messageContent').value;
+            const title = document.getElementById('messageTitle').value;
             const adPrefixText = document.getElementById('adPrefixText').value;
             const rejectInput = document.getElementById('rejectNumberInput').value;
             const rejectNumber = rejectInput ? '080-' + rejectInput : '080-';
             const preview = document.getElementById('previewMessage');
             const adPrefixTextDisplay = adPrefixText ? adPrefixText + ' ' : '';
-            preview.innerHTML = `<span class="ad-prefix">(광고)</span> ${adPrefixTextDisplay}\n${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px;">무료수신거부 ${rejectNumber}</div>`;
+            let previewContent = `<span class="ad-prefix">(광고)</span> ${adPrefixTextDisplay}\n`;
+            if (title) {
+                previewContent += `<div style="font-weight: 600; margin-bottom: 8px;">${title}</div>`;
+            }
+            previewContent += `${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px;">무료수신거부 ${rejectNumber}</div>`;
+            preview.innerHTML = previewContent;
         }
 
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
+            const preview = document.getElementById('imagePreview');
+            const currentImages = preview.querySelectorAll('.image-preview-item').length;
+            
+            if (currentImages >= 3) {
+                showToast('최대 3개까지 첨부 가능합니다.', 'warning');
+                event.target.value = '';
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = function(e) {
-                const preview = document.getElementById('imagePreview');
-                preview.innerHTML = `<img src="${e.target.result}" style="max-width: 200px; max-height: 200px; border-radius: var(--radius-md);">`;
-                document.getElementById('previewImage').innerHTML = `<img src="${e.target.result}" style="max-width: 100%; border-radius: var(--radius-md);">`;
+                const div = document.createElement('div');
+                div.className = 'image-preview-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <button type="button" class="remove-btn" onclick="removeImage(this)">&times;</button>
+                `;
+                preview.appendChild(div);
+                
+                // 미리보기에도 추가
+                const previewImage = document.getElementById('previewImage');
+                if (previewImage) {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.style.marginTop = '8px';
+                    imgDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; border-radius: var(--radius-md);">`;
+                    previewImage.appendChild(imgDiv);
+                }
+                
+                // 이미지가 3개가 되면 추가 버튼 숨기기
+                updateAddImageButton();
             };
             reader.readAsDataURL(file);
+            
+            // 파일 input 초기화
+            event.target.value = '';
+        }
+
+        function removeImage(btn) {
+            const preview = document.getElementById('imagePreview');
+            const previewImage = document.getElementById('previewImage');
+            const item = btn.parentElement;
+            const index = Array.from(preview.children).indexOf(item);
+            
+            item.remove();
+            if (previewImage && previewImage.children[index]) {
+                previewImage.children[index].remove();
+            }
+            
+            updateAddImageButton();
+        }
+
+        function updateAddImageButton() {
+            const preview = document.getElementById('imagePreview');
+            const addBtn = document.getElementById('addImageBtn');
+            const currentImages = preview.querySelectorAll('.image-preview-item').length;
+            
+            if (addBtn) {
+                if (currentImages >= 3) {
+                    addBtn.style.display = 'none';
+                } else {
+                    addBtn.style.display = 'inline-flex';
+                }
+            }
         }
 
         // 발송 시간 변경
@@ -1743,26 +2049,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function updateCost() {
             const count = parseInt(document.getElementById('recipientCount').textContent) || 0;
-            const unitPrice = 20;
+            const type = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            const unitPrice = type === 'SMS' ? 20 : type === 'LMS' ? 50 : 200;
             const total = count * unitPrice;
+            const currentBalance = 1000000; // 실제로는 API에서 가져와야 함
+            const expectedBalance = currentBalance - total;
             
             document.getElementById('costRecipientCount').textContent = count + '명';
+            document.getElementById('costMessageType').textContent = type;
+            document.getElementById('costUnitPrice').textContent = unitPrice + '원';
             document.getElementById('costTotal').textContent = total.toLocaleString() + '원';
+            document.getElementById('expectedBalance').textContent = expectedBalance.toLocaleString() + '원';
         }
 
-        function selectTemplate(content) {
+        function selectTemplate(name, content) {
             document.getElementById('messageContent').value = content;
             updateByteCounter();
             updatePreview();
-            closeModal('templateModal');
+            closeModal('templateSelectModal');
+        }
+
+        function saveTemplate() {
+            // 템플릿 저장 모달 열기
+            const templateName = document.getElementById('templateName');
+            const templateCategory = document.getElementById('templateCategory');
+            
+            if (templateName) templateName.value = '';
+            if (templateCategory) templateCategory.value = '';
+            
+            openModal('templateSaveModal');
+        }
+
+        function saveTemplateConfirm() {
+            const name = document.getElementById('templateName').value;
+            const category = document.getElementById('templateCategory').value;
+            
+            if (!name || !category) {
+                showToast('템플릿명과 카테고리를 모두 입력해주세요.', 'warning');
+                return;
+            }
+            
+            showToast('템플릿으로 저장되었습니다.', 'success');
+            closeModal('templateSaveModal');
         }
 
         // 샘플 파일 다운로드 (주소록 관리와 동일)
         function downloadSampleFile() {
             const sampleData = [
-                ['이름', '전화번호', '그룹', '메모'],
-                ['홍길동', '010-1234-5678', 'VIP 고객', ''],
-                ['김철수', '010-9876-5432', '일반 고객', '']
+                ['이름', '전화번호', '변수 1', '변수 2', '변수 3'],
+                ['홍길동', '010-1234-5678', '홍길동', '서울시 강남구', 'VIP'],
+                ['김철수', '010-9876-5432', '김철수', '서울시 서초구', '일반']
             ];
             
             const wb = XLSX.utils.book_new();
@@ -1772,13 +2108,160 @@ document.addEventListener('DOMContentLoaded', function() {
                 { wch: 15 },
                 { wch: 20 },
                 { wch: 15 },
-                { wch: 30 }
+                { wch: 20 },
+                { wch: 15 }
             ];
             
             XLSX.utils.book_append_sheet(wb, ws, '주소록');
             XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
             
             showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+
+        // 엑셀 업로드 관련 변수
+        let createdGroupName = null;
+        let excelFileData = null;
+
+        // 그룹 생성 영역 표시/숨김
+        function toggleGroupCreation() {
+            const checkbox = document.getElementById('addToAddressbook');
+            const groupArea = document.getElementById('groupCreationArea');
+            const groupNameInput = document.getElementById('newGroupName');
+            const statusDiv = document.getElementById('groupCreationStatus');
+            
+            if (checkbox.checked) {
+                groupArea.style.display = 'block';
+                groupNameInput.value = '';
+                createdGroupName = null;
+                statusDiv.textContent = '';
+            } else {
+                groupArea.style.display = 'none';
+                groupNameInput.value = '';
+                createdGroupName = null;
+                statusDiv.textContent = '';
+            }
+        }
+
+        // 그룹 생성
+        function createGroup() {
+            const groupNameInput = document.getElementById('newGroupName');
+            const groupName = groupNameInput.value.trim();
+            const statusDiv = document.getElementById('groupCreationStatus');
+            
+            if (!groupName) {
+                statusDiv.textContent = '그룹명을 입력해주세요.';
+                statusDiv.style.color = 'var(--danger-color)';
+                return;
+            }
+            
+            // 그룹명 유효성 검사
+            if (groupName.length > 50) {
+                statusDiv.textContent = '그룹명은 50자 이하로 입력해주세요.';
+                statusDiv.style.color = 'var(--danger-color)';
+                return;
+            }
+            
+            // 그룹 생성 (실제로는 API 호출)
+            createdGroupName = groupName;
+            statusDiv.textContent = `그룹 "${groupName}"이(가) 생성되었습니다. (업로드 시 주소록에 추가됩니다)`;
+            statusDiv.style.color = 'var(--success-color)';
+            
+            showToast(`그룹 "${groupName}"이(가) 생성되었습니다.`, 'success');
+        }
+
+        // 엑셀 파일 업로드
+        function uploadExcelFile() {
+            const fileInput = document.querySelector('#excelUploadModal input[type="file"]');
+            const file = fileInput.files[0];
+            const addToAddressbook = document.getElementById('addToAddressbook').checked;
+            
+            if (!file) {
+                showToast('파일을 선택해주세요.', 'warning');
+                return;
+            }
+            
+            // 파일 읽기
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다. 헤더를 포함하여 최소 1개 이상의 데이터가 필요합니다.', 'warning');
+                        return;
+                    }
+                    
+                    // 헤더 제거
+                    const headers = jsonData[0];
+                    const rows = jsonData.slice(1);
+                    
+                    // 수신번호 추출 및 파싱
+                    const phoneIndex = headers.indexOf('전화번호');
+                    if (phoneIndex === -1) {
+                        showToast('전화번호 컬럼을 찾을 수 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const phoneNumbers = rows
+                        .map(row => row[phoneIndex])
+                        .filter(phone => phone && phone.toString().trim())
+                        .map(phone => phone.toString().trim().replace(/[^\d]/g, ''))
+                        .filter(phone => phone.length >= 10 && phone.length <= 11);
+                    
+                    if (phoneNumbers.length === 0) {
+                        showToast('유효한 전화번호를 찾을 수 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    // 수신번호 목록에 추가
+                    const recipientTextarea = document.getElementById('recipientNumbers');
+                    const existingNumbers = recipientTextarea.value.split(/[,\n]/).map(n => n.trim()).filter(n => n);
+                    const allNumbers = [...new Set([...existingNumbers, ...phoneNumbers])];
+                    recipientTextarea.value = allNumbers.join('\n');
+                    
+                    // 수신번호 개수 업데이트
+                    updateRecipientCount();
+                    
+                    // 주소록에 추가하기가 체크되어 있고 그룹이 생성된 경우
+                    if (addToAddressbook && createdGroupName) {
+                        // 실제로는 API를 호출하여 주소록에 그룹과 목록을 추가해야 함
+                        // 여기서는 시뮬레이션으로 처리
+                        excelFileData = {
+                            groupName: createdGroupName,
+                            data: rows.map((row, index) => {
+                                const rowData = {};
+                                headers.forEach((header, colIndex) => {
+                                    rowData[header] = row[colIndex] || '';
+                                });
+                                return rowData;
+                            })
+                        };
+                        
+                        showToast(`엑셀 파일이 업로드되었고, "${createdGroupName}" 그룹에 ${excelFileData.data.length}명이 추가되었습니다.`, 'success');
+                    } else {
+                        showToast(`엑셀 파일이 업로드되었습니다. (${phoneNumbers.length}명)`, 'success');
+                    }
+                    
+                    // 모달 닫기
+                    closeModal('excelUploadModal');
+                    
+                    // 파일 입력 초기화
+                    fileInput.value = '';
+                    document.getElementById('addToAddressbook').checked = false;
+                    toggleGroupCreation();
+                    createdGroupName = null;
+                    excelFileData = null;
+                    
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            
+            reader.readAsArrayBuffer(file);
         }
 
 
@@ -1980,9 +2463,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 2000);
         }
 
-        function saveDraft() {
-            showToast('임시 저장되었습니다.', 'success');
-        }
 
         document.getElementById('sendForm').addEventListener('submit', function(e) {
             e.preventDefault();
