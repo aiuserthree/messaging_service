@@ -950,6 +950,18 @@ body {
             padding: 16px;
             min-height: 200px;
         }
+        #previewCardSlider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        #previewCardsContainer {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        #previewCardsContainer > div {
+            flex-shrink: 0;
+        }
         .button-config {
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
@@ -1093,43 +1105,6 @@ body {
                 <!-- 입력 영역 -->
                 <div class="card">
                     <form id="templateForm">
-                        <!-- 템플릿 타입 선택 -->
-                        <div class="form-group">
-                            <label class="form-label required">템플릿 타입</label>
-                            <div class="template-type-grid">
-                                <div class="type-card" onclick="selectType('text')">
-                                    <div class="type-icon">📝</div>
-                                    <div class="type-name">텍스트</div>
-                                    <div class="type-desc">텍스트만 포함된 기본 메시지</div>
-                                </div>
-                                <div class="type-card" onclick="selectType('image')">
-                                    <div class="type-icon">🖼️</div>
-                                    <div class="type-name">이미지</div>
-                                    <div class="type-desc">정사각형 이미지 + 텍스트</div>
-                                </div>
-                                <div class="type-card" onclick="selectType('wide')">
-                                    <div class="type-icon">📐</div>
-                                    <div class="type-name">와이드 이미지</div>
-                                    <div class="type-desc">와이드 이미지 + 텍스트</div>
-                                </div>
-                                <div class="type-card" onclick="selectType('list')">
-                                    <div class="type-icon">📋</div>
-                                    <div class="type-name">와이드 리스트</div>
-                                    <div class="type-desc">여러 항목 리스트 형태</div>
-                                </div>
-                                <div class="type-card" onclick="selectType('carousel')">
-                                    <div class="type-icon">🎠</div>
-                                    <div class="type-name">캐러셀 카드</div>
-                                    <div class="type-desc">여러 카드 슬라이드</div>
-                                </div>
-                                <div class="type-card" onclick="selectType('commerce')">
-                                    <div class="type-icon">🛒</div>
-                                    <div class="type-name">커머스 카드</div>
-                                    <div class="type-desc">상품 정보 표시</div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- 기본 정보 -->
                         <div class="form-group">
                             <label class="form-label required">카카오 채널</label>
@@ -1144,66 +1119,157 @@ body {
                             <input type="text" class="form-input" placeholder="템플릿 관리용 이름" maxlength="50" required>
                         </div>
 
+                        <!-- 메시지 유형 -->
                         <div class="form-group">
-                            <label class="form-label">템플릿 설명</label>
-                            <textarea class="form-textarea" rows="2" placeholder="템플릿 설명 (선택사항)" maxlength="200"></textarea>
+                            <label class="form-label required">메시지 유형</label>
+                            <div class="flex gap-2" style="flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="text" checked onchange="toggleMessageType()">
+                                    <span>텍스트</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="image" onchange="toggleMessageType()">
+                                    <span>이미지</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="list" onchange="toggleMessageType()">
+                                    <span>리스트</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="card" onchange="toggleMessageType()">
+                                    <span>카드형</span>
+                                </label>
+                            </div>
                         </div>
 
-                        <!-- 메시지 내용 (타입별로 다름) -->
-                        <div id="contentSection">
+                        <!-- 텍스트 유형: 메시지 입력 -->
+                        <div id="textTypeGroup">
                             <div class="form-group">
-                                <label class="form-label required">메시지 내용</label>
+                                <label class="form-label required">메시지 입력</label>
                                 <div class="flex gap-2 mb-1">
                                     <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이벤트명}')">#{이벤트명}</button>
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{할인율}')">#{할인율}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
                                 </div>
-                                <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요 (최대 1,000자)" maxlength="1000" required oninput="updateCharCounter()"></textarea>
-                                <div class="byte-counter" id="charCounter">0 / 1,000자</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <div></div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span id="textCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/1300자</span>
+                                        <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(텍스트)</button>
+                                    </div>
+                                </div>
+                                <textarea class="form-textarea" id="textMessageContent" rows="8" placeholder="내용을 입력해주세요. (최대 1,300자) 줄바꿈 (Enter) 최대 99개 입력 가능" maxlength="1300" oninput="updateTextCharCounter(); updatePreview();"></textarea>
                             </div>
                         </div>
 
-                        <!-- 이미지 업로드 (이미지 타입) -->
-                        <div class="form-group" id="imageGroup" style="display: none;">
-                            <label class="form-label required">이미지</label>
-                            <input type="file" class="form-input" accept="image/jpeg,image/png" onchange="handleImageUpload(event)">
-                            <div class="form-help">JPG, PNG (최대 2MB, 권장: 800px × 800px)</div>
-                            <div id="imagePreview" style="margin-top: 12px;"></div>
+                        <!-- 이미지 유형: 파일첨부 + 메시지 입력 -->
+                        <div id="imageTypeGroup" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label required">파일첨부</label>
+                                <button type="button" class="btn btn-outline" onclick="document.getElementById('imageFileInput').click()" style="width: 100%; padding: 12px;">
+                                    <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                                </button>
+                                <input type="file" id="imageFileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleImageUpload(event, 'image')">
+                                <div id="imagePreviewContainer" style="margin-top: 12px; display: none;">
+                                    <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                                        <img id="imagePreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                                        <div id="imagePreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                                    </div>
+                                </div>
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <div>이미지 사이즈: 800 x 400 px (권장)</div>
+                                    <div>가로 500px 이상, 가로세로 비율 2:1이상 3:4이하</div>
+                                    <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                                </div>
+                                <div class="form-group" style="margin-top: 12px;">
+                                    <label class="form-label">이미지 링크(선택입력)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
+                                        <button type="button" class="btn btn-outline">URL 확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">메시지 입력</label>
+                                <div class="flex gap-2 mb-1">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{전화번호}')">#{전화번호}</button>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <div></div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span id="imageCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/400자</span>
+                                        <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(이미지)</button>
+                                    </div>
+                                </div>
+                                <textarea class="form-textarea" id="imageMessageContent" rows="6" placeholder="내용을 입력해주세요. (최대 400자) 줄바꿈 (Enter) 최대 29개 입력 가능" maxlength="400" oninput="updateImageCharCounter(); updatePreview();"></textarea>
+                            </div>
                         </div>
 
-                        <!-- 와이드 이미지 -->
-                        <div class="form-group" id="wideImageGroup" style="display: none;">
-                            <label class="form-label required">와이드 이미지</label>
-                            <input type="file" class="form-input" accept="image/jpeg,image/png" onchange="handleImageUpload(event)">
-                            <div class="form-help">JPG, PNG (최대 2MB, 권장: 800px × 600px)</div>
-                            <div id="wideImagePreview" style="margin-top: 12px;"></div>
+                        <!-- 리스트 유형: 제목 + 메인 아이템 + 서브 아이템 -->
+                        <div id="listTypeGroup" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label required">제목을 입력해주세요 (필수입력, 최대 20자)</label>
+                                <input type="text" class="form-input" id="listTitle" placeholder="제목 입력" maxlength="20" oninput="updatePreview();">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">메인 아이템</label>
+                                <button type="button" class="btn btn-outline" onclick="document.getElementById('mainItemFileInput').click()" style="width: 100%; padding: 12px; margin-bottom: 12px;">
+                                    <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                                </button>
+                                <input type="file" id="mainItemFileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleMainItemUpload(event)">
+                                <div id="mainItemPreviewContainer" style="margin-top: 12px; display: none;">
+                                    <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                                        <img id="mainItemPreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                                        <div id="mainItemPreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                                    </div>
+                                </div>
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <div>이미지 사이즈: 800 x 400 px (권장)</div>
+                                    <div>가로 500px 이상, 가로 세로 비율 2:1 고정</div>
+                                    <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                                </div>
                             <div class="form-group" style="margin-top: 12px;">
-                                <label class="form-label">제목</label>
-                                <input type="text" class="form-input" placeholder="이미지 위에 표시될 제목 (최대 50자)" maxlength="50">
+                                    <label class="form-label">타이틀 (선택)</label>
+                                    <input type="text" class="form-input" id="mainItemTitle" placeholder="아이템 타이틀 입력 (최대 25자) 줄바꿈(Enter) 최대 1개 입력가능" maxlength="25" oninput="updatePreview();">
+                                </div>
+                                <div class="form-group" style="margin-top: 12px;">
+                                    <label class="form-label required">이미지 링크 (필수)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" class="form-input" id="mainItemLink" placeholder="https://" style="flex: 1;" oninput="updatePreview();">
+                                        <button type="button" class="btn btn-outline">URL 확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">서브 아이템</label>
+                                <div id="subItemsContainer"></div>
+                                <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addSubItem()">+ 추가</button>
                             </div>
                         </div>
 
-                        <!-- 리스트 아이템 (와이드 리스트) -->
-                        <div class="form-group" id="listGroup" style="display: none;">
-                            <label class="form-label required">리스트 아이템 (최소 2개, 최대 4개)</label>
-                            <div id="listItems"></div>
-                            <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addListItem()">아이템 추가</button>
+                        <!-- 카드형 유형: 여러 카드 -->
+                        <div id="cardTypeGroup" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label required">카드</label>
+                                <div id="cardsContainer"></div>
+                                <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addCard()">+ 추가</button>
+                            </div>
                         </div>
 
-                        <!-- 버튼 설정 -->
-                        <div class="form-group">
-                            <label class="form-label">버튼(변수사용불가)</label>
+                        <!-- 버튼 설정 (카드형 제외) -->
+                        <div class="form-group" id="commonButtonGroup">
+                            <label class="form-label">버튼 추가</label>
                             
                             <!-- 전역 버튼 옵션 -->
                             <div style="margin-bottom: 16px;">
                                 <label style="display: flex; align-items: center; gap: 8px;">
                                     <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
-                                    <span>채널추가버튼 사용</span>
+                                    <span>채널 추가 버튼 사용</span>
                                 </label>
                             </div>
                             
                             <div id="buttonList"></div>
-                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">버튼 추가</button>
+                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">+ 버튼 추가</button>
                         </div>
 
                         <!-- 상태 설정 -->
@@ -1236,8 +1302,28 @@ body {
                                 </div>
                             </div>
                             <div class="preview-kakao-body">
+                                <!-- 텍스트/이미지 공통 -->
                                 <div id="previewImage" style="margin-bottom: 12px;"></div>
                                 <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력하세요</div>
+                                
+                                <!-- 리스트 유형 -->
+                                <div id="previewList" style="display: none;">
+                                    <div id="previewListTitle" style="font-weight: 600; font-size: 16px; margin-bottom: 12px;"></div>
+                                    <div id="previewMainItem" style="margin-bottom: 16px;"></div>
+                                    <div id="previewSubItems"></div>
+                                </div>
+                                
+                                <!-- 카드형 유형 -->
+                                <div id="previewCard" style="display: none;">
+                                    <div id="previewCardSlider" style="position: relative; overflow: hidden;">
+                                        <div id="previewCardsContainer" style="display: flex; transition: transform 0.3s ease;"></div>
+                                        <!-- 슬라이드 네비게이션 버튼 (카드가 2개 이상일 때만 표시) -->
+                                        <button type="button" id="prevCardBtn" onclick="prevCard()" style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); padding: 8px 12px; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.9); border-radius: 50%; cursor: pointer; z-index: 10; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">‹</button>
+                                        <button type="button" id="nextCardBtn" onclick="nextCard()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); padding: 8px 12px; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.9); border-radius: 50%; cursor: pointer; z-index: 10; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">›</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 공통 버튼 미리보기 (카드형 제외) -->
                                 <div class="button-preview" id="previewButtons"></div>
                             </div>
                         </div>
@@ -1527,124 +1613,377 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
     <script>
-        let selectedType = '';
+        // 전역 변수
+        let selectedType = 'text';
         let buttonCount = 0;
-        let listItemCount = 0;
+        let subItemCount = 0;
+        let cardCount = 0;
 
-        function selectType(type) {
-            selectedType = type;
-            document.querySelectorAll('.type-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
+        // 전역 함수 정의
+        window.toggleMessageType = function() {
+            const checkedRadio = document.querySelector('input[name="messageType"]:checked');
+            if (!checkedRadio) return;
+            const messageType = checkedRadio.value;
+            selectedType = messageType;
             
-            // 타입별 입력 필드 표시/숨김
-            const imageGroup = document.getElementById('imageGroup');
-            const wideImageGroup = document.getElementById('wideImageGroup');
-            const listGroup = document.getElementById('listGroup');
+            // 모든 타입 그룹 숨기기
+            document.getElementById('textTypeGroup').style.display = 'none';
+            document.getElementById('imageTypeGroup').style.display = 'none';
+            document.getElementById('listTypeGroup').style.display = 'none';
+            document.getElementById('cardTypeGroup').style.display = 'none';
             
-            imageGroup.style.display = 'none';
-            wideImageGroup.style.display = 'none';
-            listGroup.style.display = 'none';
+            // 공통 버튼 영역 표시/숨김
+            const commonButtonGroup = document.getElementById('commonButtonGroup');
+            if (commonButtonGroup) {
+                if (messageType === 'card') {
+                    commonButtonGroup.style.display = 'none';
+                } else {
+                    commonButtonGroup.style.display = 'block';
+                }
+            }
             
-            if (type === 'image') {
-                imageGroup.style.display = 'block';
-            } else if (type === 'wide') {
-                wideImageGroup.style.display = 'block';
-            } else if (type === 'list') {
-                listGroup.style.display = 'block';
-                if (listItemCount === 0) {
-                    addListItem();
-                    addListItem();
+            // 선택된 타입 그룹 표시
+            if (messageType === 'text') {
+                document.getElementById('textTypeGroup').style.display = 'block';
+            } else if (messageType === 'image') {
+                document.getElementById('imageTypeGroup').style.display = 'block';
+            } else if (messageType === 'list') {
+                document.getElementById('listTypeGroup').style.display = 'block';
+                if (subItemCount === 0) {
+                    addSubItem();
+                    addSubItem();
+                }
+            } else if (messageType === 'card') {
+                document.getElementById('cardTypeGroup').style.display = 'block';
+                if (cardCount === 0) {
+                    addCard();
                 }
             }
             
             updatePreview();
-        }
+        };
 
-        function insertVariable(variable) {
-            const textarea = document.getElementById('messageContent');
+        window.insertVariable = function(variable) {
+            const textarea = document.getElementById('textMessageContent');
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
             const text = textarea.value;
             textarea.value = text.substring(0, start) + variable + text.substring(end);
             textarea.focus();
             textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateTextCharCounter();
             updatePreview();
-            updateCharCounter();
-        }
+        };
 
-        function updateCharCounter() {
-            const content = document.getElementById('messageContent').value;
-            const counter = document.getElementById('charCounter');
-            counter.textContent = `${content.length} / 1,000자`;
-        }
-
-        function updatePreview() {
-            const content = document.getElementById('messageContent').value;
-            let previewText = content
-                .replace(/#{이름}/g, '홍길동')
-                .replace(/#{이벤트명}/g, '신년 특가')
-                .replace(/#{할인율}/g, '30');
-            
-            document.getElementById('previewContent').textContent = previewText || '메시지 내용을 입력하세요';
-            
-            // 이미지 미리보기
-            const imagePreview = document.getElementById('imagePreview').innerHTML;
-            const wideImagePreview = document.getElementById('wideImagePreview').innerHTML;
-            if (imagePreview) {
-                document.getElementById('previewImage').innerHTML = imagePreview;
-            } else if (wideImagePreview) {
-                document.getElementById('previewImage').innerHTML = wideImagePreview;
-            } else {
-                document.getElementById('previewImage').innerHTML = '';
-            }
-            
-            // 버튼 미리보기
-            updateButtonPreview();
-        }
-
-        document.getElementById('messageContent').addEventListener('input', function() {
+        window.insertImageVariable = function(variable) {
+            const textarea = document.getElementById('imageMessageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateImageCharCounter();
             updatePreview();
-            updateCharCounter();
-        });
+        };
 
-        function handleImageUpload(event) {
+        function updateTextCharCounter() {
+            const content = document.getElementById('textMessageContent').value;
+            const counter = document.getElementById('textCharCounter');
+            counter.textContent = `${content.length}/1300자`;
+        }
+
+        function updateImageCharCounter() {
+            const content = document.getElementById('imageMessageContent').value;
+            const counter = document.getElementById('imageCharCounter');
+            counter.textContent = `${content.length}/400자`;
+        }
+
+        function handleImageUpload(event, type) {
             const file = event.target.files[0];
             if (!file) return;
             
             const reader = new FileReader();
             reader.onload = function(e) {
-                const previewId = event.target.closest('.form-group').querySelector('[id*="Preview"]')?.id || 'imagePreview';
-                const preview = document.getElementById(previewId);
-                if (preview) {
-                    preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: var(--radius-md);">`;
+                if (type === 'image') {
+                    const container = document.getElementById('imagePreviewContainer');
+                    const img = document.getElementById('imagePreviewImg');
+                    const placeholder = document.getElementById('imagePreviewPlaceholder');
+                    container.style.display = 'block';
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
                 }
                 updatePreview();
             };
             reader.readAsDataURL(file);
         }
 
-        function addButton() {
-            if (buttonCount >= 5) {
+        function handleMainItemUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById('mainItemPreviewContainer');
+                const img = document.getElementById('mainItemPreviewImg');
+                const placeholder = document.getElementById('mainItemPreviewPlaceholder');
+                container.style.display = 'block';
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        window.addSubItem = function() {
+            if (subItemCount >= 4) {
+                showToast('서브 아이템은 최대 4개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            subItemCount++;
+            const container = document.getElementById('subItemsContainer');
+            const itemId = `subItem${subItemCount}`;
+            const itemHtml = `
+                <div class="card" style="margin-bottom: 16px; padding: 16px;" id="${itemId}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-weight: 600;">아이템 ${subItemCount}</span>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="removeSubItem('${itemId}')">x</button>
+                    </div>
+                    <button type="button" class="btn btn-outline" onclick="document.getElementById('subItem${subItemCount}FileInput').click()" style="width: 100%; padding: 12px; margin-bottom: 12px;">
+                        <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                    </button>
+                    <input type="file" id="subItem${subItemCount}FileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleSubItemUpload(event, '${itemId}')">
+                    <div id="${itemId}PreviewContainer" style="margin-top: 12px; display: none;">
+                        <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                            <img id="${itemId}PreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                            <div id="${itemId}PreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                        </div>
+                    </div>
+                    <div class="form-help" style="margin-top: 8px;">
+                        <div>이미지 사이즈: 500 x 500 px (권장)</div>
+                        <div>가로 500px 이상, 가로 세로 비율 1:1 고정</div>
+                        <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                    </div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label class="form-label required">타이틀 (필수)</label>
+                        <input type="text" class="form-input" id="${itemId}Title" placeholder="아이템 타이틀 입력 (최대 30자) 줄바꿈(Enter) 최대 1개 입력가능" maxlength="30" oninput="updatePreview();">
+                    </div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label class="form-label required">이미지 링크 (필수)</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="form-input" id="${itemId}Link" placeholder="https://" style="flex: 1;" oninput="updatePreview();">
+                            <button type="button" class="btn btn-outline">URL 확인</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', itemHtml);
+        };
+
+        window.removeSubItem = function(itemId) {
+            if (subItemCount <= 2) {
+                showToast('서브 아이템은 최소 2개 이상 필요합니다.', 'warning');
+                return;
+            }
+            document.getElementById(itemId).remove();
+            subItemCount--;
+            updatePreview();
+        }
+
+        function handleSubItemUpload(event, itemId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById(`${itemId}PreviewContainer`);
+                const img = document.getElementById(`${itemId}PreviewImg`);
+                const placeholder = document.getElementById(`${itemId}PreviewPlaceholder`);
+                container.style.display = 'block';
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.addCard = function() {
+            if (cardCount >= 6) {
+                showToast('카드는 최대 6개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            cardCount++;
+            currentCardIndex = 0; // 카드 추가 시 첫 번째 카드로 이동
+            const container = document.getElementById('cardsContainer');
+            const cardId = `card${cardCount}`;
+            const itemHtml = `
+                <div class="card" style="margin-bottom: 16px; padding: 16px; border: 1px solid var(--border-color);" id="${cardId}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-weight: 600;">카드 ${cardCount}</span>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="removeCard('${cardId}')">x</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">제목을 입력해주세요 (필수입력, 최대 20자)</label>
+                        <input type="text" class="form-input" id="${cardId}Title" placeholder="제목 입력" maxlength="20" oninput="updatePreview();">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">파일첨부</label>
+                        <button type="button" class="btn btn-outline" onclick="document.getElementById('${cardId}FileInput').click()" style="width: 100%; padding: 12px;">
+                            <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                        </button>
+                        <input type="file" id="${cardId}FileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleCardUpload(event, '${cardId}')">
+                        <div id="${cardId}PreviewContainer" style="margin-top: 12px; display: none;">
+                            <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                                <img id="${cardId}PreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                                <div id="${cardId}PreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                            </div>
+                        </div>
+                        <div class="form-help" style="margin-top: 8px;">
+                            <div>이미지 사이즈: 800 x 400 px 또는 800 x 600 px (권장)</div>
+                            <div>가로 500px 이상, 가로세로 비율 2:1이상 3:4이하</div>
+                            <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                        </div>
+                        <div class="form-group" style="margin-top: 12px;">
+                            <label class="form-label">이미지 링크(선택입력)</label>
+                            <div class="flex gap-2">
+                                <input type="text" class="form-input" id="${cardId}Link" placeholder="https://" style="flex: 1;" oninput="updatePreview();">
+                                <button type="button" class="btn btn-outline">URL 확인</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">메시지 입력</label>
+                        <div class="flex gap-2 mb-1">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{이름}')">#{이름}</button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{전화번호}')">#{전화번호}</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <div></div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span id="${cardId}CharCounter" style="color: var(--text-secondary); font-size: 12px;">0/180자</span>
+                                <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(카드형)</button>
+                            </div>
+                        </div>
+                        <textarea class="form-textarea" id="${cardId}Content" rows="4" placeholder="내용을 입력해주세요. (최대 180자) 줄바꿈 (Enter) 최대 10개 입력 가능" maxlength="180" oninput="updateCardCharCounter('${cardId}'); updatePreview();"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label class="form-label">버튼 추가</label>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="${cardId}UseChannelButton" onchange="updateCardButtonPreview('${cardId}')">
+                                <span>채널 추가 버튼 사용</span>
+                            </label>
+                        </div>
+                        <div id="${cardId}ButtonList"></div>
+                        <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addCardButton('${cardId}')">+ 버튼 추가</button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', itemHtml);
+            updatePreview(); // 카드 추가 후 미리보기 업데이트
+        };
+
+        window.removeCard = function(cardId) {
+            document.getElementById(cardId).remove();
+            cardCount--;
+            if (currentCardIndex >= cardCount) {
+                currentCardIndex = Math.max(0, cardCount - 1);
+            }
+            updatePreview();
+        }
+
+        let currentCardIndex = 0;
+
+        function updateCardSlider() {
+            const cardsContainer = document.getElementById('previewCardsContainer');
+            const slider = document.getElementById('previewCardSlider');
+            const prevBtn = document.getElementById('prevCardBtn');
+            const nextBtn = document.getElementById('nextCardBtn');
+            
+            if (!cardsContainer || cardCount === 0) return;
+            
+            // 슬라이더의 실제 너비를 가져와서 이동 거리 계산
+            if (slider) {
+                const sliderWidth = slider.offsetWidth || slider.clientWidth;
+                const translateX = currentCardIndex * sliderWidth;
+                cardsContainer.style.transform = `translateX(-${translateX}px)`;
+            } else {
+                // 슬라이더가 아직 렌더링되지 않은 경우, 비율로 계산
+                const cardWidth = 100 / cardCount;
+                cardsContainer.style.transform = `translateX(-${currentCardIndex * cardWidth}%)`;
+            }
+            
+            // 카드가 2개 이상일 때만 네비게이션 버튼 표시
+            if (cardCount > 1) {
+                if (prevBtn) {
+                    prevBtn.style.display = currentCardIndex > 0 ? 'block' : 'none';
+                }
+                if (nextBtn) {
+                    nextBtn.style.display = currentCardIndex < cardCount - 1 ? 'block' : 'none';
+                }
+            } else {
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        }
+
+        window.prevCard = function() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateCardSlider();
+            }
+        }
+
+        window.nextCard = function() {
+            if (currentCardIndex < cardCount - 1) {
+                currentCardIndex++;
+                updateCardSlider();
+            }
+        }
+
+        window.insertCardVariable = function(cardId, variable) {
+            const textarea = document.getElementById(`${cardId}Content`);
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateCardCharCounter(cardId);
+            updatePreview();
+        }
+
+        let cardButtonCounts = {};
+
+        window.addCardButton = function(cardId) {
+            if (!cardButtonCounts[cardId]) {
+                cardButtonCounts[cardId] = 0;
+            }
+            if (cardButtonCounts[cardId] >= 5) {
                 showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
                 return;
             }
             
-            const buttonList = document.getElementById('buttonList');
+            cardButtonCounts[cardId]++;
+            const buttonList = document.getElementById(`${cardId}ButtonList`);
             const div = document.createElement('div');
             div.className = 'button-config';
-            div.setAttribute('data-button-index', buttonCount + 1);
+            div.setAttribute('data-button-index', cardButtonCounts[cardId]);
             div.innerHTML = `
                 <div class="button-config-header">
-                    <strong>버튼 ${buttonCount + 1}</strong>
-                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
+                    <strong>버튼 ${cardButtonCounts[cardId]}</strong>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeCardButton(this, '${cardId}')" style="padding: 4px 8px;">
                         <span style="font-size: 16px;">🗑️</span>
                     </button>
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
                     <label class="form-label">버튼 타입</label>
-                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                    <select class="form-select button-type-select" onchange="updateCardButtonConfig(this, '${cardId}')">
                         <option value="web">웹링크</option>
                         <option value="app">앱링크</option>
                         <option value="phone">전화 연결</option>
@@ -1652,17 +1991,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="form-group button-name-group" style="margin-bottom: 0;">
                     <label class="form-label">버튼명 최대 14자</label>
-                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateCardButtonPreview('${cardId}')">
                 </div>
                 <div class="button-link-config"></div>
             `;
             buttonList.appendChild(div);
-            buttonCount++;
-            updateButtonConfig(div.querySelector('.button-type-select'));
-            updateButtonPreview();
+            updateCardButtonConfig(div.querySelector('.button-type-select'), cardId);
+            updateCardButtonPreview(cardId);
         }
-        
-        function updateButtonConfig(selectElement) {
+
+        window.removeCardButton = function(btn, cardId) {
+            btn.closest('.button-config').remove();
+            if (cardButtonCounts[cardId]) {
+                cardButtonCounts[cardId]--;
+            }
+            updateCardButtonPreview(cardId);
+        }
+
+        window.updateCardButtonConfig = function(selectElement, cardId) {
             const buttonConfig = selectElement.closest('.button-config');
             const type = selectElement.value;
             const linkConfig = buttonConfig.querySelector('.button-link-config');
@@ -1701,20 +2047,306 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             linkConfig.innerHTML = linkHTML;
+            updateCardButtonPreview(cardId);
+        }
+
+        window.updateCardButtonPreview = function(cardId) {
+            updatePreview();
+        }
+
+        function handleCardUpload(event, cardId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById(`${cardId}PreviewContainer`);
+                const img = document.getElementById(`${cardId}PreviewImg`);
+                const placeholder = document.getElementById(`${cardId}PreviewPlaceholder`);
+                container.style.display = 'block';
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateCardCharCounter(cardId) {
+            const content = document.getElementById(`${cardId}Content`).value;
+            const counter = document.getElementById(`${cardId}CharCounter`);
+            counter.textContent = `${content.length}/180자`;
+        }
+
+        function updatePreview() {
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'text';
+            const previewContent = document.getElementById('previewContent');
+            const previewImage = document.getElementById('previewImage');
+            const previewList = document.getElementById('previewList');
+            const previewCard = document.getElementById('previewCard');
+            
+            // 모든 미리보기 영역 초기화
+            previewImage.innerHTML = '';
+            previewContent.style.display = 'block';
+            previewList.style.display = 'none';
+            previewCard.style.display = 'none';
+            
+            if (messageType === 'text') {
+                const content = document.getElementById('textMessageContent').value;
+                let previewText = content
+                    .replace(/#{이름}/g, '홍길동')
+                    .replace(/#{전화번호}/g, '010-1234-5678');
+                previewContent.textContent = previewText || '메시지 내용을 입력하세요';
+                previewContent.style.display = 'block';
+            } else if (messageType === 'image') {
+                const img = document.getElementById('imagePreviewImg');
+                if (img && img.style.display === 'block') {
+                    previewImage.innerHTML = `<img src="${img.src}" style="max-width: 100%; border-radius: var(--radius-md); margin-bottom: 12px;">`;
+                } else {
+                    previewImage.innerHTML = '';
+                }
+                const content = document.getElementById('imageMessageContent').value;
+                let previewText = content
+                    .replace(/#{이름}/g, '홍길동')
+                    .replace(/#{전화번호}/g, '010-1234-5678');
+                previewContent.textContent = previewText || '메시지 내용을 입력하세요';
+                previewContent.style.display = 'block';
+            } else if (messageType === 'list') {
+                previewContent.style.display = 'none';
+                previewList.style.display = 'block';
+                
+                const title = document.getElementById('listTitle').value;
+                document.getElementById('previewListTitle').textContent = title || '제목을 입력해주세요';
+                
+                // 메인 아이템
+                const mainImg = document.getElementById('mainItemPreviewImg');
+                const mainTitle = document.getElementById('mainItemTitle').value;
+                const mainLink = document.getElementById('mainItemLink').value;
+                let mainItemHtml = '';
+                if (mainImg && mainImg.style.display === 'block') {
+                    mainItemHtml += `<div style="margin-bottom: 12px;"><img src="${mainImg.src}" style="width: 100%; border-radius: var(--radius-md);"></div>`;
+                }
+                if (mainTitle) {
+                    mainItemHtml += `<div style="font-weight: 600; margin-bottom: 8px;">${mainTitle}</div>`;
+                }
+                document.getElementById('previewMainItem').innerHTML = mainItemHtml;
+                
+                // 서브 아이템들
+                const subItemsHtml = [];
+                for (let i = 1; i <= subItemCount; i++) {
+                    const itemId = `subItem${i}`;
+                    const subImg = document.getElementById(`${itemId}PreviewImg`);
+                    const subTitle = document.getElementById(`${itemId}Title`)?.value || '';
+                    if (subImg && subImg.style.display === 'block' && subTitle) {
+                        subItemsHtml.push(`
+                            <div style="display: flex; gap: 12px; margin-bottom: 12px; align-items: center;">
+                                <img src="${subImg.src}" style="width: 80px; height: 80px; border-radius: var(--radius-md); object-fit: cover; flex-shrink: 0;">
+                                <div style="flex: 1; font-weight: 500;">${subTitle}</div>
+                            </div>
+                        `);
+                    }
+                }
+                document.getElementById('previewSubItems').innerHTML = subItemsHtml.join('');
+            } else if (messageType === 'card') {
+                previewContent.style.display = 'none';
+                previewCard.style.display = 'block';
+                
+                // 카드들 슬라이드 형태로 표시
+                const cardsContainer = document.getElementById('previewCardsContainer');
+                const cardsHtml = [];
+                for (let i = 1; i <= cardCount; i++) {
+                    const cardId = `card${i}`;
+                    const cardTitle = document.getElementById(`${cardId}Title`)?.value || '제목을 입력해주세요';
+                    const cardImg = document.getElementById(`${cardId}PreviewImg`);
+                    const cardContent = document.getElementById(`${cardId}Content`)?.value || '';
+                    
+                    // 카드별 버튼 수집
+                    const cardButtons = [];
+                    const useChannelButton = document.getElementById(`${cardId}UseChannelButton`)?.checked;
+                    if (useChannelButton) {
+                        cardButtons.push({ name: '채널추가', type: 'channel', isChannel: true });
+                    }
+                    
+                    // 카드별 버튼 리스트 수집
+                    const cardButtonList = document.getElementById(`${cardId}ButtonList`);
+                    if (cardButtonList) {
+                        Array.from(cardButtonList.querySelectorAll('.button-config')).forEach(config => {
+                            const nameInput = config.querySelector('.button-name-input');
+                            const name = nameInput?.value || '';
+                            const typeSelect = config.querySelector('.button-type-select');
+                            const type = typeSelect?.value || 'web';
+                            let buttonName = name;
+                            if (!buttonName) {
+                                const typeNames = {
+                                    'web': '웹링크',
+                                    'app': '앱링크',
+                                    'phone': '전화 연결'
+                                };
+                                buttonName = typeNames[type] || '버튼';
+                            }
+                            cardButtons.push({ name: buttonName, type: type, isChannel: false });
+                        });
+                    }
+                    
+                    let cardHtml = `<div style="flex-shrink: 0; padding: 0 4px; box-sizing: border-box;">
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; width: 100%;">
+                            <div style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">${cardTitle}</div>`;
+                    if (cardImg && cardImg.style.display === 'block') {
+                        cardHtml += `<div style="margin-bottom: 12px;"><img src="${cardImg.src}" style="width: 100%; border-radius: var(--radius-md);"></div>`;
+                    }
+                    if (cardContent) {
+                        let previewText = cardContent
+                            .replace(/#{이름}/g, '홍길동')
+                            .replace(/#{전화번호}/g, '010-1234-5678');
+                        cardHtml += `<div style="white-space: pre-wrap; line-height: 1.6; margin-bottom: 12px;">${previewText}</div>`;
+                    }
+                    if (cardButtons.length > 0) {
+                        cardHtml += `<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">`;
+                        cardButtons.forEach(btn => {
+                            if (btn.isChannel) {
+                                cardHtml += `<div style="padding: 8px 12px; background: #FEE500; border-radius: var(--radius-md); text-align: center; font-weight: 500; font-size: 13px;">Ch+ ${btn.name}</div>`;
+                            } else {
+                                cardHtml += `<div style="padding: 8px 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-align: center; font-weight: 500; font-size: 13px;">${btn.name}</div>`;
+                            }
+                        });
+                        cardHtml += `</div>`;
+                    }
+                    cardHtml += `</div></div>`;
+                    cardsHtml.push(cardHtml);
+                }
+                cardsContainer.innerHTML = cardsHtml.join('');
+                if (cardCount > 0) {
+                    // 슬라이더의 실제 너비를 가져와서 각 카드의 너비를 설정
+                    const updateCardWidths = () => {
+                        const slider = document.getElementById('previewCardSlider');
+                        if (slider) {
+                            const sliderWidth = slider.offsetWidth || slider.clientWidth;
+                            if (sliderWidth > 0) {
+                                cardsContainer.style.width = `${cardCount * sliderWidth}px`;
+                                // 각 카드의 너비를 슬라이더 너비로 설정 (직접 자식 div만 선택)
+                                Array.from(cardsContainer.children).forEach((cardDiv) => {
+                                    if (cardDiv.tagName === 'DIV') {
+                                        cardDiv.style.width = `${sliderWidth}px`;
+                                        cardDiv.style.flex = '0 0 auto';
+                                    }
+                                });
+                                updateCardSlider();
+                                return;
+                            }
+                        }
+                        // 슬라이더가 아직 렌더링되지 않은 경우, 다음 프레임에 다시 시도
+                        requestAnimationFrame(updateCardWidths);
+                    };
+                    updateCardWidths();
+                } else {
+                    cardsContainer.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">카드를 추가해주세요</div>';
+                }
+                
+                // 카드형일 때는 공통 버튼 미리보기 숨기기
+                const previewButtons = document.getElementById('previewButtons');
+                if (previewButtons) {
+                    previewButtons.style.display = 'none';
+                }
+            } else {
+                // 카드형이 아닐 때는 공통 버튼 미리보기 표시
+                const previewButtons = document.getElementById('previewButtons');
+                if (previewButtons) {
+                    previewButtons.style.display = 'block';
+                }
+                updateButtonPreview();
+            }
+        }
+
+        window.addButton = function() {
+            if (buttonCount >= 5) {
+                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            const buttonList = document.getElementById('buttonList');
+            const div = document.createElement('div');
+            div.className = 'button-config';
+            div.setAttribute('data-button-index', buttonCount + 1);
+            div.innerHTML = `
+                <div class="button-config-header">
+                    <strong>버튼 ${buttonCount + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
+                        <span style="font-size: 16px;">🗑️</span>
+                    </button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼 타입</label>
+                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                        <option value="web">웹링크</option>
+                        <option value="app">앱링크</option>
+                        <option value="phone">전화 연결</option>
+                    </select>
+                </div>
+                <div class="form-group button-name-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼명 최대 14자</label>
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
+                </div>
+                <div class="button-link-config"></div>
+            `;
+            buttonList.appendChild(div);
+            buttonCount++;
+            updateButtonConfig(div.querySelector('.button-type-select'));
+            updateButtonPreview();
+        };
+        
+        window.updateButtonConfig = function(selectElement) {
+            const buttonConfig = selectElement.closest('.button-config');
+            const type = selectElement.value;
+            const linkConfig = buttonConfig.querySelector('.button-link-config');
+            
+            let linkHTML = '';
+            
+            if (type === 'web') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Mobile(필수)</label>
+                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">PC(선택)</label>
+                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
+                </div>
+                `;
+            } else if (type === 'app') {
+                linkHTML = `
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Android(필수)</label>
+                        <input type="text" class="form-input" placeholder="Android URL 입력">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">IOS(필수)</label>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력">
+                </div>
+                `;
+            } else if (type === 'phone') {
+                linkHTML = `
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">전화번호</label>
+                        <input type="text" class="form-input" placeholder="전화번호 입력 (예: 010-1234-5678)">
+                </div>
+            `;
+            }
+            
+            linkConfig.innerHTML = linkHTML;
             updateButtonPreview();
         }
         
-        function toggleChannelButton() {
+        window.toggleChannelButton = function() {
             const useChannelButton = document.getElementById('useChannelButton').checked;
             updateButtonPreview();
-        }
+        };
         
 
-        function removeButton(btn) {
+        window.removeButton = function(btn) {
             btn.closest('.button-config').remove();
             buttonCount--;
             updateButtonPreview();
-        }
+        };
 
         function updateButtonPreview() {
             const buttons = [];
@@ -1756,70 +2388,73 @@ document.addEventListener('DOMContentLoaded', function() {
             }).join('');
         }
 
-        function addListItem() {
-            if (listItemCount >= 4) {
-                showToast('리스트 아이템은 최대 4개까지 추가할 수 있습니다.', 'warning');
-                return;
-            }
-            
-            const listItems = document.getElementById('listItems');
-            const div = document.createElement('div');
-            div.className = 'list-item';
-            div.innerHTML = `
-                <div class="list-item-header">
-                    <strong>아이템 ${listItemCount + 1}</strong>
-                    <button type="button" class="btn btn-sm" onclick="removeListItem(this)">삭제</button>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">제목</label>
-                    <input type="text" class="form-input" placeholder="제목 입력 (최대 30자)" maxlength="30">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">설명</label>
-                    <input type="text" class="form-input" placeholder="설명 입력 (최대 100자)" maxlength="100">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">썸네일 이미지</label>
-                    <input type="file" class="form-input" accept="image/*">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">링크 URL</label>
-                    <input type="text" class="form-input" placeholder="URL 입력 (선택사항)">
-                </div>
-            `;
-            listItems.appendChild(div);
-            listItemCount++;
-        }
-
-        function removeListItem(btn) {
-            if (listItemCount <= 2) {
-                showToast('리스트 아이템은 최소 2개 이상 필요합니다.', 'warning');
-                return;
-            }
-            btn.closest('.list-item').remove();
-            listItemCount--;
-        }
-
-        function saveDraft() {
+        window.saveDraft = function() {
             showToast('임시 저장되었습니다.', 'success');
-        }
+        };
 
-        function cancel() {
+        window.cancel = function() {
             if (confirm('작성 중인 내용이 저장되지 않습니다. 정말 나가시겠습니까?')) {
                 window.location.href = 'template-brandtalk.html';
             }
-        }
+        };
 
-        function saveTemplate() {
-            if (!selectedType) {
-                showToast('템플릿 타입을 선택해주세요.', 'warning');
+        window.saveTemplate = function() {
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value;
+            if (!messageType) {
+                showToast('메시지 유형을 선택해주세요.', 'warning');
                 return;
             }
-            showToast('템플릿이 저장되었습니다. 즉시 사용 가능합니다.', 'success');
+            
+            // 유형별 필수 필드 검증
+            if (messageType === 'text') {
+                const content = document.getElementById('textMessageContent').value;
+                if (!content.trim()) {
+                    showToast('메시지 내용을 입력해주세요.', 'warning');
+                return;
+            }
+            } else if (messageType === 'image') {
+                const content = document.getElementById('imageMessageContent').value;
+                if (!content.trim()) {
+                    showToast('메시지 내용을 입력해주세요.', 'warning');
+                    return;
+                }
+            } else if (messageType === 'list') {
+                const title = document.getElementById('listTitle').value;
+                if (!title.trim()) {
+                    showToast('제목을 입력해주세요.', 'warning');
+                    return;
+                }
+            } else if (messageType === 'card') {
+                // 각 카드별 제목 검증
+                let hasTitle = false;
+                for (let i = 1; i <= cardCount; i++) {
+                    const cardId = `card${i}`;
+                    const title = document.getElementById(`${cardId}Title`)?.value;
+                    if (title && title.trim()) {
+                        hasTitle = true;
+                        break;
+                    }
+                }
+                if (!hasTitle) {
+                    showToast('카드 제목을 입력해주세요.', 'warning');
+                    return;
+                }
+            }
+            
+            showToast('템플릿이 저장되었습니다.', 'success');
             setTimeout(() => {
                 window.location.href = 'template-brandtalk.html';
-            }, 2000);
-        }
+            }, 1500);
+        };
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.toggleMessageType) {
+                window.toggleMessageType(); // 기본 텍스트 타입 표시
+            }
+            if (typeof updatePreview === 'function') {
+                updatePreview();
+            }
+        });
     </script>
 </body>
 </html>
