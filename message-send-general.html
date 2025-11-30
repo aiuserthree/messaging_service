@@ -1955,7 +1955,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function selectTemplate(name, content) {
-            document.getElementById('messageContent').value = content;
+            // 템플릿의 변수를 현재 페이지에서 사용하는 변수로 변환
+            let convertedContent = content;
+            
+            // 템플릿에 있는 모든 변수 패턴을 찾아서 변환
+            // 일반적인 변수 패턴들을 현재 페이지 변수로 매핑
+            const variableMap = {
+                '#{주문번호}': '#{변수1}',
+                '#{운송장번호}': '#{변수1}',
+                '#{고객명}': '#{이름}',
+                '#{고객이름}': '#{이름}',
+                '#{이름}': '#{이름}',
+                '#{전화번호}': '#{전화번호}',
+                '#{연락처}': '#{전화번호}',
+                '#{휴대폰}': '#{전화번호}',
+                '#{변수1}': '#{변수1}',
+                '#{변수2}': '#{변수2}',
+                '#{변수3}': '#{변수3}'
+            };
+            
+            // 매핑된 변수 변환
+            for (const [oldVar, newVar] of Object.entries(variableMap)) {
+                convertedContent = convertedContent.replace(new RegExp(oldVar.replace(/[{}]/g, '\\$&'), 'g'), newVar);
+            }
+            
+            // 매핑되지 않은 변수 패턴을 순서대로 변수1, 변수2, 변수3으로 변환
+            const variablePattern = /#\{[^}]+\}/g;
+            const foundVariables = [...new Set(convertedContent.match(variablePattern) || [])];
+            const unmappedVars = foundVariables.filter(v => !Object.values(variableMap).includes(v));
+            
+            unmappedVars.forEach((varName, index) => {
+                if (index < 3) {
+                    const replacement = `#{변수${index + 1}}`;
+                    convertedContent = convertedContent.replace(new RegExp(varName.replace(/[{}]/g, '\\$&'), 'g'), replacement);
+                }
+            });
+            
+            document.getElementById('messageContent').value = convertedContent;
             updateByteCounter();
             updatePreview();
             closeModal('templateSelectModal');
