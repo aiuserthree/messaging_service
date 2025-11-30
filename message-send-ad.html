@@ -922,6 +922,24 @@ body {
         .byte-counter.danger {
             color: var(--danger-color);
         }
+        .recipient-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-top: 8px;
+        }
+        .recipient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .recipient-item:last-child {
+            border-bottom: none;
+        }
         .legal-notice {
             background: #fff3cd;
             border: 1px solid #ffc107;
@@ -1109,13 +1127,17 @@ body {
                             </div>
                             
                             <div id="direct" class="tab-content active">
-                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)&#10;예: 010-1234-5678, 010-9876-5432" oninput="updateRecipientCount()"></textarea>
+                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)&#10;예: 010-1234-5678, 010-9876-5432"></textarea>
+                                <div class="recipient-list" id="recipientList" style="display: none;"></div>
                                 <div class="form-help">콤마(,) 또는 엔터(Enter)로 구분하여 입력하세요</div>
-                                <div style="margin-top: 12px;">
-                                    <span id="recipientCount">0</span>명
-                                    <span id="excludedCount" style="margin-left: 12px; color: var(--text-secondary); display: none;">
-                                        (수신거부 제외: <span id="excludedNumber">0</span>명)
-                                    </span>
+                                <div class="flex-between mt-1">
+                                    <div>
+                                        <span class="form-help">총 <strong id="recipientCount">0</strong>명</span>
+                                        <span id="excludedCount" style="margin-left: 12px; color: var(--text-secondary); display: none;">
+                                            (수신거부 제외: <span id="excludedNumber">0</span>명)
+                                        </span>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="clearRecipients()">전체 삭제</button>
                                 </div>
                             </div>
                             
@@ -1905,12 +1927,51 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePreview();
         }
 
+        function processRecipients(value) {
+            const numbers = value.split(/[,\n]/).map(n => n.trim()).filter(n => n);
+            const uniqueNumbers = [...new Set(numbers)];
+            
+            document.getElementById('recipientCount').textContent = uniqueNumbers.length;
+            updateCost();
+            
+            if (uniqueNumbers.length > 0) {
+                const listEl = document.getElementById('recipientList');
+                listEl.innerHTML = uniqueNumbers.slice(0, 10).map(num => 
+                    `<div class="recipient-item">
+                        <span>${num}</span>
+                        <button type="button" class="btn btn-sm" onclick="removeRecipient('${num}')">삭제</button>
+                    </div>`
+                ).join('');
+                if (uniqueNumbers.length > 10) {
+                    listEl.innerHTML += `<div style="text-align: center; padding: 8px; color: var(--text-secondary);">외 ${uniqueNumbers.length - 10}개</div>`;
+                }
+                listEl.style.display = 'block';
+            } else {
+                document.getElementById('recipientList').style.display = 'none';
+            }
+        }
+
         function updateRecipientCount() {
             const text = document.getElementById('recipientNumbers').value;
-            const numbers = text.split(/[,\n]/).filter(n => n.trim()).length;
-            document.getElementById('recipientCount').textContent = numbers;
-            updateCost();
+            processRecipients(text);
         }
+
+        function clearRecipients() {
+            document.getElementById('recipientNumbers').value = '';
+            processRecipients('');
+        }
+
+        function removeRecipient(number) {
+            const textarea = document.getElementById('recipientNumbers');
+            const current = textarea.value.split(/[,\n]/).map(n => n.trim()).filter(n => n && n !== number);
+            textarea.value = current.join(', ');
+            processRecipients(textarea.value);
+        }
+
+        // 수신번호 입력 이벤트
+        document.getElementById('recipientNumbers').addEventListener('input', function() {
+            processRecipients(this.value);
+        });
 
         function insertVariable(variable) {
             const textarea = document.getElementById('messageContent');
