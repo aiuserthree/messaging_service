@@ -2043,6 +2043,45 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePreview();
         }
 
+        function updateByteCounter() {
+            const content = document.getElementById('messageContent').value;
+            const title = document.getElementById('messageTitle').value;
+            const candidateName = document.getElementById('candidateNameInput').value || '';
+            const rejectInput = document.getElementById('rejectNumberInput').value;
+            const rejectText = rejectInput ? '수신거부 080-' + rejectInput : '수신거부 080-';
+            const electionPrefix = '[선거]';
+            
+            // 전체 텍스트 구성: [선거] + 후보자명/정당명 + 제목 + 내용 + 수신거부
+            let fullText = electionPrefix;
+            if (candidateName) {
+                fullText += candidateName;
+            }
+            if (title) {
+                fullText += title;
+            }
+            fullText += content;
+            fullText += rejectText;
+            
+            let totalBytes = calculateByteLength(fullText);
+            if (title) {
+                // 제목은 별도로 계산하지 않고 이미 포함됨
+            }
+            
+            const type = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            const maxBytes = type === 'SMS' ? 90 : 2000;
+            
+            const counter = document.getElementById('byteCounter');
+            counter.textContent = `${totalBytes} / ${maxBytes} 바이트`;
+            counter.className = 'byte-counter';
+            
+            if (totalBytes > maxBytes * 0.9) {
+                counter.classList.add('warning');
+            }
+            if (totalBytes > maxBytes) {
+                counter.classList.add('danger');
+            }
+        }
+
         function updatePreview() {
             const content = document.getElementById('messageContent').value;
             const title = document.getElementById('messageTitle').value;
@@ -2382,11 +2421,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function selectTemplate(name, content) {
-            document.getElementById('messageContent').value = content;
+            // 템플릿의 변수를 현재 페이지에서 사용하는 변수로 변환
+            let convertedContent = content;
+            // 기존 선거 관련 변수를 새로운 변수로 변환
+            convertedContent = convertedContent.replace(/#{유권자명}/g, '#{이름}');
+            convertedContent = convertedContent.replace(/#{선거구}/g, '#{변수1}');
+            convertedContent = convertedContent.replace(/#{투표일}/g, '#{변수2}');
+            
+            document.getElementById('messageContent').value = convertedContent;
             updateByteCounter();
             updatePreview();
             checkForbiddenWords();
-            closeModal('templateSelectModal');
+            
+            // 모달 닫기
+            const modal = document.getElementById('templateSelectModal');
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
 
         function saveTemplate() {
