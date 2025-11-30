@@ -1192,12 +1192,12 @@ body {
                                 <span id="costUnitPrice">20원</span>
                             </div>
                             <div class="cost-row cost-total">
-                                <span>예상 발송 비용</span>
-                                <span id="costTotal">0원</span>
+                                <span>예상 발송 포인트</span>
+                                <span id="costTotal">0</span>
                             </div>
                             <div class="cost-row">
-                                <span>발송 후 예상 잔액</span>
-                                <span id="expectedBalance">1,000,000원</span>
+                                <span>발송 후 예상 잔여 포인트</span>
+                                <span id="expectedBalance">1,000,000</span>
                             </div>
                         </div>
 
@@ -1382,8 +1382,8 @@ body {
                         <span id="confirmSendTime">즉시 발송</span>
                     </div>
                     <div class="cost-row cost-total">
-                        <span>예상 발송 비용</span>
-                        <span id="confirmCost">0원</span>
+                        <span>예상 발송 포인트</span>
+                        <span id="confirmCost">0</span>
                     </div>
                 </div>
                 <div class="alert alert-warning">
@@ -2020,8 +2020,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('costRecipientCount').textContent = `${count}명`;
             document.getElementById('costMessageType').textContent = type;
             document.getElementById('costUnitPrice').textContent = `${unitPrice}원`;
-            document.getElementById('costTotal').textContent = `${formatNumber(total)}원`;
-            document.getElementById('expectedBalance').textContent = `${formatNumber(expectedBalance)}원`;
+            document.getElementById('costTotal').textContent = formatNumber(total);
+            document.getElementById('expectedBalance').textContent = formatNumber(expectedBalance);
         }
 
         function showSendConfirm() {
