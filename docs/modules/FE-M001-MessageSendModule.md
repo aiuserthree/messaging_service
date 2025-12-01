@@ -215,7 +215,11 @@ interface MessageSendForm {
   reject080Number?: string; // 080 수신거부 번호
   // 공직선거문자용
   candidateName?: string; // [선거] 옆 문구 (후보자명/정당명)
-  electionReject080Number?: string; // 080 수신거부 번호
+  electionReject080Number?: string; // 080 수신거부 번호 (셀렉박스)
+  
+  // 주소록 추가 옵션 (엑셀 업로드 시)
+  addToAddressBook?: boolean;
+  groupName?: string;
 }
 
 interface CallerNumber {
@@ -303,8 +307,10 @@ interface MessageSendStore {
   
   // 계산된 값
   byteCount: number;
-  estimatedCost: number;
+  estimatedCost: number; // 포인트 단위
+  estimatedBalance: number; // 발송 후 예상 잔여 포인트
   recipientCount: number;
+  currentBalance: number | null; // 현재 잔여 포인트 (발신번호별)
   
   // 액션
   setCallerNumber: (number: string) => void;
@@ -418,6 +424,7 @@ const CallerNumberSelect: React.FC = () => {
   const { callerNumbers, loadCallerNumbers } = useCallerNumbers();
   const sendStore = useMessageSendStore();
   const sendType = useSendType(); // 'GENERAL' | 'AD' | 'ELECTION'
+  const { balance, loadBalance } = useBalance();
   
   // 발신번호 필터링
   const availableNumbers = useMemo(() => {
@@ -431,18 +438,40 @@ const CallerNumberSelect: React.FC = () => {
     });
   }, [callerNumbers, sendType]);
   
+  // 발신번호 선택 시 잔액 조회
+  useEffect(() => {
+    if (sendStore.selectedCallerNumber) {
+      loadBalance(sendStore.selectedCallerNumber);
+    }
+  }, [sendStore.selectedCallerNumber]);
+  
   return (
-    <Select
-      label="발신번호"
-      value={sendStore.selectedCallerNumber}
-      onChange={(value) => sendStore.setCallerNumber(value)}
-      options={availableNumbers.map(cn => ({
-        value: cn.number,
-        label: cn.number, // 번호만 표시 (용도 제외)
-      }))}
-      placeholder="발신번호를 선택하세요"
-      required
-    />
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex-1">
+          <Select
+            label="발신번호"
+            value={sendStore.selectedCallerNumber}
+            onChange={(value) => sendStore.setCallerNumber(value)}
+            options={availableNumbers.map(cn => ({
+              value: cn.number,
+              label: cn.number, // 번호만 표시 (용도 제외)
+            }))}
+            placeholder="발신번호를 선택하세요"
+            required
+          />
+        </div>
+        {sendStore.selectedCallerNumber && balance !== null && (
+          <div className="ml-4">
+            <span className="text-sm text-gray-600">현재 잔여 포인트:</span>
+            <span className="ml-2 font-semibold">{formatNumber(balance)}</span>
+          </div>
+        )}
+        <Button variant="outline" className="ml-4">
+          새 발신번호 등록하기
+        </Button>
+      </div>
+    </div>
   );
 };
 ```
@@ -499,17 +528,46 @@ const RecipientInput: React.FC = () => {
             maxSize={10 * 1024 * 1024} // 10MB
           />
           <a href="#" onClick={downloadSampleFile}>샘플 파일 다운로드</a>
+          <div className="mt-4">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={addToAddressBook}
+                onChange={(e) => setAddToAddressBook(e.target.checked)}
+              />
+              <span className="ml-2">주소록에 추가하기</span>
+            </label>
+            {addToAddressBook && (
+              <Input
+                label="그룹명"
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+                placeholder="그룹명을 입력하세요"
+                className="mt-2"
+              />
+            )}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="DIRECT">
+          <Textarea
+            placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)"
+            onChange={(e) => handleDirectInput(e.target.value)}
+          />
+          <RecipientList
+            numbers={sendStore.recipientNumbers}
+            onRemove={(number) => {
+              const newNumbers = sendStore.recipientNumbers.filter(n => n !== number);
+              sendStore.setRecipientNumbers(newNumbers);
+            }}
+            onClearAll={() => sendStore.setRecipientNumbers([])}
+          />
         </TabsContent>
       </Tabs>
       
-      <RecipientList
-        numbers={sendStore.recipientNumbers}
-        onRemove={(index) => {
-          const newNumbers = [...sendStore.recipientNumbers];
-          newNumbers.splice(index, 1);
-          sendStore.setRecipientNumbers(newNumbers);
-        }}
-      />
+      <div className="text-sm text-gray-600">
+        총 {sendStore.recipientCount}명
+      </div>
       
       <div className="text-sm text-gray-600">
         총 {sendStore.recipientCount}명
@@ -577,17 +635,44 @@ const MessageEditor: React.FC = () => {
           <Button variant="outline" onClick={handleTemplateSelect}>
             템플릿 선택
           </Button>
-          <VariableInsertButton onInsert={insertVariable} />
+          <VariableInsertButton 
+            onInsert={insertVariable}
+            variables={['이름', '전화번호', '변수1', '변수2', '변수3']}
+          />
+          {(sendType === 'AD' || sendType === 'ELECTION') && (
+            <Button variant="outline" onClick={handleSaveTemplate}>
+              템플릿으로 저장
+            </Button>
+          )}
         </div>
       </div>
       
       {sendStore.messageType === 'MMS' && (
         <ImageUpload
           images={sendStore.images}
-          onAdd={(file) => sendStore.addImage(file)}
+          onAdd={(file) => {
+            if (sendStore.images.length < 3) {
+              sendStore.addImage(file);
+            }
+          }}
           onRemove={(index) => sendStore.removeImage(index)}
           maxCount={3}
           maxSize={300 * 1024} // 300KB
+          showAddButton={sendStore.images.length < 3}
+        />
+      )}
+      
+      {/* 광고문자/공직선거문자: 080 수신거부 번호 (셀렉박스) */}
+      {(sendType === 'AD' || sendType === 'ELECTION') && (
+        <Select
+          label="080 수신거부 번호"
+          value={sendStore.reject080Number}
+          onChange={(value) => sendStore.setReject080Number(value)}
+          options={preRegistered080Numbers.map(num => ({
+            value: num,
+            label: num,
+          }))}
+          required
         />
       )}
     </div>
@@ -751,6 +836,19 @@ describe('useMessageSend', () => {
 **최종 수정일**: 2024-11-19
 
 ## 변경 이력
+
+### 버전 1.2 (2024-11-19)
+- **발신번호 선택**: 현재 잔여 포인트 표시 영역 추가 (발신번호 선택 시에만 표시)
+- **엑셀 샘플 파일**: 그룹, 메모 컬럼 삭제, 변수 1, 변수 2, 변수 3 컬럼 추가
+- **변수 버튼**: 이름, 전화번호, 변수1, 변수2, 변수3 추가
+- **MMS 이미지**: 최대 3개까지 개별 추가 기능, "이미지 추가" 버튼 동적 표시
+- **080 수신거부 번호**: 입력 필드를 셀렉박스로 변경 (미리 등록된 번호 선택)
+- **직접입력**: 수신번호 리스트 표시 및 개별/전체 삭제 기능 추가
+- **템플릿 기능**: 광고문자/공직선거문자에 템플릿 선택 및 저장 기능 추가
+- **템플릿 변수 변환**: 템플릿 선택 시 기존 변수를 새로운 변수 형식으로 자동 변환
+- **주소록 추가**: 엑셀 업로드 시 주소록에 추가하기 옵션 및 그룹 생성 기능
+- **비용 표시**: "예상 발송 비용" → "예상 발송 포인트", "발송 후 예상 잔액" → "발송 후 예상 잔여 포인트", '원' 단위 제거
+- **공직선거문자**: 1일 발송 한도 문구 삭제, 엑셀 샘플 파일을 일반문자와 공통으로 사용
 
 ### 버전 1.1 (2024-11-19)
 - CallerNumberSelect 컴포넌트: 발신번호 표시 형식 변경 (번호만 표시, 용도 제외)

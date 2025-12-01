@@ -1109,7 +1109,7 @@ body {
                             <button class="btn btn-outline">검색</button>
                         </div>
                         <div class="table-actions">
-                            <button class="btn btn-primary" onclick="openModal('addAddressModal')">주소 추가</button>
+                            <button class="btn btn-primary" onclick="openAddAddressModal()">주소 추가</button>
                             <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
                             <button class="btn btn-outline" onclick="downloadSampleFile()">엑셀 샘플파일</button>
                             <button class="btn btn-outline" onclick="sendMessage()">문자 보내기</button>
@@ -1181,7 +1181,7 @@ body {
     <div class="modal-overlay" id="addAddressModal">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">주소 추가</h3>
+                <h3 class="modal-title" id="addAddressModalTitle">주소 추가</h3>
                 <button class="modal-close" onclick="closeModal('addAddressModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -1195,16 +1195,16 @@ body {
                         <input type="text" class="form-input" placeholder="010-1234-5678" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label required">그룹</label>
-                        <select class="form-select" required>
-                            <option>VIP 고객</option>
-                            <option>일반 고객</option>
-                            <option>신규 고객</option>
-                        </select>
+                        <label class="form-label">변수1</label>
+                        <input type="text" class="form-input" id="addressVar1">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">메모</label>
-                        <textarea class="form-textarea" rows="3"></textarea>
+                        <label class="form-label">변수2</label>
+                        <input type="text" class="form-input" id="addressVar2">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">변수3</label>
+                        <input type="text" class="form-input" id="addressVar3">
                     </div>
                 </form>
             </div>
@@ -1227,10 +1227,6 @@ body {
                     <div class="form-group">
                         <label class="form-label required">그룹명</label>
                         <input type="text" class="form-input" id="newGroupName" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">설명</label>
-                        <textarea class="form-textarea" id="newGroupDescription" rows="3"></textarea>
                     </div>
                 </form>
                 
@@ -1307,25 +1303,73 @@ body {
 
     <!-- 엑셀 업로드 모달 -->
     <div class="modal-overlay" id="excelUploadModal">
-        <div class="modal" style="max-width: 700px;">
+        <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
                 <h3 class="modal-title">엑셀 업로드</h3>
                 <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">파일 선택</label>
-                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
-                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
-                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+            <div class="modal-body" style="padding: 20px;">
+                <!-- 수신번호 입력 영역 (문자발송 페이지와 동일, 주소록 불러오기/그룹선택 제외) -->
+                <div class="form-group" style="margin: 0;">
+                    <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                        <!-- 상단 버튼 영역 -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="file" id="addressBookExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleAddressBookExcelFileSelect(event)">
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('addressBookExcelFileInput').click()">엑셀업로드</button>
+                                <button type="button" class="btn btn-outline" onclick="downloadAddressBookSampleFile()">엑셀샘플 다운로드</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 데이터 테이블 영역 (편집 가능) -->
+                        <div id="addressBookUploadContent" style="display: block;">
+                            <div style="padding: 20px;">
+                                <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                                    <div style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                                        <table class="data-table" id="addressBookDataTable" style="width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                                <tr>
+                                                    <th style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); min-width: 50px;">
+                                                        <input type="checkbox" id="selectAllAddressBookCheckbox" onchange="toggleSelectAllAddressBook(this.checked)">
+                                                    </th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="addressBookDataTableBody">
+                                                <!-- 기본 5개 행이 자동으로 생성됩니다 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 하단 버튼 영역 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="addAddressBookRow()">행 추가</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedAddressBookRows()">선택 행 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllAddressBookRows()">전체삭제</button>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateAddressBookNumbers()">중복번호 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectAddressBookNumbers()">수신거부번호 삭제</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
-                    <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
+                    <div class="form-help" style="margin-top: 8px;">
+                        총 <strong id="addressBookCount">0</strong>명
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
-                <button class="btn btn-primary">업로드</button>
+                <button class="btn btn-primary" onclick="saveAddressBookFromTable()">저장</button>
             </div>
         </div>
     </div>
@@ -1604,13 +1648,34 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentGroupMenu = null;
 
         function selectGroup(groupId) {
+            // 그룹 아이템 활성화
             document.querySelectorAll('.group-item').forEach(item => {
                 item.classList.remove('active');
             });
-            if (event && event.currentTarget) {
-                event.currentTarget.closest('.group-item').classList.add('active');
+            const groupItem = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupItem) {
+                groupItem.classList.add('active');
             }
-            // 그룹별 주소록 조회
+            
+            // 그룹명 가져오기
+            const groupName = groupItem ? groupItem.getAttribute('data-group-name') : '';
+            
+            // 테이블 목록 필터링
+            const tbody = document.querySelector('.table tbody');
+            if (tbody) {
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const groupCell = row.querySelector('td:nth-child(4)'); // 그룹 컬럼
+                    if (groupCell) {
+                        const rowGroup = groupCell.textContent.trim();
+                        if (rowGroup === groupName) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            }
         }
 
         function toggleGroupMenu(groupId) {
@@ -1717,7 +1782,21 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        function openAddAddressModal() {
+            const modalTitle = document.getElementById('addAddressModalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = '주소 추가';
+            }
+            const form = document.getElementById('addAddressForm');
+            if (form) form.reset();
+            openModal('addAddressModal');
+        }
+
         function editAddress(id) {
+            const modalTitle = document.getElementById('addAddressModalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = '주소 수정';
+            }
             openModal('addAddressModal');
             // 주소 정보 로드
         }
@@ -1818,6 +1897,395 @@ document.addEventListener('DOMContentLoaded', function() {
             
             showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
         }
+
+        // 주소록 엑셀 업로드 모달용 변수 및 함수
+        let addressBookTableData = [];
+        let selectedAddressBookIndices = new Set();
+        const DEFAULT_ADDRESS_BOOK_ROWS = 5;
+        
+        // 페이지 로드 시 테이블 미리 렌더링 (모달이 닫혀있어도)
+        function initAddressBookTableOnLoad() {
+            const tbody = document.getElementById('addressBookDataTableBody');
+            if (tbody && tbody.children.length === 0) {
+                addressBookTableData = [];
+                selectedAddressBookIndices.clear();
+                renderAddressBookTable();
+                updateAddressBookCount();
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initAddressBookTableOnLoad, 100);
+            });
+        } else {
+            setTimeout(initAddressBookTableOnLoad, 100);
+        }
+
+        // 주소록 엑셀 파일 선택 처리
+        function handleAddressBookExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const headers = jsonData[0];
+                    const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
+                    const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
+                    const varIndices = [];
+                    for (let i = 1; i <= 3; i++) {
+                        const varIndex = headers.findIndex(h => h === `변수${i}` || h === `Variable ${i}` || h === `변수 ${i}`);
+                        varIndices.push(varIndex);
+                    }
+                    
+                    addressBookTableData = [];
+                    const rows = jsonData.slice(1);
+                    rows.forEach((row, index) => {
+                        const rowData = {
+                            index: index,
+                            name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
+                            phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : '',
+                            variables: varIndices.map(idx => idx >= 0 ? (row[idx] || '') : '').slice(0, 3)
+                        };
+                        addressBookTableData.push(rowData);
+                    });
+                    
+                    renderAddressBookTable();
+                    updateAddressBookCount();
+                    showToast(`엑셀 파일이 로드되었습니다. (${addressBookTableData.length}건)`, 'success');
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 주소록 테이블 렌더링
+        function renderAddressBookTable() {
+            const tbody = document.getElementById('addressBookDataTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const rowCount = Math.max(addressBookTableData.length, DEFAULT_ADDRESS_BOOK_ROWS);
+            
+            for (let i = 0; i < rowCount; i++) {
+                const tr = document.createElement('tr');
+                const row = i < addressBookTableData.length ? addressBookTableData[i] : null;
+                
+                tr.innerHTML = `
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <input type="checkbox" class="address-book-row-checkbox" data-row="${i}" onchange="toggleAddressBookRowSelection(${i}, this.checked)">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <span style="display: inline-block; padding: 6px; font-size: 13px; color: var(--text-secondary);">${i + 1}</span>
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input address-book-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="name"
+                               value="${row ? (row.name || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateAddressBookTableData(${i}, 'name', this.value)"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextAddressBookCell(this); }">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input address-book-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="phone"
+                               value="${row ? (row.phone || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateAddressBookTableData(${i}, 'phone', this.value); updateAddressBookCount();"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextAddressBookCell(this); }">
+                    </td>
+                    ${[1,2,3].map(v => `
+                        <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                            <input type="text" class="form-input address-book-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                                   data-row="${i}" data-field="var${v}"
+                                   value="${row ? (row.variables && row.variables[v-1] ? (row.variables[v-1] || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '') : ''}" 
+                                   onblur="updateAddressBookTableData(${i}, 'var${v}', this.value)"
+                                   onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextAddressBookCell(this); }">
+                        </td>
+                    `).join('')}
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // 주소록 테이블 데이터 업데이트
+        function updateAddressBookTableData(index, field, value) {
+            while (index >= addressBookTableData.length) {
+                addressBookTableData.push({
+                    index: addressBookTableData.length,
+                    name: '',
+                    phone: '',
+                    variables: ['', '', '']
+                });
+            }
+            
+            const row = addressBookTableData[index];
+            if (!row) {
+                addressBookTableData[index] = {
+                    index: index,
+                    name: '',
+                    phone: '',
+                    variables: ['', '', '']
+                };
+            }
+            
+            const finalRow = addressBookTableData[index];
+            if (field === 'name') {
+                finalRow.name = value;
+            } else if (field === 'phone') {
+                finalRow.phone = value;
+            } else if (field.startsWith('var')) {
+                const varIndex = parseInt(field.replace('var', '')) - 1;
+                if (varIndex >= 0 && varIndex < 3) {
+                    if (!finalRow.variables) finalRow.variables = ['', '', ''];
+                    finalRow.variables[varIndex] = value;
+                }
+            }
+        }
+
+        // 주소록 개수 업데이트
+        function updateAddressBookCount() {
+            const phoneCount = addressBookTableData.filter(row => row.phone && row.phone.trim()).length;
+            const countElement = document.getElementById('addressBookCount');
+            if (countElement) {
+                countElement.textContent = phoneCount;
+            }
+        }
+
+        // 체크박스 선택 기능
+        function toggleSelectAllAddressBook(checked) {
+            const checkboxes = document.querySelectorAll('.address-book-row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                const rowIndex = parseInt(cb.getAttribute('data-row'));
+                if (checked) {
+                    selectedAddressBookIndices.add(rowIndex);
+                } else {
+                    selectedAddressBookIndices.delete(rowIndex);
+                }
+            });
+        }
+
+        function toggleAddressBookRowSelection(rowIndex, checked) {
+            if (checked) {
+                selectedAddressBookIndices.add(rowIndex);
+            } else {
+                selectedAddressBookIndices.delete(rowIndex);
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.checked = false;
+                }
+            }
+        }
+
+        // 행 추가 기능
+        function addAddressBookRow() {
+            addressBookTableData.push({
+                index: addressBookTableData.length,
+                name: '',
+                phone: '',
+                variables: ['', '', '']
+            });
+            renderAddressBookTable();
+            
+            setTimeout(() => {
+                const tbody = document.getElementById('addressBookDataTableBody');
+                if (tbody && tbody.lastElementChild) {
+                    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    const firstInput = tbody.lastElementChild.querySelector('.address-book-input');
+                    if (firstInput) firstInput.focus();
+                }
+            }, 100);
+        }
+
+        // 선택 행 삭제
+        function deleteSelectedAddressBookRows() {
+            if (selectedAddressBookIndices.size === 0) {
+                showToast('삭제할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            if (confirm(`${selectedAddressBookIndices.size}개 행을 삭제하시겠습니까?`)) {
+                const sortedIndices = Array.from(selectedAddressBookIndices).sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    addressBookTableData.splice(index, 1);
+                });
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast(`${sortedIndices.length}개 행이 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 전체 삭제
+        function deleteAllAddressBookRows() {
+            if (addressBookTableData.length === 0) return;
+            if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                addressBookTableData = [];
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+
+        // 중복번호 삭제
+        function removeDuplicateAddressBookNumbers() {
+            const phoneMap = new Map();
+            const duplicates = [];
+            addressBookTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                if (phone) {
+                    if (phoneMap.has(phone)) {
+                        duplicates.push(index);
+                    } else {
+                        phoneMap.set(phone, index);
+                    }
+                }
+            });
+            if (duplicates.length === 0) {
+                showToast('중복된 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${duplicates.length}개의 중복 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = duplicates.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    addressBookTableData.splice(index, 1);
+                });
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast(`${duplicates.length}개의 중복 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 수신거부번호 삭제
+        function removeRejectAddressBookNumbers() {
+            const rejectNumbers = [];
+            const toRemove = [];
+            addressBookTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                const rejectPhone = rejectNumbers.find(rn => rn.replace(/[^\d]/g, '') === phone);
+                if (rejectPhone) {
+                    toRemove.push(index);
+                }
+            });
+            if (toRemove.length === 0) {
+                showToast('수신거부 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${toRemove.length}개의 수신거부 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = toRemove.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    addressBookTableData.splice(index, 1);
+                });
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast(`${toRemove.length}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 다음 셀로 이동
+        function moveToNextAddressBookCell(currentInput) {
+            const inputs = Array.from(document.querySelectorAll('.address-book-input'));
+            const currentIndex = inputs.indexOf(currentInput);
+            if (currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+            }
+        }
+
+        // 주소록 샘플 파일 다운로드
+        function downloadAddressBookSampleFile() {
+            const sampleData = [
+                ['이름', '전화번호', '변수1', '변수2', '변수3'],
+                ['홍길동', '010-1234-5678', '홍길동', '서울시 강남구', 'VIP'],
+                ['김철수', '010-9876-5432', '김철수', '서울시 서초구', '일반']
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            ws['!cols'] = [
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 }
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+
+        // 주소록 테이블에서 저장
+        function saveAddressBookFromTable() {
+            const validData = addressBookTableData.filter(row => row.phone && row.phone.trim());
+            if (validData.length === 0) {
+                showToast('저장할 유효한 데이터가 없습니다.', 'warning');
+                return;
+            }
+            
+            // 여기에 실제 저장 로직 구현 (API 호출 등)
+            showToast(`${validData.length}개의 주소록이 저장되었습니다.`, 'success');
+            closeModal('excelUploadModal');
+            
+            // 테이블 초기화
+            addressBookTableData = [];
+            selectedAddressBookIndices.clear();
+            renderAddressBookTable();
+            updateAddressBookCount();
+        }
+
+        // 엑셀 업로드 모달 열 때 테이블 초기화
+        const originalOpenModalFunc = window.openModal;
+        window.openModal = function(modalId) {
+            if (originalOpenModalFunc) {
+                originalOpenModalFunc(modalId);
+            } else {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            if (modalId === 'excelUploadModal') {
+                // 모달이 열릴 때 테이블이 이미 렌더링되어 있으면 유지, 없으면 렌더링
+                const tbody = document.getElementById('addressBookDataTableBody');
+                if (!tbody || tbody.children.length === 0) {
+                    // 테이블이 없으면 초기화하고 렌더링
+                    addressBookTableData = [];
+                    selectedAddressBookIndices.clear();
+                    renderAddressBookTable();
+                    updateAddressBookCount();
+                } else {
+                    // 테이블이 이미 있으면 카운트만 업데이트
+                    updateAddressBookCount();
+                }
+            }
+        };
 
         function downloadSampleFile() {
             // 샘플 파일 다운로드 (변경된 형식)
