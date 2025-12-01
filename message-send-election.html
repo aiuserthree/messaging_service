@@ -96,6 +96,44 @@ body {
     font-size: 12px;
 }
 
+/* 데이터 테이블 스타일 */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table thead th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.data-table tbody tr:hover {
+    background-color: var(--bg-color);
+}
+
+.data-table input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.form-select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: white;
+    cursor: pointer;
+}
+
 .btn-lg {
     padding: 14px 28px;
     font-size: 16px;
@@ -193,6 +231,7 @@ body {
 
 .modal-overlay.active {
     display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal {
@@ -1165,38 +1204,70 @@ body {
                         <!-- 수신번호 설정 -->
                         <div class="form-group">
                             <label class="form-label required">수신번호</label>
-                            <div class="tabs">
-                                <div class="tab-list">
-                                    <button type="button" class="tab-item active" data-tab="direct">직접입력</button>
-                                    <button type="button" class="tab-item" data-tab="addressbook">주소록</button>
-                                    <button type="button" class="tab-item" data-tab="excel">엑셀 업로드</button>
+                            <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                                <!-- 상단 탭 및 주소록 버튼 영역 -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="file" id="recipientExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleRecipientExcelFileSelect(event)">
+                                        <button type="button" class="btn btn-primary" onclick="document.getElementById('recipientExcelFileInput').click()">엑셀업로드</button>
+                                        <button type="button" class="btn btn-outline" onclick="downloadSampleFile()">엑셀샘플 다운로드</button>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button type="button" class="btn btn-outline btn-sm" onclick="loadRecipientAddressBook()">주소록 불러오기</button>
+                                        <select class="form-select" style="width: 120px;" id="recipientGroupSelect">
+                                            <option value="">그룹선택</option>
+                                            <option value="group1">VIP 고객</option>
+                                            <option value="group2">일반 고객</option>
+                                            <option value="group3">신규 고객</option>
+                                        </select>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="addToAddressBook()">주소록에 추가</button>
+                                    </div>
                                 </div>
+                                
+                                <!-- 데이터 테이블 영역 (편집 가능) -->
+                                <div id="recipientUploadContent" style="display: block;">
+                                    <div style="padding: 20px;">
+                                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                                            <div style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                                                <table class="data-table" id="recipientDataTable" style="width: 100%; border-collapse: collapse;">
+                                                    <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                                        <tr>
+                                                            <th style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); min-width: 50px;">
+                                                                <input type="checkbox" id="selectAllRecipientCheckbox" onchange="toggleSelectAllRecipients(this.checked)">
+                                                            </th>
+                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
+                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
+                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
+                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
+                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="recipientDataTableBody">
+                                                        <!-- 기본 50,000개 행이 자동으로 생성됩니다 -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 하단 버튼 영역 -->
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                                        <div style="display: flex; gap: 8px;">
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="addRecipientRow()">행 추가</button>
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedRecipientRows()">선택 행 삭제</button>
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllRecipientRows()">전체삭제</button>
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateRecipientNumbers()">중복번호 삭제</button>
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectRecipientNumbers()">수신거부번호 삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
-                            
-                            <div id="direct" class="tab-content active">
-                                <textarea class="form-textarea" id="recipientNumbers" rows="4" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)&#10;예: 010-1234-5678, 010-9876-5432"></textarea>
-                                <div class="recipient-list" id="recipientList" style="display: none;"></div>
-                                <div class="flex-between mt-1">
-                                    <span class="form-help">총 <strong id="recipientCount">0</strong>명</span>
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="clearRecipients()">전체 삭제</button>
-                                </div>
-                            </div>
-                            
-                            <div id="addressbook" class="tab-content">
-                                <div class="form-group">
-                                    <select class="form-select" id="addressbookGroup" multiple style="height: 150px;">
-                                        <option value="group2">VIP 고객 (234명)</option>
-                                        <option value="group3">일반 고객 (1,000명)</option>
-                                    </select>
-                                    <a href="addressbook.html" class="form-help">주소록 관리</a>
-                                </div>
-                            </div>
-                            
-                            <div id="excel" class="tab-content">
-                                <button type="button" class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 파일 업로드</button>
-                                <div class="form-help" style="margin-top: 8px;">
-                                    <a href="#" onclick="downloadSampleFile(); return false;">엑셀 샘플파일 다운로드</a>
-                                </div>
+                            <div class="form-help" style="margin-top: 8px;">
+                                총 <strong id="recipientCount">0</strong>명
                             </div>
                         </div>
 
@@ -1503,50 +1574,150 @@ body {
 
     <!-- 엑셀 업로드 모달 -->
     <div class="modal-overlay" id="excelUploadModal">
-        <div class="modal" style="max-width: 700px;">
+        <div class="modal" style="max-width: 1200px; width: 95%;">
             <div class="modal-header">
-                <h3 class="modal-title">엑셀 업로드</h3>
+                <h3 class="modal-title">수신번호 관리</h3>
                 <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">파일 선택</label>
-                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
-                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
-                        <input type="file" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+            <div class="modal-body" style="padding: 0;">
+                <!-- 상단 탭 및 주소록 버튼 영역 -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-primary" id="excelUploadTab" onclick="switchExcelTab('upload')">엑셀업로드</button>
+                        <button type="button" class="btn btn-outline" id="excelSampleTab" onclick="switchExcelTab('sample')">엑셀샘플 다운로드</button>
                     </div>
-                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
-                    <a href="#" class="form-help" onclick="downloadSampleFile(); return false;">샘플 파일 다운로드</a>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="loadAddressBook()">주소록 불러오기</button>
+                        <select class="form-select" style="width: 120px;" id="folderSelect">
+                            <option value="">폴더선택</option>
+                        </select>
+                        <select class="form-select" style="width: 120px;" id="groupSelect">
+                            <option value="">그룹선택</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <!-- 주소록에 추가하기 -->
-                <div class="form-group" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                        <input type="checkbox" id="addToAddressbook" onchange="toggleGroupCreation()">
-                        <span>주소록에 추가하기</span>
-                    </label>
-                    
-                    <!-- 그룹 생성 영역 (체크박스 체크 시 표시) -->
-                    <div id="groupCreationArea" style="display: none; margin-top: 16px; padding: 16px; background-color: var(--bg-color); border-radius: var(--radius-md);">
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label class="form-label">그룹명</label>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" class="form-input" id="newGroupName" placeholder="그룹명을 입력하세요" style="flex: 1;">
-                                <button type="button" class="btn btn-primary" onclick="createGroup()">생성</button>
+                <!-- 엑셀 업로드 탭 내용 -->
+                <div id="excelUploadContent" style="display: block;">
+                    <div style="padding: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">파일 선택</label>
+                            <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
+                                <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
+                                <input type="file" id="excelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="margin-top: 16px;" onchange="handleExcelFileSelect(event)">
                             </div>
-                            <div class="form-help" id="groupCreationStatus" style="margin-top: 8px;"></div>
+                            <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
                         </div>
+                    </div>
+                    
+                    <!-- 데이터 테이블 영역 -->
+                    <div style="padding: 0 20px 20px 20px;">
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                            <div style="overflow-x: auto; max-height: 400px;">
+                                <table class="data-table" id="excelDataTable" style="width: 100%; border-collapse: collapse;">
+                                    <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                        <tr>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">휴대폰</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수4</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수5</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수6</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수7</th>
+                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수8</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="excelDataTableBody">
+                                        <!-- 빈 행 12개 표시 -->
+                                        <tr><td colspan="10" style="padding: 12px; text-align: center; color: var(--text-muted);">엑셀 파일을 업로드하세요</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 하단 버튼 영역 -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="selectAllRows()">전체선택</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="copySelectedRows()">복사</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllRows()">전체삭제</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedRows()">삭제</button>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateNumbers()">중복번호 삭제</button>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectNumbers()">수신거부번호 삭제</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 엑셀 샘플 다운로드 탭 내용 -->
+                <div id="excelSampleContent" style="display: none; padding: 20px;">
+                    <div class="form-group">
+                        <p style="margin-bottom: 16px;">샘플 파일을 다운로드하여 수신번호를 입력하세요.</p>
+                        <button type="button" class="btn btn-primary" onclick="downloadSampleFile()">샘플 파일 다운로드</button>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
-                <button class="btn btn-primary" onclick="uploadExcelFile()">업로드</button>
+                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">닫기</button>
+                <button class="btn btn-primary" onclick="addExcelRecipients()">추가</button>
             </div>
         </div>
     </div>
 
     <!-- 테스트 발송 모달 -->
+    <div class="modal-overlay" id="addToAddressBookModal">
+        <div class="modal-content" style="max-width: 600px; width: 90%; background-color: var(--surface-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+            <div class="modal-header">
+                <h3>주소록에 추가</h3>
+                <button class="modal-close" onclick="closeModal('addToAddressBookModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label">추가 방식 선택</label>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="addressBookAddType" value="existing" checked onchange="toggleAddressBookAddType()">
+                            <span>기존 그룹에 추가</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="addressBookAddType" value="new" onchange="toggleAddressBookAddType()">
+                            <span>새 그룹 생성</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div id="existingGroupSection" class="form-group">
+                    <label class="form-label required">그룹 선택</label>
+                    <select class="form-select" id="addressBookGroupSelect">
+                        <option value="">그룹을 선택하세요</option>
+                        <option value="group1">VIP 고객</option>
+                        <option value="group2">일반 고객</option>
+                        <option value="group3">신규 고객</option>
+                    </select>
+                </div>
+                
+                <div id="newGroupSection" class="form-group" style="display: none;">
+                    <label class="form-label required">새 그룹명</label>
+                    <input type="text" class="form-input" id="newGroupNameInput" placeholder="그룹명을 입력하세요">
+                </div>
+                
+                <div style="margin-top: 16px; padding: 12px; background-color: var(--bg-color); border-radius: var(--radius-md);">
+                    <div style="font-size: 13px; color: var(--text-secondary);">
+                        추가할 데이터: <strong id="addressBookDataCount">0</strong>개
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal('addToAddressBookModal')">취소</button>
+                <button type="button" class="btn btn-primary" onclick="confirmAddToAddressBook()">추가</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="testSendModal">
         <div class="modal" style="width: 500px; max-height: 80vh;">
             <div class="modal-header">
@@ -2003,9 +2174,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // 수신번호 입력 이벤트
-        document.getElementById('recipientNumbers').addEventListener('input', function() {
-            processRecipients(this.value);
-        });
 
         function insertVariable(variable) {
             const textarea = document.getElementById('messageContent');
@@ -2538,7 +2706,756 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast(`그룹 "${groupName}"이(가) 생성되었습니다.`, 'success');
         }
 
-        // 엑셀 파일 업로드
+        // 엑셀 모달 관련 변수
+        let excelTableData = [];
+        let selectedRowIndices = new Set();
+
+        // 엑셀 탭 전환
+        function switchExcelTab(tab) {
+            const uploadTab = document.getElementById('excelUploadTab');
+            const sampleTab = document.getElementById('excelSampleTab');
+            const uploadContent = document.getElementById('excelUploadContent');
+            const sampleContent = document.getElementById('excelSampleContent');
+            
+            if (tab === 'upload') {
+                uploadTab.classList.remove('btn-outline');
+                uploadTab.classList.add('btn-primary');
+                sampleTab.classList.remove('btn-primary');
+                sampleTab.classList.add('btn-outline');
+                uploadContent.style.display = 'block';
+                sampleContent.style.display = 'none';
+            } else {
+                sampleTab.classList.remove('btn-outline');
+                sampleTab.classList.add('btn-primary');
+                uploadTab.classList.remove('btn-primary');
+                uploadTab.classList.add('btn-outline');
+                uploadContent.style.display = 'none';
+                sampleContent.style.display = 'block';
+            }
+        }
+
+        // 엑셀 파일 선택 처리
+        function handleExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다. 헤더를 포함하여 최소 1개 이상의 데이터가 필요합니다.', 'warning');
+                        return;
+                    }
+                    
+                    const headers = jsonData[0];
+                    const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
+                    const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
+                    const varIndices = [];
+                    for (let i = 1; i <= 3; i++) {
+                        const varIndex = headers.findIndex(h => h === `변수${i}` || h === `Variable ${i}` || h === `변수 ${i}`);
+                        varIndices.push(varIndex);
+                    }
+                    
+                    excelTableData = [];
+                    const rows = jsonData.slice(1);
+                    rows.forEach((row, index) => {
+                        const rowData = {
+                            index: index,
+                            name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
+                            phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : '',
+                            variables: varIndices.map(idx => idx >= 0 ? (row[idx] || '') : '').slice(0, 3)
+                        };
+                        excelTableData.push(rowData);
+                    });
+                    
+                    renderExcelTable();
+                    showToast(`엑셀 파일이 로드되었습니다. (${excelTableData.length}건)`, 'success');
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function renderExcelTable() {
+            const tbody = document.getElementById('excelDataTableBody');
+            tbody.innerHTML = '';
+            
+            if (excelTableData.length === 0) {
+                for (let i = 0; i < 12; i++) {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+                return;
+            }
+            
+            const maxRows = Math.max(excelTableData.length, 12);
+            for (let i = 0; i < maxRows; i++) {
+                const tr = document.createElement('tr');
+                if (i < excelTableData.length) {
+                    const row = excelTableData[i];
+                    tr.innerHTML = `
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);">${row.name || ''}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);">${row.phone || ''}</td>
+                        ${row.variables.map(v => `<td style="padding: 12px; border-bottom: 1px solid var(--border-color);">${v || ''}</td>`).join('')}
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
+                    `;
+                }
+                tbody.appendChild(tr);
+            }
+            
+            selectedRowIndices.clear();
+        }
+
+        function selectAllRows() {
+            if (excelTableData.length === 0) {
+                showToast('선택할 데이터가 없습니다.', 'warning');
+                return;
+            }
+            selectedRowIndices.clear();
+            excelTableData.forEach((row, index) => {
+                selectedRowIndices.add(index);
+            });
+            showToast(`${excelTableData.length}개 행이 선택되었습니다.`, 'success');
+        }
+
+        function copySelectedRows() {
+            if (selectedRowIndices.size === 0) {
+                showToast('복사할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            showToast(`${selectedRowIndices.size}개 행이 복사되었습니다.`, 'success');
+        }
+
+        function deleteAllRows() {
+            if (excelTableData.length === 0) return;
+            if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                excelTableData = [];
+                selectedRowIndices.clear();
+                renderExcelTable();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+
+        function deleteSelectedRows() {
+            if (selectedRowIndices.size === 0) {
+                if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                    excelTableData = [];
+                    selectedRowIndices.clear();
+                    renderExcelTable();
+                    showToast('모든 데이터가 삭제되었습니다.', 'success');
+                }
+                return;
+            }
+            if (confirm(`${selectedRowIndices.size}개 행을 삭제하시겠습니까?`)) {
+                const sortedIndices = Array.from(selectedRowIndices).sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    excelTableData.splice(index, 1);
+                });
+                selectedRowIndices.clear();
+                renderExcelTable();
+                showToast(`${sortedIndices.length}개 행이 삭제되었습니다.`, 'success');
+            }
+        }
+
+        function removeDuplicateNumbers() {
+            const phoneMap = new Map();
+            const duplicates = [];
+            
+            excelTableData.forEach((row, index) => {
+                const phone = row.phone.replace(/[^\d]/g, '');
+                if (phone) {
+                    if (phoneMap.has(phone)) {
+                        duplicates.push(index);
+                    } else {
+                        phoneMap.set(phone, index);
+                    }
+                }
+            });
+            
+            if (duplicates.length === 0) {
+                showToast('중복된 번호가 없습니다.', 'info');
+                return;
+            }
+            
+            if (confirm(`${duplicates.length}개의 중복 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = duplicates.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    excelTableData.splice(index, 1);
+                });
+                selectedRowIndices.clear();
+                renderExcelTable();
+                showToast(`${duplicates.length}개의 중복 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        function removeRejectNumbers() {
+            const rejectNumbers = [];
+            const toRemove = [];
+            excelTableData.forEach((row, index) => {
+                const phone = row.phone.replace(/[^\d]/g, '');
+                const rejectPhone = rejectNumbers.find(rn => rn.replace(/[^\d]/g, '') === phone);
+                if (rejectPhone) {
+                    toRemove.push(index);
+                }
+            });
+            
+            if (toRemove.length === 0) {
+                showToast('수신거부 번호가 없습니다.', 'info');
+                return;
+            }
+            
+            if (confirm(`${toRemove.length}개의 수신거부 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = toRemove.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    excelTableData.splice(index, 1);
+                });
+                selectedRowIndices.clear();
+                renderExcelTable();
+                showToast(`${toRemove.length}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        function addExcelRecipients() {
+            if (excelTableData.length === 0) {
+                showToast('추가할 데이터가 없습니다.', 'warning');
+                return;
+            }
+            
+            const phoneNumbers = excelTableData
+                .map(row => row.phone)
+                .filter(phone => phone && phone.toString().trim())
+                .map(phone => phone.toString().trim().replace(/[^\d]/g, ''))
+                .filter(phone => phone.length >= 10 && phone.length <= 11);
+            
+            if (phoneNumbers.length === 0) {
+                showToast('유효한 전화번호를 찾을 수 없습니다.', 'warning');
+                return;
+            }
+            
+            const recipientTextarea = document.getElementById('recipientNumbers');
+            const existingNumbers = recipientTextarea.value.split(/[,\n]/).map(n => n.trim()).filter(n => n);
+            const allNumbers = [...new Set([...existingNumbers, ...phoneNumbers])];
+            recipientTextarea.value = allNumbers.join('\n');
+            
+            updateRecipientCount();
+            
+            if (recipientTextarea) {
+                recipientTextarea.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            
+            showToast(`${phoneNumbers.length}개의 수신번호가 추가되었습니다.`, 'success');
+            closeModal('excelUploadModal');
+            
+            excelTableData = [];
+            selectedRowIndices.clear();
+            document.getElementById('excelFileInput').value = '';
+        }
+
+        function loadAddressBook() {
+            showToast('주소록 불러오기 기능은 준비 중입니다.', 'info');
+        }
+
+        // 주소록 불러오기
+        function loadRecipientAddressBook() {
+            const groupSelect = document.getElementById('recipientGroupSelect');
+            const selectedGroup = groupSelect.value;
+            
+            if (!selectedGroup) {
+                alert('그룹을 선택해주세요.');
+                return;
+            }
+            
+            // 그룹 선택에 따른 주소록 데이터 가져오기 (실제로는 API 호출)
+            const addressBookData = {
+                'group1': [
+                    { name: '홍길동', phone: '010-1234-5678', variables: ['VIP', '서울', '2024', '1', 'A'] },
+                    { name: '김철수', phone: '010-2345-6789', variables: ['VIP', '부산', '2024', '2', 'B'] }
+                ],
+                'group2': [
+                    { name: '이영희', phone: '010-3456-7890', variables: ['일반', '대구', '2023', '3', 'C'] },
+                    { name: '박민수', phone: '010-4567-8901', variables: ['일반', '인천', '2023', '4', 'D'] }
+                ],
+                'group3': [
+                    { name: '최지영', phone: '010-5678-9012', variables: ['신규', '광주', '2024', '5', 'E'] }
+                ]
+            };
+            
+            const groupData = addressBookData[selectedGroup] || [];
+            
+            // 기존 데이터에 추가 (중복 제거)
+            groupData.forEach(item => {
+                const existingIndex = recipientTableData.findIndex(row => row.phone === item.phone);
+                if (existingIndex < 0) {
+                    recipientTableData.push({
+                        index: recipientTableData.length,
+                        name: item.name || '',
+                        phone: item.phone || '',
+                        variables: item.variables || ['', '', '', '', '']
+                    });
+                } else {
+                    recipientTableData[existingIndex].name = item.name || recipientTableData[existingIndex].name;
+                    recipientTableData[existingIndex].variables = (item.variables || recipientTableData[existingIndex].variables || ['', '', '']).slice(0, 3);
+                }
+            });
+            
+            // 테이블 다시 렌더링 (데이터 개수에 맞춰)
+            renderRecipientTable();
+            updateRecipientCount();
+            showToast(`${groupData.length}개의 주소록이 추가되었습니다.`, 'success');
+        }
+
+        // 주소록에 추가 기능
+        function addToAddressBook() {
+            if (recipientTableData.length === 0) {
+                showToast('추가할 데이터가 없습니다.', 'warning');
+                return;
+            }
+            
+            // 선택된 행이 있으면 선택된 행만, 없으면 전체 추가
+            const dataToAdd = selectedRecipientIndices.size > 0 
+                ? Array.from(selectedRecipientIndices).map(idx => recipientTableData[idx]).filter(row => row && row.phone)
+                : recipientTableData.filter(row => row.phone);
+            
+            if (dataToAdd.length === 0) {
+                showToast('추가할 유효한 데이터가 없습니다.', 'warning');
+                return;
+            }
+            
+            // 데이터 개수 표시
+            const countElement = document.getElementById('addressBookDataCount');
+            if (countElement) {
+                countElement.textContent = dataToAdd.length;
+            }
+            
+            // 모달 초기화
+            const existingRadio = document.querySelector('input[name="addressBookAddType"][value="existing"]');
+            if (existingRadio) existingRadio.checked = true;
+            toggleAddressBookAddType();
+            
+            const groupSelect = document.getElementById('addressBookGroupSelect');
+            if (groupSelect) groupSelect.value = '';
+            
+            const newGroupInput = document.getElementById('newGroupNameInput');
+            if (newGroupInput) newGroupInput.value = '';
+            
+            // 모달 열기
+            openModal('addToAddressBookModal');
+        }
+
+        // 주소록 추가 타입 전환
+        function toggleAddressBookAddType() {
+            const addType = document.querySelector('input[name="addressBookAddType"]:checked')?.value;
+            const existingSection = document.getElementById('existingGroupSection');
+            const newSection = document.getElementById('newGroupSection');
+            
+            if (addType === 'existing') {
+                if (existingSection) existingSection.style.display = 'block';
+                if (newSection) newSection.style.display = 'none';
+            } else {
+                if (existingSection) existingSection.style.display = 'none';
+                if (newSection) newSection.style.display = 'block';
+            }
+        }
+
+        // 주소록 추가 확인
+        function confirmAddToAddressBook() {
+            const addType = document.querySelector('input[name="addressBookAddType"]:checked')?.value;
+            let groupName = '';
+            
+            if (addType === 'existing') {
+                const groupSelect = document.getElementById('addressBookGroupSelect');
+                const selectedGroup = groupSelect?.value;
+                
+                if (!selectedGroup) {
+                    showToast('그룹을 선택해주세요.', 'warning');
+                    return;
+                }
+                
+                // 그룹명 가져오기 (실제로는 API에서 가져와야 함)
+                const groupNames = {
+                    'group1': 'VIP 고객',
+                    'group2': '일반 고객',
+                    'group3': '신규 고객'
+                };
+                groupName = groupNames[selectedGroup] || selectedGroup;
+            } else {
+                const newGroupInput = document.getElementById('newGroupNameInput');
+                groupName = newGroupInput?.value?.trim();
+                
+                if (!groupName) {
+                    showToast('그룹명을 입력해주세요.', 'warning');
+                    return;
+                }
+            }
+            
+            // 선택된 행이 있으면 선택된 행만, 없으면 전체 추가
+            const dataToAdd = selectedRecipientIndices.size > 0 
+                ? Array.from(selectedRecipientIndices).map(idx => recipientTableData[idx]).filter(row => row && row.phone)
+                : recipientTableData.filter(row => row.phone);
+            
+            if (dataToAdd.length === 0) {
+                showToast('추가할 유효한 데이터가 없습니다.', 'warning');
+                return;
+            }
+            
+            // 실제로는 API 호출하여 주소록에 추가
+            // 여기서는 시뮬레이션
+            console.log('주소록 추가:', {
+                groupName: groupName,
+                addType: addType,
+                data: dataToAdd
+            });
+            
+            showToast(`"${groupName}" 그룹에 ${dataToAdd.length}개의 주소록이 추가되었습니다.`, 'success');
+            
+            // 모달 닫기
+            closeModal('addToAddressBookModal');
+            
+            // 선택 초기화
+            selectedRecipientIndices.clear();
+            const selectAllCheckbox = document.getElementById('selectAllRecipientCheckbox');
+            if (selectAllCheckbox) selectAllCheckbox.checked = false;
+        }
+
+        // 수신번호 테이블 관련 변수
+        let recipientTableData = [];
+        let selectedRecipientIndices = new Set();
+
+        // 수신번호 엑셀 파일 선택 처리
+        function handleRecipientExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const headers = jsonData[0];
+                    const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
+                    const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
+                    const varIndices = [];
+                    for (let i = 1; i <= 3; i++) {
+                        const varIndex = headers.findIndex(h => h === `변수${i}` || h === `Variable ${i}` || h === `변수 ${i}`);
+                        varIndices.push(varIndex);
+                    }
+                    
+                    recipientTableData = [];
+                    const rows = jsonData.slice(1);
+                    rows.forEach((row, index) => {
+                        const rowData = {
+                            index: index,
+                            name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
+                            phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : '',
+                            variables: varIndices.map(idx => idx >= 0 ? (row[idx] || '') : '').slice(0, 3)
+                        };
+                        recipientTableData.push(rowData);
+                    });
+                    
+                    renderRecipientTable();
+                    updateRecipientCount();
+                    showToast(`엑셀 파일이 로드되었습니다. (${recipientTableData.length}건)`, 'success');
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 수신번호 테이블 렌더링
+        const DEFAULT_ROWS = 5;
+
+        function renderRecipientTable() {
+            const tbody = document.getElementById('recipientDataTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            // 데이터가 있으면 데이터 개수만큼, 없으면 기본 5개 행 렌더링
+            const rowCount = Math.max(recipientTableData.length, DEFAULT_ROWS);
+            
+            for (let i = 0; i < rowCount; i++) {
+                const tr = document.createElement('tr');
+                const row = i < recipientTableData.length ? recipientTableData[i] : null;
+                
+                tr.innerHTML = `
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <input type="checkbox" class="recipient-row-checkbox" data-row="${i}" onchange="toggleRecipientRowSelection(${i}, this.checked)">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <span style="display: inline-block; padding: 6px; font-size: 13px; color: var(--text-secondary);">${i + 1}</span>
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="name"
+                               value="${row ? (row.name || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateRecipientTableData(${i}, 'name', this.value)"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextCell(this); }">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="phone"
+                               value="${row ? (row.phone || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateRecipientTableData(${i}, 'phone', this.value); updateRecipientCount();"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextCell(this); }">
+                    </td>
+                    ${[1,2,3].map(v => `
+                        <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                            <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                                   data-row="${i}" data-field="var${v}"
+                                   value="${row ? (row.variables && row.variables[v-1] ? (row.variables[v-1] || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '') : ''}" 
+                                   onblur="updateRecipientTableData(${i}, 'var${v}', this.value)"
+                                   onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextCell(this); }">
+                        </td>
+                    `).join('')}
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // 체크박스 선택 기능
+        function toggleSelectAllRecipients(checked) {
+            const checkboxes = document.querySelectorAll('.recipient-row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                const rowIndex = parseInt(cb.getAttribute('data-row'));
+                if (checked) {
+                    selectedRecipientIndices.add(rowIndex);
+                } else {
+                    selectedRecipientIndices.delete(rowIndex);
+                }
+            });
+        }
+
+        function toggleRecipientRowSelection(rowIndex, checked) {
+            if (checked) {
+                selectedRecipientIndices.add(rowIndex);
+            } else {
+                selectedRecipientIndices.delete(rowIndex);
+                // 전체 선택 체크박스도 해제
+                const selectAllCheckbox = document.getElementById('selectAllRecipientCheckbox');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.checked = false;
+                }
+            }
+        }
+
+        // 행 추가 기능
+        function addRecipientRow() {
+            recipientTableData.push({
+                index: recipientTableData.length,
+                name: '',
+                phone: '',
+                variables: ['', '', '']
+            });
+            renderRecipientTable();
+            
+            // 새로 추가된 행으로 스크롤 이동
+            setTimeout(() => {
+                const tbody = document.getElementById('recipientDataTableBody');
+                if (tbody && tbody.lastElementChild) {
+                    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    // 새 행의 첫 번째 입력 필드에 포커스
+                    const firstInput = tbody.lastElementChild.querySelector('.recipient-input');
+                    if (firstInput) firstInput.focus();
+                }
+            }, 100);
+        }
+
+        function moveToNextCell(currentInput) {
+            const inputs = Array.from(document.querySelectorAll('.recipient-input'));
+            const currentIndex = inputs.indexOf(currentInput);
+            if (currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+            }
+        }
+
+
+        function updateRecipientTableData(index, field, value) {
+            // 인덱스가 배열 길이보다 크거나 같으면 배열 확장
+            while (index >= recipientTableData.length) {
+                recipientTableData.push({
+                    index: recipientTableData.length,
+                    name: '',
+                    phone: '',
+                    variables: ['', '', '']
+                });
+            }
+            
+            const row = recipientTableData[index];
+            if (!row) {
+                // 안전장치: row가 없으면 생성
+                recipientTableData[index] = {
+                    index: index,
+                    name: '',
+                    phone: '',
+                    variables: ['', '', '']
+                };
+            }
+            
+            const finalRow = recipientTableData[index];
+            if (field === 'name') {
+                finalRow.name = value;
+            } else if (field === 'phone') {
+                finalRow.phone = value;
+            } else if (field.startsWith('var')) {
+                const varIndex = parseInt(field.replace('var', '')) - 1;
+                if (varIndex >= 0 && varIndex < 3) {
+                    if (!finalRow.variables) finalRow.variables = ['', '', ''];
+                    finalRow.variables[varIndex] = value;
+                }
+            }
+        }
+
+        function updateRecipientCount() {
+            const phoneCount = recipientTableData.filter(row => row.phone && row.phone.trim()).length;
+            const countElement = document.getElementById('recipientCount');
+            if (countElement) {
+                countElement.textContent = phoneCount;
+            }
+        }
+
+        function deleteAllRecipientRows() {
+            if (recipientTableData.length === 0) return;
+            if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                recipientTableData = [];
+                selectedRecipientIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllRecipientCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderRecipientTable();
+                updateRecipientCount();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+
+        function deleteSelectedRecipientRows() {
+            if (selectedRecipientIndices.size === 0) {
+                showToast('삭제할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            if (confirm(`${selectedRecipientIndices.size}개 행을 삭제하시겠습니까?`)) {
+                const sortedIndices = Array.from(selectedRecipientIndices).sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    recipientTableData.splice(index, 1);
+                });
+                selectedRecipientIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllRecipientCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderRecipientTable();
+                updateRecipientCount();
+                showToast(`${sortedIndices.length}개 행이 삭제되었습니다.`, 'success');
+            }
+        }
+
+        function removeDuplicateRecipientNumbers() {
+            const phoneMap = new Map();
+            const duplicates = [];
+            recipientTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                if (phone) {
+                    if (phoneMap.has(phone)) {
+                        duplicates.push(index);
+                    } else {
+                        phoneMap.set(phone, index);
+                    }
+                }
+            });
+            if (duplicates.length === 0) {
+                showToast('중복된 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${duplicates.length}개의 중복 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = duplicates.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    recipientTableData.splice(index, 1);
+                });
+                selectedRecipientIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllRecipientCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderRecipientTable();
+                updateRecipientCount();
+                showToast(`${duplicates.length}개의 중복 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        function removeRejectRecipientNumbers() {
+            const rejectNumbers = [];
+            const toRemove = [];
+            recipientTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                const rejectPhone = rejectNumbers.find(rn => rn.replace(/[^\d]/g, '') === phone);
+                if (rejectPhone) {
+                    toRemove.push(index);
+                }
+            });
+            if (toRemove.length === 0) {
+                showToast('수신거부 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${toRemove.length}개의 수신거부 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = toRemove.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    recipientTableData.splice(index, 1);
+                });
+                selectedRecipientIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllRecipientCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderRecipientTable();
+                updateRecipientCount();
+                showToast(`${toRemove.length}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(renderRecipientTable, 100);
+            });
+        } else {
+            setTimeout(renderRecipientTable, 100);
+        }
+
+        // 엑셀 파일 업로드 (기존 함수 유지 - 호환성)
         function uploadExcelFile() {
             const fileInput = document.querySelector('#excelUploadModal input[type="file"]');
             const file = fileInput.files[0];

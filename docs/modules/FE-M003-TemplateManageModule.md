@@ -11,7 +11,9 @@
 
 ### 1.2 모듈 목적 및 범위
 - **핵심 기능**: 
-  - 문자 템플릿 관리
+  - 일반문자 템플릿 관리
+  - 광고문자 템플릿 관리
+  - 공직선거문자 템플릿 관리
   - 알림톡 템플릿 관리 (발신프로필별 관리, 카카오 검수 연동)
   - 브랜드톡 템플릿 관리 (발신프로필별 관리, 즉시 사용)
   - 템플릿 CRUD
@@ -19,6 +21,7 @@
   - 템플릿 검색/필터링/정렬
   - 템플릿 미리보기
   - 템플릿 복사
+  - 080 수신거부 번호 관리 (광고문자/공직선거문자)
 - **비즈니스 가치**: 재사용 가능한 메시지 템플릿 관리, 발신프로필별 템플릿 관리
 
 ---
@@ -29,8 +32,12 @@
 ```
 TemplateManageModule/
 ├── components/
-│   ├── MessageTemplateList.tsx        # 문자 템플릿 목록
-│   ├── MessageTemplateForm.tsx        # 문자 템플릿 등록/수정
+│   ├── GeneralMessageTemplateList.tsx  # 일반문자 템플릿 목록
+│   ├── GeneralMessageTemplateForm.tsx  # 일반문자 템플릿 등록/수정
+│   ├── AdMessageTemplateList.tsx       # 광고문자 템플릿 목록
+│   ├── AdMessageTemplateForm.tsx       # 광고문자 템플릿 등록/수정
+│   ├── ElectionMessageTemplateList.tsx # 공직선거문자 템플릿 목록
+│   ├── ElectionMessageTemplateForm.tsx # 공직선거문자 템플릿 등록/수정
 │   ├── AlimtalkTemplateList.tsx       # 알림톡 템플릿 목록
 │   ├── AlimtalkTemplateForm.tsx       # 알림톡 템플릿 등록/수정
 │   ├── BrandtalkTemplateList.tsx      # 브랜드톡 템플릿 목록
@@ -109,7 +116,7 @@ export interface TemplateManageModuleInterface {
   };
   
   types: {
-    TemplateType: 'MESSAGE' | 'ALIMTALK' | 'BRANDTALK';
+    TemplateType: 'GENERAL_MESSAGE' | 'AD_MESSAGE' | 'ELECTION_MESSAGE' | 'ALIMTALK' | 'BRANDTALK';
     AlimtalkMessageType: 'BASIC' | 'HIGHLIGHT' | 'IMAGE';
     AlimtalkHighlightType: 'TEXT' | 'IMAGE' | 'ITEM_LIST';
     BrandtalkTemplateType: 'TEXT' | 'IMAGE' | 'WIDE_IMAGE' | 'WIDE_LIST' | 'CAROUSEL' | 'COMMERCE' | 'CARVAS';
@@ -572,7 +579,27 @@ enum TemplateManageErrorCode {
 
 ---
 
-**문서 버전**: 2.0  
+**문서 버전**: 2.1  
 **작성일**: 2024-11-19  
 **최종 수정일**: 2024-11-19
+
+## 변경 이력
+
+### 버전 2.1 (2024-11-19)
+- **템플릿 메뉴 구조 변경**: "문자" → "일반문자", "광고문자", "공직선거문자" 메뉴 추가
+- **광고문자 템플릿 페이지**: 광고문자 전용 템플릿 관리 페이지 추가
+  - (광고) 옆 문구 입력 필드
+  - 080 수신거부 번호 셀렉박스
+  - 변수 버튼: 이름, 전화번호, 변수1, 변수2, 변수3
+  - MMS 이미지 최대 3개 개별 추가
+- **공직선거문자 템플릿 페이지**: 공직선거문자 전용 템플릿 관리 페이지 추가
+  - 후보자/정당명 입력 필드
+  - 080 수신거부 번호 셀렉박스
+  - 변수 버튼: 이름, 전화번호, 변수1, 변수2, 변수3
+  - 금지어 검사 기능
+  - MMS 이미지 최대 3개 개별 추가
+- **일반문자 템플릿**: 변수 버튼에 변수1, 변수2, 변수3 추가
+- **탭 메뉴**: 알림톡/브랜드톡 탭 클릭 시에도 일반문자/광고문자/공직선거문자 탭 유지
+
+### 버전 2.0 (2024-11-19)
 
