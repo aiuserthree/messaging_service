@@ -1110,7 +1110,8 @@ body {
                         </div>
                         <div class="table-actions">
                             <button class="btn btn-primary" onclick="openAddAddressModal()">주소 추가</button>
-                            <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
+                            <input type="file" id="addressBookMainExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleAddressBookExcelFileSelect(event)">
+                            <button class="btn btn-outline" onclick="document.getElementById('addressBookMainExcelFileInput').click()">엑셀 업로드</button>
                             <button class="btn btn-outline" onclick="downloadSampleFile()">엑셀 샘플파일</button>
                             <button class="btn btn-outline" onclick="sendMessage()">문자 보내기</button>
                         </div>
@@ -1123,18 +1124,22 @@ body {
                                     <th><input type="checkbox" onchange="toggleAll(this)"></th>
                                     <th>이름</th>
                                     <th>전화번호</th>
-                                    <th>그룹</th>
+                                    <th>변수1</th>
+                                    <th>변수2</th>
+                                    <th>변수3</th>
                                     <th>등록일</th>
                                     <th>상태</th>
                                     <th>관리</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr data-group-id="group1">
                                     <td><input type="checkbox"></td>
                                     <td>홍길동</td>
                                     <td>010-1234-5678</td>
-                                    <td>VIP 고객</td>
+                                    <td>홍길동</td>
+                                    <td>서울시 강남구</td>
+                                    <td>VIP</td>
                                     <td>2024-01-15</td>
                                     <td><span class="badge badge-success">정상</span></td>
                                     <td>
@@ -1142,11 +1147,13 @@ body {
                                         <button class="btn btn-sm btn-outline" onclick="deleteAddress(1)">삭제</button>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-group-id="group2">
                                     <td><input type="checkbox"></td>
                                     <td>김철수</td>
                                     <td>010-9876-5432</td>
-                                    <td>일반 고객</td>
+                                    <td>김철수</td>
+                                    <td>서울시 서초구</td>
+                                    <td>일반</td>
                                     <td>2024-01-14</td>
                                     <td><span class="badge badge-success">정상</span></td>
                                     <td>
@@ -1154,11 +1161,13 @@ body {
                                         <button class="btn btn-sm btn-outline" onclick="deleteAddress(2)">삭제</button>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr data-group-id="group3">
                                     <td><input type="checkbox"></td>
                                     <td>이영희</td>
                                     <td>010-5555-7777</td>
-                                    <td>신규 고객</td>
+                                    <td>이영희</td>
+                                    <td>부산시 해운대구</td>
+                                    <td>신규</td>
                                     <td>2024-01-13</td>
                                     <td><span class="badge badge-danger">수신거부</span></td>
                                     <td>
@@ -1217,12 +1226,12 @@ body {
 
     <!-- 그룹 추가 모달 -->
     <div class="modal-overlay" id="addGroupModal">
-        <div class="modal">
+        <div class="modal" style="max-width: 900px;">
             <div class="modal-header">
                 <h3 class="modal-title">그룹 추가</h3>
                 <button class="modal-close" onclick="closeModal('addGroupModal')">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding: 20px;">
                 <form id="addGroupForm">
                     <div class="form-group">
                         <label class="form-label required">그룹명</label>
@@ -1230,15 +1239,62 @@ body {
                     </div>
                 </form>
                 
-                <!-- 엑셀 업로드 섹션 -->
-                <div class="form-group" style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 20px;">
-                    <label class="form-label">엑셀 파일 업로드</label>
-                    <div style="border: 2px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px; text-align: center;">
-                        <p>파일을 드래그하여 놓거나 클릭하여 선택하세요</p>
-                        <input type="file" class="form-input" id="groupExcelFile" accept=".xlsx,.xls,.csv" style="margin-top: 16px;">
+                <!-- 수신번호 입력 영역 (엑셀 업로드 모달과 동일) -->
+                <div class="form-group" style="margin-top: 20px; margin-bottom: 0;">
+                    <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                        <!-- 상단 버튼 영역 -->
+                        <div style="display: flex; justify-content: flex-start; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="file" id="groupExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleGroupExcelFileSelect(event)">
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('groupExcelFileInput').click()">엑셀업로드</button>
+                                <button type="button" class="btn btn-outline" onclick="downloadGroupSampleFile()">엑셀샘플 다운로드</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 데이터 테이블 영역 (편집 가능) -->
+                        <div id="groupUploadContent" style="display: block;">
+                            <div style="padding: 20px;">
+                                <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                                    <div style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                                        <table class="data-table" id="groupDataTable" style="width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                                <tr>
+                                                    <th style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); min-width: 50px;">
+                                                        <input type="checkbox" id="selectAllGroupCheckbox" onchange="toggleSelectAllGroup(this.checked)">
+                                                    </th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="groupDataTableBody">
+                                                <!-- 기본 5개 행이 자동으로 생성됩니다 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 하단 버튼 영역 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="addGroupRow()">행 추가</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedGroupRows()">선택 행 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllGroupRows()">전체삭제</button>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateGroupNumbers()">중복번호 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectGroupNumbers()">수신거부번호 삭제</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-help">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
-                    <a href="#" class="form-help" onclick="downloadGroupSampleFile(); return false;">샘플 파일 다운로드</a>
+                    <div class="form-help" style="margin-top: 8px;">
+                        총 <strong id="groupCount">0</strong>명
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1657,22 +1713,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 groupItem.classList.add('active');
             }
             
-            // 그룹명 가져오기
-            const groupName = groupItem ? groupItem.getAttribute('data-group-name') : '';
-            
             // 테이블 목록 필터링
             const tbody = document.querySelector('.table tbody');
             if (tbody) {
                 const rows = tbody.querySelectorAll('tr');
                 rows.forEach(row => {
-                    const groupCell = row.querySelector('td:nth-child(4)'); // 그룹 컬럼
-                    if (groupCell) {
-                        const rowGroup = groupCell.textContent.trim();
-                        if (rowGroup === groupName) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
+                    const rowGroupId = row.getAttribute('data-group-id');
+                    if (rowGroupId === groupId) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
                     }
                 });
             }
@@ -1812,71 +1862,332 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal('addAddressModal');
         }
 
+        // 그룹 추가 모달용 변수 및 함수
+        let groupTableData = [];
+        let selectedGroupIndices = new Set();
+        const DEFAULT_GROUP_ROWS = 5;
+        
+        // 그룹 엑셀 파일 선택 처리
+        function handleGroupExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const headers = jsonData[0];
+                    const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
+                    const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
+                    const varIndices = [];
+                    for (let i = 1; i <= 3; i++) {
+                        const varIndex = headers.findIndex(h => h === `변수${i}` || h === `Variable ${i}` || h === `변수 ${i}`);
+                        varIndices.push(varIndex);
+                    }
+                    
+                    groupTableData = [];
+                    const rows = jsonData.slice(1);
+                    rows.forEach((row, index) => {
+                        const rowData = {
+                            index: index,
+                            name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
+                            phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : '',
+                            variables: varIndices.map(idx => idx >= 0 ? (row[idx] || '') : '').slice(0, 3)
+                        };
+                        groupTableData.push(rowData);
+                    });
+                    
+                    renderGroupTable();
+                    updateGroupCount();
+                    showToast(`엑셀 파일이 로드되었습니다. (${groupTableData.length}건)`, 'success');
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 그룹 테이블 렌더링
+        function renderGroupTable() {
+            const tbody = document.getElementById('groupDataTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const rowCount = Math.max(groupTableData.length, DEFAULT_GROUP_ROWS);
+            
+            for (let i = 0; i < rowCount; i++) {
+                const tr = document.createElement('tr');
+                const row = i < groupTableData.length ? groupTableData[i] : null;
+                
+                tr.innerHTML = `
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <input type="checkbox" class="group-row-checkbox" data-row="${i}" onchange="toggleGroupRowSelection(${i}, this.checked)">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <span style="display: inline-block; padding: 6px; font-size: 13px; color: var(--text-secondary);">${i + 1}</span>
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input group-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="name"
+                               value="${row ? (row.name || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateGroupTableData(${i}, 'name', this.value)"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextGroupCell(this); }">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input group-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="phone"
+                               value="${row ? (row.phone || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateGroupTableData(${i}, 'phone', this.value); updateGroupCount();"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextGroupCell(this); }">
+                    </td>
+                    ${[1,2,3].map(v => `
+                        <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                            <input type="text" class="form-input group-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                                   data-row="${i}" data-field="var${v}"
+                                   value="${row ? (row.variables && row.variables[v-1] ? (row.variables[v-1] || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '') : ''}" 
+                                   onblur="updateGroupTableData(${i}, 'var${v}', this.value)"
+                                   onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextGroupCell(this); }">
+                        </td>
+                    `).join('')}
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // 그룹 테이블 데이터 업데이트
+        function updateGroupTableData(index, field, value) {
+            while (index >= groupTableData.length) {
+                groupTableData.push({
+                    index: groupTableData.length,
+                    name: '',
+                    phone: '',
+                    variables: ['', '', '']
+                });
+            }
+            
+            const row = groupTableData[index];
+            if (!row) {
+                groupTableData[index] = {
+                    index: index,
+                    name: '',
+                    phone: '',
+                    variables: ['', '', '']
+                };
+            }
+            
+            const finalRow = groupTableData[index];
+            if (field === 'name') {
+                finalRow.name = value;
+            } else if (field === 'phone') {
+                finalRow.phone = value;
+            } else if (field.startsWith('var')) {
+                const varIndex = parseInt(field.replace('var', '')) - 1;
+                if (varIndex >= 0 && varIndex < 3) {
+                    if (!finalRow.variables) finalRow.variables = ['', '', ''];
+                    finalRow.variables[varIndex] = value;
+                }
+            }
+        }
+
+        // 그룹 개수 업데이트
+        function updateGroupCount() {
+            const phoneCount = groupTableData.filter(row => row.phone && row.phone.trim()).length;
+            const countElement = document.getElementById('groupCount');
+            if (countElement) {
+                countElement.textContent = phoneCount;
+            }
+        }
+
+        // 체크박스 선택 기능
+        function toggleSelectAllGroup(checked) {
+            const checkboxes = document.querySelectorAll('.group-row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                const rowIndex = parseInt(cb.getAttribute('data-row'));
+                if (checked) {
+                    selectedGroupIndices.add(rowIndex);
+                } else {
+                    selectedGroupIndices.delete(rowIndex);
+                }
+            });
+        }
+
+        function toggleGroupRowSelection(rowIndex, checked) {
+            if (checked) {
+                selectedGroupIndices.add(rowIndex);
+            } else {
+                selectedGroupIndices.delete(rowIndex);
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.checked = false;
+                }
+            }
+        }
+
+        // 행 추가 기능
+        function addGroupRow() {
+            groupTableData.push({
+                index: groupTableData.length,
+                name: '',
+                phone: '',
+                variables: ['', '', '']
+            });
+            renderGroupTable();
+            
+            setTimeout(() => {
+                const tbody = document.getElementById('groupDataTableBody');
+                if (tbody && tbody.lastElementChild) {
+                    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    const firstInput = tbody.lastElementChild.querySelector('.group-input');
+                    if (firstInput) firstInput.focus();
+                }
+            }, 100);
+        }
+
+        // 선택 행 삭제
+        function deleteSelectedGroupRows() {
+            if (selectedGroupIndices.size === 0) {
+                showToast('삭제할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            if (confirm(`${selectedGroupIndices.size}개 행을 삭제하시겠습니까?`)) {
+                const sortedIndices = Array.from(selectedGroupIndices).sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    groupTableData.splice(index, 1);
+                });
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast(`${sortedIndices.length}개 행이 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 전체 삭제
+        function deleteAllGroupRows() {
+            if (groupTableData.length === 0) return;
+            if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                groupTableData = [];
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+
+        // 중복번호 삭제
+        function removeDuplicateGroupNumbers() {
+            const phoneMap = new Map();
+            const duplicates = [];
+            groupTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                if (phone) {
+                    if (phoneMap.has(phone)) {
+                        duplicates.push(index);
+                    } else {
+                        phoneMap.set(phone, index);
+                    }
+                }
+            });
+            if (duplicates.length === 0) {
+                showToast('중복된 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${duplicates.length}개의 중복 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = duplicates.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    groupTableData.splice(index, 1);
+                });
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast(`${duplicates.length}개의 중복 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 수신거부번호 삭제
+        function removeRejectGroupNumbers() {
+            const rejectNumbers = [];
+            const toRemove = [];
+            groupTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                const rejectPhone = rejectNumbers.find(rn => rn.replace(/[^\d]/g, '') === phone);
+                if (rejectPhone) {
+                    toRemove.push(index);
+                }
+            });
+            if (toRemove.length === 0) {
+                showToast('수신거부 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${toRemove.length}개의 수신거부 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = toRemove.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    groupTableData.splice(index, 1);
+                });
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast(`${toRemove.length}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 다음 셀로 이동
+        function moveToNextGroupCell(currentInput) {
+            const inputs = Array.from(document.querySelectorAll('.group-input'));
+            const currentIndex = inputs.indexOf(currentInput);
+            if (currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+            }
+        }
+
         function saveGroup() {
             const groupName = document.getElementById('newGroupName').value.trim();
-            const groupDescription = document.getElementById('newGroupDescription').value.trim();
-            const excelFile = document.getElementById('groupExcelFile').files[0];
             
             if (!groupName) {
                 showToast('그룹명을 입력해주세요.', 'warning');
                 return;
             }
             
-            // 엑셀 파일이 있는 경우 처리
-            if (excelFile) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                        const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-                        
-                        if (jsonData.length < 2) {
-                            showToast('데이터가 없습니다. 헤더를 포함하여 최소 1개 이상의 데이터가 필요합니다.', 'warning');
-                            return;
-                        }
-                        
-                        // 헤더 제거
-                        const headers = jsonData[0];
-                        const rows = jsonData.slice(1);
-                        
-                        // 데이터 파싱
-                        const addressData = rows.map((row) => {
-                            const rowData = {};
-                            headers.forEach((header, colIndex) => {
-                                rowData[header] = row[colIndex] || '';
-                            });
-                            return rowData;
-                        });
-                        
-                        // 실제로는 API를 호출하여 그룹과 주소록을 추가해야 함
-                        showToast(`그룹 "${groupName}"이(가) 생성되었고, ${addressData.length}명의 주소록이 추가되었습니다.`, 'success');
-                    } catch (error) {
-                        console.error('엑셀 파일 읽기 오류:', error);
-                        showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
-                        return;
-                    }
-                    
-                    // 모달 닫기 및 초기화
-                    closeModal('addGroupModal');
-                    document.getElementById('addGroupForm').reset();
-                    document.getElementById('groupExcelFile').value = '';
-                };
-                
-                reader.readAsArrayBuffer(excelFile);
-            } else {
-                // 엑셀 파일이 없는 경우 그룹만 생성
-                showToast('그룹이 추가되었습니다.', 'success');
-                closeModal('addGroupModal');
-                document.getElementById('addGroupForm').reset();
-            }
+            // 테이블에서 유효한 데이터 가져오기
+            const validData = groupTableData.filter(row => row.phone && row.phone.trim());
+            
+            // 그룹 생성 및 주소록 데이터 저장 (실제로는 API 호출)
+            showToast(`"${groupName}" 그룹이 생성되었습니다. (${validData.length}개 주소록 포함)`, 'success');
+            closeModal('addGroupModal');
+            
+            // 폼 및 테이블 초기화
+            document.getElementById('addGroupForm').reset();
+            groupTableData = [];
+            selectedGroupIndices.clear();
+            renderGroupTable();
+            updateGroupCount();
+            
+            // 여기에 실제 그룹 생성 및 주소록 저장 API 호출 로직 추가
         }
 
         // 그룹 추가 모달용 샘플 파일 다운로드
         function downloadGroupSampleFile() {
             const sampleData = [
-                ['이름', '전화번호', '변수 1', '변수 2', '변수 3'],
+                ['이름', '전화번호', '변수1', '변수2', '변수3'],
                 ['홍길동', '010-1234-5678', '홍길동', '서울시 강남구', 'VIP'],
                 ['김철수', '010-9876-5432', '김철수', '서울시 서초구', '일반']
             ];
@@ -1896,6 +2207,44 @@ document.addEventListener('DOMContentLoaded', function() {
             XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
             
             showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+        
+        // 페이지 로드 시 그룹 테이블 미리 렌더링
+        function initGroupTableOnLoad() {
+            const tbody = document.getElementById('groupDataTableBody');
+            if (tbody && tbody.children.length === 0) {
+                groupTableData = [];
+                selectedGroupIndices.clear();
+                renderGroupTable();
+                updateGroupCount();
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initGroupTableOnLoad, 100);
+            });
+        } else {
+            setTimeout(initGroupTableOnLoad, 100);
+        }
+        
+        // 페이지 로드 시 그룹 테이블 미리 렌더링
+        function initGroupTableOnLoad() {
+            const tbody = document.getElementById('groupDataTableBody');
+            if (tbody && tbody.children.length === 0) {
+                groupTableData = [];
+                selectedGroupIndices.clear();
+                renderGroupTable();
+                updateGroupCount();
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initGroupTableOnLoad, 100);
+            });
+        } else {
+            setTimeout(initGroupTableOnLoad, 100);
         }
 
         // 주소록 엑셀 업로드 모달용 변수 및 함수
@@ -1963,6 +2312,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     renderAddressBookTable();
                     updateAddressBookCount();
+                    
+                    // 메인 페이지에서 업로드한 경우 모달 열기
+                    if (event.target.id === 'addressBookMainExcelFileInput') {
+                        openModal('excelUploadModal');
+                    }
+                    
                     showToast(`엑셀 파일이 로드되었습니다. (${addressBookTableData.length}건)`, 'success');
                 } catch (error) {
                     console.error('엑셀 파일 읽기 오류:', error);
@@ -2283,6 +2638,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     // 테이블이 이미 있으면 카운트만 업데이트
                     updateAddressBookCount();
+                }
+            }
+            
+            if (modalId === 'addGroupModal') {
+                // 그룹 추가 모달이 열릴 때 테이블이 이미 렌더링되어 있으면 유지, 없으면 렌더링
+                const tbody = document.getElementById('groupDataTableBody');
+                if (!tbody || tbody.children.length === 0) {
+                    // 테이블이 없으면 초기화하고 렌더링
+                    groupTableData = [];
+                    selectedGroupIndices.clear();
+                    renderGroupTable();
+                    updateGroupCount();
+                } else {
+                    // 테이블이 이미 있으면 카운트만 업데이트
+                    updateGroupCount();
                 }
             }
         };
