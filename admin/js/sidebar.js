@@ -45,16 +45,40 @@ function getSidebarHTML(activeMenu) {
                     <a href="template-alimtalk-review.html" class="menu-item ${activeMenu === 'template-alimtalk-review' ? 'active' : ''}">
                         <span>알림톡 템플릿 검수</span>
                     </a>
-                    <a href="template-brandtalk-list.html" class="menu-item ${activeMenu === 'template-brandtalk-list' ? 'active' : ''}">
+                    <a href="../template-alimtalk.html" class="menu-item ${activeMenu === 'template-alimtalk' ? 'active' : ''}">
+                        <span>알림톡 템플릿</span>
+                    </a>
+                    <a href="../template-brandtalk.html" class="menu-item ${activeMenu === 'template-brandtalk' ? 'active' : ''}">
                         <span>브랜드톡 템플릿</span>
                     </a>
-                    <a href="template-message-list.html" class="menu-item ${activeMenu === 'template-message-list' ? 'active' : ''}">
-                        <span>문자 템플릿</span>
+                    <a href="../template-message.html" class="menu-item ${activeMenu === 'template-message' ? 'active' : ''}">
+                        <span>일반문자 템플릿</span>
+                    </a>
+                    <a href="../template-message-ad.html" class="menu-item ${activeMenu === 'template-message-ad' ? 'active' : ''}">
+                        <span>광고문자 템플릿</span>
+                    </a>
+                    <a href="../template-message-election.html" class="menu-item ${activeMenu === 'template-message-election' ? 'active' : ''}">
+                        <span>공직선거문자 템플릿</span>
                     </a>
                 </div>
                 
                 <div class="menu-section">
                     <div class="menu-section-title">발송 관리</div>
+                    <a href="../message-send-general.html" class="menu-item ${activeMenu === 'message-send-general' ? 'active' : ''}">
+                        <span>일반문자 발송</span>
+                    </a>
+                    <a href="../message-send-ad.html" class="menu-item ${activeMenu === 'message-send-ad' ? 'active' : ''}">
+                        <span>광고문자 발송</span>
+                    </a>
+                    <a href="../message-send-election.html" class="menu-item ${activeMenu === 'message-send-election' ? 'active' : ''}">
+                        <span>공직선거문자 발송</span>
+                    </a>
+                    <a href="../kakao-send-alimtalk.html" class="menu-item ${activeMenu === 'kakao-send-alimtalk' ? 'active' : ''}">
+                        <span>알림톡 발송</span>
+                    </a>
+                    <a href="../kakao-send-brandtalk.html" class="menu-item ${activeMenu === 'kakao-send-brandtalk' ? 'active' : ''}">
+                        <span>브랜드톡 발송</span>
+                    </a>
                     <a href="send-history.html" class="menu-item ${activeMenu === 'send-history' ? 'active' : ''}">
                         <span>발송 내역 모니터링</span>
                     </a>
@@ -63,6 +87,16 @@ function getSidebarHTML(activeMenu) {
                     </a>
                     <a href="send-policy.html" class="menu-item ${activeMenu === 'send-policy' ? 'active' : ''}">
                         <span>발송 정책 관리</span>
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <div class="menu-section-title">주소록 관리</div>
+                    <a href="../addressbook.html" class="menu-item ${activeMenu === 'addressbook' ? 'active' : ''}">
+                        <span>주소록 관리</span>
+                    </a>
+                    <a href="../addressbook-reject.html" class="menu-item ${activeMenu === 'addressbook-reject' ? 'active' : ''}">
+                        <span>수신거부 관리</span>
                     </a>
                 </div>
                 
@@ -81,9 +115,6 @@ function getSidebarHTML(activeMenu) {
                 
                 <div class="menu-section">
                     <div class="menu-section-title">기타 관리</div>
-                    <a href="reject-list.html" class="menu-item ${activeMenu === 'reject-list' ? 'active' : ''}">
-                        <span>수신거부 관리</span>
-                    </a>
                     <a href="inquiry-list.html" class="menu-item ${activeMenu === 'inquiry-list' ? 'active' : ''}">
                         <span>문의 관리</span>
                     </a>

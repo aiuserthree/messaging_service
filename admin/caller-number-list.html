@@ -145,7 +145,7 @@
                                     <td><span class="badge badge-success">승인완료</span></td>
                                     <td><span class="badge badge-success">사용중</span></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">상세</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('callerNumberDetailModal')">상세</button>
                                         <button class="btn btn-warning btn-sm" style="margin-left: 4px;">정지</button>
                                     </td>
                                 </tr>
@@ -162,7 +162,7 @@
                                     <td><span class="badge badge-success">승인완료</span></td>
                                     <td><span class="badge badge-success">사용중</span></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">상세</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('callerNumberDetailModal')">상세</button>
                                         <button class="btn btn-warning btn-sm" style="margin-left: 4px;">정지</button>
                                     </td>
                                 </tr>
@@ -179,7 +179,7 @@
                                     <td><span class="badge badge-warning">정지</span></td>
                                     <td><span class="badge badge-secondary">미사용</span></td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">상세</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('callerNumberDetailModal')">상세</button>
                                         <button class="btn btn-success btn-sm" style="margin-left: 4px;">해제</button>
                                     </td>
                                 </tr>
@@ -190,6 +190,59 @@
                 </div>
             </div>
         </main>
+    </div>
+    
+    <!-- 발신번호 상세 모달 -->
+    <div class="modal" id="callerNumberDetailModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">발신번호 상세 정보</h3>
+                <button class="modal-close" onclick="closeModal('callerNumberDetailModal')">&times;</button>
+            </div>
+            <div style="max-height: 70vh; overflow-y: auto;">
+                <div class="card" style="border: none; padding: 0;">
+                    <h4 style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">기본 정보</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">발신번호</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">010-1234-5678</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">통신사</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">SKT</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">명의자</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">홍길동</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">회원 정보</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">홍길동 (hong@example.com)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">등록일</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">2024-01-15</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">승인일</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">2024-01-17</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">상태</label>
+                            <div><span class="badge badge-success">승인완료</span></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">사용 여부</label>
+                            <div><span class="badge badge-success">사용중</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning">정지</button>
+                <button class="btn btn-outline" onclick="closeModal('callerNumberDetailModal')">닫기</button>
+            </div>
+        </div>
     </div>
     
     <script src="js/admin-common.js"></script>

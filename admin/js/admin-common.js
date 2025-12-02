@@ -2,6 +2,38 @@
 
 // 사이드바 메뉴 토글
 document.addEventListener('DOMContentLoaded', function() {
+    // 사이드바 스크롤 위치 저장 및 복원
+    const sidebar = document.querySelector('.admin-sidebar');
+    let sidebarScrollPosition = 0;
+    
+    // 사이드바 스크롤 위치 저장
+    if (sidebar) {
+        sidebar.addEventListener('scroll', function() {
+            sidebarScrollPosition = sidebar.scrollTop;
+        });
+        
+        // 페이지 로드 시 저장된 스크롤 위치 복원
+        const savedScroll = sessionStorage.getItem('sidebarScrollPosition');
+        if (savedScroll) {
+            sidebar.scrollTop = parseInt(savedScroll, 10);
+        }
+    }
+    
+    // 메뉴 링크 클릭 시 스크롤 위치 저장
+    const menuLinks = document.querySelectorAll('.sidebar-menu a.menu-item');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // 현재 페이지와 같은 링크인 경우에만 스크롤 위치 저장
+            const href = this.getAttribute('href');
+            if (href && !href.startsWith('#')) {
+                // 사이드바 스크롤 위치 저장
+                if (sidebar) {
+                    sessionStorage.setItem('sidebarScrollPosition', sidebar.scrollTop.toString());
+                }
+            }
+        });
+    });
+    
     // 서브메뉴 토글
     const menuItems = document.querySelectorAll('.menu-item.has-submenu');
     menuItems.forEach(item => {

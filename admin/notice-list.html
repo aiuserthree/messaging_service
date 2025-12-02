@@ -112,8 +112,8 @@
                                     <td><span class="badge badge-danger">Y</span></td>
                                     <td>1,234</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">수정</button>
-                                        <button class="btn btn-danger btn-sm" style="margin-left: 4px;">삭제</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('editNoticeModal')">수정</button>
+                                        <button class="btn btn-danger btn-sm" style="margin-left: 4px;" onclick="if(confirm('공지사항을 삭제하시겠습니까?')) { showToast('공지사항이 삭제되었습니다.', 'success'); }">삭제</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,8 +123,8 @@
                                     <td><span class="badge badge-secondary">N</span></td>
                                     <td>567</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">수정</button>
-                                        <button class="btn btn-danger btn-sm" style="margin-left: 4px;">삭제</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('editNoticeModal')">수정</button>
+                                        <button class="btn btn-danger btn-sm" style="margin-left: 4px;" onclick="if(confirm('공지사항을 삭제하시겠습니까?')) { showToast('공지사항이 삭제되었습니다.', 'success'); }">삭제</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -176,6 +176,50 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="showToast('공지사항이 등록되었습니다.', 'success'); closeModal('addNoticeModal');">등록</button>
                 <button class="btn btn-outline" onclick="closeModal('addNoticeModal')">취소</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 공지사항 수정 모달 -->
+    <div class="modal" id="editNoticeModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3 class="modal-title">공지사항 수정</h3>
+                <button class="modal-close" onclick="closeModal('editNoticeModal')">&times;</button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label class="form-label">제목</label>
+                    <input type="text" class="form-control" value="시스템 점검 안내" placeholder="공지사항 제목">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">내용</label>
+                    <textarea class="form-control" rows="10" placeholder="공지사항 내용">시스템 점검 안내 내용입니다.</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">첨부 파일</label>
+                    <input type="file" class="form-control">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">노출 시작일</label>
+                        <input type="date" class="form-control" value="2024-11-19">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">노출 종료일</label>
+                        <input type="date" class="form-control" value="2024-11-25">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" checked>
+                        <span>중요 공지</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="showToast('공지사항이 수정되었습니다.', 'success'); closeModal('editNoticeModal');">저장</button>
+                <button class="btn btn-outline" onclick="closeModal('editNoticeModal')">취소</button>
             </div>
         </div>
     </div>
