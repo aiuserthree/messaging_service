@@ -392,6 +392,75 @@
         </div>
     </div>
     
+    <!-- 관리자 수정 모달 -->
+    <div class="modal" id="editAdminModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">관리자 정보 수정</h3>
+                <button class="modal-close" onclick="closeModal('editAdminModal')">&times;</button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label class="form-label">관리자 ID (이메일)</label>
+                    <div class="form-control" style="background-color: #f1f5f9;">admin@example.com</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">이름</label>
+                    <input type="text" class="form-control" value="최고 관리자" placeholder="관리자 이름">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">권한 그룹</label>
+                    <select class="form-control">
+                        <option value="SUPER" selected>최고 관리자</option>
+                        <option value="OPERATOR">운영 관리자</option>
+                        <option value="REVIEWER">심사 관리자</option>
+                        <option value="SUPPORT">고객 지원</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">계정 상태</label>
+                    <select class="form-control">
+                        <option value="ACTIVE" selected>정상</option>
+                        <option value="SUSPENDED">정지</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="showToast('관리자 정보가 수정되었습니다.', 'success'); closeModal('editAdminModal');">저장</button>
+                <button class="btn btn-outline" onclick="closeModal('editAdminModal')">취소</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 비밀번호 초기화 모달 -->
+    <div class="modal" id="resetPasswordModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 class="modal-title">비밀번호 초기화</h3>
+                <button class="modal-close" onclick="closeModal('resetPasswordModal')">&times;</button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label class="form-label">관리자 ID</label>
+                    <div class="form-control" style="background-color: #f1f5f9;">admin@example.com</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">초기화된 비밀번호</label>
+                    <div class="form-control" style="background-color: #f1f5f9; font-weight: 600;">TempPass123!</div>
+                </div>
+                <div style="padding: 12px; background-color: #fef3c7; border-radius: 8px; margin-top: 16px;">
+                    <div style="font-size: 12px; color: #92400e;">
+                        초기화된 비밀번호는 관리자에게 전달해주세요. 로그인 후 비밀번호를 변경하도록 안내하세요.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="showToast('비밀번호가 초기화되었습니다.', 'success'); closeModal('resetPasswordModal');">확인</button>
+                <button class="btn btn-outline" onclick="closeModal('resetPasswordModal')">취소</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="js/admin-common.js"></script>
     <script>
         function switchTab(tabName) {

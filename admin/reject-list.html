@@ -146,7 +146,7 @@
                                         <td><span class="badge badge-info">통합</span></td>
                                         <td><span class="badge badge-secondary">수동</span></td>
                                         <td>
-                                            <button class="btn btn-danger btn-sm">삭제</button>
+                                            <button class="btn btn-danger btn-sm" onclick="if(confirm('수신거부 항목을 삭제하시겠습니까?')) { showToast('수신거부 항목이 삭제되었습니다.', 'success'); }">삭제</button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -159,7 +159,7 @@
                                         <td><span class="badge badge-warning">광고</span></td>
                                         <td><span class="badge badge-info">080서비스</span></td>
                                         <td>
-                                            <button class="btn btn-danger btn-sm">삭제</button>
+                                            <button class="btn btn-danger btn-sm" onclick="if(confirm('수신거부 항목을 삭제하시겠습니까?')) { showToast('수신거부 항목이 삭제되었습니다.', 'success'); }">삭제</button>
                                         </td>
                                     </tr>
                                 </tbody>

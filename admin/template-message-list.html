@@ -132,7 +132,7 @@
                                     <td>2024-11-15</td>
                                     <td>1,234회</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">상세</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('messageTemplateDetailModal')">상세</button>
                                         <button class="btn btn-danger btn-sm" style="margin-left: 4px;">삭제</button>
                                     </td>
                                 </tr>
@@ -146,7 +146,7 @@
                                     <td>2024-11-10</td>
                                     <td>567회</td>
                                     <td>
-                                        <button class="btn btn-primary btn-sm">상세</button>
+                                        <button class="btn btn-primary btn-sm" onclick="openModal('messageTemplateDetailModal')">상세</button>
                                         <button class="btn btn-danger btn-sm" style="margin-left: 4px;">삭제</button>
                                     </td>
                                 </tr>
@@ -157,6 +157,58 @@
                 </div>
             </div>
         </main>
+    </div>
+    
+    <!-- 문자 템플릿 상세 모달 -->
+    <div class="modal" id="messageTemplateDetailModal">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">문자 템플릿 상세</h3>
+                <button class="modal-close" onclick="closeModal('messageTemplateDetailModal')">&times;</button>
+            </div>
+            <div style="max-height: 70vh; overflow-y: auto;">
+                <div class="card" style="border: none; padding: 0;">
+                    <h4 style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">기본 정보</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">템플릿명</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">주문 완료 안내</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">회원 정보</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">홍길동 (hong@example.com)</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">메시지 타입</label>
+                            <div><span class="badge badge-secondary">SMS</span></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">등록일</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">2024-11-15</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">사용 횟수</label>
+                            <div class="form-control" style="background-color: #f1f5f9;">1,234회</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="border: none; padding: 0; margin-top: 24px;">
+                    <h4 style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">템플릿 내용</h4>
+                    <div style="padding: 20px; background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                        <div style="font-size: 14px; line-height: 1.8; white-space: pre-wrap;">
+주문이 완료되었습니다.
+주문번호: {주문번호}
+감사합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger">삭제</button>
+                <button class="btn btn-outline" onclick="closeModal('messageTemplateDetailModal')">닫기</button>
+            </div>
+        </div>
     </div>
     
     <script src="js/admin-common.js"></script>
