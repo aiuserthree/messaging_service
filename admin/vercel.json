@@ -7,8 +7,11 @@
     },
     {
       "source": "/([^./]+)$",
-      "destination": "/$1.html",
-      "check": true
+      "destination": "/$1.html"
+    },
+    {
+      "source": "/([^./]+)/:path*",
+      "destination": "/$1.html"
     }
   ]
 }
