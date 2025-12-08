@@ -1127,11 +1127,9 @@ body {
                         </div>
                     </div>
                     <div class="preview-kakao-body">
-                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6;">
-                            특별 이벤트가 시작되었습니다!
-                            할인율: #{할인율}%
-                            자세한 내용은 버튼을 클릭해주세요.
-                        </div>
+                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left !important; display: block; width: 100%; margin: 0 !important; padding: 0 !important; direction: ltr; unicode-bidi: embed;">특별 이벤트가 시작되었습니다!
+할인율: #{할인율}%
+자세한 내용은 버튼을 클릭해주세요.</div>
                         <div class="button-preview">
                             <div class="button-preview-item">자세히 보기</div>
                             <div class="button-preview-item">구매하기</div>
@@ -1537,6 +1535,7 @@ document.addEventListener('DOMContentLoaded', function() {
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: left !important;
         }
         .preview-kakao-header {
             background: white;
@@ -1558,6 +1557,16 @@ document.addEventListener('DOMContentLoaded', function() {
             border-radius: 12px;
             padding: 16px;
             min-height: 100px;
+            text-align: left !important;
+        }
+        #previewTemplateContent {
+            text-align: left !important;
+            display: block;
+            width: 100%;
+            margin: 0 !important;
+            padding: 0 !important;
+            direction: ltr;
+            unicode-bidi: embed;
         }
         .button-preview {
             display: flex;

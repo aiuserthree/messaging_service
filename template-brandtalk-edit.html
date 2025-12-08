@@ -1,0 +1,2461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>브랜드 메시지 템플릿 수정 - 메시징 서비스</title>
+    <script src="js/header.js"></script>
+    <style>/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--bg-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* 입력 필드 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--danger-color);
+}
+
+.form-help {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 카드 */
+.card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* 배지 */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+}
+
+.badge-primary {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.badge-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.badge-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+/* 탭 */
+.tabs {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.tab-list {
+    display: flex;
+    gap: 8px;
+}
+
+.tab-item {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    color: var(--text-primary);
+}
+
+.tab-item.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 테이블 */
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.table tbody tr:hover {
+    background-color: var(--bg-color);
+}
+
+/* 알림 */
+.alert {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background-color: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    color: var(--primary-color);
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+}
+
+/* 유틸리티 */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* 검색/필터 섹션 */
+.search-filter-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-filter-section > div {
+    display: flex;
+    align-items: center;
+}
+
+/* 기간 선택 영역 */
+.date-range-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.date-range-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.date-input-wrapper {
+    min-width: 140px;
+    max-width: 160px;
+    flex-shrink: 0;
+}
+
+.date-input-wrapper input[type="date"] {
+    width: 100%;
+    min-width: 140px;
+}
+
+/* 필터 섹션 */
+.filter-section {
+    margin-bottom: 24px;
+}
+
+.filter-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    flex: 1;
+}
+
+.filter-group .form-label {
+    margin-bottom: 8px;
+}
+
+.filter-group .flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group .flex input[type="date"] {
+    flex: 1;
+    min-width: 140px;
+}
+
+.filter-group .flex span {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+    .search-filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-filter-section > div {
+        width: 100%;
+    }
+    
+    .date-input-wrapper {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .filter-group .flex {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group .flex input[type="date"] {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .date-range-separator {
+        display: none;
+    }
+}
+
+
+/* 레이아웃 스타일 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 */
+.header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.logo a:hover h1 {
+    opacity: 0.8;
+}
+
+.main-nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+/* 드롭다운 메뉴 */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.nav-item.open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.nav-dropdown-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.balance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.balance-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 대시보드 */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+    font-size: 40px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.stat-content h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.quick-actions {
+    margin-top: 32px;
+}
+
+.quick-actions h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.action-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.action-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.action-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 2단 레이아웃 */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .nav-dropdown {
+        position: static;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+
+    .nav-item.open .nav-dropdown {
+        display: block;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+    <style>
+        .register-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        .template-type-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .type-card {
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .type-card:hover {
+            border-color: var(--primary-color);
+        }
+        .type-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        .type-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .type-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .type-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .preview-section {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        .preview-kakao {
+            background: #FEE500;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .preview-kakao-header {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .preview-kakao-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+        }
+        .preview-kakao-body {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 200px;
+        }
+        #previewCardSlider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        #previewCardsContainer {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        #previewCardsContainer > div {
+            flex-shrink: 0;
+        }
+        .button-config {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .button-config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .button-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .button-preview-item {
+            padding: 8px 16px;
+            background: white;
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .button-preview-channel {
+            background: #FEE500;
+            color: var(--text-primary);
+            border: none;
+            font-weight: 500;
+        }
+        .list-item {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .list-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        @media (max-width: 1024px) {
+            .register-layout {
+                grid-template-columns: 1fr;
+            }
+            .preview-section {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="send-result.html" style="text-decoration: none; color: inherit;">
+                        <h1>Tokbell</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">발송 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="send-result.html" class="nav-dropdown-item">발송결과</a>
+                            <a href="send-reservation.html" class="nav-dropdown-item">예약내역</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">문자 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="message-send-general.html" class="nav-dropdown-item">일반문자 발송</a>
+                            <a href="message-send-ad.html" class="nav-dropdown-item">광고문자 발송</a>
+                            <a href="message-send-election.html" class="nav-dropdown-item">공직선거문자 발송</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">카톡 발송</a>
+                        <div class="nav-dropdown">
+                            <a href="kakao-send-alimtalk.html" class="nav-dropdown-item">알림톡 발송</a>
+                            <a href="kakao-send-brandtalk.html" class="nav-dropdown-item">브랜드 메시지 발송</a>
+                            <a href="kakao-profile-manage.html" class="nav-dropdown-item">발신프로필 관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown active">
+                        <a href="#" class="nav-link">템플릿</a>
+                        <div class="nav-dropdown">
+                            <a href="template-message.html" class="nav-dropdown-item">문자</a>
+                            <a href="template-alimtalk.html" class="nav-dropdown-item">알림톡</a>
+                            <a href="template-brandtalk.html" class="nav-dropdown-item active">브랜드 메시지</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">주소록</a>
+                        <div class="nav-dropdown">
+                            <a href="addressbook.html" class="nav-dropdown-item">주소록 관리</a>
+                            <a href="addressbook-reject.html" class="nav-dropdown-item">수신거부관리</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">결제 관리</a>
+                        <div class="nav-dropdown">
+                            <a href="payment-charge.html" class="nav-dropdown-item">충전하기</a>
+                            <a href="payment-history.html" class="nav-dropdown-item">충전 내역</a>
+                            <a href="payment-tax.html" class="nav-dropdown-item">세금계산서 발행</a>
+                        </div>
+                    </div>
+                    <div class="nav-item has-dropdown">
+                        <a href="#" class="nav-link">마이페이지</a>
+                        <div class="nav-dropdown">
+                            <a href="mypage-profile.html" class="nav-dropdown-item">내 정보 수정</a>
+                            <a href="mypage-caller-number.html" class="nav-dropdown-item">발신번호 관리</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-actions">
+                    <div class="balance-info">
+                        <span class="balance-label">잔액</span>
+                        <span class="balance-amount">1,000,000원</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline">로그아웃</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>브랜드 메시지 템플릿 수정</h2>
+                <p class="page-description">브랜드 메시지 템플릿을 수정합니다 (승인 절차 없이 즉시 사용 가능)</p>
+            </div>
+
+            <div class="register-layout">
+                <!-- 입력 영역 -->
+                <div class="card">
+                    <form id="templateForm">
+                        <!-- 기본 정보 -->
+                        <div class="form-group">
+                            <label class="form-label required">카카오 채널</label>
+                            <select class="form-select" required>
+                                <option>마케팅팀 (채널 ID: @marketing)</option>
+                                <option>고객센터 (채널 ID: @support)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label required">템플릿명</label>
+                            <input type="text" class="form-input" placeholder="템플릿 관리용 이름" maxlength="50" required>
+                        </div>
+
+                        <!-- 메시지 유형 -->
+                        <div class="form-group">
+                            <label class="form-label required">메시지 유형</label>
+                            <div class="flex gap-2" style="flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="text" checked onchange="toggleMessageType()">
+                                    <span>텍스트</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="image" onchange="toggleMessageType()">
+                                    <span>이미지</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="list" onchange="toggleMessageType()">
+                                    <span>리스트</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="messageType" value="card" onchange="toggleMessageType()">
+                                    <span>카드형</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 텍스트 유형: 메시지 입력 -->
+                        <div id="textTypeGroup">
+                            <div class="form-group">
+                                <label class="form-label required">메시지 입력</label>
+                                <div class="flex gap-2 mb-1">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <div></div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span id="textCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/1300자</span>
+                                        <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(텍스트)</button>
+                                    </div>
+                                </div>
+                                <textarea class="form-textarea" id="textMessageContent" rows="8" placeholder="내용을 입력해주세요. (최대 1,300자) 줄바꿈 (Enter) 최대 99개 입력 가능" maxlength="1300" oninput="updateTextCharCounter(); updatePreview();"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 이미지 유형: 파일첨부 + 메시지 입력 -->
+                        <div id="imageTypeGroup" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label required">파일첨부</label>
+                                <button type="button" class="btn btn-outline" onclick="document.getElementById('imageFileInput').click()" style="width: 100%; padding: 12px;">
+                                    <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                                </button>
+                                <input type="file" id="imageFileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleImageUpload(event, 'image')">
+                                <div id="imagePreviewContainer" style="margin-top: 12px; display: none;">
+                                    <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                                        <img id="imagePreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                                        <div id="imagePreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                                    </div>
+                                </div>
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <div>이미지 사이즈: 800 x 400 px (권장)</div>
+                                    <div>가로 500px 이상, 가로세로 비율 2:1이상 3:4이하</div>
+                                    <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                                </div>
+                                <div class="form-group" style="margin-top: 12px;">
+                                    <label class="form-label">이미지 링크(선택입력)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
+                                        <button type="button" class="btn btn-outline">URL 확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">메시지 입력</label>
+                                <div class="flex gap-2 mb-1">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{전화번호}')">#{전화번호}</button>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <div></div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span id="imageCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/400자</span>
+                                        <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(이미지)</button>
+                                    </div>
+                                </div>
+                                <textarea class="form-textarea" id="imageMessageContent" rows="6" placeholder="내용을 입력해주세요. (최대 400자) 줄바꿈 (Enter) 최대 29개 입력 가능" maxlength="400" oninput="updateImageCharCounter(); updatePreview();"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- 리스트 유형: 제목 + 메인 아이템 + 서브 아이템 -->
+                        <div id="listTypeGroup" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label required">제목을 입력해주세요 (필수입력, 최대 20자)</label>
+                                <input type="text" class="form-input" id="listTitle" placeholder="제목 입력" maxlength="20" oninput="updatePreview();">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">메인 아이템</label>
+                                <button type="button" class="btn btn-outline" onclick="document.getElementById('mainItemFileInput').click()" style="width: 100%; padding: 12px; margin-bottom: 12px;">
+                                    <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                                </button>
+                                <input type="file" id="mainItemFileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleMainItemUpload(event)">
+                                <div id="mainItemPreviewContainer" style="margin-top: 12px; display: none;">
+                                    <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                                        <img id="mainItemPreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                                        <div id="mainItemPreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                                    </div>
+                                </div>
+                                <div class="form-help" style="margin-top: 8px;">
+                                    <div>이미지 사이즈: 800 x 400 px (권장)</div>
+                                    <div>가로 500px 이상, 가로 세로 비율 2:1 고정</div>
+                                    <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                                </div>
+                            <div class="form-group" style="margin-top: 12px;">
+                                    <label class="form-label">타이틀 (선택)</label>
+                                    <input type="text" class="form-input" id="mainItemTitle" placeholder="아이템 타이틀 입력 (최대 25자) 줄바꿈(Enter) 최대 1개 입력가능" maxlength="25" oninput="updatePreview();">
+                                </div>
+                                <div class="form-group" style="margin-top: 12px;">
+                                    <label class="form-label required">이미지 링크 (필수)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" class="form-input" id="mainItemLink" placeholder="https://" style="flex: 1;" oninput="updatePreview();">
+                                        <button type="button" class="btn btn-outline">URL 확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">서브 아이템</label>
+                                <div id="subItemsContainer"></div>
+                                <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addSubItem()">+ 추가</button>
+                            </div>
+                        </div>
+
+                        <!-- 카드형 유형: 여러 카드 -->
+                        <div id="cardTypeGroup" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label required">카드</label>
+                                <div id="cardsContainer"></div>
+                                <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addCard()">+ 추가</button>
+                            </div>
+                        </div>
+
+                        <!-- 버튼 설정 (카드형 제외) -->
+                        <div class="form-group" id="commonButtonGroup">
+                            <label class="form-label">버튼 추가</label>
+                            
+                            <!-- 전역 버튼 옵션 -->
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
+                                    <span>채널 추가 버튼 사용</span>
+                                </label>
+                            </div>
+                            
+                            <div id="buttonList"></div>
+                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">+ 버튼 추가</button>
+                        </div>
+
+                        <!-- 상태 설정 -->
+                        <div class="form-group">
+                            <label class="form-label required">상태</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="status" value="active" checked>
+                                    <span>사용중</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="status" value="inactive">
+                                    <span>미사용</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 미리보기 영역 -->
+                <div class="preview-section">
+                    <div class="card">
+                        <h3 class="card-title" style="margin-bottom: 20px;">템플릿 미리보기</h3>
+                        <div class="preview-kakao">
+                            <div class="preview-kakao-header">
+                                <div class="preview-kakao-profile"></div>
+                                <div>
+                                    <div style="font-weight: 600;">마케팅팀</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
+                                </div>
+                            </div>
+                            <div class="preview-kakao-body">
+                                <!-- 텍스트/이미지 공통 -->
+                                <div id="previewImage" style="margin-bottom: 12px;"></div>
+                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력하세요</div>
+                                
+                                <!-- 리스트 유형 -->
+                                <div id="previewList" style="display: none;">
+                                    <div id="previewListTitle" style="font-weight: 600; font-size: 16px; margin-bottom: 12px;"></div>
+                                    <div id="previewMainItem" style="margin-bottom: 16px;"></div>
+                                    <div id="previewSubItems"></div>
+                                </div>
+                                
+                                <!-- 카드형 유형 -->
+                                <div id="previewCard" style="display: none;">
+                                    <div id="previewCardSlider" style="position: relative; overflow: hidden;">
+                                        <div id="previewCardsContainer" style="display: flex; transition: transform 0.3s ease;"></div>
+                                        <!-- 슬라이드 네비게이션 버튼 (카드가 2개 이상일 때만 표시) -->
+                                        <button type="button" id="prevCardBtn" onclick="prevCard()" style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); padding: 8px 12px; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.9); border-radius: 50%; cursor: pointer; z-index: 10; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">‹</button>
+                                        <button type="button" id="nextCardBtn" onclick="nextCard()" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); padding: 8px 12px; border: 1px solid var(--border-color); background: rgba(255, 255, 255, 0.9); border-radius: 50%; cursor: pointer; z-index: 10; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">›</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 공통 버튼 미리보기 (카드형 제외) -->
+                                <div class="button-preview" id="previewButtons"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 하단 액션 버튼 -->
+            <div class="card" style="margin-top: 24px;">
+                <div class="flex gap-2">
+                    <button class="btn btn-outline" onclick="saveDraft()">임시저장</button>
+                    <button class="btn btn-outline" onclick="cancel()">취소</button>
+                    <button class="btn btn-primary" style="margin-left: auto;" onclick="saveTemplate()">저장</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>// 공통 JavaScript 함수
+
+// 모달 열기/닫기
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex'; // 인라인 스타일 제거 후 다시 설정
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.modal-overlay.active');
+        if (activeModal) {
+            activeModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+});
+
+// 모달 외부 클릭 시 닫기
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// 탭 전환
+function switchTab(tabId, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    // 모든 탭 비활성화
+    container.querySelectorAll('.tab-item').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    container.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // 선택한 탭 활성화
+    const tab = document.querySelector(`[data-tab="${tabId}"]`);
+    const content = document.getElementById(tabId);
+    if (tab) tab.classList.add('active');
+    if (content) content.classList.add('active');
+}
+
+// 전화번호 포맷팅
+function formatPhoneNumber(value) {
+    const numbers = value.replace(/[^\d]/g, '');
+    if (numbers.length <= 3) return numbers;
+    if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+}
+
+// 바이트 계산 (한글 3바이트, 영문/숫자 1바이트)
+function calculateByteLength(str) {
+    let byteLength = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charAt(i);
+        if (escape(char).length > 4) {
+            byteLength += 3; // 한글
+        } else {
+            byteLength += 1; // 영문/숫자
+        }
+    }
+    return byteLength;
+}
+
+// 토스트 메시지
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 2000;
+        animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// 날짜 포맷팅
+function formatDate(date, format = 'YYYY-MM-DD HH:mm') {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+
+    return format
+        .replace('YYYY', year)
+        .replace('MM', month)
+        .replace('DD', day)
+        .replace('HH', hours)
+        .replace('mm', minutes);
+}
+
+// 숫자 포맷팅 (천단위 콤마)
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// 파일 업로드 미리보기
+function previewFile(input, previewId) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById(previewId);
+        if (preview) {
+            if (file.type.startsWith('image/')) {
+                preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px;">`;
+            } else {
+                preview.textContent = file.name;
+            }
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// 드래그 앤 드롭
+function setupDragAndDrop(dropZone, callback) {
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && callback) {
+            callback(files[0]);
+        }
+    });
+}
+
+// 페이지네이션
+function createPagination(currentPage, totalPages, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    let html = '<div class="pagination">';
+    
+    // 이전 버튼
+    if (currentPage > 1) {
+        html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">이전</button>`;
+    }
+
+    // 페이지 번호
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    if (startPage > 1) {
+        html += `<button class="page-btn" onclick="goToPage(1)">1</button>`;
+        if (startPage > 2) html += '<span class="page-ellipsis">...</span>';
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    }
+
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) html += '<span class="page-ellipsis">...</span>';
+        html += `<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+    }
+
+    // 다음 버튼
+    if (currentPage < totalPages) {
+        html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">다음</button>`;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// CSS 애니메이션 추가
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    .drag-over {
+        border-color: var(--primary-color) !important;
+        background-color: rgba(37, 99, 235, 0.05) !important;
+    }
+    .pagination {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+    }
+    .page-btn {
+        padding: 8px 12px;
+        border: 1px solid var(--border-color);
+        background-color: var(--surface-color);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .page-btn:hover {
+        background-color: var(--bg-color);
+    }
+    .page-btn.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    .page-ellipsis {
+        padding: 8px 4px;
+    }
+`;
+document.head.appendChild(style);
+
+// 드롭다운 메뉴 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    initDropdownMenus();
+});
+
+</script>
+    <script>
+        // 전역 변수
+        let selectedType = 'text';
+        let buttonCount = 0;
+        let subItemCount = 0;
+        let cardCount = 0;
+
+        // 전역 함수 정의
+        window.toggleMessageType = function() {
+            const checkedRadio = document.querySelector('input[name="messageType"]:checked');
+            if (!checkedRadio) return;
+            const messageType = checkedRadio.value;
+            selectedType = messageType;
+            
+            // 모든 타입 그룹 숨기기
+            document.getElementById('textTypeGroup').style.display = 'none';
+            document.getElementById('imageTypeGroup').style.display = 'none';
+            document.getElementById('listTypeGroup').style.display = 'none';
+            document.getElementById('cardTypeGroup').style.display = 'none';
+            
+            // 공통 버튼 영역 표시/숨김
+            const commonButtonGroup = document.getElementById('commonButtonGroup');
+            if (commonButtonGroup) {
+                if (messageType === 'card') {
+                    commonButtonGroup.style.display = 'none';
+                } else {
+                    commonButtonGroup.style.display = 'block';
+                }
+            }
+            
+            // 선택된 타입 그룹 표시
+            if (messageType === 'text') {
+                document.getElementById('textTypeGroup').style.display = 'block';
+            } else if (messageType === 'image') {
+                document.getElementById('imageTypeGroup').style.display = 'block';
+            } else if (messageType === 'list') {
+                document.getElementById('listTypeGroup').style.display = 'block';
+                if (subItemCount === 0) {
+                    addSubItem();
+                    addSubItem();
+                }
+            } else if (messageType === 'card') {
+                document.getElementById('cardTypeGroup').style.display = 'block';
+                if (cardCount === 0) {
+                    addCard();
+                }
+            }
+            
+            updatePreview();
+        };
+
+        window.insertVariable = function(variable) {
+            const textarea = document.getElementById('textMessageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateTextCharCounter();
+            updatePreview();
+        };
+
+        window.insertImageVariable = function(variable) {
+            const textarea = document.getElementById('imageMessageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateImageCharCounter();
+            updatePreview();
+        };
+
+        function updateTextCharCounter() {
+            const content = document.getElementById('textMessageContent').value;
+            const counter = document.getElementById('textCharCounter');
+            counter.textContent = `${content.length}/1300자`;
+        }
+
+        function updateImageCharCounter() {
+            const content = document.getElementById('imageMessageContent').value;
+            const counter = document.getElementById('imageCharCounter');
+            counter.textContent = `${content.length}/400자`;
+        }
+
+        function handleImageUpload(event, type) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (type === 'image') {
+                    const container = document.getElementById('imagePreviewContainer');
+                    const img = document.getElementById('imagePreviewImg');
+                    const placeholder = document.getElementById('imagePreviewPlaceholder');
+                    container.style.display = 'block';
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleMainItemUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById('mainItemPreviewContainer');
+                const img = document.getElementById('mainItemPreviewImg');
+                const placeholder = document.getElementById('mainItemPreviewPlaceholder');
+                container.style.display = 'block';
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        window.addSubItem = function() {
+            if (subItemCount >= 4) {
+                showToast('서브 아이템은 최대 4개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            subItemCount++;
+            const container = document.getElementById('subItemsContainer');
+            const itemId = `subItem${subItemCount}`;
+            const itemHtml = `
+                <div class="card" style="margin-bottom: 16px; padding: 16px;" id="${itemId}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-weight: 600;">아이템 ${subItemCount}</span>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="removeSubItem('${itemId}')">x</button>
+                    </div>
+                    <button type="button" class="btn btn-outline" onclick="document.getElementById('subItem${subItemCount}FileInput').click()" style="width: 100%; padding: 12px; margin-bottom: 12px;">
+                        <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                    </button>
+                    <input type="file" id="subItem${subItemCount}FileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleSubItemUpload(event, '${itemId}')">
+                    <div id="${itemId}PreviewContainer" style="margin-top: 12px; display: none;">
+                        <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                            <img id="${itemId}PreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                            <div id="${itemId}PreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                        </div>
+                    </div>
+                    <div class="form-help" style="margin-top: 8px;">
+                        <div>이미지 사이즈: 500 x 500 px (권장)</div>
+                        <div>가로 500px 이상, 가로 세로 비율 1:1 고정</div>
+                        <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                    </div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label class="form-label required">타이틀 (필수)</label>
+                        <input type="text" class="form-input" id="${itemId}Title" placeholder="아이템 타이틀 입력 (최대 30자) 줄바꿈(Enter) 최대 1개 입력가능" maxlength="30" oninput="updatePreview();">
+                    </div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label class="form-label required">이미지 링크 (필수)</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="form-input" id="${itemId}Link" placeholder="https://" style="flex: 1;" oninput="updatePreview();">
+                            <button type="button" class="btn btn-outline">URL 확인</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', itemHtml);
+        };
+
+        window.removeSubItem = function(itemId) {
+            if (subItemCount <= 2) {
+                showToast('서브 아이템은 최소 2개 이상 필요합니다.', 'warning');
+                return;
+            }
+            document.getElementById(itemId).remove();
+            subItemCount--;
+            updatePreview();
+        }
+
+        function handleSubItemUpload(event, itemId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById(`${itemId}PreviewContainer`);
+                const img = document.getElementById(`${itemId}PreviewImg`);
+                const placeholder = document.getElementById(`${itemId}PreviewPlaceholder`);
+                container.style.display = 'block';
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.addCard = function() {
+            if (cardCount >= 6) {
+                showToast('카드는 최대 6개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            cardCount++;
+            currentCardIndex = 0; // 카드 추가 시 첫 번째 카드로 이동
+            const container = document.getElementById('cardsContainer');
+            const cardId = `card${cardCount}`;
+            const itemHtml = `
+                <div class="card" style="margin-bottom: 16px; padding: 16px; border: 1px solid var(--border-color);" id="${cardId}">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-weight: 600;">카드 ${cardCount}</span>
+                        <button type="button" class="btn btn-sm btn-outline" onclick="removeCard('${cardId}')">x</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">제목을 입력해주세요 (필수입력, 최대 20자)</label>
+                        <input type="text" class="form-input" id="${cardId}Title" placeholder="제목 입력" maxlength="20" oninput="updatePreview();">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">파일첨부</label>
+                        <button type="button" class="btn btn-outline" onclick="document.getElementById('${cardId}FileInput').click()" style="width: 100%; padding: 12px;">
+                            <span style="font-size: 18px; margin-right: 8px;">↑</span> 파일첨부
+                        </button>
+                        <input type="file" id="${cardId}FileInput" class="form-input" accept="image/jpeg,image/png" style="display: none;" onchange="handleCardUpload(event, '${cardId}')">
+                        <div id="${cardId}PreviewContainer" style="margin-top: 12px; display: none;">
+                            <div style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; position: relative;">
+                                <img id="${cardId}PreviewImg" src="" style="max-width: 100%; max-height: 300px; border-radius: var(--radius-md); display: none;">
+                                <div id="${cardId}PreviewPlaceholder" style="color: var(--text-secondary); font-size: 13px;">이미지를 첨부해주세요</div>
+                            </div>
+                        </div>
+                        <div class="form-help" style="margin-top: 8px;">
+                            <div>이미지 사이즈: 800 x 400 px 또는 800 x 600 px (권장)</div>
+                            <div>가로 500px 이상, 가로세로 비율 2:1이상 3:4이하</div>
+                            <div>파일 형식 및 용량: jpg, png (최대 5MB)</div>
+                        </div>
+                        <div class="form-group" style="margin-top: 12px;">
+                            <label class="form-label">이미지 링크(선택입력)</label>
+                            <div class="flex gap-2">
+                                <input type="text" class="form-input" id="${cardId}Link" placeholder="https://" style="flex: 1;" oninput="updatePreview();">
+                                <button type="button" class="btn btn-outline">URL 확인</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">메시지 입력</label>
+                        <div class="flex gap-2 mb-1">
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{이름}')">#{이름}</button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{전화번호}')">#{전화번호}</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <div></div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span id="${cardId}CharCounter" style="color: var(--text-secondary); font-size: 12px;">0/180자</span>
+                                <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(카드형)</button>
+                            </div>
+                        </div>
+                        <textarea class="form-textarea" id="${cardId}Content" rows="4" placeholder="내용을 입력해주세요. (최대 180자) 줄바꿈 (Enter) 최대 10개 입력 가능" maxlength="180" oninput="updateCardCharCounter('${cardId}'); updatePreview();"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label class="form-label">버튼 추가</label>
+                        <div style="margin-bottom: 12px;">
+                            <label style="display: flex; align-items: center; gap: 8px;">
+                                <input type="checkbox" id="${cardId}UseChannelButton" onchange="updateCardButtonPreview('${cardId}')">
+                                <span>채널 추가 버튼 사용</span>
+                            </label>
+                        </div>
+                        <div id="${cardId}ButtonList"></div>
+                        <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addCardButton('${cardId}')">+ 버튼 추가</button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', itemHtml);
+            updatePreview(); // 카드 추가 후 미리보기 업데이트
+        };
+
+        window.removeCard = function(cardId) {
+            document.getElementById(cardId).remove();
+            cardCount--;
+            if (currentCardIndex >= cardCount) {
+                currentCardIndex = Math.max(0, cardCount - 1);
+            }
+            updatePreview();
+        }
+
+        let currentCardIndex = 0;
+
+        function updateCardSlider() {
+            const cardsContainer = document.getElementById('previewCardsContainer');
+            const slider = document.getElementById('previewCardSlider');
+            const prevBtn = document.getElementById('prevCardBtn');
+            const nextBtn = document.getElementById('nextCardBtn');
+            
+            if (!cardsContainer || cardCount === 0) return;
+            
+            // 슬라이더의 실제 너비를 가져와서 이동 거리 계산
+            if (slider) {
+                const sliderWidth = slider.offsetWidth || slider.clientWidth;
+                const translateX = currentCardIndex * sliderWidth;
+                cardsContainer.style.transform = `translateX(-${translateX}px)`;
+            } else {
+                // 슬라이더가 아직 렌더링되지 않은 경우, 비율로 계산
+                const cardWidth = 100 / cardCount;
+                cardsContainer.style.transform = `translateX(-${currentCardIndex * cardWidth}%)`;
+            }
+            
+            // 카드가 2개 이상일 때만 네비게이션 버튼 표시
+            if (cardCount > 1) {
+                if (prevBtn) {
+                    prevBtn.style.display = currentCardIndex > 0 ? 'block' : 'none';
+                }
+                if (nextBtn) {
+                    nextBtn.style.display = currentCardIndex < cardCount - 1 ? 'block' : 'none';
+                }
+            } else {
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        }
+
+        window.prevCard = function() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateCardSlider();
+            }
+        }
+
+        window.nextCard = function() {
+            if (currentCardIndex < cardCount - 1) {
+                currentCardIndex++;
+                updateCardSlider();
+            }
+        }
+
+        window.insertCardVariable = function(cardId, variable) {
+            const textarea = document.getElementById(`${cardId}Content`);
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updateCardCharCounter(cardId);
+            updatePreview();
+        }
+
+        let cardButtonCounts = {};
+
+        window.addCardButton = function(cardId) {
+            if (!cardButtonCounts[cardId]) {
+                cardButtonCounts[cardId] = 0;
+            }
+            if (cardButtonCounts[cardId] >= 5) {
+                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            cardButtonCounts[cardId]++;
+            const buttonList = document.getElementById(`${cardId}ButtonList`);
+            const div = document.createElement('div');
+            div.className = 'button-config';
+            div.setAttribute('data-button-index', cardButtonCounts[cardId]);
+            div.innerHTML = `
+                <div class="button-config-header">
+                    <strong>버튼 ${cardButtonCounts[cardId]}</strong>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeCardButton(this, '${cardId}')" style="padding: 4px 8px;">
+                        <span style="font-size: 16px;">🗑️</span>
+                    </button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼 타입</label>
+                    <select class="form-select button-type-select" onchange="updateCardButtonConfig(this, '${cardId}')">
+                        <option value="web">웹링크</option>
+                        <option value="app">앱링크</option>
+                        <option value="phone">전화 연결</option>
+                    </select>
+                </div>
+                <div class="form-group button-name-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼명 최대 14자</label>
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateCardButtonPreview('${cardId}')">
+                </div>
+                <div class="button-link-config"></div>
+            `;
+            buttonList.appendChild(div);
+            updateCardButtonConfig(div.querySelector('.button-type-select'), cardId);
+            updateCardButtonPreview(cardId);
+        }
+
+        window.removeCardButton = function(btn, cardId) {
+            btn.closest('.button-config').remove();
+            if (cardButtonCounts[cardId]) {
+                cardButtonCounts[cardId]--;
+            }
+            updateCardButtonPreview(cardId);
+        }
+
+        window.updateCardButtonConfig = function(selectElement, cardId) {
+            const buttonConfig = selectElement.closest('.button-config');
+            const type = selectElement.value;
+            const linkConfig = buttonConfig.querySelector('.button-link-config');
+            
+            let linkHTML = '';
+            
+            if (type === 'web') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Mobile(필수)</label>
+                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">PC(선택)</label>
+                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
+                    </div>
+                `;
+            } else if (type === 'app') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Android(필수)</label>
+                        <input type="text" class="form-input" placeholder="Android URL 입력">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">IOS(필수)</label>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력">
+                    </div>
+                `;
+            } else if (type === 'phone') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">전화번호</label>
+                        <input type="text" class="form-input" placeholder="전화번호 입력 (예: 010-1234-5678)">
+                    </div>
+                `;
+            }
+            
+            linkConfig.innerHTML = linkHTML;
+            updateCardButtonPreview(cardId);
+        }
+
+        window.updateCardButtonPreview = function(cardId) {
+            updatePreview();
+        }
+
+        function handleCardUpload(event, cardId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById(`${cardId}PreviewContainer`);
+                const img = document.getElementById(`${cardId}PreviewImg`);
+                const placeholder = document.getElementById(`${cardId}PreviewPlaceholder`);
+                container.style.display = 'block';
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                updatePreview();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateCardCharCounter(cardId) {
+            const content = document.getElementById(`${cardId}Content`).value;
+            const counter = document.getElementById(`${cardId}CharCounter`);
+            counter.textContent = `${content.length}/180자`;
+        }
+
+        function updatePreview() {
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'text';
+            const previewContent = document.getElementById('previewContent');
+            const previewImage = document.getElementById('previewImage');
+            const previewList = document.getElementById('previewList');
+            const previewCard = document.getElementById('previewCard');
+            
+            // 모든 미리보기 영역 초기화
+            previewImage.innerHTML = '';
+            previewContent.style.display = 'block';
+            previewList.style.display = 'none';
+            previewCard.style.display = 'none';
+            
+            if (messageType === 'text') {
+                const content = document.getElementById('textMessageContent').value;
+                let previewText = content
+                    .replace(/#{이름}/g, '홍길동')
+                    .replace(/#{전화번호}/g, '010-1234-5678');
+                previewContent.textContent = previewText || '메시지 내용을 입력하세요';
+                previewContent.style.display = 'block';
+            } else if (messageType === 'image') {
+                const img = document.getElementById('imagePreviewImg');
+                if (img && img.style.display === 'block') {
+                    previewImage.innerHTML = `<img src="${img.src}" style="max-width: 100%; border-radius: var(--radius-md); margin-bottom: 12px;">`;
+                } else {
+                    previewImage.innerHTML = '';
+                }
+                const content = document.getElementById('imageMessageContent').value;
+                let previewText = content
+                    .replace(/#{이름}/g, '홍길동')
+                    .replace(/#{전화번호}/g, '010-1234-5678');
+                previewContent.textContent = previewText || '메시지 내용을 입력하세요';
+                previewContent.style.display = 'block';
+            } else if (messageType === 'list') {
+                previewContent.style.display = 'none';
+                previewList.style.display = 'block';
+                
+                const title = document.getElementById('listTitle').value;
+                document.getElementById('previewListTitle').textContent = title || '제목을 입력해주세요';
+                
+                // 메인 아이템
+                const mainImg = document.getElementById('mainItemPreviewImg');
+                const mainTitle = document.getElementById('mainItemTitle').value;
+                const mainLink = document.getElementById('mainItemLink').value;
+                let mainItemHtml = '';
+                if (mainImg && mainImg.style.display === 'block') {
+                    mainItemHtml += `<div style="margin-bottom: 12px;"><img src="${mainImg.src}" style="width: 100%; border-radius: var(--radius-md);"></div>`;
+                }
+                if (mainTitle) {
+                    mainItemHtml += `<div style="font-weight: 600; margin-bottom: 8px;">${mainTitle}</div>`;
+                }
+                document.getElementById('previewMainItem').innerHTML = mainItemHtml;
+                
+                // 서브 아이템들
+                const subItemsHtml = [];
+                for (let i = 1; i <= subItemCount; i++) {
+                    const itemId = `subItem${i}`;
+                    const subImg = document.getElementById(`${itemId}PreviewImg`);
+                    const subTitle = document.getElementById(`${itemId}Title`)?.value || '';
+                    if (subImg && subImg.style.display === 'block' && subTitle) {
+                        subItemsHtml.push(`
+                            <div style="display: flex; gap: 12px; margin-bottom: 12px; align-items: center;">
+                                <img src="${subImg.src}" style="width: 80px; height: 80px; border-radius: var(--radius-md); object-fit: cover; flex-shrink: 0;">
+                                <div style="flex: 1; font-weight: 500;">${subTitle}</div>
+                            </div>
+                        `);
+                    }
+                }
+                document.getElementById('previewSubItems').innerHTML = subItemsHtml.join('');
+            } else if (messageType === 'card') {
+                previewContent.style.display = 'none';
+                previewCard.style.display = 'block';
+                
+                // 카드들 슬라이드 형태로 표시
+                const cardsContainer = document.getElementById('previewCardsContainer');
+                const cardsHtml = [];
+                for (let i = 1; i <= cardCount; i++) {
+                    const cardId = `card${i}`;
+                    const cardTitle = document.getElementById(`${cardId}Title`)?.value || '제목을 입력해주세요';
+                    const cardImg = document.getElementById(`${cardId}PreviewImg`);
+                    const cardContent = document.getElementById(`${cardId}Content`)?.value || '';
+                    
+                    // 카드별 버튼 수집
+                    const cardButtons = [];
+                    const useChannelButton = document.getElementById(`${cardId}UseChannelButton`)?.checked;
+                    if (useChannelButton) {
+                        cardButtons.push({ name: '채널추가', type: 'channel', isChannel: true });
+                    }
+                    
+                    // 카드별 버튼 리스트 수집
+                    const cardButtonList = document.getElementById(`${cardId}ButtonList`);
+                    if (cardButtonList) {
+                        Array.from(cardButtonList.querySelectorAll('.button-config')).forEach(config => {
+                            const nameInput = config.querySelector('.button-name-input');
+                            const name = nameInput?.value || '';
+                            const typeSelect = config.querySelector('.button-type-select');
+                            const type = typeSelect?.value || 'web';
+                            let buttonName = name;
+                            if (!buttonName) {
+                                const typeNames = {
+                                    'web': '웹링크',
+                                    'app': '앱링크',
+                                    'phone': '전화 연결'
+                                };
+                                buttonName = typeNames[type] || '버튼';
+                            }
+                            cardButtons.push({ name: buttonName, type: type, isChannel: false });
+                        });
+                    }
+                    
+                    let cardHtml = `<div style="flex-shrink: 0; padding: 0 4px; box-sizing: border-box;">
+                        <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; width: 100%;">
+                            <div style="font-weight: 600; font-size: 16px; margin-bottom: 12px;">${cardTitle}</div>`;
+                    if (cardImg && cardImg.style.display === 'block') {
+                        cardHtml += `<div style="margin-bottom: 12px;"><img src="${cardImg.src}" style="width: 100%; border-radius: var(--radius-md);"></div>`;
+                    }
+                    if (cardContent) {
+                        let previewText = cardContent
+                            .replace(/#{이름}/g, '홍길동')
+                            .replace(/#{전화번호}/g, '010-1234-5678');
+                        cardHtml += `<div style="white-space: pre-wrap; line-height: 1.6; margin-bottom: 12px;">${previewText}</div>`;
+                    }
+                    if (cardButtons.length > 0) {
+                        cardHtml += `<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">`;
+                        cardButtons.forEach(btn => {
+                            if (btn.isChannel) {
+                                cardHtml += `<div style="padding: 8px 12px; background: #FEE500; border-radius: var(--radius-md); text-align: center; font-weight: 500; font-size: 13px;">Ch+ ${btn.name}</div>`;
+                            } else {
+                                cardHtml += `<div style="padding: 8px 12px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-align: center; font-weight: 500; font-size: 13px;">${btn.name}</div>`;
+                            }
+                        });
+                        cardHtml += `</div>`;
+                    }
+                    cardHtml += `</div></div>`;
+                    cardsHtml.push(cardHtml);
+                }
+                cardsContainer.innerHTML = cardsHtml.join('');
+                if (cardCount > 0) {
+                    // 슬라이더의 실제 너비를 가져와서 각 카드의 너비를 설정
+                    const updateCardWidths = () => {
+                        const slider = document.getElementById('previewCardSlider');
+                        if (slider) {
+                            const sliderWidth = slider.offsetWidth || slider.clientWidth;
+                            if (sliderWidth > 0) {
+                                cardsContainer.style.width = `${cardCount * sliderWidth}px`;
+                                // 각 카드의 너비를 슬라이더 너비로 설정 (직접 자식 div만 선택)
+                                Array.from(cardsContainer.children).forEach((cardDiv) => {
+                                    if (cardDiv.tagName === 'DIV') {
+                                        cardDiv.style.width = `${sliderWidth}px`;
+                                        cardDiv.style.flex = '0 0 auto';
+                                    }
+                                });
+                                updateCardSlider();
+                                return;
+                            }
+                        }
+                        // 슬라이더가 아직 렌더링되지 않은 경우, 다음 프레임에 다시 시도
+                        requestAnimationFrame(updateCardWidths);
+                    };
+                    updateCardWidths();
+                } else {
+                    cardsContainer.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">카드를 추가해주세요</div>';
+                }
+                
+                // 카드형일 때는 공통 버튼 미리보기 숨기기
+                const previewButtons = document.getElementById('previewButtons');
+                if (previewButtons) {
+                    previewButtons.style.display = 'none';
+                }
+            } else {
+                // 카드형이 아닐 때는 공통 버튼 미리보기 표시
+                const previewButtons = document.getElementById('previewButtons');
+                if (previewButtons) {
+                    previewButtons.style.display = 'block';
+                }
+                updateButtonPreview();
+            }
+        }
+
+        window.addButton = function() {
+            if (buttonCount >= 5) {
+                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+                return;
+            }
+            
+            const buttonList = document.getElementById('buttonList');
+            const div = document.createElement('div');
+            div.className = 'button-config';
+            div.setAttribute('data-button-index', buttonCount + 1);
+            div.innerHTML = `
+                <div class="button-config-header">
+                    <strong>버튼 ${buttonCount + 1}</strong>
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
+                        <span style="font-size: 16px;">🗑️</span>
+                    </button>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼 타입</label>
+                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                        <option value="web">웹링크</option>
+                        <option value="app">앱링크</option>
+                        <option value="phone">전화 연결</option>
+                    </select>
+                </div>
+                <div class="form-group button-name-group" style="margin-bottom: 0;">
+                    <label class="form-label">버튼명 최대 14자</label>
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
+                </div>
+                <div class="button-link-config"></div>
+            `;
+            buttonList.appendChild(div);
+            buttonCount++;
+            updateButtonConfig(div.querySelector('.button-type-select'));
+            updateButtonPreview();
+        };
+        
+        window.updateButtonConfig = function(selectElement) {
+            const buttonConfig = selectElement.closest('.button-config');
+            const type = selectElement.value;
+            const linkConfig = buttonConfig.querySelector('.button-link-config');
+            
+            let linkHTML = '';
+            
+            if (type === 'web') {
+                linkHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Mobile(필수)</label>
+                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">PC(선택)</label>
+                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
+                </div>
+                `;
+            } else if (type === 'app') {
+                linkHTML = `
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Android(필수)</label>
+                        <input type="text" class="form-input" placeholder="Android URL 입력">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">IOS(필수)</label>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력">
+                </div>
+                `;
+            } else if (type === 'phone') {
+                linkHTML = `
+                <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">전화번호</label>
+                        <input type="text" class="form-input" placeholder="전화번호 입력 (예: 010-1234-5678)">
+                </div>
+            `;
+            }
+            
+            linkConfig.innerHTML = linkHTML;
+            updateButtonPreview();
+        }
+        
+        window.toggleChannelButton = function() {
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            updateButtonPreview();
+        };
+        
+
+        window.removeButton = function(btn) {
+            btn.closest('.button-config').remove();
+            buttonCount--;
+            updateButtonPreview();
+        };
+
+        function updateButtonPreview() {
+            const buttons = [];
+            
+            // 채널추가 버튼이 체크되어 있으면 먼저 추가
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            if (useChannelButton) {
+                buttons.push({ name: '채널추가', type: 'channel', isChannel: true });
+            }
+            
+            // 일반 버튼들 추가
+            Array.from(document.querySelectorAll('.button-config')).forEach(config => {
+                const nameInput = config.querySelector('.button-name-input');
+                const name = nameInput?.value || '';
+                const typeSelect = config.querySelector('.button-type-select');
+                const type = typeSelect?.value || 'web';
+                
+                // 버튼명이 있으면 버튼명을, 없으면 타입에 따른 기본 텍스트 사용
+                let buttonName = name;
+                if (!buttonName) {
+                    const typeNames = {
+                        'web': '웹링크',
+                        'app': '앱링크',
+                        'phone': '전화 연결'
+                    };
+                    buttonName = typeNames[type] || '버튼';
+                }
+                
+                buttons.push({ name: buttonName, type: type, isChannel: false });
+            });
+            
+            const preview = document.getElementById('previewButtons');
+            preview.innerHTML = buttons.map(btn => {
+                if (btn.isChannel) {
+                    return `<div class="button-preview-item button-preview-channel">Ch+ ${btn.name}</div>`;
+                } else {
+                    return `<div class="button-preview-item">${btn.name}</div>`;
+                }
+            }).join('');
+        }
+
+        window.saveDraft = function() {
+            showToast('임시 저장되었습니다.', 'success');
+        };
+
+        window.cancel = function() {
+            if (confirm('작성 중인 내용이 저장되지 않습니다. 정말 나가시겠습니까?')) {
+                window.location.href = 'template-brandtalk.html';
+            }
+        };
+
+        window.saveTemplate = function() {
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value;
+            if (!messageType) {
+                showToast('메시지 유형을 선택해주세요.', 'warning');
+                return;
+            }
+            
+            // 유형별 필수 필드 검증
+            if (messageType === 'text') {
+                const content = document.getElementById('textMessageContent').value;
+                if (!content.trim()) {
+                    showToast('메시지 내용을 입력해주세요.', 'warning');
+                return;
+            }
+            } else if (messageType === 'image') {
+                const content = document.getElementById('imageMessageContent').value;
+                if (!content.trim()) {
+                    showToast('메시지 내용을 입력해주세요.', 'warning');
+                    return;
+                }
+            } else if (messageType === 'list') {
+                const title = document.getElementById('listTitle').value;
+                if (!title.trim()) {
+                    showToast('제목을 입력해주세요.', 'warning');
+                    return;
+                }
+            } else if (messageType === 'card') {
+                // 각 카드별 제목 검증
+                let hasTitle = false;
+                for (let i = 1; i <= cardCount; i++) {
+                    const cardId = `card${i}`;
+                    const title = document.getElementById(`${cardId}Title`)?.value;
+                    if (title && title.trim()) {
+                        hasTitle = true;
+                        break;
+                    }
+                }
+                if (!hasTitle) {
+                    showToast('카드 제목을 입력해주세요.', 'warning');
+                    return;
+                }
+            }
+            
+            showToast('템플릿이 수정되었습니다.', 'success');
+            setTimeout(() => {
+                window.location.href = 'template-brandtalk.html';
+            }, 1500);
+        };
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.toggleMessageType) {
+                window.toggleMessageType(); // 기본 텍스트 타입 표시
+            }
+            if (typeof updatePreview === 'function') {
+                updatePreview();
+            }
+        });
+    </script>
+</body>
+</html>
+
