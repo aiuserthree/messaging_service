@@ -953,6 +953,7 @@ body {
                             <tr>
                                 <th style="width: 50px;"><input type="checkbox" id="selectAll" onclick="toggleAll(this)"></th>
                                 <th>전화번호</th>
+                                <th>발신번호</th>
                                 <th>등록일</th>
                                 <th>등록 경로</th>
                                 <th>메모</th>
@@ -963,6 +964,7 @@ body {
                             <tr>
                                 <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
                                 <td>010-1234-5678</td>
+                                <td>010-1111-2222</td>
                                 <td>2024-01-15 14:30</td>
                                 <td>수동 등록</td>
                                 <td>-</td>
@@ -973,6 +975,7 @@ body {
                             <tr>
                                 <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
                                 <td>010-2345-6789</td>
+                                <td>010-3333-4444</td>
                                 <td>2024-01-14 10:20</td>
                                 <td>080 수신거부</td>
                                 <td>자동 동기화</td>
@@ -1007,6 +1010,11 @@ body {
                 <div class="form-group">
                     <label class="form-label required">전화번호</label>
                     <input type="text" class="form-input" id="rejectPhoneNumber" placeholder="010-1234-5678" required>
+                    <div class="form-help">하이픈(-) 포함 또는 숫자만 입력 가능합니다</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">발신번호</label>
+                    <input type="text" class="form-input" id="rejectSenderNumber" placeholder="010-1111-2222" required>
                     <div class="form-help">하이픈(-) 포함 또는 숫자만 입력 가능합니다</div>
                 </div>
                 <div class="form-group">
@@ -1352,6 +1360,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
     <script>
+        // 전화번호 포맷팅 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', function() {
+            const rejectPhoneNumber = document.getElementById('rejectPhoneNumber');
+            const rejectSenderNumber = document.getElementById('rejectSenderNumber');
+            
+            if (rejectPhoneNumber) {
+                rejectPhoneNumber.addEventListener('input', function(e) {
+                    e.target.value = formatPhoneNumber(e.target.value);
+                });
+            }
+            
+            if (rejectSenderNumber) {
+                rejectSenderNumber.addEventListener('input', function(e) {
+                    e.target.value = formatPhoneNumber(e.target.value);
+                });
+            }
+        });
+
         function addReject() {
             showToast('수신거부 번호가 추가되었습니다.', 'success');
             closeModal('addRejectModal');
@@ -1442,18 +1468,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const rows = table.querySelectorAll('tr');
             
             // 헤더 데이터
-            const headerData = [['전화번호', '등록일', '등록 경로', '메모']];
+            const headerData = [['전화번호', '발신번호', '등록일', '등록 경로', '메모']];
             
             // 테이블 데이터 추출
             const tableData = [];
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
-                if (cells.length >= 5) {
+                if (cells.length >= 6) {
                     const phoneNumber = cells[1].textContent.trim();
-                    const registrationDate = cells[2].textContent.trim();
-                    const registrationPath = cells[3].textContent.trim();
-                    const memo = cells[4].textContent.trim();
-                    tableData.push([phoneNumber, registrationDate, registrationPath, memo]);
+                    const senderNumber = cells[2].textContent.trim();
+                    const registrationDate = cells[3].textContent.trim();
+                    const registrationPath = cells[4].textContent.trim();
+                    const memo = cells[5].textContent.trim();
+                    tableData.push([phoneNumber, senderNumber, registrationDate, registrationPath, memo]);
                 }
             });
             
@@ -1467,6 +1494,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 컬럼 너비 설정
             ws['!cols'] = [
                 { wch: 20 }, // 전화번호
+                { wch: 20 }, // 발신번호
                 { wch: 20 }, // 등록일
                 { wch: 15 }, // 등록 경로
                 { wch: 30 }  // 메모
