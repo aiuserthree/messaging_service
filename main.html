@@ -783,6 +783,77 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
 /* 배너 캐러셀 - 새 디자인 */
 .banner-carousel {
     position: relative;
@@ -1418,6 +1489,49 @@ body {
     flex-direction: column;
 }
 
+/* 입력 필드 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
 /* 버튼 */
 .btn {
     display: inline-flex;
@@ -1862,7 +1976,7 @@ body {
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="consultation-btn">상담 신청서 작성하기</a>
+                    <a href="#" class="consultation-btn" onclick="openModal('consultationModal'); return false;">상담 신청서 작성하기</a>
                 </div>
             </div>
 
@@ -2174,7 +2288,172 @@ body {
             animateGauge(100); // 100% 성공률
             setUpdateTime();
         });
+
+        // 모달 열기/닫기 함수
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal-overlay.active');
+                if (activeModal) {
+                    closeModal(activeModal.id);
+                }
+            }
+        });
+
+        // 상담 신청서 제출
+        function submitConsultation() {
+            const form = document.getElementById('consultationForm');
+            if (form && form.checkValidity()) {
+                showToast('상담 신청이 완료되었습니다. 담당자가 연락드리겠습니다.', 'success');
+                closeModal('consultationModal');
+                form.reset();
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        // Toast 메시지 표시 함수
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background-color: var(--surface-color);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // CSS 애니메이션 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
+    <!-- 상담 신청서 작성 모달 -->
+    <div class="modal-overlay" id="consultationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">상담 신청서 작성</h3>
+                <button class="modal-close" onclick="closeModal('consultationModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="consultationForm">
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label required">회사명</label>
+                        <input type="text" class="form-input" id="companyName" required placeholder="회사명을 입력하세요">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label required">담당자명</label>
+                        <input type="text" class="form-input" id="contactName" required placeholder="담당자명을 입력하세요">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label required">연락처</label>
+                        <input type="tel" class="form-input" id="contactPhone" required placeholder="010-1234-5678">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label required">이메일</label>
+                        <input type="email" class="form-input" id="contactEmail" required placeholder="example@company.com">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label">메시지 유형</label>
+                        <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; background-color: var(--bg-color); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="messageType" value="general" style="width: 18px; height: 18px; cursor: pointer;">
+                                <span>일반문자</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="messageType" value="ad" style="width: 18px; height: 18px; cursor: pointer;">
+                                <span>광고문자</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="messageType" value="election" style="width: 18px; height: 18px; cursor: pointer;">
+                                <span>공직선거문자</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="messageType" value="alimtalk" style="width: 18px; height: 18px; cursor: pointer;">
+                                <span>알림톡</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                <input type="checkbox" name="messageType" value="brandtalk" style="width: 18px; height: 18px; cursor: pointer;">
+                                <span>브랜드 메시지</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label">예상 발송량</label>
+                        <select class="form-select" id="expectedVolume">
+                            <option value="">선택하세요</option>
+                            <option value="under-10k">월 1만건 미만</option>
+                            <option value="10k-50k">월 1만건 ~ 5만건</option>
+                            <option value="50k-100k">월 5만건 ~ 10만건</option>
+                            <option value="over-100k">월 10만건 이상</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label class="form-label">상담 내용</label>
+                        <textarea class="form-textarea" id="consultationContent" rows="5" placeholder="상담하고 싶은 내용을 입력하세요"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('consultationModal')">취소</button>
+                <button class="btn btn-primary" onclick="submitConsultation()">신청하기</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
