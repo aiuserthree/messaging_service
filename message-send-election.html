@@ -2612,8 +2612,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function saveTemplate() {
             // 템플릿 저장 모달 열기
-            document.getElementById('templateName').value = '';
-            document.getElementById('templateCategory').value = '';
+            const templateNameEl = document.getElementById('templateName');
+            if (templateNameEl) templateNameEl.value = '';
             openModal('templateSaveModal');
         }
 

@@ -220,45 +220,54 @@ body {
     padding: 32px 24px;
 }
 
-/* 환영 헤더 */
+/* 환영 헤더 - 새 디자인 */
 .welcome-header {
-    background: linear-gradient(135deg, var(--purple-color) 0%, var(--purple-light) 100%);
-    border-radius: var(--radius-lg);
-    padding: 32px 40px;
-    margin-bottom: 32px;
+    background: linear-gradient(135deg, #e8e4f8 0%, #dcd6f0 50%, #d0c8eb 100%);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
-    box-shadow: var(--shadow-md);
+    color: #1e293b;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .welcome-message {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
 }
 
 .quick-actions-header {
     display: flex;
-    gap: 16px;
+    gap: 12px;
 }
 
 .quick-action-link {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-md);
-    color: white;
+    padding: 12px 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    color: #1e293b;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 14px;
     transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .quick-action-link:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: #f8fafc;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.quick-action-link span:last-child {
+    color: #7c5cdb;
+    font-size: 16px;
 }
 
 /* 그리드 레이아웃 */
@@ -324,203 +333,310 @@ body {
     color: var(--text-secondary);
 }
 
-/* 성공률 원형 차트 */
+/* 최근 30일 발송 성공률 카드 - 새로운 디자인 */
 .success-rate-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-}
-
-.success-rate-card .card-header {
+    background: linear-gradient(135deg, #f8f9fb 0%, #f1f4f9 100%);
+    border-radius: 20px;
+    padding: 32px 40px;
     margin-bottom: 32px;
-}
-
-.circular-progress {
+    display: flex;
+    align-items: center;
+    gap: 48px;
     position: relative;
-    width: 200px;
-    height: 200px;
-    margin-bottom: 24px;
-    margin-top: 8px;
+    border: none;
+    box-shadow: none;
 }
 
-.circular-progress svg {
-    transform: rotate(-90deg);
+.success-rate-card .card-header-info {
+    position: absolute;
+    top: 24px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.circular-progress-circle {
+.success-rate-card .card-title-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.success-rate-card .update-time {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* 게이지 차트 영역 */
+.gauge-container {
+    flex-shrink: 0;
+    margin-top: 32px;
+}
+
+.gauge-wrapper {
+    position: relative;
+    width: 220px;
+    height: 130px;
+}
+
+.gauge-svg {
+    width: 220px;
+    height: 130px;
+    overflow: visible;
+}
+
+.gauge-bg {
     fill: none;
-    stroke-width: 20;
+    stroke: #e0eaf5;
+    stroke-width: 24;
     stroke-linecap: round;
 }
 
-.circular-progress-bg {
-    stroke: #e5e7eb;
+.gauge-fill {
+    fill: none;
+    stroke: url(#gaugeGradient);
+    stroke-width: 24;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s ease-out;
 }
 
-.circular-progress-bar {
-    stroke: #2563eb;
-    stroke-dasharray: 565.48;
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 0.5s ease;
-}
-
-.circular-progress-text {
+.gauge-text {
     position: absolute;
-    top: 50%;
+    bottom: 10px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     text-align: center;
-    z-index: 2;
-    width: 100%;
 }
 
-.circular-progress-value {
+.gauge-label {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 2px;
+}
+
+.gauge-value {
     font-size: 42px;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.2;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1;
 }
 
-.circular-progress-label {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-top: 4px;
+/* 통계 그리드 영역 */
+.stats-grid-container {
+    flex: 1;
+    margin-top: 32px;
 }
 
-/* 통계 카드 */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: 12px;
-    margin-bottom: 20px;
 }
 
 .stat-item {
-    text-align: center;
-    padding: 16px 12px;
-    background-color: transparent;
-    border-radius: var(--radius-md);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .stat-icon-wrapper {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 4px;
-    font-size: 20px;
+    flex-shrink: 0;
 }
 
-.stat-item:not(.success):not(.danger):not(.warning):not(.info) .stat-icon-wrapper {
-    background-color: #8b5cf6;
-    color: white;
+.stat-icon-wrapper.total {
+    background: linear-gradient(135deg, #e8e0ff 0%, #d4c8f5 100%);
 }
 
-.stat-item.success .stat-icon-wrapper {
-    background-color: #10b981;
-    color: white;
+.stat-icon-wrapper.success {
+    background: linear-gradient(135deg, #d4f5e0 0%, #b8ecc8 100%);
 }
 
-.stat-item.danger .stat-icon-wrapper {
-    background-color: #ef4444;
-    color: white;
+.stat-icon-wrapper.failed {
+    background: linear-gradient(135deg, #ffd9d9 0%, #ffcaca 100%);
 }
 
-.stat-item.warning .stat-icon-wrapper {
-    background-color: #f59e0b;
-    color: white;
-    border-radius: 8px;
+.stat-icon-wrapper.pending {
+    background: linear-gradient(135deg, #fff0d4 0%, #ffe4b8 100%);
 }
 
-.stat-item.info .stat-icon-wrapper {
-    background-color: #3b82f6;
-    color: white;
-    border-radius: 8px;
+.stat-icon-wrapper.sending {
+    background: linear-gradient(135deg, #fff8d4 0%, #fff0b8 100%);
 }
 
-.stat-icon {
-    font-size: 20px;
+.stat-icon-wrapper svg {
+    width: 22px;
+    height: 22px;
+}
+
+.stat-icon-wrapper.total svg {
+    color: #8b5cf6;
+}
+
+.stat-icon-wrapper.success svg {
+    color: #10b981;
+}
+
+.stat-icon-wrapper.failed svg {
+    color: #ef4444;
+}
+
+.stat-icon-wrapper.pending svg {
+    color: #f59e0b;
+}
+
+.stat-icon-wrapper.sending svg {
+    color: #d4a00a;
+}
+
+.stat-info {
     display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.stat-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.2;
+    flex-direction: column;
 }
 
 .stat-label {
     font-size: 12px;
-    color: var(--text-secondary);
-    font-weight: 500;
+    color: #94a3b8;
+    margin-bottom: 2px;
 }
 
-.stat-item.success .stat-value {
-    color: var(--text-primary);
+.stat-number {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
 }
 
-.stat-item.danger .stat-value {
-    color: var(--text-primary);
+/* 발송 목록 보기 버튼 */
+.view-list-btn {
+    padding: 14px 20px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    text-decoration: none;
 }
 
-.stat-item.warning .stat-value {
-    color: var(--text-primary);
+.view-list-btn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
 }
 
-.stat-item.info .stat-value {
-    color: var(--text-primary);
+.view-list-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
-/* 사용 통계 카드 */
+/* 나의 사용 통계 카드 - 새 디자인 */
+.my-usage-stats-card {
+    background: linear-gradient(135deg, #e8e4f8 0%, #dcd6f0 50%, #d0c8eb 100%);
+    border-radius: 20px;
+    padding: 28px;
+    border: none;
+    box-shadow: none;
+}
+
+.my-usage-stats-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border: none;
+    padding: 0;
+}
+
+.my-usage-stats-card .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.my-usage-stats-card .card-update-time {
+    font-size: 13px;
+    color: #64748b;
+}
+
 .usage-stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 14px;
 }
 
 .usage-stat-card {
-    background: linear-gradient(135deg, var(--purple-color) 0%, var(--purple-light) 100%);
-    border-radius: var(--radius-md);
+    background: #7c5cdb;
+    border-radius: 16px;
     padding: 20px;
     color: white;
     position: relative;
     overflow: hidden;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .usage-stat-card::after {
-    content: '↗';
+    content: '';
     position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 18px;
-    opacity: 0.7;
+    top: 14px;
+    right: 14px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.usage-stat-card.no-arrow::after {
+.usage-stat-card::before {
+    content: '↗';
+    position: absolute;
+    top: 19px;
+    right: 20px;
+    font-size: 14px;
+    color: white;
+    z-index: 2;
+}
+
+.usage-stat-card.no-arrow::after,
+.usage-stat-card.no-arrow::before {
     display: none;
 }
 
 .usage-stat-card.white {
-    background: var(--surface-color);
+    background: #ffffff;
     color: var(--text-primary);
-    border: 2px solid var(--border-color);
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .usage-stat-card.white::after {
-    opacity: 0.5;
-    color: var(--text-secondary);
+    background: #f3f4f6;
+}
+
+.usage-stat-card.white::before {
+    color: #374151;
 }
 
 .usage-stat-card.clickable {
@@ -530,14 +646,14 @@ body {
 
 .usage-stat-card.clickable:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .usage-stat-value {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    line-height: 1;
 }
 
 .usage-stat-label {
@@ -545,58 +661,61 @@ body {
     opacity: 0.9;
 }
 
-/* 상담 카드 */
+/* 상담 카드 - 새 디자인 */
 .consultation-card {
-    background: var(--surface-color);
-    border-radius: var(--radius-lg);
-    padding: 32px 24px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px 24px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     min-height: 280px;
     position: relative;
     overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .consultation-title-section {
-    text-align: left;
-    margin-bottom: 24px;
+    text-align: center;
+    margin-bottom: 16px;
 }
 
 .consultation-title-line1 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #1e293b;
     margin-bottom: 4px;
-    line-height: 1.3;
+    line-height: 1.4;
 }
 
 .consultation-title-line2 {
     font-size: 18px;
     font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.3;
+    color: #1e293b;
+    line-height: 1.4;
 }
 
 .consultation-illustration {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 24px 0;
+    margin: 16px 0;
     position: relative;
-    height: 140px;
+    height: 120px;
 }
 
 .consultation-illustration-circle {
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #e9d5ff 0%, #ddd6fe 100%);
+    background: linear-gradient(135deg, #e9d5ff 0%, #d4c8f5 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.2);
 }
 
 .consultation-illustration-content {
@@ -609,7 +728,7 @@ body {
 }
 
 .consultation-hand-paper {
-    font-size: 72px;
+    font-size: 56px;
     position: relative;
     z-index: 2;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
@@ -618,12 +737,16 @@ body {
 
 .consultation-speech-bubble {
     position: absolute;
-    right: -8px;
-    top: 15px;
-    font-size: 28px;
+    right: -12px;
+    top: 8px;
+    font-size: 32px;
     z-index: 3;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     animation: float 3s ease-in-out infinite;
+    background: #f472b6;
+    border-radius: 8px;
+    padding: 4px 6px;
+    line-height: 1;
 }
 
 @keyframes float {
@@ -640,32 +763,33 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 14px 24px;
-    background-color: #4b5563;
+    padding: 14px 28px;
+    background-color: #374151;
     color: white;
     border: none;
-    border-radius: var(--radius-md);
-    font-weight: 500;
+    border-radius: 12px;
+    font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .consultation-btn:hover {
-    background-color: #374151;
+    background-color: #1f2937;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* 배너 캐러셀 */
+/* 배너 캐러셀 - 새 디자인 */
 .banner-carousel {
     position: relative;
-    border-radius: var(--radius-lg);
+    border-radius: 20px;
     overflow: hidden;
     height: 100%;
+    min-height: 200px;
 }
 
 .banner-slides {
@@ -693,52 +817,54 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.3);
-    color: white;
+    background: rgba(255, 255, 255, 0.8);
+    color: #374151;
     border: none;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     cursor: pointer;
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 18px;
     transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .banner-nav:hover {
-    background: rgba(0, 0, 0, 0.5);
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .banner-nav.prev {
-    left: 12px;
+    left: 16px;
 }
 
 .banner-nav.next {
-    right: 12px;
+    right: 16px;
 }
 
-/* 마케팅 인사이트 카드 */
+/* 마케팅 인사이트 카드 - 새 디자인 */
 .insight-card {
-    border-radius: var(--radius-lg);
-    padding: 24px 60px;
+    border-radius: 20px;
+    padding: 32px 48px;
     position: relative;
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
     overflow: hidden;
     width: 100%;
     height: 100%;
 }
 
 .banner-guide {
-    background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+    background: linear-gradient(135deg, #e8e4f8 0%, #dcd6f0 50%, #d0c8eb 100%);
 }
 
 .banner-event {
-    background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+    background: linear-gradient(135deg, #e8e4f8 0%, #dcd6f0 50%, #d0c8eb 100%);
 }
 
 .insight-content {
@@ -888,7 +1014,42 @@ body {
     display: none;
 }
 
-/* 공지사항 리스트 */
+/* 공지사항 카드 - 새 디자인 */
+.notice-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.notice-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0;
+    border: none;
+}
+
+.notice-card .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.notice-card .more-link {
+    font-size: 13px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.notice-card .more-link:hover {
+    color: #7c5cdb;
+}
+
 .notice-list {
     list-style: none;
     padding: 0;
@@ -896,8 +1057,8 @@ body {
 }
 
 .notice-item {
-    border-bottom: 1px solid var(--border-color);
-    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 14px 0;
 }
 
 .notice-item:last-child {
@@ -909,13 +1070,13 @@ body {
     justify-content: space-between;
     align-items: center;
     text-decoration: none;
-    color: var(--text-primary);
+    color: #1e293b;
     transition: all 0.2s;
-    padding: 4px 0;
+    padding: 2px 0;
 }
 
 .notice-link:hover {
-    color: var(--primary-color);
+    color: #7c5cdb;
 }
 
 .notice-title {
@@ -930,71 +1091,74 @@ body {
 
 .notice-date {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #94a3b8;
     flex-shrink: 0;
 }
 
-/* 포인트 카드 */
+/* 포인트(잔액) 카드 - 새 디자인 */
 .points-card {
-    padding: 24px 24px 16px 24px;
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
-    gap: 24px;
 }
 
 .balance-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #f1f5f9;
 }
 
 .balance-title {
     font-size: 18px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #1e293b;
 }
 
 .balance-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    flex: 1;
 }
 
 .balance-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 12px;
 }
 
 .balance-item-label {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .balance-item-label > span {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #1e293b;
 }
 
 .balance-item-value {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .balance-badge {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1012,16 +1176,16 @@ body {
 }
 
 .balance-badge-letter {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
     color: white;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .balance-amount {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #1e293b;
 }
 
 .points-btn-large {
@@ -1030,21 +1194,23 @@ body {
     justify-content: center;
     width: 100%;
     padding: 16px 24px;
-    background-color: var(--purple-color);
+    background-color: #7c5cdb;
     color: white;
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
     cursor: pointer;
-    margin-top: 24px;
+    margin-top: auto;
+    box-shadow: 0 2px 8px rgba(124, 92, 219, 0.25);
 }
 
 .points-btn-large:hover {
-    background-color: var(--purple-light);
-    box-shadow: var(--shadow-md);
+    background-color: #6b4ecf;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 92, 219, 0.35);
 }
 
 .points-btn {
@@ -1053,23 +1219,23 @@ body {
     justify-content: center;
     gap: 8px;
     padding: 14px 24px;
-    background-color: var(--purple-color);
+    background-color: #7c5cdb;
     color: white;
     border: none;
-    border-radius: var(--radius-md);
-    font-weight: 500;
+    border-radius: 12px;
+    font-weight: 600;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
     width: 100%;
-    box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 2px 8px rgba(124, 92, 219, 0.25);
 }
 
 .points-btn:hover {
-    background-color: var(--purple-light);
+    background-color: #6b4ecf;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 4px 12px rgba(124, 92, 219, 0.35);
 }
 
 /* 할인 포인트 카드 */
@@ -1138,61 +1304,118 @@ body {
     background-color: var(--purple-light);
 }
 
-/* 메시지 통계 카드 */
+/* 메시지 통계 카드 - 새 디자인 (2단 그리드) */
 .message-stats-card {
-    padding: 24px;
-}
-
-.message-stats-list {
-    list-style: none;
-}
-
-.message-stat-item {
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
+    flex-direction: column;
 }
 
-.message-stat-item:last-child {
-    margin-bottom: 0;
+.message-stats-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 0;
+    border: none;
+}
+
+.message-stats-card .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.message-stats-card .card-update-time {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.message-stats-summary {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #1e293b;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 12px;
+}
+
+.message-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    flex: 1;
+}
+
+.message-stat-card {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 70px;
+}
+
+.message-stat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
 }
 
 .message-stat-label {
-    min-width: 120px;
-    font-size: 14px;
-    color: var(--text-primary);
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.message-stat-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #7c5cdb;
+}
+
+.message-stat-value.zero {
+    color: #94a3b8;
 }
 
 .message-stat-bar-container {
-    flex: 1;
     height: 8px;
-    background-color: var(--bg-color);
-    border-radius: var(--radius-sm);
+    background-color: #e2e8f0;
+    border-radius: 4px;
     overflow: hidden;
 }
 
 .message-stat-bar {
     height: 100%;
-    background-color: var(--primary-color);
-    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, #7c5cdb 0%, #a78bfa 100%);
+    border-radius: 4px;
     transition: width 0.5s ease;
 }
 
 .message-stat-bar.gray {
-    background-color: var(--border-color);
+    background: #d1d5db;
 }
 
-.message-stat-value {
-    min-width: 50px;
-    text-align: right;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
+/* 포인트 & 메시지 카드 높이 맞춤 */
+.dashboard-grid-3-7 {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    gap: 24px;
+    margin-bottom: 24px;
+    align-items: stretch;
 }
 
-.message-stat-value.zero {
-    color: var(--text-secondary);
+.points-card {
+    display: flex;
+    flex-direction: column;
 }
 
 /* 버튼 */
@@ -1305,7 +1528,106 @@ body {
     }
 
     .usage-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .my-usage-stats-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .my-usage-stats-card .card-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .usage-stat-card {
+        padding: 16px;
+        min-height: 90px;
+    }
+
+    .usage-stat-value {
+        font-size: 28px;
+    }
+
+    .usage-stat-label {
+        font-size: 12px;
+    }
+
+    .consultation-card {
+        min-height: auto;
+        padding: 24px 20px;
+    }
+
+    .consultation-illustration-circle {
+        width: 100px;
+        height: 100px;
+    }
+
+    .consultation-hand-paper {
+        font-size: 44px;
+    }
+
+    .consultation-speech-bubble {
+        font-size: 24px;
+    }
+
+    .message-stats-grid {
         grid-template-columns: 1fr;
+    }
+
+    .message-stat-card {
+        min-height: 60px;
+    }
+
+    .welcome-header {
+        padding: 20px;
+    }
+
+    .quick-action-link {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    .success-rate-card {
+        flex-direction: column;
+        padding: 24px 20px;
+        gap: 24px;
+    }
+
+    .success-rate-card .card-header-info {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .gauge-container {
+        margin-top: 0;
+    }
+
+    .stats-grid-container {
+        margin-top: 0;
+        width: 100%;
+    }
+
+    .gauge-wrapper {
+        width: 180px;
+        height: 110px;
+    }
+
+    .gauge-svg {
+        width: 180px;
+        height: 110px;
+    }
+
+    .gauge-value {
+        font-size: 36px;
     }
 
     .banner-carousel {
@@ -1400,71 +1722,99 @@ body {
                 </div>
             </div>
 
-            <!-- 최근 30일 발송 성공률 & 메시지 통계 -->
-            <div class="dashboard-grid">
-                <!-- 성공률 카드 -->
-                <div class="card success-rate-card">
-                    <div class="card-header">
-                        <h3 class="card-title">최근 30일 발송 성공률</h3>
-                    </div>
-                    <div class="circular-progress">
-                        <svg width="200" height="200">
-                            <circle class="circular-progress-circle circular-progress-bg" cx="100" cy="100" r="90"></circle>
-                            <circle class="circular-progress-circle circular-progress-bar" cx="100" cy="100" r="90" style="stroke-dashoffset: 0;"></circle>
+            <!-- 최근 30일 발송 성공률 카드 -->
+            <div class="success-rate-card">
+                <div class="card-header-info">
+                    <span class="card-title-text">최근 30일 발송 성공률</span>
+                    <span class="update-time" id="updateTime">25-12-08 15:23:10 업데이트</span>
+                </div>
+                
+                <!-- 게이지 차트 -->
+                <div class="gauge-container">
+                    <div class="gauge-wrapper">
+                        <svg class="gauge-svg" viewBox="0 0 220 130">
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#5cb3e8"/>
+                                    <stop offset="50%" style="stop-color:#4fa8e0"/>
+                                    <stop offset="100%" style="stop-color:#3d9cd8"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- 배경 호 -->
+                            <path class="gauge-bg" d="M 22 110 A 88 88 0 0 1 198 110"/>
+                            <!-- 성공률 호 -->
+                            <path class="gauge-fill" id="gaugeFill" d="M 22 110 A 88 88 0 0 1 198 110" stroke-dasharray="0 276" />
                         </svg>
-                        <div class="circular-progress-text">
-                            <div class="circular-progress-value">100%</div>
-                            <div class="circular-progress-label">성공률</div>
+                        <div class="gauge-text">
+                            <div class="gauge-label">성공률</div>
+                            <div class="gauge-value" id="successRateValue">100%</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 메시지 통계 카드 -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">메시지 통계</h3>
-                        <div class="card-update-time">25-12-08 09:37:47 업데이트</div>
-                    </div>
+                
+                <!-- 통계 그리드 -->
+                <div class="stats-grid-container">
                     <div class="stats-grid">
                         <div class="stat-item">
-                            <div class="stat-icon-wrapper">
-                                <div class="stat-icon">📧</div>
+                            <div class="stat-icon-wrapper total">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
                             </div>
-                            <div class="stat-value">1</div>
-                            <div class="stat-label">전체 발송</div>
-                        </div>
-                        <div class="stat-item success">
-                            <div class="stat-icon-wrapper">
-                                <div class="stat-icon">✓</div>
+                            <div class="stat-info">
+                                <span class="stat-label">전체 발송</span>
+                                <span class="stat-number" id="totalSendCount">1</span>
                             </div>
-                            <div class="stat-value">1</div>
-                            <div class="stat-label">발송 성공</div>
                         </div>
-                        <div class="stat-item danger">
-                            <div class="stat-icon-wrapper">
-                                <div class="stat-icon">↻</div>
+                        <div class="stat-item">
+                            <div class="stat-icon-wrapper success">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
                             </div>
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">발송 실패</div>
-                        </div>
-                        <div class="stat-item warning">
-                            <div class="stat-icon-wrapper">
-                                <div class="stat-icon">⏰</div>
+                            <div class="stat-info">
+                                <span class="stat-label">발송 성공</span>
+                                <span class="stat-number" id="successCount">1</span>
                             </div>
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">대기</div>
                         </div>
-                        <div class="stat-item info">
-                            <div class="stat-icon-wrapper">
-                                <div class="stat-icon">⏳</div>
+                        <div class="stat-item">
+                            <div class="stat-icon-wrapper failed">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+                                </svg>
                             </div>
-                            <div class="stat-value">0</div>
-                            <div class="stat-label">발송중</div>
+                            <div class="stat-info">
+                                <span class="stat-label">발송 실패</span>
+                                <span class="stat-number" id="failedCount">0</span>
+                            </div>
                         </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <a href="send-result.html" class="btn btn-outline" style="background-color: white; border: 1px solid var(--border-color);">
-                            발송 목록 보기 →
+                        <div class="stat-item">
+                            <div class="stat-icon-wrapper pending">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">대기</span>
+                                <span class="stat-number" id="pendingCount">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon-wrapper sending">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 14.5V20H8v-3.5l4-4 4 4zm-4-5l-4-4V4h8v3.5l-4 4z"/>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">발송중</span>
+                                <span class="stat-number" id="sendingCount">0</span>
+                            </div>
+                        </div>
+                        <a href="send-result.html" class="view-list-btn">
+                            발송 목록 보기
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -1473,10 +1823,10 @@ body {
             <!-- 나의 사용 통계 & 상담 -->
             <div class="dashboard-grid-7-3">
                 <!-- 나의 사용 통계 -->
-                <div class="card">
+                <div class="my-usage-stats-card">
                     <div class="card-header">
                         <h3 class="card-title">나의 사용 통계</h3>
-                        <div class="card-update-time">25-12-08 09:37:47 업데이트</div>
+                        <div class="card-update-time" id="usageUpdateTime">25-12-08 15:42:39 업데이트</div>
                     </div>
                     <div class="usage-stats-grid">
                         <div class="usage-stat-card clickable" onclick="window.location.href='send-result.html'">
@@ -1484,16 +1834,16 @@ body {
                             <div class="usage-stat-label">누적 발송 요청 성공 수</div>
                         </div>
                         <div class="usage-stat-card white clickable" onclick="window.location.href='message-send-general.html'">
-                            <div class="usage-stat-value" style="color: var(--text-primary);">0</div>
-                            <div class="usage-stat-label" style="opacity: 0.9; color: var(--text-secondary);">단문(SMS) 발송 가능 메시지 수</div>
+                            <div class="usage-stat-value" style="color: #1e293b;">0</div>
+                            <div class="usage-stat-label" style="color: #64748b;">단문(SMS) 발송 가능 메시지 수</div>
                         </div>
                         <div class="usage-stat-card white no-arrow">
-                            <div class="usage-stat-value" style="color: var(--text-primary);">연 1회</div>
-                            <div class="usage-stat-label" style="opacity: 0.9; color: var(--text-secondary);">발송 주기</div>
+                            <div class="usage-stat-value" style="color: #1e293b;">연 1 회</div>
+                            <div class="usage-stat-label" style="color: #64748b;">발송 주기</div>
                         </div>
                         <div class="usage-stat-card white clickable" onclick="window.location.href='addressbook.html'">
-                            <div class="usage-stat-value" style="color: var(--text-primary);">0</div>
-                            <div class="usage-stat-label" style="opacity: 0.9; color: var(--text-secondary);">관리중인 수신자</div>
+                            <div class="usage-stat-value" style="color: #1e293b;">0</div>
+                            <div class="usage-stat-label" style="color: #64748b;">관리중인 고객 수</div>
                         </div>
                     </div>
                 </div>
@@ -1563,10 +1913,10 @@ body {
                 </div>
 
                 <!-- 공지사항 카드 -->
-                <div class="card">
+                <div class="notice-card">
                     <div class="card-header">
                         <h3 class="card-title">공지사항</h3>
-                        <a href="#" style="font-size: 12px; color: var(--text-secondary); text-decoration: none;">더보기 ></a>
+                        <a href="#" class="more-link">더보기 ></a>
                     </div>
                     <ul class="notice-list">
                         <li class="notice-item">
@@ -1594,7 +1944,7 @@ body {
             <!-- 포인트 & 최근 메시지 -->
             <div class="dashboard-grid-3-7">
                 <!-- 잔여 포인트 -->
-                <div class="card points-card">
+                <div class="points-card">
                     <div class="balance-header">
                         <div class="balance-title">잔액</div>
                     </div>
@@ -1626,51 +1976,61 @@ body {
                 </div>
 
                 <!-- 최근 30일 발송한 메시지 -->
-                <div class="card message-stats-card">
+                <div class="message-stats-card">
                     <div class="card-header">
                         <h3 class="card-title">최근 30일 발송한 메시지</h3>
                         <div class="card-update-time">25-12-08 09:37:47 업데이트</div>
                     </div>
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 20px; text-align: center;">
+                    <div class="message-stats-summary">
                         1건 0P
                     </div>
-                    <ul class="message-stats-list">
-                        <li class="message-stat-item">
-                            <span class="message-stat-label">SMS (단문)</span>
+                    <div class="message-stats-grid">
+                        <div class="message-stat-card">
+                            <div class="message-stat-card-header">
+                                <span class="message-stat-label">SMS (단문)</span>
+                                <span class="message-stat-value">100%</span>
+                            </div>
                             <div class="message-stat-bar-container">
                                 <div class="message-stat-bar" style="width: 100%;"></div>
                             </div>
-                            <span class="message-stat-value">100%</span>
-                        </li>
-                        <li class="message-stat-item">
-                            <span class="message-stat-label">LMS (장문)</span>
+                        </div>
+                        <div class="message-stat-card">
+                            <div class="message-stat-card-header">
+                                <span class="message-stat-label">LMS (장문)</span>
+                                <span class="message-stat-value zero">0%</span>
+                            </div>
                             <div class="message-stat-bar-container">
                                 <div class="message-stat-bar gray" style="width: 0%;"></div>
                             </div>
-                            <span class="message-stat-value zero">0%</span>
-                        </li>
-                        <li class="message-stat-item">
-                            <span class="message-stat-label">MMS (이미지)</span>
+                        </div>
+                        <div class="message-stat-card">
+                            <div class="message-stat-card-header">
+                                <span class="message-stat-label">MMS (이미지)</span>
+                                <span class="message-stat-value zero">0%</span>
+                            </div>
                             <div class="message-stat-bar-container">
                                 <div class="message-stat-bar gray" style="width: 0%;"></div>
                             </div>
-                            <span class="message-stat-value zero">0%</span>
-                        </li>
-                        <li class="message-stat-item">
-                            <span class="message-stat-label">알림톡</span>
+                        </div>
+                        <div class="message-stat-card">
+                            <div class="message-stat-card-header">
+                                <span class="message-stat-label">알림톡</span>
+                                <span class="message-stat-value zero">0%</span>
+                            </div>
                             <div class="message-stat-bar-container">
                                 <div class="message-stat-bar gray" style="width: 0%;"></div>
                             </div>
-                            <span class="message-stat-value zero">0%</span>
-                        </li>
-                        <li class="message-stat-item">
-                            <span class="message-stat-label">브랜드 메시지</span>
+                        </div>
+                        <div class="message-stat-card">
+                            <div class="message-stat-card-header">
+                                <span class="message-stat-label">브랜드 메시지</span>
+                                <span class="message-stat-value zero">0%</span>
+                            </div>
                             <div class="message-stat-bar-container">
                                 <div class="message-stat-bar gray" style="width: 0%;"></div>
                             </div>
-                            <span class="message-stat-value zero">0%</span>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -1719,6 +2079,70 @@ body {
             }
         }
 
+        // 최근 30일 발송 성공률 게이지 애니메이션
+        function animateGauge(percentage) {
+            const gaugeFill = document.getElementById('gaugeFill');
+            const successRateValue = document.getElementById('successRateValue');
+            
+            if (!gaugeFill || !successRateValue) return;
+            
+            // 호의 전체 길이 (약 276px)
+            const totalLength = 276;
+            const fillLength = (percentage / 100) * totalLength;
+            
+            // 애니메이션 적용
+            setTimeout(() => {
+                gaugeFill.style.strokeDasharray = `${fillLength} ${totalLength}`;
+            }, 100);
+            
+            // 숫자 카운트 애니메이션
+            let currentValue = 0;
+            const duration = 1000;
+            const startTime = performance.now();
+            
+            function updateValue(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // easeOutCubic
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                currentValue = Math.round(easeProgress * percentage);
+                
+                successRateValue.textContent = currentValue + '%';
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateValue);
+                }
+            }
+            
+            requestAnimationFrame(updateValue);
+        }
+
+        // 업데이트 시간 설정
+        function setUpdateTime() {
+            const now = new Date();
+            const year = String(now.getFullYear()).slice(2);
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const timeText = `${year}-${month}-${day} ${hours}:${minutes}:${seconds} 업데이트`;
+            
+            // 발송 성공률 업데이트 시간
+            const updateTimeEl = document.getElementById('updateTime');
+            if (updateTimeEl) {
+                updateTimeEl.textContent = timeText;
+            }
+            
+            // 나의 사용 통계 업데이트 시간
+            const usageUpdateTimeEl = document.getElementById('usageUpdateTime');
+            if (usageUpdateTimeEl) {
+                usageUpdateTimeEl.textContent = timeText;
+            }
+        }
+
         // 로고 클릭 시 메인 페이지로 이동
         document.addEventListener('DOMContentLoaded', function() {
             const logo = document.querySelector('.logo a');
@@ -1745,6 +2169,10 @@ body {
                     carousel.addEventListener('mouseleave', startAutoRotate);
                 }
             }
+
+            // 게이지 애니메이션 실행
+            animateGauge(100); // 100% 성공률
+            setUpdateTime();
         });
     </script>
     <script src="js/footer.js"></script>
