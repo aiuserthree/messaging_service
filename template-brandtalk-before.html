@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>브랜드 메시지 템플릿 관리 - 메시징 서비스</title>
+    <script src="js/header.js"></script>
+    <style>/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--bg-color);
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* 입력 필드 */
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* 카드 */
+.card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* 레이아웃 스타일 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 */
+.header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.logo a:hover h1 {
+    opacity: 0.8;
+}
+
+.main-nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+/* 드롭다운 메뉴 */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.nav-item.open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.nav-dropdown-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.balance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.balance-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 탭 */
+.tabs {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.tab-list {
+    display: flex;
+    gap: 8px;
+}
+
+.tab-item {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    color: var(--text-primary);
+}
+
+.tab-item.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* 유틸리티 */
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 16px;
+}
+
+/* 빈 상태 스타일 */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+}
+
+.empty-state-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+    opacity: 0.5;
+}
+
+.empty-state-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.empty-state-description {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.empty-state-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .nav-dropdown {
+        position: static;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+
+    .nav-item.open .nav-dropdown {
+        display: block;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .empty-state {
+        padding: 60px 20px;
+    }
+
+    .empty-state-icon {
+        font-size: 64px;
+    }
+
+    .empty-state-title {
+        font-size: 20px;
+    }
+
+    .empty-state-description {
+        font-size: 14px;
+    }
+
+    .empty-state-actions {
+        flex-direction: column;
+    }
+
+    .empty-state-actions .btn {
+        width: 100%;
+    }
+}
+
+</style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader());
+        </script>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>템플릿</h2>
+                <p class="page-description">카카오 브랜드 메시지 발송을 위한 템플릿을 관리합니다</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="tabs">
+                <div class="tab-list">
+                    <button class="tab-item" onclick="window.location.href='template-message.html'">일반문자</button>
+                    <button class="tab-item" onclick="window.location.href='template-message-ad.html'">광고문자</button>
+                    <button class="tab-item" onclick="window.location.href='template-message-election.html'">공직선거문자</button>
+                    <button class="tab-item" onclick="window.location.href='template-alimtalk-before.html'">알림톡</button>
+                    <button class="tab-item active" onclick="window.location.href='template-brandtalk-before.html'">브랜드 메시지</button>
+                </div>
+            </div>
+
+            <!-- 발신프로필 선택 영역 -->
+            <div class="card" style="margin-bottom: 24px;">
+                <div class="flex-between" style="align-items: flex-end;">
+                    <div style="flex: 1; margin-right: 16px;">
+                        <label class="form-label required">발신프로필</label>
+                        <select class="form-select" id="profileSelect">
+                            <option value="">발신프로필을 선택하세요</option>
+                            <option value="profile1">마케팅팀 (승인완료)</option>
+                            <option value="profile2">고객센터 (승인완료)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <a href="kakao-profile-manage.html" class="btn btn-outline">발신프로필 등록</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 빈 상태 -->
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📋</div>
+                    <h3 class="empty-state-title">등록된 템플릿이 없습니다</h3>
+                    <p class="empty-state-description">
+                        브랜드 메시지 발송을 위해 먼저 템플릿을 등록해주세요.<br>
+                        템플릿은 카카오톡 비즈니스 채널에서 승인 후 사용할 수 있습니다.
+                    </p>
+                    <div class="empty-state-actions">
+                        <a href="template-brandtalk-register.html" class="btn btn-primary btn-lg">템플릿 등록하기</a>
+                        <button class="btn btn-outline btn-lg">대량 템플릿 등록</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 공통 JavaScript 함수
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                background-color: var(--surface-color);
+                border: 1px solid var(--border-color);
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-lg);
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // CSS 애니메이션 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 드롭다운 메뉴 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
+            }
+        });
+    </script>
+    <script src="js/footer.js"></script>
+    <script>
+        document.write(createFloatingMenu());
+        document.write(createFooter());
+    </script>
+</body>
+</html>
+
