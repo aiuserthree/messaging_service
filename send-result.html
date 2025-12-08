@@ -1061,55 +1061,44 @@ body {
             <div id="send-management-tabs">
                 <!-- 발송결과 탭 -->
                 <div id="send-result" class="tab-content active">
-                    <!-- 통계 요약 -->
-            <div class="stat-summary">
-                <div class="stat-box">
-                    <div class="stat-box-label">오늘 발송</div>
-                    <div class="stat-box-value" style="color: var(--primary-color);">1,234건</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-box-label">성공</div>
-                    <div class="stat-box-value" style="color: var(--success-color);">1,200건</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-box-label">실패</div>
-                    <div class="stat-box-value" style="color: var(--danger-color);">34건</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-box-label">성공률</div>
-                    <div class="stat-box-value" style="color: var(--success-color);">97.2%</div>
-                </div>
-            </div>
-
-            <!-- 필터 섹션 -->
+                    <!-- 필터 섹션 -->
             <div class="filter-section">
                 <div class="filter-row">
                     <div class="filter-group date-range-group-wrapper">
                         <label class="form-label">조회 기간</label>
                         <div class="date-range-group">
                             <div class="date-input-wrapper">
-                                <input type="date" class="form-input" value="2024-01-01">
+                                <input type="date" class="form-input" id="startDate" value="2025-01-01">
                             </div>
                             <span class="date-range-separator">~</span>
                             <div class="date-input-wrapper">
-                                <input type="date" class="form-input" value="2024-01-31">
+                                <input type="date" class="form-input" id="endDate" value="2025-01-31">
                             </div>
                         </div>
                     </div>
                     <div class="filter-group">
+                        <label class="form-label">발신번호</label>
+                        <select class="form-select" id="callerNumberFilter">
+                            <option value="">전체</option>
+                            <option value="010-1234-5678">010-1234-5678</option>
+                            <option value="010-9876-5432">010-9876-5432</option>
+                            <option value="02-1234-5678">02-1234-5678</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
                         <label class="form-label">메시지 타입</label>
-                        <select class="form-select">
+                        <select class="form-select" id="messageTypeFilter">
                             <option>전체</option>
                             <option>SMS</option>
                             <option>LMS</option>
                             <option>MMS</option>
                             <option>알림톡</option>
-                            <option>브랜드톡</option>
+                            <option>브랜드 메시지</option>
                         </select>
                     </div>
                     <div class="filter-group">
                         <label class="form-label">발송 상태</label>
-                        <select class="form-select">
+                        <select class="form-select" id="statusFilter">
                             <option>전체</option>
                             <option>성공</option>
                             <option>실패</option>
@@ -1119,12 +1108,36 @@ body {
                     </div>
                     <div class="filter-group">
                         <label class="form-label">검색</label>
-                        <input type="text" class="form-input" placeholder="발신번호, 수신번호 검색">
+                        <input type="text" class="form-input" placeholder="수신번호 검색" id="searchInput">
                     </div>
-                    <div>
-                        <button class="btn btn-primary">조회</button>
-                        <button class="btn btn-outline">초기화</button>
+                    <div style="margin-left: auto; display: flex; align-items: flex-end; gap: 8px;">
+                        <button class="btn btn-primary" onclick="searchResults()">조회</button>
+                        <button class="btn btn-outline" onclick="resetSearch()">초기화</button>
                     </div>
+                </div>
+            </div>
+
+                    <!-- 통계 요약 -->
+            <div class="stat-summary">
+                <div class="stat-box">
+                    <div class="stat-box-label">발송</div>
+                    <div class="stat-box-value" id="statSend" style="color: var(--primary-color);">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">성공</div>
+                    <div class="stat-box-value" id="statSuccess" style="color: var(--success-color);">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">실패</div>
+                    <div class="stat-box-value" id="statFailed" style="color: var(--danger-color);">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">성공률</div>
+                    <div class="stat-box-value" id="statSuccessRate" style="color: var(--success-color);">-</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">비용</div>
+                    <div class="stat-box-value" id="statCost" style="color: var(--primary-color);">-</div>
                 </div>
             </div>
 
@@ -1388,7 +1401,7 @@ body {
                             <tr data-row-id="4">
                                 <td>2024-01-15 11:00</td>
                                 <td>010-1234-5678</td>
-                                <td><span class="badge badge-primary">브랜드톡</span></td>
+                                <td><span class="badge badge-primary">브랜드 메시지</span></td>
                                 <td>30명</td>
                                 <td><span class="count-link" style="color: var(--success-color);" onclick="toggleDetailList(4, 'success')">28건</span></td>
                                 <td><span class="count-link" style="color: var(--danger-color);" onclick="toggleDetailList(4, 'failed')">2건</span></td>
@@ -1515,7 +1528,7 @@ body {
                                     <option>LMS</option>
                                     <option>MMS</option>
                                     <option>알림톡</option>
-                                    <option>브랜드톡</option>
+                                    <option>브랜드 메시지</option>
                                 </select>
                             </div>
                             <div style="flex: 1; min-width: 200px;">
@@ -2109,6 +2122,54 @@ document.addEventListener('DOMContentLoaded', function() {
         // 페이지네이션 생성
         createPagination(1, 10, 'pagination');
         createPagination(1, 5, 'pagination-reservation');
+
+        // 검색 결과 함수
+        function searchResults() {
+            // 실제로는 서버에서 데이터를 가져와야 하지만, 여기서는 예시 데이터를 사용
+            const callerNumber = document.getElementById('callerNumberFilter').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // 발신번호가 선택되지 않았으면 통계를 표시하지 않음
+            if (!callerNumber) {
+                alert('발신번호를 선택해주세요.');
+                return;
+            }
+            
+            // 예시 통계 데이터 (실제로는 서버에서 가져와야 함)
+            const stats = {
+                send: '1,234건',
+                success: '1,200건',
+                failed: '34건',
+                successRate: '97.2%',
+                cost: '₩123,400'
+            };
+            
+            // 통계 표시
+            document.getElementById('statSend').textContent = stats.send;
+            document.getElementById('statSuccess').textContent = stats.success;
+            document.getElementById('statFailed').textContent = stats.failed;
+            document.getElementById('statSuccessRate').textContent = stats.successRate;
+            document.getElementById('statCost').textContent = stats.cost;
+        }
+        
+        // 검색 초기화 함수
+        function resetSearch() {
+            // 검색 필드 초기화
+            document.getElementById('searchInput').value = '';
+            document.getElementById('messageTypeFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('callerNumberFilter').value = '';
+            document.getElementById('startDate').value = '2025-01-01';
+            document.getElementById('endDate').value = '2025-01-31';
+            
+            // 통계 초기화
+            document.getElementById('statSend').textContent = '-';
+            document.getElementById('statSuccess').textContent = '-';
+            document.getElementById('statFailed').textContent = '-';
+            document.getElementById('statSuccessRate').textContent = '-';
+            document.getElementById('statCost').textContent = '-';
+        }
     </script>
     <script src="js/footer.js"></script>
     <script>

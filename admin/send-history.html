@@ -136,65 +136,10 @@
             
             <!-- 컨텐츠 -->
             <div class="admin-content">
-                <!-- 실시간 모니터링 카드 -->
-                <div class="stats-grid" style="margin-bottom: 24px;">
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <div class="stat-card-title">진행 중인 발송</div>
-                            <div class="stat-card-icon" style="background-color: #dbeafe; color: #1e40af;">
-                                ⏳
-                            </div>
-                        </div>
-                        <div class="stat-card-value">5건</div>
-                        <div class="stat-card-change">
-                            <span>실시간 업데이트</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <div class="stat-card-title">오늘 발송 건수</div>
-                            <div class="stat-card-icon" style="background-color: #d1fae5; color: #065f46;">
-                                📨
-                            </div>
-                        </div>
-                        <div class="stat-card-value">12,345건</div>
-                        <div class="stat-card-change positive">
-                            <span>↗</span>
-                            <span>전일 대비 +5.2%</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <div class="stat-card-title">오늘 성공률</div>
-                            <div class="stat-card-icon" style="background-color: #fef3c7; color: #92400e;">
-                                ✅
-                            </div>
-                        </div>
-                        <div class="stat-card-value">98.5%</div>
-                        <div class="stat-card-change positive">
-                            <span>↗</span>
-                            <span>전일 대비 +0.3%</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-header">
-                            <div class="stat-card-title">오늘 실패 건수</div>
-                            <div class="stat-card-icon" style="background-color: #fee2e2; color: #991b1b;">
-                                ❌
-                            </div>
-                        </div>
-                        <div class="stat-card-value">185건</div>
-                        <div class="stat-card-change negative">
-                            <span>↘</span>
-                            <span>전일 대비 -12건</span>
-                        </div>
-                    </div>
-                </div>
-                
                 <!-- 검색 및 필터 -->
-                <div class="search-filter-bar">
+                <div class="search-filter-bar" style="margin-bottom: 24px;">
                     <div class="search-box">
-                        <input type="text" class="form-control" placeholder="회원명 또는 발신번호 검색" id="searchInput">
+                        <input type="text" class="form-control" placeholder="수신번호 검색" id="searchInput">
                     </div>
                     <div class="filter-group">
                         <div class="filter-item">
@@ -221,9 +166,81 @@
                         <div class="filter-item">
                             <input type="date" class="form-control" id="endDate" value="2024-11-19">
                         </div>
-                        <button class="btn btn-primary">검색</button>
-                        <button class="btn btn-outline">초기화</button>
+                        <div class="filter-item">
+                            <select class="form-control" id="callerNumberFilter">
+                                <option value="">발신번호 (전체)</option>
+                                <option value="010-1234-5678">010-1234-5678</option>
+                                <option value="010-9876-5432">010-9876-5432</option>
+                                <option value="02-1234-5678">02-1234-5678</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="searchResults()">검색</button>
+                        <button class="btn btn-outline" onclick="resetSearch()">초기화</button>
                         <button class="btn btn-secondary">엑셀 다운로드</button>
+                    </div>
+                </div>
+                
+                <!-- 실시간 모니터링 카드 -->
+                <div class="stats-grid" style="margin-bottom: 24px;">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">발송</div>
+                            <div class="stat-card-icon" style="background-color: #d1fae5; color: #065f46;">
+                                📨
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="statSend">-</div>
+                        <div class="stat-card-change">
+                            <span id="statSendDesc">조회 후 표시</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">성공</div>
+                            <div class="stat-card-icon" style="background-color: #d1fae5; color: #065f46;">
+                                ✅
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="statSuccess">-</div>
+                        <div class="stat-card-change">
+                            <span id="statSuccessDesc">조회 후 표시</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">실패</div>
+                            <div class="stat-card-icon" style="background-color: #fee2e2; color: #991b1b;">
+                                ❌
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="statFailed">-</div>
+                        <div class="stat-card-change">
+                            <span id="statFailedDesc">조회 후 표시</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">성공률</div>
+                            <div class="stat-card-icon" style="background-color: #fef3c7; color: #92400e;">
+                                📊
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="statSuccessRate">-</div>
+                        <div class="stat-card-change">
+                            <span id="statSuccessRateDesc">조회 후 표시</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">비용</div>
+                            <div class="stat-card-icon" style="background-color: #e0e7ff; color: #3730a3;">
+                                💰
+                            </div>
+                        </div>
+                        <div class="stat-card-value" id="statCost">-</div>
+                        <div class="stat-card-change">
+                            <span id="statCostDesc">조회 후 표시</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -466,6 +483,72 @@
     <script src="js/admin-common.js"></script>
     <script>
         createPagination(1, 10, 'pagination');
+        
+        // 검색 결과 함수
+        function searchResults() {
+            // 실제로는 서버에서 데이터를 가져와야 하지만, 여기서는 예시 데이터를 사용
+            const callerNumber = document.getElementById('callerNumberFilter').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // 발신번호가 선택되지 않았으면 통계를 표시하지 않음
+            if (!callerNumber) {
+                alert('발신번호를 선택해주세요.');
+                return;
+            }
+            
+            // 예시 통계 데이터 (실제로는 서버에서 가져와야 함)
+            const stats = {
+                send: '12,345건',
+                success: '12,160건',
+                failed: '185건',
+                successRate: '98.5%',
+                cost: '₩1,234,500'
+            };
+            
+            // 통계 표시
+            document.getElementById('statSend').textContent = stats.send;
+            document.getElementById('statSendDesc').textContent = '조회 결과';
+            
+            document.getElementById('statSuccess').textContent = stats.success;
+            document.getElementById('statSuccessDesc').textContent = '조회 결과';
+            
+            document.getElementById('statFailed').textContent = stats.failed;
+            document.getElementById('statFailedDesc').textContent = '조회 결과';
+            
+            document.getElementById('statSuccessRate').textContent = stats.successRate;
+            document.getElementById('statSuccessRateDesc').textContent = '조회 결과';
+            
+            document.getElementById('statCost').textContent = stats.cost;
+            document.getElementById('statCostDesc').textContent = '조회 결과';
+        }
+        
+        // 검색 초기화 함수
+        function resetSearch() {
+            // 검색 필드 초기화
+            document.getElementById('searchInput').value = '';
+            document.getElementById('messageTypeFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('callerNumberFilter').value = '';
+            document.getElementById('startDate').value = '2024-11-19';
+            document.getElementById('endDate').value = '2024-11-19';
+            
+            // 통계 초기화
+            document.getElementById('statSend').textContent = '-';
+            document.getElementById('statSendDesc').textContent = '조회 후 표시';
+            
+            document.getElementById('statSuccess').textContent = '-';
+            document.getElementById('statSuccessDesc').textContent = '조회 후 표시';
+            
+            document.getElementById('statFailed').textContent = '-';
+            document.getElementById('statFailedDesc').textContent = '조회 후 표시';
+            
+            document.getElementById('statSuccessRate').textContent = '-';
+            document.getElementById('statSuccessRateDesc').textContent = '조회 후 표시';
+            
+            document.getElementById('statCost').textContent = '-';
+            document.getElementById('statCostDesc').textContent = '조회 후 표시';
+        }
     </script>
 </body>
 </html>

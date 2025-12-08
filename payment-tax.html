@@ -901,15 +901,14 @@ body {
         <main class="main-content">
             <div class="page-header">
                 <h2>결제 관리</h2>
-                <p class="page-description">충전/사용 내역에 대한 세금계산서를 신청하고 조회합니다</p>
+                <p class="page-description">충전 내역에 대한 세금계산서를 신청하고 조회합니다</p>
             </div>
 
             <!-- 탭 메뉴 -->
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item" onclick="window.location.href='payment-charge.html'">충전하기</button>
-                    <button class="tab-item" onclick="window.location.href='payment-deposit-distribution.html'">분배 관리</button>
-                    <button class="tab-item" onclick="window.location.href='payment-history.html'">충전/사용 내역</button>
+                    <button class="tab-item" onclick="window.location.href='payment-history.html'">충전 내역</button>
                     <button class="tab-item active" onclick="window.location.href='payment-tax.html'">세금계산서 발행</button>
                 </div>
             </div>
@@ -923,90 +922,32 @@ body {
                 </ul>
             </div>
 
-            <!-- 기업 정보 -->
-            <div class="card">
-                <h3 class="card-title" style="margin-bottom: 24px;">기업 정보</h3>
-                <div class="table-container">
-                    <table class="table">
-                        <tr>
-                            <th style="width: 150px;">회사명(상호)</th>
-                            <td>주식회사 예시</td>
-                        </tr>
-                        <tr>
-                            <th>사업자등록번호</th>
-                            <td>123-45-67890</td>
-                        </tr>
-                        <tr>
-                            <th>대표자명</th>
-                            <td>홍길동</td>
-                        </tr>
-                        <tr>
-                            <th>사업장 주소</th>
-                            <td>서울시 강남구 테헤란로 123</td>
-                        </tr>
-                    </table>
-                </div>
-                <div style="margin-top: 16px;">
-                    <a href="mypage-profile.html" class="btn btn-outline">기업정보 수정</a>
-                </div>
-            </div>
-
-            <!-- 계산서 수신 정보 -->
-            <div class="card" style="margin-top: 24px;">
-                <h3 class="card-title" style="margin-bottom: 24px;">계산서 수신 정보</h3>
-                <div class="form-group">
-                    <label class="form-label required">담당자 이름</label>
-                    <input type="text" class="form-input" value="홍길동" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label required">담당자 연락처</label>
-                    <input type="text" class="form-input" value="010-1234-5678" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label required">수신 이메일</label>
-                    <input type="email" class="form-input" value="example@company.com" required>
-                    <div class="form-help">세금계산서가 발행되면 이메일로 자동 발송됩니다</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">자동발행 설정</label>
-                    <label style="display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox">
-                        <span>매월 자동발행</span>
-                    </label>
-                    <div class="form-help">체크 시 매월 설정일에 전월 내역이 자동으로 발행됩니다</div>
-                </div>
-                <button class="btn btn-primary" onclick="updateContactInfo()">계산서 정보 수정하기</button>
-            </div>
-
             <!-- 세금계산서 신청 -->
             <div class="card" style="margin-top: 24px;">
                 <h3 class="card-title" style="margin-bottom: 24px;">세금계산서 신청</h3>
                 <div class="form-group">
                     <label class="form-label required">발행 대상 기간</label>
                     <div class="flex gap-2">
-                        <div class="date-range-group">
-                            <div class="date-input-wrapper">
-                                <input type="date" class="form-input" placeholder="시작일">
-                            </div>
-                            <span class="date-range-separator">~</span>
-                            <div class="date-input-wrapper">
-                                <input type="date" class="form-input" placeholder="종료일">
-                            </div>
-                        </div>
+                        <select class="form-select" style="width: 150px;">
+                            <option>2025년</option>
+                            <option>2024년</option>
+                            <option>2023년</option>
+                        </select>
+                        <select class="form-select" style="width: 150px;">
+                            <option>1월</option>
+                            <option>2월</option>
+                            <option>3월</option>
+                            <option>4월</option>
+                            <option>5월</option>
+                            <option>6월</option>
+                            <option>7월</option>
+                            <option>8월</option>
+                            <option>9월</option>
+                            <option>10월</option>
+                            <option>11월</option>
+                            <option>12월</option>
+                        </select>
                         <button class="btn btn-primary">조회</button>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label required">발행 유형</label>
-                    <div class="flex gap-2">
-                        <label style="display: flex; align-items: center; gap: 8px;">
-                            <input type="radio" name="issueType" value="charge" checked>
-                            <span>충전 내역</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 8px;">
-                            <input type="radio" name="issueType" value="use">
-                            <span>사용 내역</span>
-                        </label>
                     </div>
                 </div>
                 <div class="card" style="background: var(--bg-color); margin-top: 16px;">
@@ -1111,6 +1052,61 @@ body {
 
                 <!-- 페이지네이션 -->
                 <div id="pagination" style="margin-top: 24px;"></div>
+            </div>
+
+            <!-- 기업 정보 -->
+            <div class="card" style="margin-top: 24px;">
+                <h3 class="card-title" style="margin-bottom: 24px;">기업 정보</h3>
+                <div class="table-container">
+                    <table class="table">
+                        <tr>
+                            <th style="width: 150px;">회사명(상호)</th>
+                            <td>주식회사 예시</td>
+                        </tr>
+                        <tr>
+                            <th>사업자등록번호</th>
+                            <td>123-45-67890</td>
+                        </tr>
+                        <tr>
+                            <th>대표자명</th>
+                            <td>홍길동</td>
+                        </tr>
+                        <tr>
+                            <th>사업장 주소</th>
+                            <td>서울시 강남구 테헤란로 123</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-top: 16px;">
+                    <a href="mypage-profile.html" class="btn btn-outline">기업정보 수정</a>
+                </div>
+            </div>
+
+            <!-- 계산서 수신 정보 -->
+            <div class="card" style="margin-top: 24px;">
+                <h3 class="card-title" style="margin-bottom: 24px;">계산서 수신 정보</h3>
+                <div class="form-group">
+                    <label class="form-label required">담당자 이름</label>
+                    <input type="text" class="form-input" value="홍길동" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">담당자 연락처</label>
+                    <input type="text" class="form-input" value="010-1234-5678" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">수신 이메일</label>
+                    <input type="email" class="form-input" value="example@company.com" required>
+                    <div class="form-help">세금계산서가 발행되면 이메일로 자동 발송됩니다</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">자동발행 설정</label>
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox">
+                        <span>매월 자동발행</span>
+                    </label>
+                    <div class="form-help">체크 시 매월 설정일에 전월 내역이 자동으로 발행됩니다</div>
+                </div>
+                <button class="btn btn-primary" onclick="updateContactInfo()">계산서 정보 수정하기</button>
             </div>
         </main>
     </div>

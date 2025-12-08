@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 - 메시징 서비스</title>
+    <title>로그인 - Tokbell Admin</title>
     <script src="js/header.js"></script>
     <style>
 /* 공통 스타일 */
@@ -328,7 +328,7 @@ body {
 
 .login-button {
     margin-top: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     width: 100%;
 }
 
@@ -354,75 +354,6 @@ body {
 
 .divider::after {
     margin-left: 16px;
-}
-
-.social-login {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 24px;
-    font-size: 14px;
-    font-weight: 500;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background-color: var(--surface-color);
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    gap: 8px;
-    width: 100%;
-}
-
-.social-btn:hover {
-    background-color: var(--bg-color);
-    border-color: var(--primary-color);
-}
-
-.social-btn.naver {
-    background-color: #03C75A;
-    color: white;
-    border-color: #03C75A;
-}
-
-.social-btn.naver:hover {
-    background-color: #02b350;
-    border-color: #02b350;
-}
-
-.social-btn.kakao {
-    background-color: #FEE500;
-    color: #000000;
-    border-color: #FEE500;
-}
-
-.social-btn.kakao:hover {
-    background-color: #f5d600;
-    border-color: #f5d600;
-}
-
-.social-btn.google {
-    background-color: var(--surface-color);
-    color: var(--text-primary);
-}
-
-.social-btn.google:hover {
-    background-color: var(--bg-color);
-}
-
-.social-icon {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
 }
 
 .login-footer {
@@ -568,21 +499,8 @@ body {
                     <button type="submit" class="btn btn-primary login-button">로그인</button>
                 </form>
 
-                <div class="divider">간편 로그인</div>
-
-                <div class="social-login">
-                    <button type="button" class="social-btn naver" onclick="loginWithNaver()">
-                        <span class="social-icon">N</span>
-                        <span>네이버 로그인</span>
-                    </button>
-                    <button type="button" class="social-btn kakao" onclick="loginWithKakao()">
-                        <span class="social-icon">K</span>
-                        <span>카카오톡 로그인</span>
-                    </button>
-                    <button type="button" class="social-btn google" onclick="loginWithGoogle()">
-                        <span class="social-icon">G</span>
-                        <span>구글 로그인</span>
-                    </button>
+                <div style="margin-top: 12px;">
+                    <a href="signup.html" class="btn btn-outline" style="width: 100%;">회원가입</a>
                 </div>
 
                 <div class="login-footer">
@@ -611,28 +529,7 @@ body {
             
             // 로그인 성공 처리 (아이디, 비밀번호 검증 없이 바로 로그인)
             localStorage.setItem('isLoggedIn', 'true');
-            window.location.href = 'send-result.html';
-        }
-
-        // 네이버 로그인
-        function loginWithNaver() {
-            // 실제로는 네이버 로그인 API 연동
-            console.log('네이버 로그인');
-            alert('네이버 로그인 기능은 준비 중입니다.');
-        }
-
-        // 카카오톡 로그인
-        function loginWithKakao() {
-            // 실제로는 카카오톡 로그인 API 연동
-            console.log('카카오톡 로그인');
-            alert('카카오톡 로그인 기능은 준비 중입니다.');
-        }
-
-        // 구글 로그인
-        function loginWithGoogle() {
-            // 실제로는 구글 로그인 API 연동
-            console.log('구글 로그인');
-            alert('구글 로그인 기능은 준비 중입니다.');
+            window.location.href = 'main.html';
         }
 
         // 아이디 찾기

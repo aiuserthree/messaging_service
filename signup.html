@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 메시징 서비스</title>
+    <script src="js/header.js"></script>
+    <style>
+/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+}
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 */
+.header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.logo a:hover h1 {
+    opacity: 0.8;
+}
+
+.main-nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+/* 드롭다운 메뉴 */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.nav-item.open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.nav-dropdown-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.balance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.balance-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 24px;
+    min-height: calc(100vh - 64px);
+}
+
+.signup-container {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    padding: 48px 40px;
+}
+
+.signup-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.signup-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.signup-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* 진행 단계 표시 */
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    position: relative;
+    padding: 0 20px;
+}
+
+.step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background-color: var(--border-color);
+    z-index: 0;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--surface-color);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    transition: all 0.3s;
+}
+
+.step-item.active .step-number {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.step-item.completed .step-number {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
+.step-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.step-item.active .step-label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.step-item.completed .step-label {
+    color: var(--success-color);
+}
+
+/* 폼 스타일 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.form-error {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--danger-color);
+    display: none;
+}
+
+.form-error.show {
+    display: block;
+}
+
+.form-help {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 체크박스 그룹 */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.checkbox-group label a {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* 약관 동의 영역 */
+.terms-section {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.terms-content {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.terms-content h4 {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    margin-top: 12px;
+}
+
+.terms-content h4:first-child {
+    margin-top: 0;
+}
+
+.terms-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12px;
+}
+
+.terms-content table th,
+.terms-content table td {
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.terms-content table th {
+    background-color: var(--surface-color);
+    font-weight: 600;
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--bg-color);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* 회원유형 선택 */
+.member-type-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.member-type-card {
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: var(--surface-color);
+}
+
+.member-type-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.member-type-card.selected {
+    border-color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.member-type-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.member-type-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.member-type-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* 본인인증 영역 */
+.verification-section {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.verification-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.verification-complete {
+    padding: 12px;
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    display: none;
+}
+
+.verification-complete.show {
+    display: block;
+}
+
+.phone-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.phone-input-group .form-input {
+    flex: 1;
+}
+
+.verification-code-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.verification-code-group .form-input {
+    flex: 1;
+}
+
+.verification-status {
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-top: 12px;
+    font-size: 13px;
+    display: none;
+}
+
+.verification-status.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    display: block;
+}
+
+.verification-status.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    display: block;
+}
+
+.verification-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+/* 파일 업로드 */
+.file-upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: var(--bg-color);
+}
+
+.file-upload-area:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.file-upload-area.dragover {
+    border-color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+.file-upload-icon {
+    font-size: 48px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.file-upload-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.file-upload-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.file-preview {
+    margin-top: 16px;
+    padding: 12px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+    display: none;
+}
+
+.file-preview.show {
+    display: block;
+}
+
+.file-preview-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background-color: var(--surface-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+}
+
+.file-preview-item:last-child {
+    margin-bottom: 0;
+}
+
+.file-preview-name {
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.file-preview-remove {
+    color: var(--danger-color);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 4px;
+}
+
+/* 단계별 컨텐츠 */
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+}
+
+/* 버튼 그룹 */
+.button-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.button-group .btn {
+    flex: 1;
+}
+
+/* 입력 그룹 (아이디 중복확인 등) */
+.input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.input-group .form-input {
+    flex: 1;
+}
+
+.input-group .btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* 마케팅 수신 체크박스 그룹 */
+.marketing-consent-group {
+    display: flex;
+    gap: 24px;
+    margin-top: 8px;
+}
+
+.marketing-consent-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.marketing-consent-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .nav-dropdown {
+        position: static;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+
+    .nav-item.open .nav-dropdown {
+        display: block;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        padding: 24px 16px;
+    }
+
+    .signup-container {
+        padding: 32px 24px;
+    }
+
+    .step-indicator {
+        margin-bottom: 32px;
+        padding: 0 10px;
+    }
+
+    .step-label {
+        font-size: 11px;
+    }
+
+    .member-type-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .phone-input-group,
+    .verification-code-group,
+    .input-group {
+        flex-direction: column;
+    }
+
+    .marketing-consent-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader());
+        </script>
+
+        <main class="main-content">
+            <div class="signup-container">
+                <div class="signup-header">
+                    <h1 class="signup-title">회원가입</h1>
+                    <p class="signup-subtitle">서비스 이용을 위해 회원가입을 진행해주세요</p>
+                </div>
+
+                <!-- 진행 단계 표시 -->
+                <div class="step-indicator">
+                    <div class="step-item active" id="step1-indicator">
+                        <div class="step-number">1</div>
+                        <div class="step-label">약관 동의</div>
+                    </div>
+                    <div class="step-item" id="step2-indicator">
+                        <div class="step-number">2</div>
+                        <div class="step-label">회원유형 선택</div>
+                    </div>
+                    <div class="step-item" id="step3-indicator">
+                        <div class="step-number">3</div>
+                        <div class="step-label">본인인증</div>
+                    </div>
+                    <div class="step-item" id="step4-indicator">
+                        <div class="step-number">4</div>
+                        <div class="step-label">정보 입력</div>
+                    </div>
+                </div>
+
+                <!-- Step 1: 약관 동의 -->
+                <div class="step-content active" id="step1">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeAll" onchange="toggleAllAgreements()">
+                            <label for="agreeAll"><strong>전체 동의</strong></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeRequired1" class="required-agreement" onchange="checkRequiredAgreements()">
+                            <label for="agreeRequired1" class="required">이용약관 동의 <span style="color: var(--danger-color);">(필수)</span></label>
+                        </div>
+                        <div class="terms-section">
+                            <div class="terms-content">
+                                <h4>제1장 총칙</h4>
+                                <h4>제1조(목적)</h4>
+                                이 약관은 회사가 온라인으로 제공하는 서비스의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+                                
+                                <h4>제2조(정의)</h4>
+                                이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br>
+                                1. "서비스"란 회사가 제공하는 메시징 서비스를 의미합니다.<br>
+                                2. "이용자"란 이 약관에 따라 회사가 제공하는 서비스를 받는 회원 및 비회원을 말합니다.<br>
+                                3. "회원"이란 회사에 개인정보를 제공하여 회원등록을 한 자로서, 회사의 정보를 지속적으로 제공받으며, 회사가 제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다.<br>
+                                4. "OK문자"란 회사가 제공하는 문자, 멀티미디어 메시지, 팩스 전송 서비스를 의미합니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeRequired2" class="required-agreement" onchange="checkRequiredAgreements()">
+                            <label for="agreeRequired2" class="required">개인정보 수집 및 이용에 관한 동의 <span style="color: var(--danger-color);">(필수)</span></label>
+                            <a href="#" style="margin-left: 8px; color: var(--primary-color); text-decoration: underline; font-size: 12px;">개인정보처리방침 바로가기</a>
+                        </div>
+                        <div class="terms-section">
+                            <div class="terms-content">
+                                <h4>수집하는 개인정보 항목 및 수집방법</h4>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>구분</th>
+                                            <th>수집항목</th>
+                                            <th>수집방법</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>회원공통</td>
+                                            <td>로그인ID, 비밀번호, 일반전화번호, 이동전화번호, 가입인증 이동전화번호, 이메일, 쿠키, 방문일시, 결제기록, 접속IP, 서비스 이용기록, 불량 이용 기록</td>
+                                            <td>회원가입, 서비스 이용</td>
+                                        </tr>
+                                        <tr>
+                                            <td>개인회원</td>
+                                            <td>성명, 성별, 자택 전화번호</td>
+                                            <td>회원가입</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeRequired3" class="required-agreement" onchange="checkRequiredAgreements()">
+                            <label for="agreeRequired3" class="required">개인정보 취급 위탁 동의 <span style="color: var(--danger-color);">(필수)</span></label>
+                        </div>
+                        <div class="terms-section">
+                            <div class="terms-content">
+                                <h4>수집한 개인정보의 위탁</h4>
+                                회사는 서비스 이행을 위해 개인정보 처리업무를 외부 전문업체에 위탁하여 운영할 수 있으며, 위탁 시 관련 법령에 따라 위탁계약서 등을 통하여 서비스 제공에 필요한 최소한의 정보만 제공하며, 개인정보 보호 관련 지시엄수, 개인정보에 대한 비밀유지, 제3자 제공 금지 등에 관한 사항을 계약서 등 문서에 명시하고, 수탁자가 개인정보를 안전하게 처리하는지를 감독하고 있습니다.
+                                
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>수탁업체</th>
+                                            <th>위탁업무 내용</th>
+                                            <th>위탁처리 정보</th>
+                                            <th>개인정보 보유 및 이용기간</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>엔에이치엔한국사이버결제 주식회사</td>
+                                            <td>신용카드결제</td>
+                                            <td>이름, 휴대폰번호</td>
+                                            <td>회원탈퇴시</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeRequired4" class="required-agreement" onchange="checkRequiredAgreements()">
+                            <label for="agreeRequired4" class="required">불법스팸방지안내 <span style="color: var(--danger-color);">(필수)</span></label>
+                        </div>
+                        <div class="terms-section">
+                            <div class="terms-content">
+                                <h4>불법스팸메시지 발송차단 및 가입차단 조치 안내</h4>
+                                불법스팸메시지(대출, 도박, 의약품, 성인, 주식, 복권, 부동산 광고, 게임 등)를 발송하는 경우, 발송 사실이 확인된 계정은 즉시 가입이 차단되며, 잔여 포인트는 환불되지 않습니다.<br><br>
+                                또한, 한국인터넷진흥원(KISA)에서 스팸 신고를 받거나, 광고성 표시 의무를 위반한 경우 서비스 이용이 제한될 수 있습니다.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 24px;">
+                        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
+                            * 개인정보 수집 및 이용에 관한 동의에 관한 자세한 사항은 개인정보 처리방침에서 고지하고 있습니다.<br>
+                            * 필수 약관 동의 거부 시, 회원가입이 제한됩니다.
+                        </p>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-outline btn-full" onclick="goToLogin()">비동의</button>
+                        <button type="button" class="btn btn-primary btn-full" id="step1-next" onclick="nextStep(2)" disabled>동의</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: 회원유형 선택 -->
+                <div class="step-content" id="step2">
+                    <div style="text-align: center; margin-bottom: 32px;">
+                        <p style="font-size: 16px; color: var(--text-primary); font-weight: 500;">가입하시는 계정의 유형을 선택해주세요.</p>
+                    </div>
+
+                    <div class="member-type-selector">
+                        <div class="member-type-card" onclick="selectMemberType('individual')">
+                            <div class="member-type-icon">👤</div>
+                            <div class="member-type-title">개인회원</div>
+                            <div class="member-type-desc">개인 고객을 위한 서비스</div>
+                        </div>
+                        <div class="member-type-card" onclick="selectMemberType('business')">
+                            <div class="member-type-icon">🏢</div>
+                            <div class="member-type-title">기업회원</div>
+                            <div class="member-type-desc">기업/공공기관/단체 고객을 위한 서비스</div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-outline btn-full" onclick="prevStep(1)">이전</button>
+                        <button type="button" class="btn btn-primary btn-full" id="step2-next" onclick="nextStep(3)" disabled>다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: 본인인증 -->
+                <div class="step-content" id="step3">
+                    <div class="verification-section">
+                        <div class="verification-title">휴대폰 본인인증</div>
+                        <div class="verification-complete" id="verificationComplete">
+                            <strong>인증 완료</strong> - <span id="verifiedPhone"></span>
+                        </div>
+                        <div id="verificationForm">
+                            <div class="form-group">
+                                <label class="form-label required" for="phoneNumber">휴대폰 번호</label>
+                                <div class="phone-input-group">
+                                    <input type="tel" id="phoneNumber" class="form-input" placeholder="010-1234-5678" maxlength="13" oninput="formatPhoneNumber(this)">
+                                    <button type="button" class="btn btn-primary" onclick="sendVerificationCode()">인증번호 발송</button>
+                                </div>
+                                <div class="verification-hint">* 본인 명의 휴대폰만 인증 가능 (팝업 차단 시 인증창 활성 불가)</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="verificationCode">인증번호</label>
+                                <div class="verification-code-group">
+                                    <input type="text" id="verificationCode" class="form-input" placeholder="인증번호 6자리 입력" maxlength="6">
+                                    <button type="button" class="btn btn-outline" onclick="verifyCode()">인증 확인</button>
+                                </div>
+                                <div class="verification-status" id="verificationStatus"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-outline btn-full" onclick="prevStep(2)">이전</button>
+                        <button type="button" class="btn btn-primary btn-full" id="step3-next" onclick="nextStep(4)" disabled>다음</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: 정보 입력 (개인) -->
+                <div class="step-content" id="step4-individual">
+                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 24px;">* 표시는 필수 입력 항목입니다.</p>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="individualUserId">아이디</label>
+                        <div class="input-group">
+                            <input type="text" id="individualUserId" class="form-input" placeholder="8자~12자 영문, 숫자, 영문+숫자 조합만 사용">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="checkIndividualUserId()">중복확인</button>
+                        </div>
+                        <div class="form-help">* 8자~12자 영문, 숫자, 영문+숫자 조합만 사용</div>
+                        <div class="form-error" id="individualUserIdError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="individualPassword">비밀번호</label>
+                        <input type="password" id="individualPassword" class="form-input" placeholder="8자~16자 영문, 숫자, 특수문자 혼합 사용">
+                        <div class="form-help">
+                            * 8자~16자 영문, 숫자, 특수문자(~!@#$%^&*?) 혼합 사용<br>
+                            * 동일한 문자를 연속해서 반복 사용 불가<br>
+                            * 이전과 동일한 비밀번호 사용 불가
+                        </div>
+                        <div class="form-error" id="individualPasswordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="individualPasswordConfirm">비밀번호 확인</label>
+                        <input type="password" id="individualPasswordConfirm" class="form-input" placeholder="상단에 입력한 비밀번호와 동일하게 입력">
+                        <div class="form-error" id="individualPasswordConfirmError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="individualContact">연락처</label>
+                        <input type="tel" id="individualContact" class="form-input" placeholder="010-1234-5678" maxlength="13" oninput="formatPhoneNumber(this)">
+                        <div class="form-error" id="individualContactError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="individualEmail">이메일</label>
+                        <input type="email" id="individualEmail" class="form-input" placeholder="example@email.com">
+                        <div class="form-help">* 본인 확인 및 임시 비밀번호 수신 시 필요</div>
+                        <div class="form-error" id="individualEmailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">마케팅 수신여부</label>
+                        <div class="marketing-consent-group">
+                            <div class="marketing-consent-item">
+                                <input type="checkbox" id="individualMarketingSMS">
+                                <label for="individualMarketingSMS">SMS</label>
+                            </div>
+                            <div class="marketing-consent-item">
+                                <input type="checkbox" id="individualMarketingEmail">
+                                <label for="individualMarketingEmail">E-mail</label>
+                            </div>
+                        </div>
+                        <div class="form-help">* 공지사항은 수신여부와 관계없이 전송됩니다.</div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-outline btn-full" onclick="prevStep(3)">이전단계</button>
+                        <button type="button" class="btn btn-primary btn-full" onclick="submitSignup('individual')">가입</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: 정보 입력 (기업) -->
+                <div class="step-content" id="step4-business">
+                    <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 24px;">* 표시는 필수 입력 항목입니다.</p>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessUserId">아이디</label>
+                        <div class="input-group">
+                            <input type="text" id="businessUserId" class="form-input" placeholder="8자~12자 영문, 숫자, 영문+숫자 조합만 사용">
+                            <button type="button" class="btn btn-outline btn-sm" onclick="checkBusinessUserId()">중복확인</button>
+                        </div>
+                        <div class="form-help">* 8자~12자 영문, 숫자, 영문+숫자 조합만 사용</div>
+                        <div class="form-error" id="businessUserIdError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessPassword">비밀번호</label>
+                        <input type="password" id="businessPassword" class="form-input" placeholder="8자~16자 영문, 숫자, 특수문자 혼합 사용">
+                        <div class="form-help">
+                            * 8자~16자 영문, 숫자, 특수문자(~!@#$%^&*?) 혼합 사용<br>
+                            * 동일한 문자를 연속해서 반복 사용 불가<br>
+                            * 이전과 동일한 비밀번호 사용 불가
+                        </div>
+                        <div class="form-error" id="businessPasswordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessPasswordConfirm">비밀번호 확인</label>
+                        <input type="password" id="businessPasswordConfirm" class="form-input" placeholder="상단에 입력한 비밀번호와 동일하게 입력">
+                        <div class="form-error" id="businessPasswordConfirmError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessType">기업유형</label>
+                        <select id="businessType" class="form-select" onchange="handleBusinessTypeChange()">
+                            <option value="">선택하세요</option>
+                            <option value="corporation">법인사업자</option>
+                            <option value="individual">개인사업자</option>
+                        </select>
+                        <div class="form-error" id="businessTypeError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="managerType">담당자</label>
+                        <select id="managerType" class="form-select" onchange="handleManagerTypeChange()">
+                            <option value="">선택하세요</option>
+                            <option value="representative">대표자</option>
+                            <option value="employee">직원</option>
+                        </select>
+                        <div class="form-error" id="managerTypeError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessRegistrationFile">사업자등록증</label>
+                        <div class="file-upload-area" onclick="document.getElementById('businessRegistrationFileInput').click()" ondrop="handleBusinessRegistrationFileDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                            <div class="file-upload-icon">📄</div>
+                            <div class="file-upload-text">파일을 드래그하거나 클릭하여 업로드</div>
+                            <div class="file-upload-hint">PDF, JPG, PNG 파일만 업로드 가능 (최대 10MB)</div>
+                        </div>
+                        <input type="file" id="businessRegistrationFileInput" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleBusinessRegistrationFileSelect(event)">
+                        <div class="file-preview" id="businessRegistrationFilePreview"></div>
+                        <div class="form-error" id="businessRegistrationFileError"></div>
+                    </div>
+
+                    <div class="form-group" id="employmentCertificateGroup" style="display: none;">
+                        <label class="form-label required" for="employmentCertificateFile">재직증명서</label>
+                        <div class="file-upload-area" onclick="document.getElementById('employmentCertificateFileInput').click()" ondrop="handleEmploymentCertificateFileDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                            <div class="file-upload-icon">📄</div>
+                            <div class="file-upload-text">파일을 드래그하거나 클릭하여 업로드</div>
+                            <div class="file-upload-hint">PDF, JPG, PNG 파일만 업로드 가능 (최대 10MB)</div>
+                        </div>
+                        <input type="file" id="employmentCertificateFileInput" style="display: none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleEmploymentCertificateFileSelect(event)">
+                        <div class="file-preview" id="employmentCertificateFilePreview"></div>
+                        <div class="form-error" id="employmentCertificateFileError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessName">기업명</label>
+                        <input type="text" id="businessName" class="form-input" placeholder="기업명을 입력하세요">
+                        <div class="form-error" id="businessNameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessNumber">사업자번호</label>
+                        <input type="text" id="businessNumber" class="form-input" placeholder="000-00-00000" maxlength="12" oninput="formatBusinessNumber(this)">
+                        <div class="form-error" id="businessNumberError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="representativeName">대표자명</label>
+                        <input type="text" id="representativeName" class="form-input" placeholder="대표자명을 입력하세요">
+                        <div class="form-error" id="representativeNameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessAddress">주소</label>
+                        <div class="input-group" style="margin-bottom: 8px;">
+                            <input type="text" id="businessAddress" class="form-input" placeholder="주소를 입력하세요" readonly>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="searchAddress()">주소 검색</button>
+                        </div>
+                        <input type="text" id="businessAddressDetail" class="form-input" placeholder="상세주소를 입력하세요">
+                        <div class="form-error" id="businessAddressError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label required" for="businessContact">연락처</label>
+                        <input type="tel" id="businessContact" class="form-input" placeholder="010-1234-5678" maxlength="13" oninput="formatPhoneNumber(this)">
+                        <div class="form-error" id="businessContactError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">마케팅 수신여부</label>
+                        <div class="marketing-consent-group">
+                            <div class="marketing-consent-item">
+                                <input type="checkbox" id="businessMarketingSMS">
+                                <label for="businessMarketingSMS">SMS</label>
+                            </div>
+                            <div class="marketing-consent-item">
+                                <input type="checkbox" id="businessMarketingEmail">
+                                <label for="businessMarketingEmail">E-mail</label>
+                            </div>
+                        </div>
+                        <div class="form-help">* 공지사항은 수신여부와 관계없이 전송됩니다.</div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="btn btn-outline btn-full" onclick="prevStep(3)">이전단계</button>
+                        <button type="button" class="btn btn-primary btn-full" onclick="submitSignup('business')">가입</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let memberType = '';
+        let isVerified = false;
+        let verificationCodeSent = false;
+        let sentCode = '';
+        let verifiedPhoneNumber = '';
+
+        // 전체 동의 토글
+        function toggleAllAgreements() {
+            const agreeAll = document.getElementById('agreeAll');
+            const requiredAgreements = document.querySelectorAll('.required-agreement');
+            const optionalAgreement = document.getElementById('agreeOptional');
+            
+            requiredAgreements.forEach(checkbox => {
+                checkbox.checked = agreeAll.checked;
+            });
+            if (optionalAgreement) {
+                optionalAgreement.checked = agreeAll.checked;
+            }
+            
+            checkRequiredAgreements();
+        }
+
+        // 필수 약관 체크
+        function checkRequiredAgreements() {
+            const requiredAgreements = document.querySelectorAll('.required-agreement');
+            const allChecked = Array.from(requiredAgreements).every(cb => cb.checked);
+            const step1Next = document.getElementById('step1-next');
+            
+            step1Next.disabled = !allChecked;
+        }
+
+        // 회원유형 선택
+        function selectMemberType(type) {
+            memberType = type;
+            const cards = document.querySelectorAll('.member-type-card');
+            cards.forEach(card => card.classList.remove('selected'));
+            
+            if (type === 'individual') {
+                cards[0].classList.add('selected');
+            } else {
+                cards[1].classList.add('selected');
+            }
+            
+            document.getElementById('step2-next').disabled = false;
+        }
+
+        // 다음 단계
+        function nextStep(step) {
+            if (step === 2 && !checkStep1()) return;
+            if (step === 3 && !checkStep2()) return;
+            if (step === 4 && !checkStep3()) return;
+            
+            // 현재 단계 숨기기
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 이전 단계 완료 표시
+            if (currentStep > 0) {
+                const prevIndicator = document.getElementById(`step${currentStep}-indicator`);
+                if (prevIndicator) {
+                    prevIndicator.classList.remove('active');
+                    prevIndicator.classList.add('completed');
+                }
+            }
+            
+            currentStep = step;
+            
+            // 다음 단계 표시
+            if (step === 4) {
+                if (memberType === 'individual') {
+                    document.getElementById('step4-individual').classList.add('active');
+                } else {
+                    document.getElementById('step4-business').classList.add('active');
+                }
+            } else {
+                document.getElementById(`step${step}`).classList.add('active');
+            }
+            
+            // 현재 단계 활성화 표시
+            const currentIndicator = document.getElementById(`step${step}-indicator`);
+            if (currentIndicator) {
+                currentIndicator.classList.add('active');
+            }
+        }
+
+        // 이전 단계
+        function prevStep(step) {
+            // 현재 단계 숨기기
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 현재 단계 비활성화
+            if (currentStep > 0) {
+                const currentIndicator = document.getElementById(`step${currentStep}-indicator`);
+                if (currentIndicator) {
+                    currentIndicator.classList.remove('active', 'completed');
+                }
+            }
+            
+            currentStep = step;
+            
+            // 이전 단계 표시
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            // 이전 단계 활성화 표시
+            const prevIndicator = document.getElementById(`step${step}-indicator`);
+            if (prevIndicator) {
+                prevIndicator.classList.add('active');
+            }
+        }
+
+        // Step 1 검증
+        function checkStep1() {
+            const requiredAgreements = document.querySelectorAll('.required-agreement');
+            return Array.from(requiredAgreements).every(cb => cb.checked);
+        }
+
+        // Step 2 검증
+        function checkStep2() {
+            return memberType !== '';
+        }
+
+        // Step 3 검증
+        function checkStep3() {
+            return isVerified;
+        }
+
+        // 전화번호 포맷팅
+        function formatPhoneNumber(input) {
+            let value = input.value.replace(/[^\d]/g, '');
+            if (value.length <= 3) {
+                input.value = value;
+            } else if (value.length <= 7) {
+                input.value = value.slice(0, 3) + '-' + value.slice(3);
+            } else if (value.length <= 11) {
+                input.value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7);
+            } else {
+                input.value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7, 11);
+            }
+        }
+
+        // 사업자번호 포맷팅
+        function formatBusinessNumber(input) {
+            let value = input.value.replace(/[^\d]/g, '');
+            if (value.length <= 3) {
+                input.value = value;
+            } else if (value.length <= 5) {
+                input.value = value.slice(0, 3) + '-' + value.slice(3);
+            } else if (value.length <= 10) {
+                input.value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5);
+            } else {
+                input.value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 10);
+            }
+        }
+
+        // 인증번호 발송
+        function sendVerificationCode() {
+            const phoneNumber = document.getElementById('phoneNumber').value.replace(/[^\d]/g, '');
+            if (phoneNumber.length !== 11) {
+                alert('올바른 휴대폰 번호를 입력해주세요.');
+                return;
+            }
+            
+            // 실제로는 서버에 인증번호 발송 요청
+            // 여기서는 시뮬레이션
+            sentCode = String(Math.floor(100000 + Math.random() * 900000));
+            verificationCodeSent = true;
+            alert('인증번호가 발송되었습니다. (테스트용 인증번호: ' + sentCode + ')');
+        }
+
+        // 인증번호 확인
+        function verifyCode() {
+            const code = document.getElementById('verificationCode').value;
+            const statusDiv = document.getElementById('verificationStatus');
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            if (!verificationCodeSent) {
+                statusDiv.className = 'verification-status error';
+                statusDiv.textContent = '인증번호를 먼저 발송해주세요.';
+                return;
+            }
+            
+            if (code === sentCode) {
+                isVerified = true;
+                verifiedPhoneNumber = phoneNumber;
+                statusDiv.className = 'verification-status success';
+                statusDiv.textContent = '인증이 완료되었습니다.';
+                document.getElementById('step3-next').disabled = false;
+                
+                // 인증 완료 메시지 표시
+                document.getElementById('verificationComplete').classList.add('show');
+                document.getElementById('verifiedPhone').textContent = phoneNumber;
+                document.getElementById('verificationForm').style.display = 'none';
+            } else {
+                statusDiv.className = 'verification-status error';
+                statusDiv.textContent = '인증번호가 일치하지 않습니다.';
+                isVerified = false;
+                document.getElementById('step3-next').disabled = true;
+            }
+        }
+
+        // 아이디 중복확인 (개인)
+        function checkIndividualUserId() {
+            const userId = document.getElementById('individualUserId').value;
+            const errorDiv = document.getElementById('individualUserIdError');
+            
+            if (!userId) {
+                errorDiv.textContent = '아이디를 입력해주세요.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            if (userId.length < 8 || userId.length > 12) {
+                errorDiv.textContent = '아이디는 8-12자로 입력해주세요.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            // 실제로는 서버에 중복확인 요청
+            // 여기서는 시뮬레이션
+            alert('사용 가능한 아이디입니다.');
+            errorDiv.classList.remove('show');
+        }
+
+        // 아이디 중복확인 (기업)
+        function checkBusinessUserId() {
+            const userId = document.getElementById('businessUserId').value;
+            const errorDiv = document.getElementById('businessUserIdError');
+            
+            if (!userId) {
+                errorDiv.textContent = '아이디를 입력해주세요.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            if (userId.length < 8 || userId.length > 12) {
+                errorDiv.textContent = '아이디는 8-12자로 입력해주세요.';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            // 실제로는 서버에 중복확인 요청
+            alert('사용 가능한 아이디입니다.');
+            errorDiv.classList.remove('show');
+        }
+
+        // 기업유형 변경 처리
+        function handleBusinessTypeChange() {
+            // 기업유형 변경 시 필요한 처리
+        }
+
+        // 담당자 유형 변경 처리
+        function handleManagerTypeChange() {
+            const managerType = document.getElementById('managerType').value;
+            const employmentCertificateGroup = document.getElementById('employmentCertificateGroup');
+            
+            if (managerType === 'employee') {
+                // 직원인 경우 재직증명서 업로드 영역 표시
+                employmentCertificateGroup.style.display = 'block';
+            } else {
+                // 대표자인 경우 재직증명서 업로드 영역 숨김 및 파일 제거
+                employmentCertificateGroup.style.display = 'none';
+                document.getElementById('employmentCertificateFileInput').value = '';
+                document.getElementById('employmentCertificateFilePreview').classList.remove('show');
+                document.getElementById('employmentCertificateFilePreview').innerHTML = '';
+            }
+        }
+
+        // 사업자등록증 파일 선택 처리
+        function handleBusinessRegistrationFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                displayBusinessRegistrationFilePreview(file);
+            }
+        }
+
+        // 사업자등록증 파일 드래그 앤 드롭
+        function handleBusinessRegistrationFileDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('dragover');
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                document.getElementById('businessRegistrationFileInput').files = event.dataTransfer.files;
+                displayBusinessRegistrationFilePreview(file);
+            }
+        }
+
+        // 사업자등록증 파일 미리보기
+        function displayBusinessRegistrationFilePreview(file) {
+            const previewDiv = document.getElementById('businessRegistrationFilePreview');
+            previewDiv.innerHTML = `
+                <div class="file-preview-item">
+                    <span class="file-preview-name">${file.name}</span>
+                    <span class="file-preview-remove" onclick="removeBusinessRegistrationFile()">×</span>
+                </div>
+            `;
+            previewDiv.classList.add('show');
+        }
+
+        // 사업자등록증 파일 제거
+        function removeBusinessRegistrationFile() {
+            document.getElementById('businessRegistrationFileInput').value = '';
+            document.getElementById('businessRegistrationFilePreview').classList.remove('show');
+            document.getElementById('businessRegistrationFilePreview').innerHTML = '';
+        }
+
+        // 재직증명서 파일 선택 처리
+        function handleEmploymentCertificateFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                displayEmploymentCertificateFilePreview(file);
+            }
+        }
+
+        // 재직증명서 파일 드래그 앤 드롭
+        function handleEmploymentCertificateFileDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('dragover');
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                document.getElementById('employmentCertificateFileInput').files = event.dataTransfer.files;
+                displayEmploymentCertificateFilePreview(file);
+            }
+        }
+
+        // 재직증명서 파일 미리보기
+        function displayEmploymentCertificateFilePreview(file) {
+            const previewDiv = document.getElementById('employmentCertificateFilePreview');
+            previewDiv.innerHTML = `
+                <div class="file-preview-item">
+                    <span class="file-preview-name">${file.name}</span>
+                    <span class="file-preview-remove" onclick="removeEmploymentCertificateFile()">×</span>
+                </div>
+            `;
+            previewDiv.classList.add('show');
+        }
+
+        // 재직증명서 파일 제거
+        function removeEmploymentCertificateFile() {
+            document.getElementById('employmentCertificateFileInput').value = '';
+            document.getElementById('employmentCertificateFilePreview').classList.remove('show');
+            document.getElementById('employmentCertificateFilePreview').innerHTML = '';
+        }
+
+        // 파일 드래그 앤 드롭 공통 함수
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.currentTarget.classList.remove('dragover');
+        }
+
+        // 주소 검색
+        function searchAddress() {
+            // 실제로는 주소 검색 API 연동 (다음 주소 API 등)
+            alert('주소 검색 기능은 준비 중입니다.');
+        }
+
+        // 회원가입 제출
+        function submitSignup(type) {
+            if (type === 'individual') {
+                // 개인 회원가입 검증
+                const userId = document.getElementById('individualUserId').value;
+                const password = document.getElementById('individualPassword').value;
+                const passwordConfirm = document.getElementById('individualPasswordConfirm').value;
+                const contact = document.getElementById('individualContact').value;
+                const email = document.getElementById('individualEmail').value;
+                
+                if (!userId || !password || !passwordConfirm || !email) {
+                    alert('모든 필수 항목을 입력해주세요.');
+                    return;
+                }
+                
+                if (password !== passwordConfirm) {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    return;
+                }
+                
+                // 실제로는 서버에 회원가입 요청
+                alert('회원가입이 완료되었습니다.');
+                window.location.href = 'index.html';
+            } else {
+                // 기업 회원가입 검증
+                const userId = document.getElementById('businessUserId').value;
+                const password = document.getElementById('businessPassword').value;
+                const passwordConfirm = document.getElementById('businessPasswordConfirm').value;
+                const businessType = document.getElementById('businessType').value;
+                const managerType = document.getElementById('managerType').value;
+                const businessName = document.getElementById('businessName').value;
+                const businessNumber = document.getElementById('businessNumber').value;
+                const representativeName = document.getElementById('representativeName').value;
+                const businessAddress = document.getElementById('businessAddress').value;
+                const businessContact = document.getElementById('businessContact').value;
+                
+                if (!userId || !password || !passwordConfirm || !businessType || !managerType || 
+                    !businessName || !businessNumber || !representativeName || 
+                    !businessAddress || !businessContact) {
+                    alert('모든 필수 항목을 입력해주세요.');
+                    return;
+                }
+                
+                if (password !== passwordConfirm) {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    return;
+                }
+                
+                // 사업자등록증 파일 검증 (필수)
+                const businessRegistrationFileInput = document.getElementById('businessRegistrationFileInput');
+                if (!businessRegistrationFileInput.files || businessRegistrationFileInput.files.length === 0) {
+                    alert('사업자등록증 파일을 업로드해주세요.');
+                    return;
+                }
+                
+                // 직원인 경우 재직증명서 파일 검증 (필수)
+                if (managerType === 'employee') {
+                    const employmentCertificateFileInput = document.getElementById('employmentCertificateFileInput');
+                    if (!employmentCertificateFileInput.files || employmentCertificateFileInput.files.length === 0) {
+                        alert('재직증명서 파일을 업로드해주세요.');
+                        return;
+                    }
+                }
+                
+                // 실제로는 서버에 회원가입 요청
+                alert('회원가입이 완료되었습니다.');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // 로그인 페이지로 이동
+        function goToLogin() {
+            if (confirm('회원가입을 취소하시겠습니까?')) {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 드롭다운 메뉴 초기화
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
+            }
+        });
+    </script>
+</body>
+</html>
