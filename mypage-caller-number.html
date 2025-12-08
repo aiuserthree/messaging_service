@@ -1206,20 +1206,6 @@ body {
                             <label class="form-label">발신번호 용도</label>
                             <input type="text" id="purposeInput" class="form-input" placeholder="예: 마케팅팀, 고객센터, 본인 휴대폰">
                         </div>
-                        <div class="form-group">
-                            <label class="form-label required">통합용 사용 여부</label>
-                            <div class="flex gap-2">
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="useIntegration" value="yes" checked>
-                                    <span>사용함</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="useIntegration" value="no">
-                                    <span>사용안함</span>
-                                </label>
-                            </div>
-                            <div class="form-help">본 발송 서비스 이용 시 통합서비스 발신번호로 사용할지 선택 주세요.</div>
-                        </div>
                     </div>
 
                     <!-- STEP 3: 명의 구분 및 서류 -->
@@ -1362,10 +1348,6 @@ body {
                             <tr>
                                 <th>번호 유형</th>
                                 <td id="detailNumberType">-</td>
-                            </tr>
-                            <tr>
-                                <th>통합용 사용</th>
-                                <td id="detailUseIntegration">-</td>
                             </tr>
                         </table>
                     </div>
@@ -1753,6 +1735,38 @@ document.addEventListener('DOMContentLoaded', function() {
                 numberType = null;
                 badgeDiv.style.display = 'none';
             }
+            
+            // 개인 회원 - 본인 명의 또는 기업 회원 - 본인(자사) 명의인 경우 서류 섹션 업데이트
+            if (selectedOwnershipType === 'self') {
+                updateDocumentSection();
+            }
+            
+            // 본인인증 섹션 업데이트
+            const authSection = document.getElementById('authSection');
+            if (authSection) {
+                // 본인(자사) 명의이고 휴대폰 번호일 때만 본인인증 필요
+                if (requiresAuth && numberType === 'MOBILE' && selectedOwnershipType === 'self') {
+                    authSection.style.display = 'block';
+                    const authHelpText = document.getElementById('authHelpText');
+                    if (authHelpText) {
+                        authHelpText.textContent = selectedMemberType === 'personal' 
+                            ? '발신번호 명의자 본인인증이 필요합니다' 
+                            : '서류 제출자 본인인증이 필요합니다';
+                    }
+                    
+                    // 본인인증 버튼 표시 및 상태 초기화
+                    if (!authCompleted) {
+                        authCompleted = false;
+                        const authStatus = document.getElementById('authStatus');
+                        if (authStatus) {
+                            authStatus.innerHTML = '<button type="button" class="btn btn-primary" id="authButton" onclick="openPhoneAuth()">휴대폰 본인인증</button>';
+                        }
+                    }
+                } else {
+                    authSection.style.display = 'none';
+                    authCompleted = false;
+                }
+            }
         }
 
         function checkDuplicateNumber() {
@@ -1821,19 +1835,60 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // 본인인증 섹션 표시/숨김
-            if (requiresAuth && numberType === 'MOBILE') {
+            // 본인(자사) 명의이고 휴대폰 번호일 때만 본인인증 필요
+            if (requiresAuth && numberType === 'MOBILE' && selectedOwnershipType === 'self') {
                 authSection.style.display = 'block';
                 document.getElementById('authHelpText').textContent = selectedMemberType === 'personal' 
                     ? '발신번호 명의자 본인인증이 필요합니다' 
                     : '서류 제출자 본인인증이 필요합니다';
+                
+                // 본인인증 버튼 표시 및 상태 초기화
+                authCompleted = false;
+                const authStatus = document.getElementById('authStatus');
+                if (authStatus) {
+                    authStatus.innerHTML = '<button type="button" class="btn btn-primary" id="authButton" onclick="openPhoneAuth()">휴대폰 본인인증</button>';
+                }
             } else {
                 authSection.style.display = 'none';
+                // 본인인증 상태 초기화
+                authCompleted = false;
             }
         }
 
         function selectOwnershipType(type) {
             selectedOwnershipType = type;
             updateDocumentSection();
+            
+            // 본인인증 섹션 업데이트
+            const authSection = document.getElementById('authSection');
+            if (authSection) {
+                // 본인(자사) 명의이고 휴대폰 번호일 때만 본인인증 필요
+                if (requiresAuth && numberType === 'MOBILE' && selectedOwnershipType === 'self') {
+                    authSection.style.display = 'block';
+                    document.getElementById('authHelpText').textContent = selectedMemberType === 'personal' 
+                        ? '발신번호 명의자 본인인증이 필요합니다' 
+                        : '서류 제출자 본인인증이 필요합니다';
+                    
+                    // 본인인증 버튼 표시 및 상태 초기화
+                    authCompleted = false;
+                    const authStatus = document.getElementById('authStatus');
+                    if (authStatus) {
+                        authStatus.innerHTML = '<button type="button" class="btn btn-primary" id="authButton" onclick="openPhoneAuth()">휴대폰 본인인증</button>';
+                    }
+                } else {
+                    authSection.style.display = 'none';
+                    // 본인인증 상태 초기화
+                    authCompleted = false;
+                    const authStatus = document.getElementById('authStatus');
+                    if (authStatus) {
+                        authStatus.innerHTML = '<span style="color: var(--text-secondary);">본인인증이 필요하지 않습니다</span>';
+                    }
+                    const authButton = document.getElementById('authButton');
+                    if (authButton) {
+                        authButton.style.display = 'none';
+                    }
+                }
+            }
         }
 
         // 명의 구분별 서류 섹션 업데이트
@@ -1852,24 +1907,43 @@ document.addEventListener('DOMContentLoaded', function() {
             if (selectedMemberType === 'personal') {
                 if (selectedOwnershipType === 'self') {
                     // 개인 - 본인 명의
-                    html = `
-                        <div style="margin-top: 20px;">
-                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호 소유 확인을 위한 서류 제출이 필요합니다</p>
-                            <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
-                            <div class="file-upload-area" onclick="document.getElementById('certFile').click()">
-                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
-                                <input type="file" id="certFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile', ${maxSize})">
+                    // 휴대폰 번호인 경우 본인인증만 필요 (통신서비스이용증명원 불필요)
+                    // 유선번호인 경우 통신서비스이용증명원 필요
+                    if (numberType === 'MOBILE') {
+                        // 휴대폰 번호: 서류 불필요
+                        html = `
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">휴대폰 번호는 본인인증만으로 등록 가능합니다.</p>
                             </div>
-                            <div class="form-help">
-                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
-                                통신사 홈페이지, 고객센터, 대리점에서 발급 가능합니다<br>
-                                발신번호와 명의자 정보가 명확히 표시된 서류를 제출해 주세요<br>
-                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB<br>
-                                * 서류가 여러 장일 경우 zip 파일로 압축하여 첨부하세요
+                        `;
+                    } else if (numberType === 'LANDLINE') {
+                        // 유선번호: 통신서비스이용증명원 필요
+                        html = `
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호 소유 확인을 위한 서류 제출이 필요합니다</p>
+                                <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                                <div class="file-upload-area" onclick="document.getElementById('certFile').click()">
+                                    <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                    <input type="file" id="certFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile', ${maxSize})">
+                                </div>
+                                <div class="form-help">
+                                    통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                    통신사 홈페이지, 고객센터, 대리점에서 발급 가능합니다<br>
+                                    발신번호와 명의자 정보가 명확히 표시된 서류를 제출해 주세요<br>
+                                    * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB<br>
+                                    * 서류가 여러 장일 경우 zip 파일로 압축하여 첨부하세요
+                                </div>
+                                <div id="certFileDisplay"></div>
                             </div>
-                            <div id="certFileDisplay"></div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        // 번호 타입 미선택
+                        html = `
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호를 입력해주세요.</p>
+                            </div>
+                        `;
+                    }
                 } else {
                     // 개인 - 타인 명의
                     html = `
@@ -1920,49 +1994,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 기업 회원
                 if (selectedOwnershipType === 'self') {
                     // 기업 - 본인(자사) 명의
-                    html = `
-                        <div style="margin-top: 20px;">
-                            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호와 발신번호 소유자(기업)간의 관계를 입증할 수 있는 서류 제출이 필요합니다</p>
-                            <label class="form-label required">사업자 등록증</label>
-                            <div class="file-upload-area" onclick="document.getElementById('businessFile').click()">
-                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
-                                <input type="file" id="businessFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'businessFile', ${maxSize})">
+                    // 휴대폰 번호인 경우 본인인증 완료 여부와 관계없이 통신서비스이용증명원 불필요
+                    // 유선번호인 경우 통신서비스이용증명원 필요
+                    if (numberType === 'MOBILE') {
+                        // 휴대폰 번호: 서류 불필요
+                        html = `
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">휴대폰 번호는 추가 서류 제출이 필요하지 않습니다.</p>
                             </div>
-                            <div class="form-help">
-                                국세청 홈택스에서 발급 가능합니다<br>
-                                사업자등록증은 발급일 제한이 없습니다<br>
-                                법인명과 사업자등록번호가 명확히 표시된 서류를 제출해 주세요<br>
-                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                        `;
+                    } else if (numberType === 'LANDLINE') {
+                        // 유선번호: 통신서비스이용증명원 필요
+                        html = `
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호와 발신번호 소유자(기업)간의 관계를 입증할 수 있는 서류 제출이 필요합니다</p>
+                                <label class="form-label required">통신서비스 이용증명원 또는 통신사 가입증명서</label>
+                                <div class="file-upload-area" onclick="document.getElementById('certFile2').click()">
+                                    <p>파일을 선택하거나 드래그하여 놓으세요</p>
+                                    <input type="file" id="certFile2" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile2', ${maxSize})">
+                                </div>
+                                <div class="form-help">
+                                    통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
+                                    법인 명의 발신번호의 경우 법인 가입증명서를 제출해 주세요<br>
+                                    * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
+                                </div>
+                                <div id="certFile2Display"></div>
                             </div>
-                            <div id="businessFileDisplay"></div>
-                            
-                            <label class="form-label required" style="margin-top: 20px;">재직증명서</label>
-                            <div class="file-upload-area" onclick="document.getElementById('employeeFile').click()">
-                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
-                                <input type="file" id="employeeFile" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'employeeFile', ${maxSize})">
+                        `;
+                    } else {
+                        // 번호 타입 미선택
+                        html = `
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">발신번호를 입력해주세요.</p>
                             </div>
-                            <div class="form-help">
-                                최근 3개월 이내 발급된 서류를 제출해 주세요<br>
-                                발급일과 직인이 날인된 공식 서류만 인정됩니다<br>
-                                소속 회사(인사팀)에서 발급 가능합니다<br>
-                                제출자의 성명, 생년월일, 소속 부서가 명확히 표시되어야 합니다<br>
-                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
-                            </div>
-                            <div id="employeeFileDisplay"></div>
-                            
-                            <label class="form-label required" style="margin-top: 20px;">통신서비스 이용증명원 또는 통신사 가입증명서</label>
-                            <div class="file-upload-area" onclick="document.getElementById('certFile2').click()">
-                                <p>파일을 선택하거나 드래그하여 놓으세요</p>
-                                <input type="file" id="certFile2" style="display: none;" accept="${fileAccept}" onchange="handleFileUpload(this, 'certFile2', ${maxSize})">
-                            </div>
-                            <div class="form-help">
-                                통신사(SKT, KT, LG U+ 등)에서 발급한 최근 3개월 이내 서류를 제출해 주세요<br>
-                                법인 명의 발신번호의 경우 법인 가입증명서를 제출해 주세요<br>
-                                * jpg, jpeg, gif, png, pdf, tif, tiff, zip 첨부 가능 / 최대 10MB
-                            </div>
-                            <div id="certFile2Display"></div>
-                        </div>
-                    `;
+                        `;
+                    }
                 } else if (selectedOwnershipType === 'others') {
                     // 기업 - 타인 명의
                     html = `
@@ -2208,6 +2274,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 document.getElementById('authButton').style.display = 'none';
                 showToast('본인인증이 완료되었습니다.', 'success');
+                
+                // 본인인증 완료 후 서류 섹션 업데이트 (본인(자사) 명의인 경우)
+                if (selectedOwnershipType === 'self') {
+                    updateDocumentSection();
+                }
             }, 1000);
         }
 
@@ -2218,7 +2289,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            if (requiresAuth && !authCompleted) {
+            // 본인(자사) 명의이고 휴대폰 번호일 때만 본인인증 필수
+            if (selectedOwnershipType === 'self' && requiresAuth && !authCompleted) {
                 showToast('본인인증을 완료해주세요.', 'warning');
                 return;
             }
@@ -2282,7 +2354,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     memberType: '기업',
                     ownershipType: '본인(자사) 명의',
                     numberType: '유선번호',
-                    useIntegration: '사용함',
                     contactPhone: '010-1111-2222',
                     contactEmail: 'contact@example.com',
                     documents: [
@@ -2320,7 +2391,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('detailMemberType').textContent = data.memberType;
             document.getElementById('detailOwnershipType').textContent = data.ownershipType;
             document.getElementById('detailNumberType').textContent = data.numberType;
-            document.getElementById('detailUseIntegration').textContent = data.useIntegration;
             document.getElementById('detailContactPhone').textContent = data.contactPhone;
             document.getElementById('detailContactEmail').textContent = data.contactEmail || '-';
 

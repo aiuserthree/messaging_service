@@ -1322,21 +1322,13 @@ body {
                             </div>
                         </div>
 
-                        <!-- 080 수신거부 번호 입력 -->
+                        <!-- 080 수신거부 번호 (고정값) -->
                         <div class="form-group">
                             <label class="form-label required">080 수신거부 번호</label>
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-weight: 600;">080-</span>
-                                <select class="form-select" id="rejectNumberInput" style="flex: 1;" onchange="updateRejectNumberPreview()" required>
-                                    <option value="">번호를 선택하세요</option>
-                                    <option value="123-4567">123-4567</option>
-                                    <option value="234-5678">234-5678</option>
-                                    <option value="345-6789">345-6789</option>
-                                    <option value="456-7890">456-7890</option>
-                                    <option value="567-8901">567-8901</option>
-                                </select>
+                                <span style="font-weight: 600;">080-123-4567</span>
                             </div>
-                            <div class="form-help">수신거부 번호를 선택하세요</div>
+                            <input type="hidden" id="rejectNumberInput" value="123-4567">
                         </div>
 
                         <!-- 이미지 첨부 (MMS만) -->
@@ -1457,7 +1449,6 @@ body {
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>카테고리</th>
                                 <th>템플릿명</th>
                                 <th>타입</th>
                                 <th>내용</th>
@@ -1467,7 +1458,6 @@ body {
                         </thead>
                         <tbody>
                             <tr>
-                                <td><span class="badge badge-secondary">선거</span></td>
                                 <td>선거 안내</td>
                                 <td><span class="badge badge-primary">SMS</span></td>
                                 <td>선거 안내 메시지입니다...</td>
@@ -1475,7 +1465,6 @@ body {
                                 <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('선거 안내', '선거 안내 메시지입니다. #{유권자명}님께서는 #{투표일}에 투표해주세요.')">선택</button></td>
                             </tr>
                             <tr>
-                                <td><span class="badge badge-secondary">선거</span></td>
                                 <td>후보자 소개</td>
                                 <td><span class="badge badge-primary">LMS</span></td>
                                 <td>후보자 소개 메시지입니다...</td>
@@ -1503,17 +1492,6 @@ body {
                 <div class="form-group">
                     <label class="form-label required">템플릿명</label>
                     <input type="text" class="form-input" id="templateName" placeholder="템플릿명을 입력하세요" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label required">카테고리</label>
-                    <select class="form-select" id="templateCategory" required>
-                        <option value="">카테고리를 선택하세요</option>
-                        <option value="일반">일반</option>
-                        <option value="광고">광고</option>
-                        <option value="선거">선거</option>
-                        <option value="공지">공지</option>
-                        <option value="기타">기타</option>
-                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1549,20 +1527,6 @@ body {
                             </tr>
                         </table>
                     </div>
-                </div>
-                <div class="alert alert-danger" style="margin-top: 16px;">
-                    <h4 style="margin-bottom: 12px;">법적 확인 사항 (필수)</h4>
-                    <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; cursor: pointer;">
-                        <input type="checkbox" id="legalConfirm1" required>
-                        <span>공직선거법을 준수하였으며, 허위사실 공표 및 후보자 비방 내용이 없음을 확인합니다</span>
-                    </label>
-                    <label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; cursor: pointer;">
-                        <input type="checkbox" id="legalConfirm2" required>
-                        <span>수신자가 선거구 내 유권자이거나 선거운동 목적의 발송임을 확인합니다</span>
-                    </label>
-                </div>
-                <div class="alert alert-warning" style="margin-top: 12px;">
-                    <strong>주의:</strong> 공직선거법 위반 시 3년 이하 징역 또는 600만원 이하 벌금에 처해질 수 있습니다.
                 </div>
             </div>
             <div class="modal-footer">
@@ -2054,6 +2018,10 @@ document.head.appendChild(style);
 // 드롭다운 메뉴 초기화
 document.addEventListener('DOMContentLoaded', function() {
     initDropdownMenus();
+    // 수신거부 번호 고정값 설정 및 미리보기 업데이트
+    if (typeof updateRejectNumberPreview === 'function') {
+        updateRejectNumberPreview();
+    }
 });
 
 </script>
@@ -2549,12 +2517,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('sendForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            if (!document.getElementById('legalConfirm1').checked || 
-                !document.getElementById('legalConfirm2').checked) {
-                showToast('모든 법적 확인 사항에 동의해주세요.', 'warning');
-                return;
-            }
-            
             document.getElementById('confirmCandidate').textContent = document.getElementById('candidateNameInput').value;
             document.getElementById('confirmRecipientCount').textContent = document.getElementById('recipientCount').textContent + '명';
             
@@ -2570,10 +2532,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         function confirmSend() {
-            if (!document.getElementById('legalConfirm1').checked || 
-                !document.getElementById('legalConfirm2').checked) {
-                showToast('모든 법적 확인 사항에 동의해주세요.', 'warning');
-                return;
+            // SMS 발송 시 변수값 길이 체크
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            if (messageType === 'SMS') {
+                const messageContent = document.getElementById('messageContent').value;
+                const messageTitle = document.getElementById('messageTitle')?.value || '';
+                const recipientRows = document.querySelectorAll('#recipientDataTableBody tr');
+                
+                let hasOverLimit = false;
+                let overLimitCount = 0;
+                
+                recipientRows.forEach((row, index) => {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    if (!checkbox || !checkbox.checked) return; // 선택되지 않은 행은 제외
+                    
+                    // 변수값 가져오기
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length < 8) return; // 체크박스, 순번, 이름, 전화번호, 변수1, 변수2, 변수3 (총 7개) 필요
+                    
+                    const var1 = cells[4]?.querySelector('input')?.value || '';
+                    const var2 = cells[5]?.querySelector('input')?.value || '';
+                    const var3 = cells[6]?.querySelector('input')?.value || '';
+                    
+                    // 변수 치환
+                    let replacedContent = messageContent;
+                    replacedContent = replacedContent.replace(/#\{이름\}/g, cells[2]?.querySelector('input')?.value || '');
+                    replacedContent = replacedContent.replace(/#\{전화번호\}/g, cells[3]?.querySelector('input')?.value || '');
+                    replacedContent = replacedContent.replace(/#\{변수1\}/g, var1);
+                    replacedContent = replacedContent.replace(/#\{변수2\}/g, var2);
+                    replacedContent = replacedContent.replace(/#\{변수3\}/g, var3);
+                    
+                    // 바이트 계산
+                    let totalBytes = calculateByteLength(replacedContent);
+                    if (messageTitle) {
+                        totalBytes += calculateByteLength(messageTitle);
+                    }
+                    
+                    // 90바이트 초과 체크
+                    if (totalBytes > 90) {
+                        hasOverLimit = true;
+                        overLimitCount++;
+                    }
+                });
+                
+                if (hasOverLimit) {
+                    showToast('변수값 길이로 인해 글자수가 90바이트가 넘는 항목이 있어서 SMS 전송이 불가합니다.', 'warning');
+                    return;
+                }
             }
             
             showToast('발송이 완료되었습니다.', 'success');
@@ -2614,10 +2619,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function saveTemplateConfirm() {
             const name = document.getElementById('templateName').value;
-            const category = document.getElementById('templateCategory').value;
             
-            if (!name || !category) {
-                showToast('템플릿명과 카테고리를 모두 입력해주세요.', 'warning');
+            if (!name) {
+                showToast('템플릿명을 입력해주세요.', 'warning');
                 return;
             }
             

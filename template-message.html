@@ -1082,16 +1082,6 @@ body {
                             <option>MMS</option>
                         </select>
                     </div>
-                    <div style="width: 150px;">
-                        <select class="form-select">
-                            <option>전체 카테고리</option>
-                            <option>일반</option>
-                            <option>광고</option>
-                            <option>공지</option>
-                            <option>이벤트</option>
-                            <option>기타</option>
-                        </select>
-                    </div>
                     <button class="btn btn-primary">검색</button>
                     <button class="btn btn-outline">초기화</button>
                 </div>
@@ -1102,7 +1092,6 @@ body {
                 <div class="template-actions">
                     <div>
                         <button class="btn btn-primary" onclick="openModal('addTemplateModal')">새 템플릿 등록</button>
-                        <button class="btn btn-outline" onclick="openModal('categoryModal')">카테고리 관리</button>
                     </div>
                     <div class="flex gap-2">
                         <button class="btn btn-outline btn-sm">일괄 삭제</button>
@@ -1118,7 +1107,6 @@ body {
                                 <div class="template-name">주문 확인</div>
                                 <div style="margin-top: 4px;">
                                     <span class="badge badge-primary template-type-badge">SMS</span>
-                                    <span class="badge" style="background: rgba(100, 116, 139, 0.1); color: var(--secondary-color);">일반</span>
                                 </div>
                             </div>
                         </div>
@@ -1145,7 +1133,6 @@ body {
                                 <div class="template-name">배송 안내</div>
                                 <div style="margin-top: 4px;">
                                     <span class="badge badge-primary template-type-badge">LMS</span>
-                                    <span class="badge" style="background: rgba(100, 116, 139, 0.1); color: var(--secondary-color);">배송</span>
                                 </div>
                             </div>
                         </div>
@@ -1172,7 +1159,6 @@ body {
                                 <div class="template-name">이벤트 안내</div>
                                 <div style="margin-top: 4px;">
                                     <span class="badge badge-primary template-type-badge">MMS</span>
-                                    <span class="badge" style="background: rgba(100, 116, 139, 0.1); color: var(--secondary-color);">이벤트</span>
                                 </div>
                             </div>
                         </div>
@@ -1215,16 +1201,6 @@ body {
                             <div class="form-group">
                                 <label class="form-label required">템플릿명</label>
                                 <input type="text" class="form-input" placeholder="템플릿명을 입력하세요" maxlength="50" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label required">카테고리</label>
-                                <select class="form-select" required>
-                                    <option>일반</option>
-                                    <option>광고</option>
-                                    <option>공지</option>
-                                    <option>이벤트</option>
-                                    <option>기타</option>
-                                </select>
                             </div>
                             <div class="form-group">
                                 <label class="form-label required">메시지 타입</label>
@@ -1316,60 +1292,6 @@ body {
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('previewModal')">닫기</button>
                 <button class="btn btn-primary" onclick="useTemplate()">이 템플릿으로 발송하기</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 카테고리 관리 모달 -->
-    <div class="modal-overlay" id="categoryModal">
-        <div class="modal" style="max-width: 600px;">
-            <div class="modal-header">
-                <h3 class="modal-title">카테고리 관리</h3>
-                <button class="modal-close" onclick="closeModal('categoryModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="form-label">기본 카테고리</label>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
-                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">일반 (12개)</span>
-                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">광고 (5개)</span>
-                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">공지 (3개)</span>
-                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">이벤트 (4개)</span>
-                        <span class="badge" style="background: rgba(100, 116, 139, 0.1);">기타 (0개)</span>
-                    </div>
-                    <div class="form-help">기본 카테고리는 수정/삭제할 수 없습니다</div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">사용자 정의 카테고리</label>
-                    <div class="flex gap-2">
-                        <input type="text" class="form-input" placeholder="카테고리명 입력 (최대 20자)" maxlength="20">
-                        <button class="btn btn-primary" onclick="addCategory()">추가</button>
-                    </div>
-                </div>
-                <div class="table-container" style="margin-top: 16px;">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>카테고리명</th>
-                                <th>템플릿 수</th>
-                                <th>관리</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>배송</td>
-                                <td>3개</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline">수정</button>
-                                    <button class="btn btn-sm btn-outline">삭제</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal('categoryModal')">닫기</button>
             </div>
         </div>
     </div>
@@ -1841,9 +1763,6 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'message-send-general.html';
         }
 
-        function addCategory() {
-            showToast('카테고리가 추가되었습니다.', 'success');
-        }
 
         // 페이지네이션 생성
         createPagination(1, 5, 'pagination');

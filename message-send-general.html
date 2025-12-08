@@ -1316,7 +1316,6 @@ body {
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>카테고리</th>
                                 <th>템플릿명</th>
                                 <th>타입</th>
                                 <th>내용</th>
@@ -1326,7 +1325,6 @@ body {
                         </thead>
                         <tbody>
                             <tr>
-                                <td><span class="badge badge-secondary">일반</span></td>
                                 <td>주문 확인</td>
                                 <td><span class="badge badge-primary">SMS</span></td>
                                 <td>주문이 접수되었습니다...</td>
@@ -1334,7 +1332,6 @@ body {
                                 <td><button class="btn btn-sm btn-primary" onclick="selectTemplate('주문 확인', '주문이 접수되었습니다. 주문번호: #{주문번호}')">선택</button></td>
                             </tr>
                             <tr>
-                                <td><span class="badge badge-secondary">일반</span></td>
                                 <td>배송 안내</td>
                                 <td><span class="badge badge-primary">LMS</span></td>
                                 <td>배송이 시작되었습니다...</td>
@@ -1362,17 +1359,6 @@ body {
                 <div class="form-group">
                     <label class="form-label required">템플릿명</label>
                     <input type="text" class="form-input" id="templateName" placeholder="템플릿명을 입력하세요" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label required">카테고리</label>
-                    <select class="form-select" id="templateCategory" required>
-                        <option value="">카테고리를 선택하세요</option>
-                        <option value="일반">일반</option>
-                        <option value="광고">광고</option>
-                        <option value="공지">공지</option>
-                        <option value="이벤트">이벤트</option>
-                        <option value="기타">기타</option>
-                    </select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -2194,6 +2180,55 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function confirmSend() {
+            // SMS 발송 시 변수값 길이 체크
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            if (messageType === 'SMS') {
+                const messageContent = document.getElementById('messageContent').value;
+                const messageTitle = document.getElementById('messageTitle')?.value || '';
+                const recipientRows = document.querySelectorAll('#recipientDataTableBody tr');
+                
+                let hasOverLimit = false;
+                let overLimitCount = 0;
+                
+                recipientRows.forEach((row, index) => {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    if (!checkbox || !checkbox.checked) return; // 선택되지 않은 행은 제외
+                    
+                    // 변수값 가져오기
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length < 8) return; // 체크박스, 순번, 이름, 전화번호, 변수1, 변수2, 변수3 (총 7개) 필요
+                    
+                    const var1 = cells[4]?.querySelector('input')?.value || '';
+                    const var2 = cells[5]?.querySelector('input')?.value || '';
+                    const var3 = cells[6]?.querySelector('input')?.value || '';
+                    
+                    // 변수 치환
+                    let replacedContent = messageContent;
+                    replacedContent = replacedContent.replace(/#\{이름\}/g, cells[2]?.querySelector('input')?.value || '');
+                    replacedContent = replacedContent.replace(/#\{전화번호\}/g, cells[3]?.querySelector('input')?.value || '');
+                    replacedContent = replacedContent.replace(/#\{변수1\}/g, var1);
+                    replacedContent = replacedContent.replace(/#\{변수2\}/g, var2);
+                    replacedContent = replacedContent.replace(/#\{변수3\}/g, var3);
+                    
+                    // 바이트 계산
+                    let totalBytes = calculateByteLength(replacedContent);
+                    if (messageTitle) {
+                        totalBytes += calculateByteLength(messageTitle);
+                    }
+                    
+                    // 90바이트 초과 체크
+                    if (totalBytes > 90) {
+                        hasOverLimit = true;
+                        overLimitCount++;
+                    }
+                });
+                
+                if (hasOverLimit) {
+                    showToast('변수값 길이로 인해 글자수가 90바이트가 넘는 항목이 있어서 SMS 전송이 불가합니다.', 'warning');
+                    return;
+                }
+            }
+            
             showToast('발송이 완료되었습니다.', 'success');
             closeModal('sendConfirmModal');
             // 실제로는 API 호출
@@ -2396,10 +2431,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function saveTemplateConfirm() {
             const name = document.getElementById('templateName').value;
-            const category = document.getElementById('templateCategory').value;
             
-            if (!name || !category) {
-                showToast('템플릿명과 카테고리를 모두 입력해주세요.', 'warning');
+            if (!name) {
+                showToast('템플릿명을 입력해주세요.', 'warning');
                 return;
             }
             

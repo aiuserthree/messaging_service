@@ -1111,24 +1111,45 @@ body {
                     <div class="form-section">
                         <h3 class="form-section-title">기업 정보</h3>
                         <div class="form-group">
+                            <label class="form-label required">기업유형</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="businessType" value="individual" checked onchange="updateFormFields()">
+                                    <span>개인사업자</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="businessType" value="corporation" onchange="updateFormFields()">
+                                    <span>법인사업자</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">담당자</label>
+                            <div class="flex gap-2">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="managerType" value="representative" checked onchange="updateFormFields()">
+                                    <span>대표자</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="managerType" value="employee" onchange="updateFormFields()">
+                                    <span>직원</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="form-label required">업체명</label>
                             <input type="text" class="form-input" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label required">사업자등록번호</label>
-                            <input type="text" class="form-input" placeholder="123-45-67890" required>
+                            <div class="flex gap-2">
+                                <input type="text" class="form-input" id="businessNumber" placeholder="123-45-67890" required>
+                                <button type="button" class="btn btn-outline" onclick="verifyBusinessNumber()">사업자확인</button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="form-label required">대표자명</label>
                             <input type="text" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">업종</label>
-                            <input type="text" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">업태</label>
-                            <input type="text" class="form-input">
                         </div>
                     </div>
                     <div class="form-section">
@@ -1141,20 +1162,20 @@ body {
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">대표전화</label>
-                            <input type="tel" class="form-input" placeholder="02-1234-5678">
+                            <label class="form-label required">연락처</label>
+                            <input type="tel" class="form-input" required>
                         </div>
                     </div>
                     <div class="form-section">
                         <h3 class="form-section-title">필수 서류</h3>
                         <div class="form-group">
                             <label class="form-label required">사업자등록증</label>
-                            <input type="file" class="form-input" accept=".pdf,.jpg,.png" required>
+                            <input type="file" class="form-input" id="businessLicense" accept=".pdf,.jpg,.png" required>
                             <div class="form-help">국세청 홈택스에서 발급 가능</div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="employmentCertGroup" style="display: none;">
                             <label class="form-label required">재직증명서</label>
-                            <input type="file" class="form-input" accept=".pdf,.jpg,.png" required>
+                            <input type="file" class="form-input" id="employmentCert" accept=".pdf,.jpg,.png">
                             <div class="form-help">최근 3개월 이내 발급</div>
                         </div>
                     </div>
@@ -1454,7 +1475,61 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('주소 검색 기능은 준비 중입니다.', 'info');
         }
 
+        function updateFormFields() {
+            const managerType = document.querySelector('input[name="managerType"]:checked').value;
+            const employmentCertGroup = document.getElementById('employmentCertGroup');
+            const employmentCert = document.getElementById('employmentCert');
+            
+            if (managerType === 'employee') {
+                employmentCertGroup.style.display = 'block';
+                employmentCert.setAttribute('required', 'required');
+            } else {
+                employmentCertGroup.style.display = 'none';
+                employmentCert.removeAttribute('required');
+                employmentCert.value = '';
+            }
+        }
+
+        function verifyBusinessNumber() {
+            const businessNumber = document.getElementById('businessNumber').value;
+            
+            if (!businessNumber) {
+                showToast('사업자등록번호를 입력해주세요.', 'warning');
+                return;
+            }
+            
+            // 사업자등록번호 형식 검증 (XXX-XX-XXXXX)
+            const businessNumberPattern = /^\d{3}-\d{2}-\d{5}$/;
+            if (!businessNumberPattern.test(businessNumber)) {
+                showToast('올바른 사업자등록번호 형식이 아닙니다. (예: 123-45-67890)', 'warning');
+                return;
+            }
+            
+            // 사업자확인 API 호출 시뮬레이션
+            showToast('사업자등록번호 확인 중...', 'info');
+            
+            // 실제로는 API 호출
+            setTimeout(() => {
+                showToast('사업자등록번호가 확인되었습니다.', 'success');
+            }, 1000);
+        }
+
         function submitConvert() {
+            const form = document.getElementById('convertForm');
+            const managerType = document.querySelector('input[name="managerType"]:checked').value;
+            const employmentCert = document.getElementById('employmentCert');
+            
+            // 직원 선택 시 재직증명서 필수 검증
+            if (managerType === 'employee' && !employmentCert.value) {
+                showToast('재직증명서를 업로드해주세요.', 'warning');
+                return;
+            }
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
             showToast('사업자 회원 전환 신청이 완료되었습니다. 영업일 기준 1~3일 이내 승인 처리됩니다.', 'success');
             closeModal('convertBusinessModal');
         }
@@ -1464,6 +1539,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('profileForm').reset();
             }
         }
+
+        // 사업자등록번호 자동 포맷팅
+        document.addEventListener('DOMContentLoaded', function() {
+            const businessNumberInput = document.getElementById('businessNumber');
+            if (businessNumberInput) {
+                businessNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/[^\d]/g, '');
+                    if (value.length > 3 && value.length <= 5) {
+                        value = value.slice(0, 3) + '-' + value.slice(3);
+                    } else if (value.length > 5) {
+                        value = value.slice(0, 3) + '-' + value.slice(3, 5) + '-' + value.slice(5, 10);
+                    }
+                    e.target.value = value;
+                });
+            }
+        });
 
         // 폼 제출
         document.getElementById('profileForm').addEventListener('submit', function(e) {
