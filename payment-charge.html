@@ -1006,8 +1006,7 @@ body {
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item active" onclick="window.location.href='payment-charge.html'">충전하기</button>
-                    <button class="tab-item" onclick="window.location.href='payment-deposit-distribution.html'">분배 관리</button>
-                    <button class="tab-item" onclick="window.location.href='payment-history.html'">충전/사용 내역</button>
+                    <button class="tab-item" onclick="window.location.href='payment-history.html'">충전 내역</button>
                     <button class="tab-item" onclick="window.location.href='payment-tax.html'">세금계산서 발행</button>
                 </div>
             </div>
@@ -1079,7 +1078,6 @@ body {
                         <div class="alert alert-info">
                             <strong>💡 디파짓 충전 안내</strong><br>
                             충전된 금액은 디파짓(예치금)에 저장되며, 발신번호별 분배는 별도 페이지에서 관리할 수 있습니다.<br>
-                            <a href="payment-deposit-distribution.html" style="color: var(--primary-color); text-decoration: underline; margin-top: 8px; display: inline-block;">분배 관리 페이지로 이동</a>
                         </div>
 
                         <!-- 결제 금액 정보 -->
@@ -1132,7 +1130,7 @@ body {
                                     <td>30원</td>
                                 </tr>
                                 <tr>
-                                    <td>브랜드톡</td>
+                                    <td>브랜드 메시지</td>
                                     <td>30원</td>
                                 </tr>
                             </tbody>
@@ -1159,7 +1157,7 @@ body {
                             <input type="number" class="form-input" id="calcAlimtalk" value="0" min="0" oninput="calculateCharge()">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">브랜드톡 건수</label>
+                            <label class="form-label">브랜드 메시지 건수</label>
                             <input type="number" class="form-input" id="calcBrandtalk" value="0" min="0" oninput="calculateCharge()">
                         </div>
                         <div class="price-info">
@@ -1220,7 +1218,7 @@ body {
                                 <input type="checkbox" value="알림톡"> 알림톡
                             </label>
                             <label style="display: flex; align-items: center; gap: 4px;">
-                                <input type="checkbox" value="브랜드톡"> 브랜드톡
+                                <input type="checkbox" value="브랜드 메시지"> 브랜드 메시지
                             </label>
                         </div>
                     </div>

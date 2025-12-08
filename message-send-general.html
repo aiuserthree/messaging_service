@@ -1104,9 +1104,9 @@ body {
                             </select>
                         </div>
                         <div style="margin-top: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: flex-end;">
-                            <div class="current-balance-display" id="currentBalanceDisplay" style="display: none; margin-right: auto;">
+                            <div class="current-balance-display" id="currentBalanceDisplay" style="display: flex; margin-right: auto;">
                                 <span class="current-balance-label">현재 잔여 포인트:</span>
-                                <span class="current-balance-amount" id="currentBalanceAmount">-</span>
+                                <span class="current-balance-amount" id="currentBalanceAmount">1,000,000</span>
                             </div>
                             <a href="mypage-caller-number.html" class="btn btn-primary btn-lg">새 발신번호 등록하기</a>
                         </div>
@@ -1947,18 +1947,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         function updateCurrentBalance() {
-            const select = document.getElementById('callerNumber');
             const balanceDisplay = document.getElementById('currentBalanceDisplay');
             const balanceAmount = document.getElementById('currentBalanceAmount');
             
-            if (select.value) {
-                // 발신번호에 따른 잔액 조회 (예시: 실제로는 API 호출)
-                const balance = '1,000,000'; // 실제로는 API에서 가져와야 함
-                balanceAmount.textContent = balance;
-                balanceDisplay.style.display = 'flex';
-            } else {
-                balanceDisplay.style.display = 'none';
-            }
+            // 전체 잔여 포인트 조회 (예시: 실제로는 API 호출)
+            const balance = '1,000,000'; // 실제로는 API에서 가져와야 함
+            balanceAmount.textContent = balance;
+            balanceDisplay.style.display = 'flex';
         }
 
         // 수신번호 입력 처리 (테이블에서 직접 입력하므로 이벤트 리스너 불필요)

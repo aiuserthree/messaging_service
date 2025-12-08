@@ -1,15 +1,6 @@
 // 공통 헤더 생성 함수
 function createHeader(activeMenu = '') {
     const menuStructure = {
-        'send': {
-            label: '발송 관리',
-            url: '#',
-            hasDropdown: true,
-            items: [
-                { label: '발송결과', url: 'send-result.html' },
-                { label: '예약내역', url: 'send-reservation.html' }
-            ]
-        },
         'message': {
             label: '문자 발송',
             url: '#',
@@ -21,13 +12,13 @@ function createHeader(activeMenu = '') {
             ]
         },
         'kakao': {
-            label: '카톡 발송',
+            label: '카카오톡 발송',
             url: '#',
             hasDropdown: true,
             items: [
                 { label: '알림톡 발송', url: 'kakao-send-alimtalk.html' },
-                { label: '브랜드톡 발송', url: 'kakao-send-brandtalk.html' },
-                { label: '발신프로필 관리', url: 'kakao-profile-manage.html' }
+                { label: '브랜드 메시지 발송', url: 'kakao-send-brandtalk.html' },
+                { label: '카카오톡 발신 프로필', url: 'kakao-profile-manage.html' }
             ]
         },
         'template': {
@@ -39,7 +30,16 @@ function createHeader(activeMenu = '') {
                 { label: '광고문자', url: 'template-message-ad.html' },
                 { label: '공직선거문자', url: 'template-message-election.html' },
                 { label: '알림톡', url: 'template-alimtalk.html' },
-                { label: '브랜드톡', url: 'template-brandtalk.html' }
+                { label: '브랜드 메시지', url: 'template-brandtalk.html' }
+            ]
+        },
+        'send': {
+            label: '발송 관리',
+            url: '#',
+            hasDropdown: true,
+            items: [
+                { label: '발송결과', url: 'send-result.html' },
+                { label: '예약내역', url: 'send-reservation.html' }
             ]
         },
         'addressbook': {
@@ -57,8 +57,7 @@ function createHeader(activeMenu = '') {
             hasDropdown: true,
             items: [
                 { label: '충전하기', url: 'payment-charge.html' },
-                { label: '분배 관리', url: 'payment-deposit-distribution.html' },
-                { label: '충전/사용 내역', url: 'payment-history.html' },
+                { label: '충전 내역', url: 'payment-history.html' },
                 { label: '세금계산서 발행', url: 'payment-tax.html' }
             ]
         },
@@ -103,7 +102,12 @@ function createHeader(activeMenu = '') {
     // 현재 페이지 URL에서 활성 메뉴 결정
     if (!activeMenu) {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        activeMenu = urlToMenuKey[currentPage] || 'send';
+        // 메인 페이지일 때는 활성 메뉴 없음
+        if (currentPage === 'main.html' || currentPage === 'index.html') {
+            activeMenu = '';
+        } else {
+            activeMenu = urlToMenuKey[currentPage] || '';
+        }
     }
     
     let navHTML = '';
@@ -142,7 +146,7 @@ function createHeader(activeMenu = '') {
         <header class="header">
             <div class="header-content">
                 <div class="logo">
-                    <a href="send-result.html" style="text-decoration: none; color: inherit;">
+                    <a href="main.html" style="text-decoration: none; color: inherit;">
                         <h1>Tokbell</h1>
                     </a>
                 </div>
@@ -258,9 +262,9 @@ function createFloatingMenu() {
                     <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">알림톡 발송</span>
                 </a>
-                <a href="kakao-send-brandtalk.html" class="floating-menu-item" title="브랜드톡 발송">
+                <a href="kakao-send-brandtalk.html" class="floating-menu-item" title="브랜드 메시지 발송">
                     <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
-                    <span class="floating-menu-label">브랜드톡 발송</span>
+                    <span class="floating-menu-label">브랜드 메시지 발송</span>
                 </a>
             </div>
         </div>

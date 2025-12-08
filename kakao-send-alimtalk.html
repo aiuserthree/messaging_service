@@ -972,7 +972,7 @@ body {
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
             <div class="page-header">
-                <h2>카톡 발송</h2>
+                <h2>카카오톡 발송</h2>
                 <p class="page-description">카카오톡 알림톡 메시지를 발송합니다</p>
             </div>
 
@@ -980,8 +980,8 @@ body {
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item active" onclick="window.location.href='kakao-send-alimtalk.html'">알림톡 발송</button>
-                    <button class="tab-item" onclick="window.location.href='kakao-send-brandtalk.html'">브랜드톡 발송</button>
-                    <button class="tab-item" onclick="window.location.href='kakao-profile-manage.html'">발신프로필 관리</button>
+                    <button class="tab-item" onclick="window.location.href='kakao-send-brandtalk.html'">브랜드 메시지 발송</button>
+                    <button class="tab-item" onclick="window.location.href='kakao-profile-manage.html'">카카오톡 발신 프로필</button>
                 </div>
             </div>
 
@@ -1008,15 +1008,15 @@ body {
                     <div class="card" style="margin-bottom: 24px;">
                         <div class="flex-between" style="align-items: flex-end;">
                             <div style="flex: 1; margin-right: 16px;">
-                                <label class="form-label required">발신프로필</label>
+                                <label class="form-label required">카카오톡 발신 프로필</label>
                                 <select class="form-select" id="senderProfile" required>
-                                    <option value="">발신프로필을 선택하세요</option>
+                                    <option value="">카카오톡 발신 프로필을 선택하세요</option>
                                     <option value="profile1">마케팅팀 (승인완료)</option>
                                     <option value="profile2">고객센터 (승인완료)</option>
                                 </select>
                             </div>
                             <div>
-                                <a href="kakao-profile-manage.html" class="btn btn-outline">발신프로필 등록</a>
+                                <a href="kakao-profile-manage.html" class="btn btn-outline">카카오톡 발신 프로필 등록</a>
                             </div>
                         </div>
                     </div>
@@ -1490,7 +1490,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
     <script>
         // 템플릿 존재 여부 확인 (실제로는 API 호출)
-        const hasTemplate = false; // 템플릿이 등록되지 않은 상태
+        const hasTemplate = true; // 템플릿이 등록 완료된 상태
 
         if (hasTemplate) {
             document.getElementById('noTemplateAlert').style.display = 'none';

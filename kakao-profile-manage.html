@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>발신프로필 관리 - 메시징 서비스</title>
+    <title>카카오톡 발신 프로필 관리 - 메시징 서비스</title>
     <script src="js/header.js"></script>
     <style>/* 공통 스타일 */
 * {
@@ -698,16 +698,16 @@ body {
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
             <div class="page-header">
-                <h2>카톡 발송</h2>
-                <p class="page-description">카카오톡 채널(발신프로필)을 등록하고 관리합니다</p>
+                <h2>카카오톡 발송</h2>
+                <p class="page-description">카카오톡 채널(카카오톡 발신 프로필)을 등록하고 관리합니다</p>
             </div>
 
             <!-- 탭 메뉴 -->
             <div class="tabs">
                 <div class="tab-list">
                     <button class="tab-item" onclick="window.location.href='kakao-send-alimtalk.html'">알림톡 발송</button>
-                    <button class="tab-item" onclick="window.location.href='kakao-send-brandtalk.html'">브랜드톡 발송</button>
-                    <button class="tab-item active" onclick="window.location.href='kakao-profile-manage.html'">발신프로필 관리</button>
+                    <button class="tab-item" onclick="window.location.href='kakao-send-brandtalk.html'">브랜드 메시지 발송</button>
+                    <button class="tab-item active" onclick="window.location.href='kakao-profile-manage.html'">카카오톡 발신 프로필</button>
                 </div>
             </div>
 
@@ -715,7 +715,7 @@ body {
             <div class="alert alert-info">
                 <div class="flex-between">
                     <div>
-                        <strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank" style="color: var(--primary-color); text-decoration: underline;">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(발신프로필)만 등록 가능합니다.</strong>
+                        <strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank" style="color: var(--primary-color); text-decoration: underline;">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(카카오톡 발신 프로필)만 등록 가능합니다.</strong>
                     </div>
                 </div>
             </div>
@@ -723,12 +723,12 @@ body {
             <!-- 검색 및 필터 -->
             <div class="card" style="margin-bottom: 24px;">
                 <div class="flex-between" style="margin-bottom: 16px;">
-                    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">발신프로필 목록</h3>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 600;">카카오톡 발신 프로필 목록</h3>
                     <button class="btn btn-primary" onclick="openModal('registerModal')">신규 등록</button>
                 </div>
                 <div class="search-filter-section">
                     <div style="flex: 1; min-width: 200px;">
-                        <input type="text" class="form-input" id="searchInput" placeholder="발신프로필 ID 또는 채널명으로 검색" onkeyup="handleSearch(event)">
+                        <input type="text" class="form-input" id="searchInput" placeholder="카카오톡 발신 프로필 ID 또는 채널명으로 검색" onkeyup="handleSearch(event)">
                     </div>
                     <div style="width: 150px;">
                         <select class="form-select" id="statusFilter" onchange="filterProfiles()">
@@ -745,14 +745,14 @@ body {
                 </div>
             </div>
 
-            <!-- 발신프로필 목록 -->
+            <!-- 카카오톡 발신 프로필 목록 -->
             <div class="card">
                 <div class="table-container">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th style="width: 50px;">NO</th>
-                                <th>발신프로필 ID</th>
+                                <th>카카오톡 발신 프로필 ID</th>
                                 <th>카카오톡 채널명</th>
                                 <th>상태</th>
                                 <th>브랜드메시지</th>
@@ -804,23 +804,23 @@ body {
         </main>
     </div>
 
-    <!-- 발신프로필 등록 모달 -->
+    <!-- 카카오톡 발신 프로필 등록 모달 -->
     <div class="modal-overlay" id="registerModal">
         <div class="modal" style="max-width: 600px;">
             <div class="modal-header">
-                <h3 class="modal-title">발신프로필 등록</h3>
+                <h3 class="modal-title">카카오톡 발신 프로필 등록</h3>
                 <button class="modal-close" onclick="closeModal('registerModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <!-- 등록 절차 안내 -->
                 <div class="alert alert-info" style="margin-bottom: 24px;">
-                    <strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank" style="color: var(--primary-color); text-decoration: underline;">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(발신프로필)만 등록 가능합니다.</strong>
+                    <strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank" style="color: var(--primary-color); text-decoration: underline;">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(카카오톡 발신 프로필)만 등록 가능합니다.</strong>
                 </div>
 
                 <form id="registerForm">
-                    <!-- 발신프로필 ID -->
+                    <!-- 카카오톡 발신 프로필 ID -->
                     <div class="form-group">
-                        <label class="form-label required">발신프로필</label>
+                        <label class="form-label required">카카오톡 발신 프로필</label>
                         <input type="text" class="form-input" id="profileId" placeholder="@" required>
                         <div class="form-error" id="profileIdError"></div>
                     </div>
@@ -890,7 +890,7 @@ body {
                             <option value="기타">기타</option>
                         </select>
                         <div class="form-help">
-                            카카오톡 채널 관리자센터에서 발신프로필별 최초 생성 시 선택했던 카테고리와 동일하게 선택해주세요
+                            카카오톡 채널 관리자센터에서 카카오톡 발신 프로필별 최초 생성 시 선택했던 카테고리와 동일하게 선택해주세요
                         </div>
                         <div class="alert alert-warning" style="margin-top: 8px; padding: 12px; font-size: 12px;">
                             ⚠️ 단, 동일한 카테고리가 없다면 유사한 카테고리로 선택
@@ -905,11 +905,11 @@ body {
         </div>
     </div>
 
-    <!-- 발신프로필 상세 모달 -->
+    <!-- 카카오톡 발신 프로필 상세 모달 -->
     <div class="modal-overlay" id="detailModal">
         <div class="modal" style="max-width: 700px;">
             <div class="modal-header">
-                <h3 class="modal-title">발신프로필 상세</h3>
+                <h3 class="modal-title">카카오톡 발신 프로필 상세</h3>
                 <button class="modal-close" onclick="closeModal('detailModal')">&times;</button>
             </div>
             <div class="modal-body">
@@ -918,7 +918,7 @@ body {
                     <h4 style="margin-bottom: 12px; font-size: 16px; font-weight: 600;">기본 정보</h4>
                     <div style="background: var(--bg-color); padding: 16px; border-radius: var(--radius-md);">
                         <div style="margin-bottom: 8px;">
-                            <strong>발신프로필 ID:</strong> <span id="detailProfileId">@조도람</span>
+                            <strong>카카오톡 발신 프로필 ID:</strong> <span id="detailProfileId">@조도람</span>
                         </div>
                         <div style="margin-bottom: 8px;">
                             <strong>카카오톡 채널명:</strong> <span id="detailChannelName">조도람</span>
@@ -997,13 +997,13 @@ body {
     <div class="modal-overlay" id="deleteModal">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">발신프로필 삭제</h3>
+                <h3 class="modal-title">카카오톡 발신 프로필 삭제</h3>
                 <button class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
             </div>
             <div class="modal-body">
-                <p>선택한 발신프로필을 삭제하시겠습니까?</p>
+                <p>선택한 카카오톡 발신 프로필을 삭제하시겠습니까?</p>
                 <div class="alert alert-warning" style="margin-top: 16px;">
-                    삭제된 발신프로필은 복구할 수 없습니다.<br>
+                    삭제된 카카오톡 발신 프로필은 복구할 수 없습니다.<br>
                     관련 템플릿이 있는 경우 삭제할 수 없습니다.
                 </div>
             </div>
@@ -1112,7 +1112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
     <script>
-        // 발신프로필 검색
+        // 카카오톡 발신 프로필 검색
         function handleSearch(event) {
             if (event.key === 'Enter') {
                 searchProfiles();
@@ -1149,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 유효성 검증
             if (!profileId) {
-                errorDiv.textContent = '발신프로필 ID를 먼저 입력해주세요.';
+                errorDiv.textContent = '카카오톡 발신 프로필 ID를 먼저 입력해주세요.';
                 isPhoneVerified = false;
                 return;
             }
@@ -1168,8 +1168,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // 실제로는 API 호출하여 발신프로필과 휴대폰 번호 일치 여부 확인
-            // 예시: 발신프로필과 휴대폰 번호가 일치하는지 확인
+            // 실제로는 API 호출하여 카카오톡 발신 프로필과 휴대폰 번호 일치 여부 확인
+            // 예시: 카카오톡 발신 프로필과 휴대폰 번호가 일치하는지 확인
             const isVerified = verifyPhoneNumber(profileId, phoneNumberOnly);
             
             if (isVerified) {
@@ -1178,7 +1178,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 isPhoneVerified = true;
                 showToast('인증되었습니다.', 'success');
             } else {
-                errorDiv.textContent = '발신프로필과 휴대폰 번호가 일치하지 않습니다.';
+                errorDiv.textContent = '카카오톡 발신 프로필과 휴대폰 번호가 일치하지 않습니다.';
                 helpDiv.innerHTML = '카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.';
                 isPhoneVerified = false;
             }
@@ -1186,12 +1186,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 휴대폰 번호 검증 (실제로는 API 호출)
         function verifyPhoneNumber(profileId, phoneNumber) {
-            // 실제로는 API 호출하여 발신프로필과 휴대폰 번호 일치 여부 확인
+            // 실제로는 API 호출하여 카카오톡 발신 프로필과 휴대폰 번호 일치 여부 확인
             // 예시: 간단한 검증 로직 (실제로는 서버에서 확인)
             return true; // 임시로 항상 true 반환
         }
 
-        // 발신프로필 등록
+        // 카카오톡 발신 프로필 등록
         function registerProfile() {
             const profileId = document.getElementById('profileId').value.trim();
             const phoneNumber = document.getElementById('phoneNumber').value.trim();
@@ -1201,17 +1201,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 유효성 검증
             if (!profileId) {
-                document.getElementById('profileIdError').textContent = '발신프로필 ID를 입력해주세요.';
+                document.getElementById('profileIdError').textContent = '카카오톡 발신 프로필 ID를 입력해주세요.';
                 return;
             }
 
             if (!profileId.startsWith('@')) {
-                document.getElementById('profileIdError').textContent = '발신프로필 ID는 @로 시작해야 합니다.';
+                document.getElementById('profileIdError').textContent = '카카오톡 발신 프로필 ID는 @로 시작해야 합니다.';
                 return;
             }
 
             if (!/^@[a-zA-Z0-9_\uAC00-\uD7A3]+$/.test(profileId)) {
-                document.getElementById('profileIdError').textContent = '발신프로필 ID는 @, 영문, 숫자, 언더스코어, 한글만 허용됩니다.';
+                document.getElementById('profileIdError').textContent = '카카오톡 발신 프로필 ID는 @, 영문, 숫자, 언더스코어, 한글만 허용됩니다.';
                 return;
             }
 
@@ -1250,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // 실제로는 API 호출
-            showToast('발신프로필이 등록되었습니다.', 'success');
+            showToast('카카오톡 발신 프로필이 등록되었습니다.', 'success');
             closeModal('registerModal');
             
             // 폼 초기화
@@ -1261,7 +1261,7 @@ document.addEventListener('DOMContentLoaded', function() {
             isPhoneVerified = false;
         }
 
-        // 발신프로필 상세보기
+        // 카카오톡 발신 프로필 상세보기
         function viewProfileDetail(profileId) {
             // 실제로는 API 호출하여 상세 정보 조회
             // 예시 데이터
@@ -1309,18 +1309,18 @@ document.addEventListener('DOMContentLoaded', function() {
             openModal('detailModal');
         }
 
-        // 발신프로필 수정
+        // 카카오톡 발신 프로필 수정
         function editProfile() {
             showToast('수정 기능은 준비 중입니다.', 'info');
         }
 
-        // 발신프로필 삭제
+        // 카카오톡 발신 프로필 삭제
         function deleteProfile() {
             openModal('deleteModal');
         }
 
         function confirmDelete() {
-            showToast('발신프로필이 삭제되었습니다.', 'success');
+            showToast('카카오톡 발신 프로필이 삭제되었습니다.', 'success');
             closeModal('deleteModal');
             closeModal('detailModal');
         }
@@ -1330,7 +1330,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'template-alimtalk.html';
         }
 
-        // 발신프로필 ID 입력 시 @ 자동 추가 및 에러 메시지 제거, 인증 상태 초기화
+        // 카카오톡 발신 프로필 ID 입력 시 @ 자동 추가 및 에러 메시지 제거, 인증 상태 초기화
         document.getElementById('profileId')?.addEventListener('input', function(e) {
             let value = e.target.value;
             if (value && !value.startsWith('@')) {
@@ -1339,7 +1339,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 입력 시 에러 메시지 제거
             if (value) {
                 document.getElementById('profileIdError').textContent = '';
-                // 발신프로필 ID가 변경되면 인증 상태 초기화
+                // 카카오톡 발신 프로필 ID가 변경되면 인증 상태 초기화
                 isPhoneVerified = false;
                 const helpDiv = document.getElementById('phoneNumberHelp');
                 if (helpDiv && helpDiv.innerHTML.includes('인증되었습니다')) {
