@@ -1009,6 +1009,34 @@ body {
                 position: static;
             }
         }
+        /* 토글 스위치 스타일 */
+        #fallbackToggle {
+            width: 44px;
+            height: 24px;
+            cursor: pointer;
+            appearance: none;
+            background: #10b981;
+            border-radius: 12px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        #fallbackToggle::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+        #fallbackToggle:checked::before {
+            transform: translateX(20px);
+        }
+        #fallbackToggle:not(:checked) {
+            background: #cbd5e1;
+        }
     </style>
 </head>
 <body>
@@ -1058,6 +1086,15 @@ body {
 
                 <!-- 템플릿이 있는 경우 발송 폼 -->
                 <div id="sendFormArea" style="display: none;">
+                    <!-- 광고성 메시지 안내 -->
+                    <div class="alert alert-warning" style="margin-bottom: 24px;">
+                        <strong>⚠️ 브랜드 메시지는 광고성 메시지입니다</strong>
+                        <p style="margin-top: 8px; font-size: 13px;">
+                            브랜드 메시지 발송 시 광고성 메시지임을 명시하고, 수신자 동의를 확보해야 합니다.<br>
+                            광고성 메시지 수신 동의가 없는 경우 발송이 제한될 수 있습니다.
+                        </p>
+                    </div>
+
                     <!-- 발신프로필 선택 영역 (페이지 상단) -->
                     <div class="card" style="margin-bottom: 24px;">
                         <div class="flex-between" style="align-items: flex-end;">
@@ -1075,13 +1112,74 @@ body {
                         </div>
                     </div>
 
-                    <!-- 광고성 메시지 안내 -->
-                    <div class="alert alert-warning" style="margin-bottom: 24px;">
-                        <strong>⚠️ 브랜드 메시지는 광고성 메시지입니다</strong>
-                        <p style="margin-top: 8px; font-size: 13px;">
-                            브랜드 메시지 발송 시 광고성 메시지임을 명시하고, 수신자 동의를 확보해야 합니다.<br>
-                            광고성 메시지 수신 동의가 없는 경우 발송이 제한될 수 있습니다.
-                        </p>
+                    <!-- 발송 대상 선택 영역 -->
+                    <div class="card" style="margin-bottom: 24px;">
+                        <label class="form-label required" style="margin-bottom: 20px;">발송 대상 선택</label>
+
+                        <!-- 정보 박스 -->
+                        <div style="background: #FEF9C3; border: 1px solid #FDE047; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                <div style="font-size: 20px; flex-shrink: 0;">💡</div>
+                                <div style="flex: 1;">
+                                    <ul style="margin: 0; padding-left: 20px; color: #713f12; font-size: 14px; line-height: 1.8;">
+                                        <li>브랜드 메시지는 마케팅 수신 동의한 회원 또는 채널 친구에게 발송할 수 있어요</li>
+                                        <li>N, M 타입은 비친구 광고 채널 신청을 완료해야 발송할 수 있어요</li>
+                                    </ul>
+                                    <a href="https://kakaobusiness.gitbook.io/main/ad/moment/messagead/brandmessage/new" target="_blank" style="display: inline-flex; align-items: center; gap: 4px; color: #2563eb; text-decoration: none; font-size: 14px; margin-top: 8px; font-weight: 500;">
+                                        비친구 광고 채널 안내
+                                        <span style="font-size: 12px;">↗</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 발송 대상 선택 옵션 -->
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <!-- 옵션 I -->
+                            <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #8b5cf6; border-radius: 12px; background: #faf5ff; cursor: pointer; transition: all 0.2s;">
+                                <input type="radio" name="targetType" value="I" checked style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                        <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">I: 마케팅 수신 동의한 채널 친구</span>
+                                        <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">기존 친구톡</span>
+                                    </div>
+                                    <p style="color: #8b5cf6; font-size: 14px; margin: 0; line-height: 1.6;">서비스 이용 고객 중 채널 친구 추가를 완료한 핵심 회원 타겟팅</p>
+                                </div>
+                            </label>
+
+                            <!-- 옵션 N -->
+                            <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;">
+                                <input type="radio" name="targetType" value="N" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                        <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">N: 채널 비친구</span>
+                                        <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">비친구 광고 채널 전용</span>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.6;">친구 추가 이벤트 등 채널 친구 유도 광고에 활용</p>
+                                </div>
+                            </label>
+
+                            <!-- 옵션 M -->
+                            <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;">
+                                <input type="radio" name="targetType" value="M" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                        <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">M: 마케팅 수신 동의 회원</span>
+                                        <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">비친구 광고 채널 전용</span>
+                                    </div>
+                                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.6;">멤버십 알림 등 수신 동의 회원 대상 광고에 활용</p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- 080 수신거부 번호 (N, M 선택 시 표시) -->
+                        <div id="optOutNumberArea" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); display: none;">
+                            <label class="form-label">080 수신거부 번호</label>
+                            <div style="padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-primary);">
+                                080-123-4567
+                            </div>
+                            <div class="form-help" style="margin-top: 8px;">N, M 타입 발송 시 필수로 표시되는 수신거부 번호입니다.</div>
+                        </div>
                     </div>
 
                     <div class="send-form-container">
@@ -1134,10 +1232,102 @@ body {
                                     </div>
                                 </div>
 
-                                <!-- 대체 메시지 -->
-                                <div class="form-group">
-                                    <label class="form-label required">대체 메시지</label>
-                                    <textarea class="form-textarea" id="fallbackMessage" rows="4" placeholder="카카오톡 미가입자에게 발송될 SMS/LMS 메시지를 입력하세요" required></textarea>
+                                <!-- 대체문자 작성 -->
+                                <div class="form-group" style="margin-top: 32px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                                        <label class="form-label required" style="margin-bottom: 0;">대체문자 작성</label>
+                                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                            <input type="checkbox" id="fallbackToggle">
+                                        </label>
+                                    </div>
+
+                                    <div id="fallbackContent" style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; display: none;">
+                                        <!-- 문자 유형 선택 -->
+                                        <div style="margin-bottom: 24px;">
+                                            <h4 style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">문자 유형 선택</h4>
+                                            <ul style="margin: 0 0 16px 0; padding-left: 20px; color: var(--text-secondary); font-size: 14px; line-height: 1.8;">
+                                                <li>SMS 단문 선택시 앞 45글자만 대체문자로 발송됩니다</li>
+                                                <li>잔액 부족시, 모든 대체 문자 발송이 실패 처리됩니다</li>
+                                                <li>LMS 장문 선택시 이미지는 발송되지 않아요</li>
+                                            </ul>
+                                            <div style="display: flex; gap: 16px;">
+                                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                    <input type="radio" name="fallbackMessageType" value="SMS" checked style="width: 18px; height: 18px; cursor: pointer;">
+                                                    <span style="font-size: 14px; font-weight: 500;">SMS</span>
+                                                </label>
+                                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                    <input type="radio" name="fallbackMessageType" value="LMS" style="width: 18px; height: 18px; cursor: pointer;">
+                                                    <span style="font-size: 14px; font-weight: 500;">LMS</span>
+                                                </label>
+                                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                                    <input type="radio" name="fallbackMessageType" value="MMS" style="width: 18px; height: 18px; cursor: pointer;">
+                                                    <span style="font-size: 14px; font-weight: 500;">MMS</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- 발신번호 -->
+                                        <div class="form-group" style="margin-bottom: 16px;">
+                                            <label class="form-label">발신번호</label>
+                                            <div style="position: relative;">
+                                                <input type="text" class="form-input" id="fallbackSenderNumber" value="010-9872-5784 (기본) (아이뱅크)" readonly style="padding-right: 40px;">
+                                                <span style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); cursor: pointer;">▼</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- 회신번호 (고정) -->
+                                        <div class="form-group" style="margin-bottom: 16px;">
+                                            <label class="form-label">회신번호</label>
+                                            <div style="padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-primary);">
+                                                080-123-4567
+                                            </div>
+                                        </div>
+
+                                        <!-- 상호명 -->
+                                        <div class="form-group" style="margin-bottom: 16px;">
+                                            <div style="display: grid; grid-template-columns: 100px 1fr; gap: 12px; align-items: end;">
+                                                <label class="form-label" style="margin-bottom: 0;">상호명</label>
+                                                <div style="position: relative;">
+                                                    <input type="text" class="form-input" id="fallbackCompanyName" value="아이뱅크" style="padding-right: 32px;">
+                                                    <span style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); cursor: pointer; font-size: 16px;">×</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- LMS 제목 입력란 (LMS 선택 시에만 표시) -->
+                                        <div class="form-group" id="fallbackLmsTitleGroup" style="margin-bottom: 16px; display: none;">
+                                            <label class="form-label">제목</label>
+                                            <input type="text" class="form-input" id="fallbackLmsTitle" placeholder="제목을 입력하세요" maxlength="30">
+                                            <div class="form-help">최대 30자</div>
+                                        </div>
+
+                                        <!-- MMS 이미지 첨부 영역 (MMS 선택 시에만 표시) -->
+                                        <div class="form-group" id="fallbackMmsImageGroup" style="margin-bottom: 16px; display: none;">
+                                            <label class="form-label">이미지 첨부 (최대 3개)</label>
+                                            <div id="fallbackMmsImageList" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px;"></div>
+                                            <input type="file" class="form-input" id="fallbackMmsImageInput" accept="image/*" multiple style="display: none;" onchange="handleFallbackMmsImageUpload(event)">
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('fallbackMmsImageInput').click()" id="fallbackMmsImageAddBtn">
+                                                이미지 추가
+                                            </button>
+                                            <div class="form-help">JPG, PNG (각 최대 500KB)</div>
+                                        </div>
+
+                                        <!-- 메시지 내용 -->
+                                        <div class="form-group" style="margin-bottom: 16px;">
+                                            <label class="form-label">메시지 내용</label>
+                                            <div style="position: relative;">
+                                                <textarea class="form-textarea" id="fallbackMessage" rows="6" placeholder="메시지 내용을 입력하세요" style="padding-bottom: 40px; resize: none;"></textarea>
+                                                <div style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; color: var(--text-secondary);">
+                                                    <span id="fallbackCharCount">0</span> / <span id="fallbackByteCount">90</span>byte
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 미리보기 버튼 -->
+                                        <div style="text-align: right;">
+                                            <button type="button" class="btn btn-outline" onclick="previewFallbackMessage()" style="background: #f8fafc; border-color: #e2e8f0; color: var(--text-primary);">미리보기</button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- 발송 시간 -->
@@ -1206,6 +1396,9 @@ body {
                                         <div id="previewImage" style="margin-bottom: 12px;"></div>
                                         <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;"></div>
                                         <div class="button-list" id="previewButtons"></div>
+                                        <div id="previewOptOut" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; text-align: right; font-size: 12px; color: var(--text-secondary); display: none;">
+                                            수신거부 | 홈 > 채널차단
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1607,7 +1800,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function updatePreview() {
             const content = document.getElementById('messageContent').value;
-            document.getElementById('previewContent').textContent = content || '메시지 내용을 입력하세요';
+            const selectedType = document.querySelector('input[name="targetType"]:checked')?.value || 'I';
+            const previewOptOut = document.getElementById('previewOptOut');
+            
+            // 메시지 내용
+            let previewText = content || '메시지 내용을 입력하세요';
+            
+            // N 또는 M 타입 선택 시 메시지 끝에 수신거부 번호 추가
+            if (selectedType === 'N' || selectedType === 'M') {
+                if (previewText && previewText !== '메시지 내용을 입력하세요') {
+                    previewText += '\n\n무료수신거부 080-123-4567';
+                }
+                // 하단 수신거부 영역 숨김
+                if (previewOptOut) {
+                    previewOptOut.style.display = 'none';
+                }
+            } else {
+                // I 타입 선택 시 하단 수신거부 영역 표시
+                if (previewOptOut) {
+                    previewOptOut.style.display = 'block';
+                    previewOptOut.textContent = '수신거부 | 홈 > 채널차단';
+                }
+            }
+            
+            document.getElementById('previewContent').textContent = previewText;
             
             // 이미지 미리보기
             const imagePreview = document.getElementById('imagePreview').innerHTML;
@@ -1849,6 +2065,215 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal('templateSaveModal');
         }
 
+        // 대체문자 토글 기능
+        const fallbackToggle = document.getElementById('fallbackToggle');
+        const fallbackContent = document.getElementById('fallbackContent');
+        if (fallbackToggle && fallbackContent) {
+            fallbackToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    fallbackContent.style.display = 'block';
+                } else {
+                    fallbackContent.style.display = 'none';
+                }
+            });
+        }
+
+        // 대체문자 글자수 카운터
+        const fallbackMessage = document.getElementById('fallbackMessage');
+        const fallbackCharCount = document.getElementById('fallbackCharCount');
+        const fallbackByteCount = document.getElementById('fallbackByteCount');
+        if (fallbackMessage && fallbackCharCount && fallbackByteCount) {
+            function updateFallbackCount() {
+                const text = fallbackMessage.value;
+                const charCount = text.length;
+                const byteCount = calculateByteLength(text);
+                fallbackCharCount.textContent = charCount;
+                fallbackByteCount.textContent = 90; // 최대 바이트 수
+            }
+            fallbackMessage.addEventListener('input', updateFallbackCount);
+            updateFallbackCount();
+        }
+
+        // 문자 유형 선택에 따른 UI 업데이트
+        document.querySelectorAll('input[name="fallbackMessageType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const messageType = this.value;
+                const lmsTitleGroup = document.getElementById('fallbackLmsTitleGroup');
+                const mmsImageGroup = document.getElementById('fallbackMmsImageGroup');
+                const mmsImageAddBtn = document.getElementById('fallbackMmsImageAddBtn');
+                
+                if (messageType === 'LMS') {
+                    if (lmsTitleGroup) lmsTitleGroup.style.display = 'block';
+                    if (mmsImageGroup) mmsImageGroup.style.display = 'none';
+                } else if (messageType === 'MMS') {
+                    if (lmsTitleGroup) lmsTitleGroup.style.display = 'none';
+                    if (mmsImageGroup) mmsImageGroup.style.display = 'block';
+                    if (mmsImageAddBtn && fallbackMmsImageCount < 3) {
+                        mmsImageAddBtn.style.display = 'inline-flex';
+                    }
+                } else {
+                    if (lmsTitleGroup) lmsTitleGroup.style.display = 'none';
+                    if (mmsImageGroup) mmsImageGroup.style.display = 'none';
+                }
+            });
+        });
+
+        // 초기 상태 설정
+        const initialMessageType = document.querySelector('input[name="fallbackMessageType"]:checked');
+        if (initialMessageType) {
+            initialMessageType.dispatchEvent(new Event('change'));
+        }
+
+        // MMS 이미지 첨부 처리
+        let fallbackMmsImageCount = 0;
+        function handleFallbackMmsImageUpload(event) {
+            const files = Array.from(event.target.files);
+            const maxImages = 3;
+            
+            if (fallbackMmsImageCount + files.length > maxImages) {
+                showToast(`최대 ${maxImages}개까지 첨부할 수 있습니다.`, 'warning');
+                return;
+            }
+            
+            const imageList = document.getElementById('fallbackMmsImageList');
+            if (!imageList) return;
+            
+            files.forEach(file => {
+                if (fallbackMmsImageCount >= maxImages) return;
+                
+                if (!file.type.startsWith('image/')) {
+                    showToast('이미지 파일만 업로드 가능합니다.', 'warning');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageItem = document.createElement('div');
+                    imageItem.style.position = 'relative';
+                    imageItem.style.border = '1px solid var(--border-color)';
+                    imageItem.style.borderRadius = '8px';
+                    imageItem.style.overflow = 'hidden';
+                    imageItem.innerHTML = `
+                        <img src="${e.target.result}" style="width: 100%; height: 150px; object-fit: cover; display: block;">
+                        <button type="button" onclick="removeFallbackMmsImage(this)" style="position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.6); color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; line-height: 1;">×</button>
+                    `;
+                    imageList.appendChild(imageItem);
+                    fallbackMmsImageCount++;
+                    
+                    // 이미지 개수에 따라 추가 버튼 표시/숨김
+                    const addBtn = document.getElementById('fallbackMmsImageAddBtn');
+                    if (addBtn) {
+                        addBtn.style.display = fallbackMmsImageCount < maxImages ? 'inline-flex' : 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            // 파일 입력 초기화
+            event.target.value = '';
+        }
+
+        function removeFallbackMmsImage(btn) {
+            btn.parentElement.remove();
+            fallbackMmsImageCount--;
+            
+            // 이미지 개수에 따라 추가 버튼 표시/숨김
+            const addBtn = document.getElementById('fallbackMmsImageAddBtn');
+            if (addBtn) {
+                addBtn.style.display = fallbackMmsImageCount < 3 ? 'inline-flex' : 'none';
+            }
+        }
+
+        // 미리보기 함수
+        function previewFallbackMessage() {
+            const message = document.getElementById('fallbackMessage').value;
+            const messageType = document.querySelector('input[name="fallbackMessageType"]:checked').value;
+            const senderNumber = document.getElementById('fallbackSenderNumber').value;
+            const companyName = document.getElementById('fallbackCompanyName').value || '아이뱅크';
+            
+            // 발신번호 추출 (010-9872-5784 형식)
+            const phoneMatch = senderNumber.match(/(\d{3}-\d{4}-\d{4})/);
+            const displayPhone = phoneMatch ? phoneMatch[1] : '010-9872-5784';
+            
+            // 바이트 계산
+            const byteCount = calculateByteLength(message);
+            const maxByte = messageType === 'SMS' ? 90 : (messageType === 'LMS' ? 2000 : 2000);
+            
+            // 메시지 타입 한글명
+            const messageTypeName = messageType === 'SMS' ? '단문 SMS' : (messageType === 'LMS' ? '장문 LMS' : '멀티 MMS');
+            
+            // 미리보기 내용 업데이트
+            const previewPhone = document.getElementById('previewFallbackPhone');
+            const previewMessageType = document.getElementById('previewFallbackMessageType');
+            const previewContent = document.getElementById('previewFallbackContent');
+            
+            if (previewPhone) previewPhone.textContent = displayPhone;
+            if (previewMessageType) previewMessageType.textContent = `${messageTypeName} (${byteCount}/${maxByte}byte)`;
+            if (previewContent) {
+                let content = '[Web발신]\n';
+                content += `(광고)${companyName}\n`;
+                content += message || '테스트 메시지입니다.';
+                content += '\n무료거부080-123-4567인증****';
+                previewContent.textContent = content;
+            }
+            
+            // 모달 열기
+            openModal('fallbackPreviewModal');
+        }
+
+        // 발송 대상 선택 라디오 버튼 스타일 업데이트 및 080 수신거부 번호 표시
+        document.querySelectorAll('input[name="targetType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const selectedType = this.value;
+                const optOutNumberArea = document.getElementById('optOutNumberArea');
+                
+                document.querySelectorAll('input[name="targetType"]').forEach(r => {
+                    const label = r.closest('label');
+                    if (label) {
+                        if (r.checked) {
+                            label.style.borderColor = '#8b5cf6';
+                            label.style.background = '#faf5ff';
+                            const p = label.querySelector('p');
+                            if (p) p.style.color = '#8b5cf6';
+                        } else {
+                            label.style.borderColor = '#e5e7eb';
+                            label.style.background = 'white';
+                            const p = label.querySelector('p');
+                            if (p) p.style.color = 'var(--text-secondary)';
+                        }
+                    }
+                });
+                
+                // N 또는 M 선택 시 080 수신거부 번호 표시
+                if (optOutNumberArea) {
+                    if (selectedType === 'N' || selectedType === 'M') {
+                        optOutNumberArea.style.display = 'block';
+                    } else {
+                        optOutNumberArea.style.display = 'none';
+                    }
+                }
+                
+                // 미리보기 업데이트
+                updatePreview();
+            });
+        });
+        
+        // 초기 상태 설정 (I가 기본 선택이므로 080 수신거부 번호는 숨김)
+        const initialTargetType = document.querySelector('input[name="targetType"]:checked');
+        if (initialTargetType) {
+            const optOutNumberArea = document.getElementById('optOutNumberArea');
+            if (optOutNumberArea) {
+                if (initialTargetType.value === 'I') {
+                    optOutNumberArea.style.display = 'none';
+                } else {
+                    optOutNumberArea.style.display = 'block';
+                }
+            }
+            
+            // 미리보기 초기 설정
+            updatePreview();
+        }
+
         // 폼 제출
         document.getElementById('sendForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1945,6 +2370,36 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('templateSaveModal')">취소</button>
                 <button class="btn btn-primary" onclick="saveTemplateConfirm()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 대체문자 미리보기 모달 -->
+    <div class="modal-overlay" id="fallbackPreviewModal">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3 class="modal-title">발송결과 미리보기</h3>
+                <button class="modal-close" onclick="closeModal('fallbackPreviewModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 13px; color: var(--text-secondary);">
+                    • 이용하시는 통신사 및 수신자의 단말기별로 실제 결과에 차이가 있을 수 있습니다.
+                </div>
+                <div style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; display: flex; justify-content: center;">
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; width: 280px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <div style="font-size: 14px; color: var(--text-primary); margin-bottom: 8px; font-weight: 500;" id="previewFallbackPhone">010-9872-5784</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 16px;" id="previewFallbackMessageType">단문 SMS (0/90byte)</div>
+                        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; font-size: 14px; color: var(--text-primary); line-height: 1.6; white-space: pre-wrap;" id="previewFallbackContent">
+[Web발신]
+(광고)아이뱅크
+테스트 메시지입니다.
+무료거부080-123-4567인증****
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal('fallbackPreviewModal')" style="width: 100%;">확인</button>
             </div>
         </div>
     </div>
