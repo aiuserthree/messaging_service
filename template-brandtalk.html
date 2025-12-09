@@ -1115,21 +1115,19 @@ body {
             </div>
             <div class="modal-body">
                 <div class="preview-kakao">
-                    <div class="preview-kakao-header">
-                        <div class="preview-kakao-profile"></div>
-                        <div>
-                            <div style="font-weight: 600;">마케팅팀</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
-                        </div>
-                    </div>
+                    <div class="preview-kakao-channel-title" id="previewChannelName">마케팅팀</div>
+                    <div class="preview-kakao-ad-label">(광고) <span id="previewAdChannelName">마케팅팀</span></div>
                     <div class="preview-kakao-body">
-                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left !important; display: block; width: 100%; margin: 0 !important; padding: 0 !important; direction: ltr; unicode-bidi: embed;">특별 이벤트가 시작되었습니다!
+                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left; font-size: 14px;">특별 이벤트가 시작되었습니다!
 할인율: #{할인율}%
 자세한 내용은 버튼을 클릭해주세요.</div>
-                        <div class="button-preview">
-                            <div class="button-preview-item">자세히 보기</div>
-                            <div class="button-preview-item">구매하기</div>
+                        <div class="button-preview" id="previewButtons">
+                            <div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; text-align: center; font-size: 13px; margin-top: 8px;">자세히 보기</div>
+                            <div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; text-align: center; font-size: 13px; margin-top: 8px;">구매하기</div>
                         </div>
+                    </div>
+                    <div style="margin-top: 12px; text-align: right; font-size: 11px; color: #5a7a8a;">
+                        수신거부 | 홈 > 채널차단
                     </div>
                 </div>
             </div>
@@ -1527,26 +1525,23 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
     <style>
         .preview-kakao {
-            background: #FEE500;
+            background: #9fc5d8;
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: left !important;
         }
-        .preview-kakao-header {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .preview-kakao-channel-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .preview-kakao-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
+        .preview-kakao-ad-label {
+            font-size: 12px;
+            color: #5a7a8a;
+            margin-bottom: 8px;
         }
         .preview-kakao-body {
             background: white;
@@ -1566,16 +1561,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         .button-preview {
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            gap: 0;
             margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .button-preview-item {
-            padding: 8px 16px;
-            background: var(--primary-color);
-            color: white;
-            border-radius: var(--radius-md);
-            font-size: 12px;
         }
     </style>
     <script src="js/footer.js"></script>

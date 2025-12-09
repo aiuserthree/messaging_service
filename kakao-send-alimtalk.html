@@ -948,31 +948,65 @@ body {
             height: fit-content;
         }
         .preview-kakao {
-            background: #FEE500;
+            background: #e5e5ea;
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .preview-kakao-header {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            margin-bottom: 12px;
         }
-        .preview-kakao-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
+        .preview-kakao-channel-name {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        .preview-kakao-badge {
+            background: #000;
+            color: #fff;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: 500;
         }
         .preview-kakao-body {
-            background: white;
+            background: #fff;
             border-radius: 12px;
-            padding: 16px;
-            min-height: 200px;
+            overflow: hidden;
+            min-height: 100px;
+        }
+        .preview-kakao-alimtalk-bar {
+            background: #FEE500;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-kakao-alimtalk-bar span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+        .preview-kakao-alimtalk-bar .kakao-icon {
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 700;
+        }
+        .preview-kakao-content {
+            padding: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
         }
         .variable-input-group {
             margin-bottom: 16px;
@@ -1289,14 +1323,17 @@ body {
                                 <h3 class="card-title">메시지 미리보기</h3>
                                 <div class="preview-kakao">
                                     <div class="preview-kakao-header">
-                                        <div class="preview-kakao-profile"></div>
-                                        <div>
-                                            <div style="font-weight: 600;" id="previewProfileName">마케팅팀</div>
-                                            <div style="font-size: 12px; color: var(--text-secondary);" id="previewTime">오늘 오후 2:30</div>
-                                        </div>
+                                        <span class="preview-kakao-channel-name" id="previewProfileName">카카오톡 채널명</span>
+                                        <span class="preview-kakao-badge">kakao</span>
                                     </div>
                                     <div class="preview-kakao-body">
-                                        <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;"></div>
+                                        <div class="preview-kakao-alimtalk-bar">
+                                            <span>알림톡 도착</span>
+                                            <div class="kakao-icon">kakao</div>
+                                        </div>
+                                        <div class="preview-kakao-content">
+                                            <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">발신프로필 및 템플릿을 선택해주세요.</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1670,6 +1707,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const tabId = this.getAttribute('data-tab');
                 switchTab(tabId, 'sendForm');
             });
+        });
+
+        // 발신 프로필 선택 시 미리보기 채널명 업데이트
+        document.getElementById('senderProfile').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const channelName = selectedOption.text || '카카오톡 채널명';
+            document.getElementById('previewProfileName').textContent = channelName;
         });
 
         // 발송 시간 변경

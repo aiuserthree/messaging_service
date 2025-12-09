@@ -1139,16 +1139,19 @@ body {
             <div class="modal-body">
                 <div class="preview-kakao">
                     <div class="preview-kakao-header">
-                        <div class="preview-kakao-profile"></div>
-                        <div>
-                            <div style="font-weight: 600;">마케팅팀</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
-                        </div>
+                        <span class="preview-kakao-channel-name" id="previewChannelName">마케팅팀</span>
+                        <span class="preview-kakao-badge">kakao</span>
                     </div>
                     <div class="preview-kakao-body">
-                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left !important; direction: ltr; margin: 0; padding: 0; margin-left: -16px; padding-left: 16px;">주문이 접수되었습니다.
+                        <div class="preview-kakao-alimtalk-bar">
+                            <span style="font-size: 13px; font-weight: 600; color: #3c1e1e;">알림톡 도착</span>
+                            <span style="font-size: 11px; color: #666;">오후 2:30</span>
+                        </div>
+                        <div style="padding: 14px;">
+                            <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left; font-size: 14px;">주문이 접수되었습니다.
 주문번호: #{주문번호}
 배송 예정일: #{배송일}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1544,40 +1547,48 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
     <style>
         .preview-kakao {
-            background: #FEE500;
+            background: #e5e5ea;
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .preview-kakao-header {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            margin-bottom: 12px;
         }
-        .preview-kakao-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
+        .preview-kakao-channel-name {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        .preview-kakao-badge {
+            background: #000;
+            color: #fff;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: 500;
         }
         .preview-kakao-body {
             background: white;
             border-radius: 12px;
-            padding: 16px;
+            overflow: hidden;
             min-height: 100px;
-            text-align: left;
+        }
+        .preview-kakao-alimtalk-bar {
+            background: #FEE500;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         #previewTemplateContent {
             text-align: left !important;
             direction: ltr !important;
             margin: 0;
             padding: 0;
-            margin-left: -16px;
-            padding-left: 16px;
         }
     </style>
     <script src="js/footer.js"></script>

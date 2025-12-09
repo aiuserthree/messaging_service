@@ -920,54 +920,71 @@ body {
             height: fit-content;
         }
         .preview-kakao {
-            background: #FEE500;
+            background: #e5e5ea;
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .preview-kakao-header {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            margin-bottom: 12px;
         }
-        .preview-kakao-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
+        .preview-kakao-channel-name {
+            font-size: 13px;
+            color: #666;
+            font-weight: 500;
+        }
+        .preview-kakao-badge {
+            background: #000;
+            color: #fff;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: 500;
         }
         .preview-kakao-body {
-            background: white;
+            background: #fff;
             border-radius: 12px;
-            padding: 16px;
-            min-height: 200px;
+            overflow: hidden;
+            min-height: 100px;
+        }
+        .preview-kakao-alimtalk-bar {
+            background: #FEE500;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-kakao-alimtalk-bar span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+        }
+        .preview-kakao-alimtalk-bar .kakao-icon {
+            width: 20px;
+            height: 20px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 700;
+        }
+        .preview-kakao-content {
+            padding: 14px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
         }
         .button-preview {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 12px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .button-preview-item {
-            padding: 8px 16px;
-            background: white;
-            color: var(--text-primary);
-            border-radius: var(--radius-md);
-            font-size: 12px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-        .button-preview-channel {
-            background: #FEE500;
-            color: var(--text-primary);
-            border: none;
-            font-weight: 500;
+            gap: 0;
+            margin-top: 0;
         }
         @media (max-width: 1024px) {
             .register-layout {
@@ -1080,9 +1097,10 @@ body {
                         <!-- 카카오 채널 선택 -->
                         <div class="form-group">
                             <label class="form-label required">카카오 채널</label>
-                            <select class="form-select" required>
-                                <option>마케팅팀 (채널 ID: @marketing)</option>
-                                <option>고객센터 (채널 ID: @support)</option>
+                            <select class="form-select" id="channelSelect" required onchange="updatePreviewChannelName()">
+                                <option value="">카카오 채널을 선택해주세요</option>
+                                <option value="마케팅팀">마케팅팀 (채널 ID: @marketing)</option>
+                                <option value="고객센터">고객센터 (채널 ID: @support)</option>
                             </select>
                         </div>
 
@@ -1139,7 +1157,7 @@ body {
                             <div class="form-group" style="margin-bottom: 16px;">
                                 <label class="form-label required">강조표기 보조문구</label>
                                 <div style="position: relative;">
-                                    <input type="text" class="form-input" id="emphasisSubText" placeholder="템플릿 내용과 관련된 내용만 입력 가능, 변수 불가" maxlength="18" oninput="updateEmphasisCounter('sub')">
+                                    <input type="text" class="form-input" id="emphasisSubText" placeholder="템플릿 내용과 관련된 내용만 입력 가능, 변수 불가" maxlength="18" oninput="updateEmphasisCounter('sub'); updatePreview();">
                                     <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 12px; pointer-events: none;">
                                         <span id="emphasisSubCounter">0</span>/18자
                                     </div>
@@ -1152,7 +1170,7 @@ body {
                                     <button type="button" class="btn btn-sm btn-outline" onclick="insertEmphasisVariable('#{전화번호}')">#{전화번호}</button>
                                 </div>
                                 <div style="position: relative;">
-                                    <input type="text" class="form-input" id="emphasisText" placeholder="템플릿 내용과 관련된 내용만 입력 가능, 변수 가능" maxlength="23" oninput="updateEmphasisCounter('main')">
+                                    <input type="text" class="form-input" id="emphasisText" placeholder="템플릿 내용과 관련된 내용만 입력 가능, 변수 가능" maxlength="23" oninput="updateEmphasisCounter('main'); updatePreview();">
                                     <div style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 12px; pointer-events: none;">
                                         <span id="emphasisMainCounter">0</span>/23자
                                     </div>
@@ -1194,56 +1212,16 @@ body {
 
                         <!-- 버튼 설정 -->
                         <div class="form-group">
-                            <label class="form-label">버튼(변수사용불가)</label>
-                            
-                            <!-- 전역 버튼 옵션 -->
-                            <div style="margin-bottom: 16px;">
-                                <label style="display: flex; align-items: center; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <label class="form-label" style="margin-bottom: 0;">버튼 추가</label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--primary-color);">
                                     <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
-                                    <span>채널추가버튼 사용</span>
+                                    <span>채널 추가 버튼 사용</span>
                                 </label>
                             </div>
                             
                             <div id="buttonList"></div>
-                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">버튼 추가</button>
-                        </div>
-
-                        <!-- 바로연결 설정 -->
-                        <div class="form-group">
-                            <label class="form-label">바로연결 (Quick Reply)</label>
-                            <div class="flex gap-2">
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="quickReply" value="no" checked>
-                                    <span>미사용</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="quickReply" value="yes">
-                                    <span>사용</span>
-                                </label>
-                            </div>
-                            <div id="quickReplyConfig" style="display: none; margin-top: 12px;">
-                                <select class="form-select" style="margin-bottom: 8px;">
-                                    <option>메시지 전달</option>
-                                    <option>봇 키워드</option>
-                                </select>
-                                <input type="text" class="form-input" placeholder="메시지 내용 또는 키워드 입력 (최대 100자)" maxlength="100">
-                            </div>
-                        </div>
-
-                        <!-- 템플릿 보안 설정 -->
-                        <div class="form-group">
-                            <label class="form-label">템플릿 보안</label>
-                            <div class="flex gap-2">
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="security" value="no" checked>
-                                    <span>미사용</span>
-                                </label>
-                                <label style="display: flex; align-items: center; gap: 8px;">
-                                    <input type="radio" name="security" value="yes">
-                                    <span>사용</span>
-                                </label>
-                            </div>
-                            <div class="form-help">민감한 정보 포함 시 사용 (OTP, 비밀번호, 금융정보 등)</div>
+                            <button type="button" class="btn btn-outline btn-sm mt-1" id="addButtonBtn" onclick="addButton()">+ 버튼 추가</button>
                         </div>
                     </form>
                 </div>
@@ -1254,38 +1232,41 @@ body {
                         <h3 class="card-title" style="margin-bottom: 20px;">템플릿 미리보기</h3>
                         <div class="preview-kakao">
                             <div class="preview-kakao-header">
-                                <div class="preview-kakao-profile"></div>
-                                <div>
-                                    <div style="font-weight: 600;" id="previewChannelName">마케팅팀</div>
-                                    <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
-                                </div>
+                                <span class="preview-kakao-channel-name" id="previewChannelName">카카오톡 채널명</span>
+                                <span class="preview-kakao-badge">kakao</span>
                             </div>
                             <div class="preview-kakao-body">
-                                <!-- 이미지형/강조표기형 공통: 알림톡 도착 바 -->
-                                <div id="previewAlimtalkBar" style="display: none; background: #FEE500; padding: 10px 12px; border-radius: 8px 8px 0 0; margin: -16px -16px 12px -16px; position: relative;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="font-size: 13px; font-weight: 500; color: var(--text-primary);">알림톡 도착</span>
-                                        <div style="width: 18px; height: 18px; background: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 8px; font-weight: 600;">kakao</div>
+                                <div class="preview-kakao-alimtalk-bar">
+                                    <span>알림톡 도착</span>
+                                    <div class="kakao-icon">kakao</div>
+                                </div>
+                                <div class="preview-kakao-content">
+                                    <!-- 강조표기형: 강조 표기 영역 -->
+                                    <div id="previewEmphasis" style="display: none; padding: 0 0 12px 0;">
+                                        <div id="previewEmphasisSub" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.4;"></div>
+                                        <div id="previewEmphasisMain" style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; line-height: 1.4;"></div>
+                                        <div style="border-top: 1px solid var(--border-color); margin-bottom: 12px;"></div>
                                     </div>
-                                </div>
-                                
-                                <!-- 강조표기형: 강조 표기 영역 -->
-                                <div id="previewEmphasis" style="display: none; padding: 0 0 12px 0;">
-                                    <div id="previewEmphasisSub" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.4;"></div>
-                                    <div id="previewEmphasisMain" style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; line-height: 1.4;"></div>
-                                    <div style="border-top: 1px solid var(--border-color); margin-bottom: 12px;"></div>
-                                </div>
-                                
-                                <!-- 이미지형: 이미지 미리보기 -->
-                                <div id="previewImageContainer" style="display: none; margin-bottom: 12px;">
-                                    <div id="previewImagePlaceholder" style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">
-                                        이미지 미리보기
+                                    
+                                    <!-- 이미지형: 이미지 미리보기 -->
+                                    <div id="previewImageContainer" style="display: none; margin-bottom: 12px;">
+                                        <div id="previewImagePlaceholder" style="background: var(--bg-color); border: 1px dashed var(--border-color); border-radius: var(--radius-md); padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">
+                                            이미지 미리보기
+                                        </div>
+                                        <div id="previewImageContent" style="display: none;"></div>
                                     </div>
-                                    <div id="previewImageContent" style="display: none;"></div>
+                                    
+                                    <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6; color: #333; font-size: 14px; text-align: left;">템플릿 내용을 입력해주세요.</div>
+                                    <!-- 채널추가 버튼 미리보기 -->
+                                    <div id="previewChannelButton" style="display: none; margin-top: 12px;">
+                                        <div style="background: #FEE500; border-radius: 8px; padding: 10px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <span style="background: #000; color: #FEE500; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">Ch</span>
+                                            <span>+ 채널추가</span>
+                                        </div>
+                                    </div>
+                                    <!-- 버튼 미리보기 -->
+                                    <div class="button-preview" id="previewButtons"></div>
                                 </div>
-                                
-                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6; color: var(--text-secondary); font-size: 13px; text-align: left;">템플릿 내용을 입력해주세요.</div>
-                                <div class="button-preview" id="previewButtons"></div>
                             </div>
                         </div>
                     </div>
@@ -1677,6 +1658,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        function updatePreviewChannelName() {
+            const channelSelect = document.getElementById('channelSelect');
+            const channelName = channelSelect.value || '카카오톡 채널명';
+            document.getElementById('previewChannelName').textContent = channelName;
+        }
+
         function insertVariable(variable) {
             const textarea = document.getElementById('messageContent');
             const start = textarea.selectionStart;
@@ -1721,33 +1708,33 @@ document.addEventListener('DOMContentLoaded', function() {
         function updatePreview() {
             const messageType = document.querySelector('input[name="messageType"]:checked').value;
             const content = document.getElementById('messageContent').value;
-            const previewAlimtalkBar = document.getElementById('previewAlimtalkBar');
             const previewEmphasis = document.getElementById('previewEmphasis');
             const previewImageContainer = document.getElementById('previewImageContainer');
             const previewContent = document.getElementById('previewContent');
             
-            // 변수 치환 예시 (#{이름}, #{전화번호}만)
+            // 변수 치환 예시
             let previewText = content
                 .replace(/#{이름}/g, '홍길동')
-                .replace(/#{전화번호}/g, '010-1234-5678');
-            
-            // 이미지형 또는 강조표기형인 경우 알림톡 도착 바 표시
-            if (messageType === 'image' || messageType === 'emphasis') {
-                previewAlimtalkBar.style.display = 'block';
-            } else {
-                previewAlimtalkBar.style.display = 'none';
-            }
+                .replace(/#{전화번호}/g, '010-1234-5678')
+                .replace(/#{변수1}/g, '값1')
+                .replace(/#{변수2}/g, '값2')
+                .replace(/#{변수3}/g, '값3');
             
             // 강조표기형인 경우
             if (messageType === 'emphasis') {
-                const emphasisSub = document.getElementById('emphasisSubText').value;
-                const emphasisMain = document.getElementById('emphasisText').value;
+                const emphasisSub = document.getElementById('emphasisSubText')?.value || '';
+                const emphasisMain = document.getElementById('emphasisText')?.value || '';
                 
-                // 변수 치환 (#{이름}, #{전화번호}만)
-                let emphasisSubText = emphasisSub;
-                let emphasisMainText = emphasisMain
+                // 변수 치환
+                let emphasisSubText = emphasisSub
                     .replace(/#{이름}/g, '홍길동')
                     .replace(/#{전화번호}/g, '010-1234-5678');
+                let emphasisMainText = emphasisMain
+                    .replace(/#{이름}/g, '홍길동')
+                    .replace(/#{전화번호}/g, '010-1234-5678')
+                    .replace(/#{변수1}/g, '값1')
+                    .replace(/#{변수2}/g, '값2')
+                    .replace(/#{변수3}/g, '값3');
                 
                 if (emphasisSub || emphasisMain) {
                     previewEmphasis.style.display = 'block';
@@ -1803,8 +1790,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function addButton() {
-            if (buttonCount >= 5) {
-                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+            const useChannelButton = document.getElementById('useChannelButton')?.checked || false;
+            const maxButtons = useChannelButton ? 4 : 5;
+            
+            if (buttonCount >= maxButtons) {
+                showToast(`버튼은 최대 ${maxButtons}개까지 추가할 수 있습니다.`, 'warning');
                 return;
             }
             
@@ -1812,23 +1802,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const div = document.createElement('div');
             div.className = 'button-config';
             div.setAttribute('data-button-index', buttonCount + 1);
+            div.style.cssText = 'border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px;';
             div.innerHTML = `
-                <div class="button-config-header">
-                    <strong>버튼 ${buttonCount + 1}</strong>
-                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
-                        <span style="font-size: 16px;">🗑️</span>
-                    </button>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">버튼 타입</label>
-                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;">
+                    <select class="form-select button-type-select" style="width: 120px; flex-shrink: 0;" onchange="updateButtonConfig(this)">
                         <option value="web">웹링크</option>
                         <option value="app">앱링크</option>
                     </select>
-                </div>
-                <div class="form-group button-name-group" style="margin-bottom: 0;">
-                    <label class="form-label">버튼명 최대 14자</label>
-                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명을 입력해 주세요 (최대 14자)" maxlength="14" oninput="updateButtonPreview()" style="flex: 1;">
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="flex-shrink: 0;">삭제</button>
                 </div>
                 <div class="button-link-config"></div>
             `;
@@ -1836,6 +1818,16 @@ document.addEventListener('DOMContentLoaded', function() {
             buttonCount++;
             updateButtonConfig(div.querySelector('.button-type-select'));
             updateButtonPreview();
+            updateAddButtonVisibility();
+        }
+        
+        function updateAddButtonVisibility() {
+            const useChannelButton = document.getElementById('useChannelButton')?.checked || false;
+            const maxButtons = useChannelButton ? 4 : 5;
+            const addBtn = document.getElementById('addButtonBtn');
+            if (addBtn) {
+                addBtn.style.display = buttonCount >= maxButtons ? 'none' : 'inline-flex';
+            }
         }
         
         function updateButtonConfig(selectElement) {
@@ -1847,24 +1839,24 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (type === 'web') {
                 linkHTML = `
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">Mobile(필수)</label>
-                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">모바일</span>
+                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
                     </div>
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">PC(선택)</label>
-                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">PC(선택)</span>
+                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
                     </div>
                 `;
             } else if (type === 'app') {
                 linkHTML = `
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">Android(필수)</label>
-                        <input type="text" class="form-input" placeholder="Android URL 입력">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">Android</span>
+                        <input type="text" class="form-input" placeholder="Android URL 입력" style="flex: 1;">
                     </div>
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">IOS(필수)</label>
-                        <input type="text" class="form-input" placeholder="IOS URL 입력">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">IOS</span>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력" style="flex: 1;">
                     </div>
                 `;
             }
@@ -1875,52 +1867,50 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function toggleChannelButton() {
             const useChannelButton = document.getElementById('useChannelButton').checked;
+            const previewChannelButton = document.getElementById('previewChannelButton');
+            if (previewChannelButton) {
+                previewChannelButton.style.display = useChannelButton ? 'block' : 'none';
+            }
+            
+            const maxButtons = useChannelButton ? 4 : 5;
+            
+            // 채널추가 버튼 체크 시 현재 버튼 수가 4개 초과면 마지막 버튼 삭제
+            while (buttonCount > maxButtons) {
+                const buttons = document.querySelectorAll('.button-config');
+                if (buttons.length > 0) {
+                    buttons[buttons.length - 1].remove();
+                    buttonCount--;
+                }
+            }
+            
             updateButtonPreview();
+            updateAddButtonVisibility();
         }
         
-
         function removeButton(btn) {
             btn.closest('.button-config').remove();
             buttonCount--;
             updateButtonPreview();
+            updateAddButtonVisibility();
         }
 
         function updateButtonPreview() {
             const buttons = [];
             
-            // 채널추가 버튼이 체크되어 있으면 먼저 추가
-            const useChannelButton = document.getElementById('useChannelButton').checked;
-            if (useChannelButton) {
-                buttons.push({ name: '채널추가', type: 'channel', isChannel: true });
-            }
-            
             // 일반 버튼들 추가
             Array.from(document.querySelectorAll('.button-config')).forEach(config => {
                 const nameInput = config.querySelector('.button-name-input');
                 const name = nameInput?.value || '';
-                const typeSelect = config.querySelector('.button-type-select');
-                const type = typeSelect?.value || 'web';
                 
-                // 버튼명이 있으면 버튼명을, 없으면 타입에 따른 기본 텍스트 사용
-                let buttonName = name;
-                if (!buttonName) {
-                    const typeNames = {
-                        'web': '웹링크',
-                        'app': '앱링크'
-                    };
-                    buttonName = typeNames[type] || '버튼';
-                }
+                // 버튼명이 있으면 버튼명을, 없으면 "버튼명" 표시
+                let buttonName = name || '버튼명';
                 
-                buttons.push({ name: buttonName, type: type, isChannel: false });
+                buttons.push({ name: buttonName });
             });
             
             const preview = document.getElementById('previewButtons');
             preview.innerHTML = buttons.map(btn => {
-                if (btn.isChannel) {
-                    return `<div class="button-preview-item button-preview-channel">Ch+ ${btn.name}</div>`;
-                } else {
-                    return `<div class="button-preview-item">${btn.name}</div>`;
-                }
+                return `<div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; text-align: center; font-size: 13px; margin-top: 8px;">${btn.name}</div>`;
             }).join('');
         }
 
