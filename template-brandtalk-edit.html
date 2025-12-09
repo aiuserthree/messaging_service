@@ -924,25 +924,23 @@ body {
             height: fit-content;
         }
         .preview-kakao {
-            background: #FEE500;
+            background: #9fc5d8;
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .preview-kakao-header {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .preview-kakao-channel-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .preview-kakao-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
+        .preview-kakao-ad-label {
+            font-size: 12px;
+            color: #5a7a8a;
+            margin-bottom: 8px;
         }
         .preview-kakao-body {
             background: white;
@@ -977,25 +975,8 @@ body {
         .button-preview {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 12px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .button-preview-item {
-            padding: 8px 16px;
-            background: white;
-            color: var(--text-primary);
-            border-radius: var(--radius-md);
-            font-size: 12px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-        .button-preview-channel {
-            background: #FEE500;
-            color: var(--text-primary);
-            border: none;
-            font-weight: 500;
+            gap: 0;
+            margin-top: 0;
         }
         .list-item {
             border: 1px solid var(--border-color);
@@ -1258,18 +1239,16 @@ body {
 
                         <!-- 버튼 설정 (카드형 제외) -->
                         <div class="form-group" id="commonButtonGroup">
-                            <label class="form-label">버튼 추가</label>
-                            
-                            <!-- 전역 버튼 옵션 -->
-                            <div style="margin-bottom: 16px;">
-                                <label style="display: flex; align-items: center; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <label class="form-label" style="margin-bottom: 0;">버튼 추가</label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--primary-color);">
                                     <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
                                     <span>채널 추가 버튼 사용</span>
                                 </label>
                             </div>
                             
                             <div id="buttonList"></div>
-                            <button type="button" class="btn btn-primary btn-sm mt-1" onclick="addButton()">+ 버튼 추가</button>
+                            <button type="button" class="btn btn-outline btn-sm mt-1" id="addButtonBtn" onclick="addButton()">+ 버튼 추가</button>
                         </div>
 
                         <!-- 상태 설정 -->
@@ -1294,13 +1273,8 @@ body {
                     <div class="card">
                         <h3 class="card-title" style="margin-bottom: 20px;">템플릿 미리보기</h3>
                         <div class="preview-kakao">
-                            <div class="preview-kakao-header">
-                                <div class="preview-kakao-profile"></div>
-                                <div>
-                                    <div style="font-weight: 600;">마케팅팀</div>
-                                    <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
-                                </div>
-                            </div>
+                            <div class="preview-kakao-channel-title" id="previewChannelName">카카오톡 채널명</div>
+                            <div class="preview-kakao-ad-label">(광고) <span id="previewAdChannelName">카카오톡 채널명</span></div>
                             <div class="preview-kakao-body">
                                 <!-- 텍스트/이미지 공통 -->
                                 <div id="previewImage" style="margin-bottom: 12px;"></div>
@@ -1323,8 +1297,18 @@ body {
                                     </div>
                                 </div>
                                 
+                                <!-- 채널추가 버튼 미리보기 -->
+                                <div id="previewChannelButton" style="display: none; margin-top: 12px;">
+                                    <div style="background: #FEE500; border-radius: 8px; padding: 10px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="background: #000; color: #FEE500; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">Ch</span>
+                                        <span>+ 채널추가</span>
+                                    </div>
+                                </div>
                                 <!-- 공통 버튼 미리보기 (카드형 제외) -->
                                 <div class="button-preview" id="previewButtons"></div>
+                            </div>
+                            <div id="previewFooter" style="margin-top: 12px; text-align: right; font-size: 11px; color: #5a7a8a;">
+                                수신거부 | 홈 > 채널차단
                             </div>
                         </div>
                     </div>
@@ -1639,6 +1623,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     commonButtonGroup.style.display = 'none';
                 } else {
                     commonButtonGroup.style.display = 'block';
+                }
+            }
+            
+            // 카드형 전환 시 채널추가버튼 해제 및 미리보기 숨김
+            if (messageType === 'card') {
+                const useChannelButton = document.getElementById('useChannelButton');
+                if (useChannelButton) {
+                    useChannelButton.checked = false;
+                }
+                const previewChannelButton = document.getElementById('previewChannelButton');
+                if (previewChannelButton) {
+                    previewChannelButton.style.display = 'none';
                 }
             }
             
@@ -2258,8 +2254,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         window.addButton = function() {
-            if (buttonCount >= 5) {
-                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+            const useChannelButton = document.getElementById('useChannelButton')?.checked || false;
+            const maxButtons = useChannelButton ? 4 : 5;
+            
+            if (buttonCount >= maxButtons) {
+                showToast(`버튼은 최대 ${maxButtons}개까지 추가할 수 있습니다.`, 'warning');
                 return;
             }
             
@@ -2267,24 +2266,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const div = document.createElement('div');
             div.className = 'button-config';
             div.setAttribute('data-button-index', buttonCount + 1);
+            div.style.cssText = 'border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px;';
             div.innerHTML = `
-                <div class="button-config-header">
-                    <strong>버튼 ${buttonCount + 1}</strong>
-                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="padding: 4px 8px;">
-                        <span style="font-size: 16px;">🗑️</span>
-                    </button>
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label class="form-label">버튼 타입</label>
-                    <select class="form-select button-type-select" onchange="updateButtonConfig(this)">
+                <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;">
+                    <select class="form-select button-type-select" style="width: 120px; flex-shrink: 0;" onchange="updateButtonConfig(this)">
                         <option value="web">웹링크</option>
                         <option value="app">앱링크</option>
                         <option value="phone">전화 연결</option>
                     </select>
-                </div>
-                <div class="form-group button-name-group" style="margin-bottom: 0;">
-                    <label class="form-label">버튼명 최대 14자</label>
-                    <input type="text" class="form-input button-name-input" placeholder="버튼명 입력" maxlength="14" oninput="updateButtonPreview()">
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명을 입력해 주세요 (최대 14자)" maxlength="14" oninput="updateButtonPreview()" style="flex: 1;">
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="flex-shrink: 0;">삭제</button>
                 </div>
                 <div class="button-link-config"></div>
             `;
@@ -2292,7 +2283,17 @@ document.addEventListener('DOMContentLoaded', function() {
             buttonCount++;
             updateButtonConfig(div.querySelector('.button-type-select'));
             updateButtonPreview();
+            updateAddButtonVisibility();
         };
+        
+        function updateAddButtonVisibility() {
+            const useChannelButton = document.getElementById('useChannelButton')?.checked || false;
+            const maxButtons = useChannelButton ? 4 : 5;
+            const addBtn = document.getElementById('addButtonBtn');
+            if (addBtn) {
+                addBtn.style.display = buttonCount >= maxButtons ? 'none' : 'inline-flex';
+            }
+        }
         
         window.updateButtonConfig = function(selectElement) {
             const buttonConfig = selectElement.closest('.button-config');
@@ -2303,33 +2304,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (type === 'web') {
                 linkHTML = `
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">Mobile(필수)</label>
-                        <input type="text" class="form-input" placeholder="Mobile URL 입력">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">PC(선택)</label>
-                        <input type="text" class="form-input" placeholder="PC URL 입력 (선택사항)">
-                </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">모바일</span>
+                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">PC(선택)</span>
+                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
+                    </div>
                 `;
             } else if (type === 'app') {
                 linkHTML = `
-                <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">Android(필수)</label>
-                        <input type="text" class="form-input" placeholder="Android URL 입력">
-                </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">IOS(필수)</label>
-                        <input type="text" class="form-input" placeholder="IOS URL 입력">
-                </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">Android</span>
+                        <input type="text" class="form-input" placeholder="Android URL 입력" style="flex: 1;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">IOS</span>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력" style="flex: 1;">
+                    </div>
                 `;
             } else if (type === 'phone') {
                 linkHTML = `
-                <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label">전화번호</label>
-                        <input type="text" class="form-input" placeholder="전화번호 입력 (예: 010-1234-5678)">
-                </div>
-            `;
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">전화번호</span>
+                        <input type="text" class="form-input" placeholder="010-1234-5678" style="flex: 1;">
+                    </div>
+                `;
             }
             
             linkConfig.innerHTML = linkHTML;
@@ -2338,53 +2339,49 @@ document.addEventListener('DOMContentLoaded', function() {
         
         window.toggleChannelButton = function() {
             const useChannelButton = document.getElementById('useChannelButton').checked;
+            const previewChannelButton = document.getElementById('previewChannelButton');
+            if (previewChannelButton) {
+                previewChannelButton.style.display = useChannelButton ? 'block' : 'none';
+            }
+            
+            // 채널추가 버튼 체크 시 현재 버튼 수가 4개 초과면 마지막 버튼 삭제
+            const maxButtons = useChannelButton ? 4 : 5;
+            while (buttonCount > maxButtons) {
+                const buttons = document.querySelectorAll('.button-config');
+                if (buttons.length > 0) {
+                    buttons[buttons.length - 1].remove();
+                    buttonCount--;
+                }
+            }
+            
             updateButtonPreview();
+            updateAddButtonVisibility();
         };
         
-
         window.removeButton = function(btn) {
             btn.closest('.button-config').remove();
             buttonCount--;
             updateButtonPreview();
+            updateAddButtonVisibility();
         };
 
         function updateButtonPreview() {
             const buttons = [];
             
-            // 채널추가 버튼이 체크되어 있으면 먼저 추가
-            const useChannelButton = document.getElementById('useChannelButton').checked;
-            if (useChannelButton) {
-                buttons.push({ name: '채널추가', type: 'channel', isChannel: true });
-            }
-            
             // 일반 버튼들 추가
             Array.from(document.querySelectorAll('.button-config')).forEach(config => {
                 const nameInput = config.querySelector('.button-name-input');
                 const name = nameInput?.value || '';
-                const typeSelect = config.querySelector('.button-type-select');
-                const type = typeSelect?.value || 'web';
                 
-                // 버튼명이 있으면 버튼명을, 없으면 타입에 따른 기본 텍스트 사용
-                let buttonName = name;
-                if (!buttonName) {
-                    const typeNames = {
-                        'web': '웹링크',
-                        'app': '앱링크',
-                        'phone': '전화 연결'
-                    };
-                    buttonName = typeNames[type] || '버튼';
-                }
+                // 버튼명이 있으면 버튼명을, 없으면 "버튼명" 표시
+                let buttonName = name || '버튼명';
                 
-                buttons.push({ name: buttonName, type: type, isChannel: false });
+                buttons.push({ name: buttonName });
             });
             
             const preview = document.getElementById('previewButtons');
             preview.innerHTML = buttons.map(btn => {
-                if (btn.isChannel) {
-                    return `<div class="button-preview-item button-preview-channel">Ch+ ${btn.name}</div>`;
-                } else {
-                    return `<div class="button-preview-item">${btn.name}</div>`;
-                }
+                return `<div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; text-align: center; font-size: 13px; margin-top: 8px;">${btn.name}</div>`;
             }).join('');
         }
 

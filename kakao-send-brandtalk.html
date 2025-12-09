@@ -962,25 +962,23 @@ body {
             height: fit-content;
         }
         .preview-kakao {
-            background: #FEE500;
+            background: #9fc5d8;
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .preview-kakao-header {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .preview-kakao-channel-title {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .preview-kakao-profile {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--primary-color);
+        .preview-kakao-ad-label {
+            font-size: 12px;
+            color: #5a7a8a;
+            margin-bottom: 8px;
         }
         .preview-kakao-body {
             background: white;
@@ -1175,10 +1173,10 @@ body {
                                     <div class="flex-between" style="align-items: flex-end;">
                                         <div style="flex: 1; margin-right: 16px;">
                                             <label class="form-label required">카카오톡 발신 프로필</label>
-                                            <select class="form-select" id="brandChannel" required>
+                                            <select class="form-select" id="brandChannel" required onchange="updatePreviewChannelName()">
                                                 <option value="">카카오톡 발신 프로필을 선택하세요</option>
-                                                <option value="channel1">마케팅팀</option>
-                                                <option value="channel2">고객센터</option>
+                                                <option value="마케팅팀">마케팅팀</option>
+                                                <option value="고객센터">고객센터</option>
                                             </select>
                                         </div>
                                         <div>
@@ -1281,13 +1279,27 @@ body {
                                 <!-- 메시지 내용 -->
                                 <div class="form-group">
                                     <label class="form-label required">메시지 내용</label>
-                                    <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required></textarea>
+                                    <div class="flex gap-2 mb-1">
+                                        <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
+                                        <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                        <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수1}')">#{변수1}</button>
+                                        <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수2}')">#{변수2}</button>
+                                        <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수3}')">#{변수3}</button>
+                                    </div>
+                                    <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="updatePreview()"></textarea>
                                 </div>
 
-                                <!-- 변수 입력 -->
-                                <div class="form-group" id="variableInputArea">
-                                    <label class="form-label">변수 입력</label>
-                                    <div id="variableInputs"></div>
+                                <!-- 버튼 설정 -->
+                                <div class="form-group">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                        <label class="form-label" style="margin-bottom: 0;">버튼 추가</label>
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--primary-color);">
+                                            <input type="checkbox" id="useChannelButton" onchange="toggleChannelButton()">
+                                            <span>채널 추가 버튼 사용</span>
+                                        </label>
+                                    </div>
+                                    <div id="buttonList"></div>
+                                    <button type="button" class="btn btn-outline btn-sm mt-1" id="addButtonBtn" onclick="addButton()">+ 버튼 추가</button>
                                 </div>
 
                                 <!-- 이미지 업로드 -->
@@ -1298,19 +1310,72 @@ body {
                                     <div id="imagePreview" style="margin-top: 12px;"></div>
                                 </div>
 
-                                <!-- 버튼 설정 -->
-                                <div class="form-group">
-                                    <label class="form-label">버튼 (최대 5개)</label>
-                                    <div id="buttonList"></div>
-                                    <button type="button" class="btn btn-sm btn-outline mt-1" onclick="addButton()">버튼 추가</button>
-                                </div>
-
                                 <!-- 수신번호 입력 -->
                                 <div class="form-group">
                                     <label class="form-label required">수신번호</label>
-                                    <textarea class="form-textarea" id="recipientNumbers" placeholder="전화번호를 입력하세요 (콤마 또는 엔터로 구분)"></textarea>
-                                    <div class="flex-between mt-1">
-                                        <span class="form-help">총 <strong id="recipientCount">0</strong>명</span>
+                                    <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                                        <!-- 상단 탭 및 주소록 버튼 영역 -->
+                                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                                            <div style="display: flex; gap: 8px;">
+                                                <input type="file" id="recipientExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleRecipientExcelFileSelect(event)">
+                                                <button type="button" class="btn btn-primary" onclick="document.getElementById('recipientExcelFileInput').click()">엑셀업로드</button>
+                                                <button type="button" class="btn btn-outline" onclick="downloadSampleFile()">엑셀샘플 다운로드</button>
+                                            </div>
+                                            <div style="display: flex; gap: 8px;">
+                                                <button type="button" class="btn btn-outline btn-sm" onclick="loadRecipientAddressBook()">주소록 불러오기</button>
+                                                <select class="form-select" style="width: 120px;" id="recipientGroupSelect">
+                                                    <option value="">그룹선택</option>
+                                                    <option value="group1">VIP 고객</option>
+                                                    <option value="group2">일반 고객</option>
+                                                    <option value="group3">신규 고객</option>
+                                                </select>
+                                                <button type="button" class="btn btn-primary btn-sm" onclick="addToAddressBook()">주소록에 추가</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 데이터 테이블 영역 (편집 가능) -->
+                                        <div id="recipientUploadContent" style="display: block;">
+                                            <div style="padding: 20px;">
+                                                <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                                                    <div style="overflow-x: auto; overflow-y: auto; max-height: 400px;">
+                                                        <table class="data-table" id="recipientDataTable" style="width: 100%; border-collapse: collapse;">
+                                                            <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                                                <tr>
+                                                                    <th style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); min-width: 50px;">
+                                                                        <input type="checkbox" id="selectAllRecipientCheckbox" onchange="toggleSelectAllRecipients(this.checked)">
+                                                                    </th>
+                                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
+                                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
+                                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
+                                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
+                                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="recipientDataTableBody">
+                                                                <!-- 기본 행이 자동으로 생성됩니다 -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- 하단 버튼 영역 -->
+                                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                                                <div style="display: flex; gap: 8px;">
+                                                    <button type="button" class="btn btn-outline btn-sm" onclick="addRecipientRow()">행 추가</button>
+                                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedRecipientRows()">선택 행 삭제</button>
+                                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllRecipientRows()">전체삭제</button>
+                                                </div>
+                                                <div style="display: flex; gap: 8px;">
+                                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateRecipientNumbers()">중복번호 삭제</button>
+                                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectRecipientNumbers()">수신거부번호 삭제</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-help" style="margin-top: 8px;">
+                                        총 <strong id="recipientCount">0</strong>명
                                     </div>
                                 </div>
 
@@ -1457,6 +1522,7 @@ body {
                                 <!-- 액션 버튼 -->
                                 <div class="flex gap-2 mt-3">
                                     <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
+                                    <button type="button" class="btn btn-outline" onclick="saveAsTemplate()">템플릿 저장</button>
                                     <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
                                 </div>
                             </form>
@@ -1467,20 +1533,23 @@ body {
                             <div class="card">
                                 <h3 class="card-title">메시지 미리보기</h3>
                                 <div class="preview-kakao">
-                                    <div class="preview-kakao-header">
-                                        <div class="preview-kakao-profile"></div>
-                                        <div>
-                                            <div style="font-weight: 600;" id="previewChannelName">마케팅팀</div>
-                                            <div style="font-size: 12px; color: var(--text-secondary);">오늘 오후 2:30</div>
-                                        </div>
-                                    </div>
+                                    <div class="preview-kakao-channel-title" id="previewChannelName">카카오톡 채널명</div>
+                                    <div class="preview-kakao-ad-label">(광고) <span id="previewAdChannelName">카카오톡 채널명</span></div>
                                     <div class="preview-kakao-body">
                                         <div id="previewImage" style="margin-bottom: 12px;"></div>
-                                        <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;"></div>
-                                        <div class="button-list" id="previewButtons"></div>
-                                        <div id="previewOptOut" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e5e7eb; text-align: right; font-size: 12px; color: var(--text-secondary); display: none;">
-                                            수신거부 | 홈 > 채널차단
+                                        <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력해주세요.</div>
+                                        <!-- 채널추가 버튼 미리보기 -->
+                                        <div id="previewChannelButton" style="display: none; margin-top: 12px;">
+                                            <div style="background: #FEE500; border-radius: 8px; padding: 10px; text-align: center; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                                <span style="background: #000; color: #FEE500; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">Ch</span>
+                                                <span>+ 채널추가</span>
+                                            </div>
                                         </div>
+                                        <!-- 버튼 미리보기 -->
+                                        <div id="previewButtons"></div>
+                                    </div>
+                                    <div id="previewFooter" style="margin-top: 12px; text-align: right; font-size: 11px; color: #5a7a8a;">
+                                        수신거부 | 홈 > 채널차단
                                     </div>
                                 </div>
                             </div>
@@ -1818,53 +1887,331 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         let buttonCount = 0;
+        
+        // 수신번호 테이블 관련 변수
+        let recipientTableData = [];
+        let selectedRecipientIndices = new Set();
+        const DEFAULT_ROWS = 5;
+        
+        // 페이지 로드 시 수신번호 테이블 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRecipientTable();
+        });
+        
+        // 수신번호 테이블 렌더링
+        function renderRecipientTable() {
+            const tbody = document.getElementById('recipientDataTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            const rowCount = Math.max(recipientTableData.length, DEFAULT_ROWS);
+            
+            for (let i = 0; i < rowCount; i++) {
+                const row = i < recipientTableData.length ? recipientTableData[i] : null;
+                const isSelected = selectedRecipientIndices.has(i);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 8px; text-align: center; border-bottom: 1px solid var(--border-color);">
+                        <input type="checkbox" class="recipient-row-checkbox" data-row="${i}" ${isSelected ? 'checked' : ''} onchange="toggleRecipientRowSelection(${i}, this.checked)">
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">${i + 1}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                            value="${row?.name || ''}" data-row="${i}" data-field="name" onchange="updateRecipientTableData(${i}, 'name', this.value)">
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                            value="${row?.phone || ''}" data-row="${i}" data-field="phone" onchange="updateRecipientTableData(${i}, 'phone', this.value)">
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                            value="${row?.variables?.[0] || ''}" data-row="${i}" data-field="var1" onchange="updateRecipientTableData(${i}, 'var1', this.value)">
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                            value="${row?.variables?.[1] || ''}" data-row="${i}" data-field="var2" onchange="updateRecipientTableData(${i}, 'var2', this.value)">
+                    </td>
+                    <td style="padding: 8px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                            value="${row?.variables?.[2] || ''}" data-row="${i}" data-field="var3" onchange="updateRecipientTableData(${i}, 'var3', this.value)">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            }
+            updateRecipientCount();
+        }
+        
+        // 수신번호 테이블 데이터 업데이트
+        function updateRecipientTableData(index, field, value) {
+            while (index >= recipientTableData.length) {
+                recipientTableData.push({ index: recipientTableData.length, name: '', phone: '', variables: ['', '', ''] });
+            }
+            
+            const row = recipientTableData[index];
+            if (field === 'name') row.name = value;
+            else if (field === 'phone') row.phone = value;
+            else if (field === 'var1') row.variables[0] = value;
+            else if (field === 'var2') row.variables[1] = value;
+            else if (field === 'var3') row.variables[2] = value;
+            
+            updateRecipientCount();
+        }
+        
+        // 수신번호 개수 업데이트
+        function updateRecipientCount() {
+            const phoneCount = recipientTableData.filter(row => row.phone && row.phone.trim()).length;
+            const countElement = document.getElementById('recipientCount');
+            if (countElement) countElement.textContent = phoneCount;
+        }
+        
+        // 행 추가
+        function addRecipientRow() {
+            recipientTableData.push({ index: recipientTableData.length, name: '', phone: '', variables: ['', '', ''] });
+            renderRecipientTable();
+        }
+        
+        // 전체 선택
+        function toggleSelectAllRecipients(checked) {
+            selectedRecipientIndices.clear();
+            if (checked) {
+                recipientTableData.forEach((_, i) => selectedRecipientIndices.add(i));
+            }
+            document.querySelectorAll('.recipient-row-checkbox').forEach(cb => cb.checked = checked);
+        }
+        
+        // 행 선택
+        function toggleRecipientRowSelection(index, checked) {
+            if (checked) selectedRecipientIndices.add(index);
+            else selectedRecipientIndices.delete(index);
+        }
+        
+        // 선택 행 삭제
+        function deleteSelectedRecipientRows() {
+            if (selectedRecipientIndices.size === 0) {
+                showToast('삭제할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            recipientTableData = recipientTableData.filter((_, i) => !selectedRecipientIndices.has(i));
+            selectedRecipientIndices.clear();
+            document.getElementById('selectAllRecipientCheckbox').checked = false;
+            renderRecipientTable();
+            showToast('선택한 행이 삭제되었습니다.', 'success');
+        }
+        
+        // 전체 삭제
+        function deleteAllRecipientRows() {
+            if (recipientTableData.length === 0) {
+                showToast('삭제할 데이터가 없습니다.', 'warning');
+                return;
+            }
+            if (confirm('모든 수신번호를 삭제하시겠습니까?')) {
+                recipientTableData = [];
+                selectedRecipientIndices.clear();
+                renderRecipientTable();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+        
+        // 중복번호 삭제
+        function removeDuplicateRecipientNumbers() {
+            const seen = new Set();
+            const originalLength = recipientTableData.length;
+            recipientTableData = recipientTableData.filter(row => {
+                if (!row.phone || seen.has(row.phone)) return false;
+                seen.add(row.phone);
+                return true;
+            });
+            const removed = originalLength - recipientTableData.length;
+            renderRecipientTable();
+            showToast(`${removed}개의 중복번호가 삭제되었습니다.`, 'success');
+        }
+        
+        // 수신거부번호 삭제
+        function removeRejectRecipientNumbers() {
+            showToast('수신거부번호 삭제 기능은 준비 중입니다.', 'info');
+        }
+        
+        // 엑셀 파일 선택 처리
+        function handleRecipientExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            showToast('엑셀 파일을 불러오는 중...', 'info');
+            // 실제로는 엑셀 파일 파싱 후 recipientTableData에 추가
+            setTimeout(() => {
+                showToast('엑셀 파일이 로드되었습니다.', 'success');
+            }, 1000);
+        }
+        
+        // 엑셀샘플 다운로드
+        function downloadSampleFile() {
+            showToast('샘플 파일 다운로드가 시작됩니다.', 'success');
+        }
+        
+        // 주소록 불러오기
+        function loadRecipientAddressBook() {
+            showToast('주소록 불러오기 기능은 준비 중입니다.', 'info');
+        }
+        
+        // 주소록에 추가
+        function addToAddressBook() {
+            const groupSelect = document.getElementById('recipientGroupSelect');
+            if (!groupSelect.value) {
+                showToast('그룹을 선택해주세요.', 'warning');
+                return;
+            }
+            showToast('주소록에 추가되었습니다.', 'success');
+        }
+
+        // 변수 삽입 함수
+        function insertVariable(variable) {
+            const textarea = document.getElementById('messageContent');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+            textarea.value = text.substring(0, start) + variable + text.substring(end);
+            textarea.focus();
+            textarea.setSelectionRange(start + variable.length, start + variable.length);
+            updatePreview();
+        }
 
         function selectTemplate(code, name, variables, type) {
             document.getElementById('selectedTemplate').value = `${name} (${code})`;
-            
-            // 변수 입력 필드 생성
-            const variableArea = document.getElementById('variableInputs');
-            variableArea.innerHTML = '';
-            
-            variables.forEach(variable => {
-                const div = document.createElement('div');
-                div.className = 'variable-input-group';
-                div.innerHTML = `
-                    <label>${variable}</label>
-                    <input type="text" class="form-input" data-variable="${variable}" placeholder="${variable} 값을 입력하세요" oninput="updatePreview()">
-                `;
-                variableArea.appendChild(div);
-            });
-            
             closeModal('templateSelectModal');
         }
 
         function addButton() {
-            if (buttonCount >= 5) {
-                showToast('버튼은 최대 5개까지 추가할 수 있습니다.', 'warning');
+            const useChannelButton = document.getElementById('useChannelButton')?.checked || false;
+            const maxButtons = useChannelButton ? 4 : 5;
+            
+            if (buttonCount >= maxButtons) {
+                showToast(`버튼은 최대 ${maxButtons}개까지 추가할 수 있습니다.`, 'warning');
                 return;
             }
             
             const buttonList = document.getElementById('buttonList');
             const div = document.createElement('div');
-            div.className = 'form-group';
-            div.style.marginBottom = '8px';
+            div.className = 'button-config';
+            div.style.cssText = 'border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px;';
             div.innerHTML = `
-                <div class="flex gap-2">
-                    <input type="text" class="form-input" placeholder="버튼 텍스트" style="flex: 1;">
-                    <input type="text" class="form-input" placeholder="링크 URL" style="flex: 2;">
-                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)">삭제</button>
+                <div style="display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;">
+                    <select class="form-select button-type-select" style="width: 120px; flex-shrink: 0;" onchange="updateButtonConfig(this)">
+                        <option value="web">웹링크</option>
+                        <option value="app">앱링크</option>
+                        <option value="phone">전화 연결</option>
+                    </select>
+                    <input type="text" class="form-input button-name-input" placeholder="버튼명을 입력해 주세요 (최대 14자)" maxlength="14" oninput="updateButtonPreview()" style="flex: 1;">
+                    <button type="button" class="btn btn-sm btn-outline" onclick="removeButton(this)" style="flex-shrink: 0;">삭제</button>
                 </div>
+                <div class="button-link-config"></div>
             `;
             buttonList.appendChild(div);
             buttonCount++;
-            updatePreview();
+            updateButtonConfig(div.querySelector('.button-type-select'));
+            updateButtonPreview();
+            updateAddButtonVisibility();
+        }
+        
+        function updateAddButtonVisibility() {
+            const useChannelButton = document.getElementById('useChannelButton')?.checked || false;
+            const maxButtons = useChannelButton ? 4 : 5;
+            const addBtn = document.getElementById('addButtonBtn');
+            if (addBtn) {
+                addBtn.style.display = buttonCount >= maxButtons ? 'none' : 'inline-flex';
+            }
+        }
+
+        function updateButtonConfig(selectElement) {
+            const buttonConfig = selectElement.closest('.button-config');
+            const type = selectElement.value;
+            const linkConfig = buttonConfig.querySelector('.button-link-config');
+            
+            let linkHTML = '';
+            
+            if (type === 'web') {
+                linkHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">모바일</span>
+                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">PC(선택)</span>
+                        <input type="text" class="form-input" placeholder="https://" style="flex: 1;">
+                    </div>
+                `;
+            } else if (type === 'app') {
+                linkHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">Android</span>
+                        <input type="text" class="form-input" placeholder="Android URL 입력" style="flex: 1;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">IOS</span>
+                        <input type="text" class="form-input" placeholder="IOS URL 입력" style="flex: 1;">
+                    </div>
+                `;
+            } else if (type === 'phone') {
+                linkHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="width: 70px; flex-shrink: 0; font-size: 13px; color: var(--text-secondary);">전화번호</span>
+                        <input type="text" class="form-input" placeholder="010-1234-5678" style="flex: 1;">
+                    </div>
+                `;
+            }
+            
+            linkConfig.innerHTML = linkHTML;
+            updateButtonPreview();
+        }
+
+        function toggleChannelButton() {
+            const useChannelButton = document.getElementById('useChannelButton').checked;
+            const previewChannelButton = document.getElementById('previewChannelButton');
+            if (previewChannelButton) {
+                previewChannelButton.style.display = useChannelButton ? 'block' : 'none';
+            }
+            
+            // 채널추가 버튼 체크 시 현재 버튼 수가 4개 초과면 마지막 버튼 삭제
+            const maxButtons = useChannelButton ? 4 : 5;
+            while (buttonCount > maxButtons) {
+                const buttons = document.querySelectorAll('.button-config');
+                if (buttons.length > 0) {
+                    buttons[buttons.length - 1].remove();
+                    buttonCount--;
+                }
+            }
+            
+            updateButtonPreview();
+            updateAddButtonVisibility();
         }
 
         function removeButton(btn) {
-            btn.parentElement.parentElement.remove();
+            btn.closest('.button-config').remove();
             buttonCount--;
-            updatePreview();
+            updateButtonPreview();
+            updateAddButtonVisibility();
+        }
+
+        function updateButtonPreview() {
+            const buttons = [];
+            
+            Array.from(document.querySelectorAll('.button-config')).forEach(config => {
+                const nameInput = config.querySelector('.button-name-input');
+                const name = nameInput?.value || '버튼명';
+                buttons.push({ name: name });
+            });
+            
+            const preview = document.getElementById('previewButtons');
+            preview.innerHTML = buttons.map(btn => {
+                return `<div style="background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; text-align: center; font-size: 13px; margin-top: 8px;">${btn.name}</div>`;
+            }).join('');
+        }
+
+        function updatePreviewChannelName() {
+            const channelSelect = document.getElementById('brandChannel');
+            const selectedOption = channelSelect.options[channelSelect.selectedIndex];
+            const channelName = selectedOption.value || '카카오톡 채널명';
+            document.getElementById('previewChannelName').textContent = channelName;
+            document.getElementById('previewAdChannelName').textContent = channelName;
         }
 
         function handleImageUpload(event) {
@@ -1933,6 +2280,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.value === 'reserved' ? 'block' : 'none';
             });
         });
+
+        function saveAsTemplate() {
+            const messageContent = document.getElementById('messageContent')?.value || '';
+            
+            if (!messageContent.trim()) {
+                showToast('메시지 내용을 입력해주세요.', 'warning');
+                return;
+            }
+            
+            // 템플릿 저장 모달 열기
+            openModal('saveTemplateModal');
+        }
+        
+        function confirmSaveTemplate() {
+            const templateName = document.getElementById('templateNameInput')?.value || '';
+            
+            if (!templateName.trim()) {
+                showToast('템플릿명을 입력해주세요.', 'warning');
+                return;
+            }
+            
+            // 실제로는 API 호출하여 템플릿 저장
+            closeModal('saveTemplateModal');
+            showToast('템플릿이 저장되었습니다.', 'success');
+        }
 
         function testSend() {
             // 기본값: 로그인한 회원의 휴대폰번호 (예시: 010-1234-5678)
@@ -2335,6 +2707,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
                 
+                // 미리보기 하단 텍스트 변경
+                const previewFooter = document.getElementById('previewFooter');
+                if (previewFooter) {
+                    if (selectedType === 'N' || selectedType === 'M') {
+                        previewFooter.innerHTML = '무료수신거부 080-123-4567<br>인증번호 1234';
+                        previewFooter.style.textAlign = 'right';
+                    } else {
+                        previewFooter.innerHTML = '수신거부 | 홈 > 채널차단';
+                        previewFooter.style.textAlign = 'right';
+                    }
+                }
+                
                 // 미리보기 업데이트
                 updatePreview();
             });
@@ -2373,6 +2757,40 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('발송이 완료되었습니다.', 'success');
         });
     </script>
+    
+    <!-- 템플릿 저장 모달 -->
+    <div class="modal-overlay" id="saveTemplateModal">
+        <div class="modal" style="width: 450px;">
+            <div class="modal-header">
+                <h3 class="modal-title">템플릿 저장</h3>
+                <button class="modal-close" onclick="closeModal('saveTemplateModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label required">템플릿명</label>
+                    <input type="text" class="form-input" id="templateNameInput" placeholder="템플릿명을 입력해주세요" maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">상태</label>
+                    <div style="display: flex; gap: 32px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="templateStatus" value="active" checked>
+                            <span>사용</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="templateStatus" value="inactive">
+                            <span>미사용</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('saveTemplateModal')">취소</button>
+                <button class="btn btn-primary" onclick="confirmSaveTemplate()">저장</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 테스트 발송 모달 -->
     <div class="modal-overlay" id="testSendModal">
         <div class="modal" style="width: 500px; max-height: 80vh;">
