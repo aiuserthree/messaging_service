@@ -421,21 +421,13 @@ function handleLogout() {
     window.location.href = 'index.html';
 }
 
-// 로그인 상태 확인 및 네비게이션 함수
+// 로그인 상태 확인 및 네비게이션 함수 (로그인 체크 제거)
 function checkLoginAndNavigate(url, event) {
     if (event) {
         event.preventDefault();
     }
     
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    
-    // 로그인하지 않은 상태(로그아웃 상태)에서만 알림 표시하고 이동하지 않음
-    if (!isLoggedIn) {
-        alert('로그인을 하시면 해당 메뉴를 이용하실 수 있습니다.');
-        return false;
-    }
-    
-    // 로그인된 상태에서만 페이지 이동
+    // 로그인 체크 없이 바로 이동
     window.location.href = url;
     return false;
 }
