@@ -163,6 +163,7 @@ body {
     border-radius: var(--radius-lg);
     padding: 24px;
     box-shadow: var(--shadow-sm);
+    overflow: visible;
 }
 
 .card-header {
@@ -277,6 +278,8 @@ body {
 /* 테이블 */
 .table-container {
     overflow-x: auto;
+    overflow-y: visible;
+    position: relative;
 }
 
 .table {
@@ -292,6 +295,8 @@ body {
 }
 
 .table th {
+    position: relative;
+    overflow: visible;
     background-color: var(--bg-color);
     font-weight: 600;
     color: var(--text-primary);
@@ -687,7 +692,100 @@ body {
     }
 }
 
-</style>
+        /* 툴팁 스타일 */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .tooltip-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: help;
+            transition: all 0.2s;
+        }
+        .tooltip-icon:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+        .tooltip-content {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            background: #1e293b;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: normal;
+            width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 10000;
+            pointer-events: none;
+        }
+        /* 테이블 헤더 내 툴팁은 아래쪽으로 표시 */
+        table thead .tooltip-content {
+            bottom: auto;
+            top: 100%;
+            margin-bottom: 0;
+            margin-top: 8px;
+        }
+        .tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+        /* 테이블 헤더 내 툴팁 화살표는 위쪽으로 */
+        table thead .tooltip-content::after {
+            top: auto;
+            bottom: 100%;
+            border-top-color: transparent;
+            border-bottom-color: #1e293b;
+        }
+        .tooltip-wrapper:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+        }
+        .tooltip-content strong {
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #fbbf24;
+        }
+        .tooltip-content strong:first-child {
+            margin-top: 0;
+        }
+        .tooltip-content p {
+            margin: 8px 0 16px 0;
+        }
+        .tooltip-content .tooltip-section {
+            margin-bottom: 16px;
+        }
+        /* 모달 내 툴팁 스타일 */
+        .modal .tooltip-content {
+            z-index: 10001;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -777,7 +875,10 @@ body {
                                 <td>@테스트</td>
                                 <td>테스트 채널</td>
                                 <td><span class="status-badge status-pending">검수중</span></td>
-                                <td>N</td>
+                                <td>
+                                    <span style="margin-right: 8px;">N</span>
+                                    <button class="btn btn-sm btn-primary" onclick="openBrandMessageApplicationModal()" style="padding: 4px 12px; font-size: 12px;">신청</button>
+                                </td>
                                 <td>2025-11-15</td>
                                 <td>
                                     <button class="btn btn-sm btn-outline" onclick="viewProfileDetail('2')">상세</button>
@@ -1010,6 +1111,80 @@ body {
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('deleteModal')">취소</button>
                 <button class="btn btn-danger" onclick="confirmDelete()">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 브랜드메시지 M,N 타깃 사용신청 모달 -->
+    <div class="modal-overlay" id="brandMessageApplicationModal">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">브랜드메시지 M,N 타깃 사용신청</h3>
+                <button class="modal-close" onclick="closeModal('brandMessageApplicationModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 24px; color: var(--text-secondary); line-height: 1.6;">
+                    M,N 타깃은 카카오에서 승인된 발신프로필에서만 발송하실 수 있으며 아래 조건이 모두 충족되어야 신청이 가능합니다.
+                </p>
+
+                <!-- 조건 목록 -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- 조건 1: 채널 친구 수 5만명 이상 -->
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; flex-shrink: 0;">×</div>
+                        <span style="flex: 1; font-size: 14px; color: var(--text-primary);">채널 친구 수 5만명 이상</span>
+                    </div>
+
+                    <!-- 조건 2: 비즈니스 채널 인증 -->
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #d1fae5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; flex-shrink: 0;">✓</div>
+                        <span style="flex: 1; font-size: 14px; color: var(--text-primary);">비즈니스 채널 인증</span>
+                    </div>
+
+                    <!-- 조건 3: 채널정보 -->
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #d1fae5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; flex-shrink: 0;">✓</div>
+                        <span style="flex: 1; font-size: 14px; color: var(--text-primary);">채널정보 : 전화번호 또는 고객센터번호 등록</span>
+                    </div>
+
+                    <!-- 조건 4: 알림톡 발송 성공 이력 -->
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div style="width: 24px; height: 24px; border-radius: 50%; background: #d1fae5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; flex-shrink: 0;">✓</div>
+                        <span style="flex: 1; font-size: 14px; color: var(--text-primary);">3개월 이내 알림톡 발송 성공 이력 존재</span>
+                    </div>
+
+                    <!-- 조건 5: 광고성 정보 수신동의 증적자료 -->
+                    <div style="padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                            <div style="width: 24px; height: 24px; border-radius: 50%; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; flex-shrink: 0;">×</div>
+                            <span style="flex: 1; font-size: 14px; color: var(--text-primary);">
+                                광고성 정보 수신동의 증적자료 파일 업로드
+                                <span class="tooltip-wrapper">
+                                    <span class="tooltip-icon">?</span>
+                                    <div class="tooltip-content" style="width: 350px;">
+                                        <div class="tooltip-section">
+                                            <p>광고성 정보 수신동의 증적자료 파일은 문자, 카카오톡 등의 매체로 광고(마케팅) 목적의 수신동의를 받고 있는 화면을 캡처하여 첨부해주세요.</p>
+                                        </div>
+                                        <div class="tooltip-section">
+                                            <p>수신동의 관련 자료 제출이 불가한 경우 M,N 타깃을 발송하실수 없습니다.</p>
+                                        </div>
+                                    </div>
+                                </span>
+                            </span>
+                        </div>
+                        <div style="margin-left: 36px;">
+                            <input type="file" id="consentFileInput" accept=".jpg,.jpeg,.png" style="display: none;" onchange="handleConsentFileUpload(event)">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('consentFileInput').click()" style="padding: 6px 16px; font-size: 12px;">
+                                ↑ 파일첨부
+                            </button>
+                            <div class="form-help" style="margin-top: 8px;">* 파일형식 : jpg, png (최대 5MB)</div>
+                            <div id="consentFileName" style="margin-top: 8px; font-size: 13px; color: var(--primary-color); display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('brandMessageApplicationModal')">닫기</button>
             </div>
         </div>
     </div>
@@ -1317,6 +1492,42 @@ document.addEventListener('DOMContentLoaded', function() {
         // 카카오톡 발신 프로필 삭제
         function deleteProfile() {
             openModal('deleteModal');
+        }
+
+        // 브랜드메시지 M,N 타깃 사용신청 모달 열기
+        function openBrandMessageApplicationModal() {
+            openModal('brandMessageApplicationModal');
+        }
+
+        // 광고성 정보 수신동의 증적자료 파일 업로드 처리
+        function handleConsentFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // 파일 형식 검증
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                showToast('jpg, png 파일만 업로드 가능합니다.', 'warning');
+                event.target.value = '';
+                return;
+            }
+
+            // 파일 크기 검증 (5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                showToast('파일 크기는 최대 5MB까지 가능합니다.', 'warning');
+                event.target.value = '';
+                return;
+            }
+
+            // 파일명 표시
+            const fileNameDiv = document.getElementById('consentFileName');
+            if (fileNameDiv) {
+                fileNameDiv.textContent = `✓ ${file.name}`;
+                fileNameDiv.style.display = 'block';
+            }
+
+            showToast('파일이 업로드되었습니다.', 'success');
         }
 
         function confirmDelete() {

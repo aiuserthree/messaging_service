@@ -1037,6 +1037,76 @@ body {
         #fallbackToggle:not(:checked) {
             background: #cbd5e1;
         }
+        /* 툴팁 스타일 */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+        }
+        .tooltip-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: #6b7280;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: help;
+            transition: all 0.2s;
+        }
+        .tooltip-icon:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+        .tooltip-content {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 8px;
+            background: #1e293b;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: normal;
+            width: 320px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            z-index: 1000;
+        }
+        .tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #1e293b;
+        }
+        .tooltip-wrapper:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+        }
+        .tooltip-content strong {
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #fbbf24;
+        }
+        .tooltip-content strong:first-child {
+            margin-top: 0;
+        }
+        .tooltip-content p {
+            margin: 8px 0 16px 0;
+        }
     </style>
 </head>
 <body>
@@ -1114,7 +1184,20 @@ body {
 
                     <!-- 발송 대상 선택 영역 -->
                     <div class="card" style="margin-bottom: 24px;">
-                        <label class="form-label required" style="margin-bottom: 20px;">발송 대상 선택</label>
+                        <label class="form-label required" style="margin-bottom: 20px; display: flex; align-items: center;">
+                            발송 대상 선택
+                            <span class="tooltip-wrapper">
+                                <span class="tooltip-icon">?</span>
+                                <div class="tooltip-content">
+                                    <strong>I 타입:</strong>
+                                    <p>카카오톡 마케팅 수신에 동의한 채널 친구 대상. 기존 친구톡과 동일하게 비친구 광고 채널 승인 없이 발송 가능합니다.</p>
+                                    <strong>N 타입:</strong>
+                                    <p>채널 추가하지 않은 비친구 대상. 친구인 사용자는 발송 실패 처리됩니다. 비친구 광고 채널이 사전 승인되어야 발송 가능합니다.</p>
+                                    <strong>M 타입:</strong>
+                                    <p>마케팅 수신 동의 회원이라면 친구 여부와 상관없이 발송됩니다. N 타입과 동일하게 사전 승인된 채널만 가능합니다.</p>
+                                </div>
+                            </span>
+                        </label>
 
                         <!-- 정보 박스 -->
                         <div style="background: #FEF9C3; border: 1px solid #FDE047; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
