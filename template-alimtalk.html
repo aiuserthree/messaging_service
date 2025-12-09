@@ -971,7 +971,7 @@ body {
             <div class="card" style="padding: 16px 24px; margin-bottom: 32px;">
                 <div class="search-filter-section">
                     <div style="flex: 1; min-width: 200px;">
-                        <input type="text" class="form-input" placeholder="템플릿명 또는 템플릿 코드로 검색">
+                        <input type="text" class="form-input" placeholder="템플릿명으로 검색">
                     </div>
                     <div style="width: 150px;">
                         <select class="form-select">
@@ -999,7 +999,6 @@ body {
                 <div class="template-actions" style="margin-bottom: 24px;">
                     <div>
                         <a href="template-alimtalk-register.html" class="btn btn-primary">템플릿 등록</a>
-                        <button class="btn btn-outline">대량 템플릿 등록</button>
                     </div>
                 </div>
 
@@ -1008,7 +1007,6 @@ body {
                         <thead>
                             <tr>
                                 <th style="width: 50px;"><input type="checkbox" id="selectAll"></th>
-                                <th>템플릿 코드</th>
                                 <th>템플릿명</th>
                                 <th>카테고리</th>
                                 <th>메시지 유형</th>
@@ -1021,7 +1019,6 @@ body {
                         <tbody>
                             <tr>
                                 <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
-                                <td>AT001</td>
                                 <td>주문 확인</td>
                                 <td>쇼핑/배송 > 주문/결제</td>
                                 <td>기본형</td>
@@ -1038,7 +1035,6 @@ body {
                             </tr>
                             <tr>
                                 <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
-                                <td>AT002</td>
                                 <td>배송 안내</td>
                                 <td>쇼핑/배송 > 배송</td>
                                 <td>기본형</td>
@@ -1054,7 +1050,6 @@ body {
                             </tr>
                             <tr>
                                 <td><input type="checkbox" class="row-checkbox" data-id="3"></td>
-                                <td>AT003</td>
                                 <td>회원가입 환영</td>
                                 <td>기타</td>
                                 <td>강조형</td>
@@ -1069,7 +1064,6 @@ body {
                             </tr>
                             <tr>
                                 <td><input type="checkbox" class="row-checkbox" data-id="4"></td>
-                                <td>AT004</td>
                                 <td>이벤트 안내</td>
                                 <td>기타</td>
                                 <td>이미지형</td>
@@ -1109,7 +1103,6 @@ body {
                 <div class="form-group">
                     <label class="form-label">템플릿 정보</label>
                     <div style="background: var(--bg-color); padding: 12px; border-radius: var(--radius-md);">
-                        <div><strong>템플릿 코드:</strong> AT004</div>
                         <div style="margin-top: 4px;"><strong>템플릿명:</strong> 이벤트 안내</div>
                         <div style="margin-top: 4px;"><strong>반려 일시:</strong> 2024-01-13 15:30</div>
                     </div>
@@ -1153,11 +1146,9 @@ body {
                         </div>
                     </div>
                     <div class="preview-kakao-body">
-                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6;">
-                            주문이 접수되었습니다.
-                            주문번호: #{주문번호}
-                            배송 예정일: #{배송일}
-                        </div>
+                        <div id="previewTemplateContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left !important; direction: ltr; margin: 0; padding: 0; margin-left: -16px; padding-left: 16px;">주문이 접수되었습니다.
+주문번호: #{주문번호}
+배송 예정일: #{배송일}</div>
                     </div>
                 </div>
             </div>
@@ -1578,6 +1569,15 @@ document.addEventListener('DOMContentLoaded', function() {
             border-radius: 12px;
             padding: 16px;
             min-height: 100px;
+            text-align: left;
+        }
+        #previewTemplateContent {
+            text-align: left !important;
+            direction: ltr !important;
+            margin: 0;
+            padding: 0;
+            margin-left: -16px;
+            padding-left: 16px;
         }
     </style>
     <script src="js/footer.js"></script>

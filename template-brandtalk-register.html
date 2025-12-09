@@ -1147,17 +1147,17 @@ body {
                             <div class="form-group">
                                 <label class="form-label required">메시지 입력</label>
                                 <div class="flex gap-2 mb-1">
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
-                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                    <div></div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span id="textCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/1300자</span>
-                                        <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(텍스트)</button>
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertTextVariable('#{이름}')">#{이름}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertTextVariable('#{전화번호}')">#{전화번호}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertTextVariable('#{변수1}')">#{변수1}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertTextVariable('#{변수2}')">#{변수2}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertTextVariable('#{변수3}')">#{변수3}</button>
                                 </div>
                                 <textarea class="form-textarea" id="textMessageContent" rows="8" placeholder="내용을 입력해주세요. (최대 1,300자) 줄바꿈 (Enter) 최대 99개 입력 가능" maxlength="1300" oninput="updateTextCharCounter(); updatePreview();"></textarea>
+                                <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 4px;">
+                                    <span id="textCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/1300자</span>
+                                    <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(텍스트)</button>
+                                </div>
                             </div>
                         </div>
 
@@ -1193,15 +1193,15 @@ body {
                                 <div class="flex gap-2 mb-1">
                                     <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{이름}')">#{이름}</button>
                                     <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{전화번호}')">#{전화번호}</button>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                    <div></div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span id="imageCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/400자</span>
-                                        <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(이미지)</button>
-                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{변수1}')">#{변수1}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{변수2}')">#{변수2}</button>
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="insertImageVariable('#{변수3}')">#{변수3}</button>
                                 </div>
                                 <textarea class="form-textarea" id="imageMessageContent" rows="6" placeholder="내용을 입력해주세요. (최대 400자) 줄바꿈 (Enter) 최대 29개 입력 가능" maxlength="400" oninput="updateImageCharCounter(); updatePreview();"></textarea>
+                                <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 4px;">
+                                    <span id="imageCharCounter" style="color: var(--text-secondary); font-size: 12px;">0/400자</span>
+                                    <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(이미지)</button>
+                                </div>
                             </div>
                         </div>
 
@@ -1304,7 +1304,7 @@ body {
                             <div class="preview-kakao-body">
                                 <!-- 텍스트/이미지 공통 -->
                                 <div id="previewImage" style="margin-bottom: 12px;"></div>
-                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6;">메시지 내용을 입력하세요</div>
+                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6; text-align: left;">메시지 내용을 입력하세요</div>
                                 
                                 <!-- 리스트 유형 -->
                                 <div id="previewList" style="display: none;">
@@ -1663,7 +1663,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updatePreview();
         };
 
-        window.insertVariable = function(variable) {
+        window.insertTextVariable = function(variable) {
             const textarea = document.getElementById('textMessageContent');
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
@@ -1861,15 +1861,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="flex gap-2 mb-1">
                             <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{이름}')">#{이름}</button>
                             <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{전화번호}')">#{전화번호}</button>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <div></div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span id="${cardId}CharCounter" style="color: var(--text-secondary); font-size: 12px;">0/180자</span>
-                                <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(카드형)</button>
-                            </div>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{변수1}')">#{변수1}</button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{변수2}')">#{변수2}</button>
+                            <button type="button" class="btn btn-sm btn-outline" onclick="insertCardVariable('${cardId}', '#{변수3}')">#{변수3}</button>
                         </div>
                         <textarea class="form-textarea" id="${cardId}Content" rows="4" placeholder="내용을 입력해주세요. (최대 180자) 줄바꿈 (Enter) 최대 10개 입력 가능" maxlength="180" oninput="updateCardCharCounter('${cardId}'); updatePreview();"></textarea>
+                        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 4px;">
+                            <span id="${cardId}CharCounter" style="color: var(--text-secondary); font-size: 12px;">0/180자</span>
+                            <button type="button" class="btn btn-sm btn-outline" style="padding: 4px 8px;">브랜드(카드형)</button>
+                        </div>
                     </div>
                     <div class="form-group" style="margin-top: 12px;">
                         <label class="form-label">버튼 추가</label>
