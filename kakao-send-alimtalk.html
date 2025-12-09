@@ -1068,34 +1068,34 @@ body {
 
                 <!-- 템플릿이 있는 경우 발송 폼 -->
                 <div id="sendFormArea" style="display: none;">
-                    <!-- 발신프로필 선택 영역 (페이지 상단) -->
-                    <div class="card" style="margin-bottom: 24px;">
-                        <div class="flex-between" style="align-items: flex-end;">
-                            <div style="flex: 1; margin-right: 16px;">
-                                <label class="form-label required">카카오톡 발신 프로필</label>
-                                <select class="form-select" id="senderProfile" required>
-                                    <option value="">카카오톡 발신 프로필을 선택하세요</option>
-                                    <option value="profile1">마케팅팀</option>
-                                    <option value="profile2">고객센터</option>
-                                </select>
-                            </div>
-                            <div>
-                                <a href="kakao-profile-manage.html" class="btn btn-outline">카카오톡 발신 프로필 등록</a>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="send-form-container">
                         <!-- 입력 영역 -->
                         <div class="card">
                             <form id="sendForm">
+
+                                <!-- 카카오톡 발신 프로필 선택 영역 -->
+                                <div class="form-group" style="margin-bottom: 24px;">
+                                    <div class="flex-between" style="align-items: flex-end;">
+                                        <div style="flex: 1; margin-right: 16px;">
+                                            <label class="form-label required">카카오톡 발신 프로필</label>
+                                            <select class="form-select" id="senderProfile" required>
+                                                <option value="">카카오톡 발신 프로필을 선택하세요</option>
+                                                <option value="profile1">마케팅팀</option>
+                                                <option value="profile2">고객센터</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <a href="kakao-profile-manage.html" class="btn btn-outline">카카오톡 발신 프로필 등록</a>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- 템플릿 선택 -->
                                 <div class="form-group">
                                     <label class="form-label required">템플릿</label>
                                     <div class="flex gap-2">
                                         <input type="text" class="form-input" id="selectedTemplate" placeholder="템플릿을 선택하세요" readonly>
-                                        <button type="button" class="btn btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
+                                        <button type="button" class="btn btn-outline" onclick="openModal('templateSelectModal')" style="min-width: 140px;">템플릿 선택</button>
                                     </div>
                                 </div>
 

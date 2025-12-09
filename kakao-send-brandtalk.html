@@ -1165,113 +1165,113 @@ body {
                         </p>
                     </div>
 
-                    <!-- 발신프로필 선택 영역 (페이지 상단) -->
-                    <div class="card" style="margin-bottom: 24px;">
-                        <div class="flex-between" style="align-items: flex-end;">
-                            <div style="flex: 1; margin-right: 16px;">
-                                <label class="form-label required">카카오톡 발신 프로필</label>
-                                <select class="form-select" id="brandChannel" required>
-                                    <option value="">카카오톡 발신 프로필을 선택하세요</option>
-                                    <option value="channel1">마케팅팀</option>
-                                    <option value="channel2">고객센터</option>
-                                </select>
-                            </div>
-                            <div>
-                                <a href="kakao-profile-manage.html" class="btn btn-outline">카카오톡 발신 프로필 등록</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 발송 대상 선택 영역 -->
-                    <div class="card" style="margin-bottom: 24px;">
-                        <label class="form-label required" style="margin-bottom: 20px; display: flex; align-items: center;">
-                            발송 대상 선택
-                            <span class="tooltip-wrapper">
-                                <span class="tooltip-icon">?</span>
-                                <div class="tooltip-content">
-                                    <strong>I 타입:</strong>
-                                    <p>카카오톡 마케팅 수신에 동의한 채널 친구 대상. 기존 친구톡과 동일하게 비친구 광고 채널 승인 없이 발송 가능합니다.</p>
-                                    <strong>N 타입:</strong>
-                                    <p>채널 추가하지 않은 비친구 대상. 친구인 사용자는 발송 실패 처리됩니다. 비친구 광고 채널이 사전 승인되어야 발송 가능합니다.</p>
-                                    <strong>M 타입:</strong>
-                                    <p>마케팅 수신 동의 회원이라면 친구 여부와 상관없이 발송됩니다. N 타입과 동일하게 사전 승인된 채널만 가능합니다.</p>
-                                </div>
-                            </span>
-                        </label>
-
-                        <!-- 정보 박스 -->
-                        <div style="background: #FEF9C3; border: 1px solid #FDE047; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
-                            <div style="display: flex; align-items: flex-start; gap: 12px;">
-                                <div style="font-size: 20px; flex-shrink: 0;">💡</div>
-                                <div style="flex: 1;">
-                                    <ul style="margin: 0; padding-left: 20px; color: #713f12; font-size: 14px; line-height: 1.8;">
-                                        <li>브랜드 메시지는 마케팅 수신 동의한 회원 또는 채널 친구에게 발송할 수 있어요</li>
-                                        <li>N, M 타입은 비친구 광고 채널 신청을 완료해야 발송할 수 있어요</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 발송 대상 선택 옵션 -->
-                        <div style="display: flex; flex-direction: column; gap: 16px;">
-                            <!-- 옵션 I -->
-                            <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #8b5cf6; border-radius: 12px; background: #faf5ff; cursor: pointer; transition: all 0.2s;">
-                                <input type="radio" name="targetType" value="I" checked style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
-                                <div style="flex: 1;">
-                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                        <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">I: 마케팅 수신 동의한 채널 친구</span>
-                                        <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">기존 친구톡</span>
-                                    </div>
-                                    <p style="color: #8b5cf6; font-size: 14px; margin: 0; line-height: 1.6;">서비스 이용 고객 중 채널 친구 추가를 완료한 핵심 회원 타겟팅</p>
-                                </div>
-                            </label>
-
-                            <!-- 옵션 N -->
-                            <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;">
-                                <input type="radio" name="targetType" value="N" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
-                                <div style="flex: 1;">
-                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                        <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">N: 채널 비친구</span>
-                                        <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">비친구 광고 채널 전용</span>
-                                    </div>
-                                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.6;">친구 추가 이벤트 등 채널 친구 유도 광고에 활용</p>
-                                </div>
-                            </label>
-
-                            <!-- 옵션 M -->
-                            <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;">
-                                <input type="radio" name="targetType" value="M" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
-                                <div style="flex: 1;">
-                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                        <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">M: 마케팅 수신 동의 회원</span>
-                                        <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">비친구 광고 채널 전용</span>
-                                    </div>
-                                    <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.6;">멤버십 알림 등 수신 동의 회원 대상 광고에 활용</p>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- 080 수신거부 번호 (N, M 선택 시 표시) -->
-                        <div id="optOutNumberArea" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); display: none;">
-                            <label class="form-label">080 수신거부 번호</label>
-                            <div style="padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-primary);">
-                                080-123-4567
-                            </div>
-                            <div class="form-help" style="margin-top: 8px;">N, M 타입 발송 시 필수로 표시되는 수신거부 번호입니다.</div>
-                        </div>
-                    </div>
-
                     <div class="send-form-container">
                         <!-- 입력 영역 -->
                         <div class="card">
                             <form id="sendForm">
+
+                                <!-- 카카오톡 발신 프로필 선택 영역 -->
+                                <div class="form-group" style="margin-bottom: 24px;">
+                                    <div class="flex-between" style="align-items: flex-end;">
+                                        <div style="flex: 1; margin-right: 16px;">
+                                            <label class="form-label required">카카오톡 발신 프로필</label>
+                                            <select class="form-select" id="brandChannel" required>
+                                                <option value="">카카오톡 발신 프로필을 선택하세요</option>
+                                                <option value="channel1">마케팅팀</option>
+                                                <option value="channel2">고객센터</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <a href="kakao-profile-manage.html" class="btn btn-outline">카카오톡 발신 프로필 등록</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 발송 대상 선택 영역 -->
+                                <div class="form-group" style="margin-bottom: 24px;">
+                                    <label class="form-label required" style="margin-bottom: 20px; display: flex; align-items: center;">
+                                        발송 대상 선택
+                                        <span class="tooltip-wrapper">
+                                            <span class="tooltip-icon">?</span>
+                                            <div class="tooltip-content">
+                                                <strong>I 타입:</strong>
+                                                <p>카카오톡 마케팅 수신에 동의한 채널 친구 대상. 기존 친구톡과 동일하게 비친구 광고 채널 승인 없이 발송 가능합니다.</p>
+                                                <strong>N 타입:</strong>
+                                                <p>채널 추가하지 않은 비친구 대상. 친구인 사용자는 발송 실패 처리됩니다. 비친구 광고 채널이 사전 승인되어야 발송 가능합니다.</p>
+                                                <strong>M 타입:</strong>
+                                                <p>마케팅 수신 동의 회원이라면 친구 여부와 상관없이 발송됩니다. N 타입과 동일하게 사전 승인된 채널만 가능합니다.</p>
+                                            </div>
+                                        </span>
+                                    </label>
+
+                                    <!-- 정보 박스 -->
+                                    <div style="background: #FEF9C3; border: 1px solid #FDE047; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                                        <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                            <div style="font-size: 20px; flex-shrink: 0;">💡</div>
+                                            <div style="flex: 1;">
+                                                <ul style="margin: 0; padding-left: 20px; color: #713f12; font-size: 14px; line-height: 1.8;">
+                                                    <li>브랜드 메시지는 마케팅 수신 동의한 회원 또는 채널 친구에게 발송할 수 있어요</li>
+                                                    <li>N, M 타입은 비친구 광고 채널 신청을 완료해야 발송할 수 있어요</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 발송 대상 선택 옵션 -->
+                                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                                        <!-- 옵션 I -->
+                                        <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #8b5cf6; border-radius: 12px; background: #faf5ff; cursor: pointer; transition: all 0.2s;">
+                                            <input type="radio" name="targetType" value="I" checked style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
+                                            <div style="flex: 1;">
+                                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                    <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">I: 마케팅 수신 동의한 채널 친구</span>
+                                                    <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">기존 친구톡</span>
+                                                </div>
+                                                <p style="color: #8b5cf6; font-size: 14px; margin: 0; line-height: 1.6;">서비스 이용 고객 중 채널 친구 추가를 완료한 핵심 회원 타겟팅</p>
+                                            </div>
+                                        </label>
+
+                                        <!-- 옵션 N -->
+                                        <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;">
+                                            <input type="radio" name="targetType" value="N" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
+                                            <div style="flex: 1;">
+                                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                    <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">N: 채널 비친구</span>
+                                                    <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">비친구 광고 채널 전용</span>
+                                                </div>
+                                                <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.6;">친구 추가 이벤트 등 채널 친구 유도 광고에 활용</p>
+                                            </div>
+                                        </label>
+
+                                        <!-- 옵션 M -->
+                                        <label style="display: flex; align-items: flex-start; gap: 12px; padding: 16px; border: 2px solid #e5e7eb; border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s;">
+                                            <input type="radio" name="targetType" value="M" style="margin-top: 2px; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0;">
+                                            <div style="flex: 1;">
+                                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                                    <span style="font-weight: 600; font-size: 16px; color: var(--text-primary);">M: 마케팅 수신 동의 회원</span>
+                                                    <span style="padding: 4px 12px; background: #e5e7eb; border-radius: 12px; font-size: 12px; color: #6b7280; font-weight: 500;">비친구 광고 채널 전용</span>
+                                                </div>
+                                                <p style="color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.6;">멤버십 알림 등 수신 동의 회원 대상 광고에 활용</p>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- 080 수신거부 번호 (N, M 선택 시 표시) -->
+                                    <div id="optOutNumberArea" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color); display: none;">
+                                        <label class="form-label">080 수신거부 번호</label>
+                                        <div style="padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); color: var(--text-primary);">
+                                            080-123-4567
+                                        </div>
+                                        <div class="form-help" style="margin-top: 8px;">N, M 타입 발송 시 필수로 표시되는 수신거부 번호입니다.</div>
+                                    </div>
+                                </div>
 
                                 <!-- 템플릿 선택 -->
                                 <div class="form-group">
                                     <label class="form-label required">템플릿</label>
                                     <div class="flex gap-2">
                                         <input type="text" class="form-input" id="selectedTemplate" placeholder="템플릿을 선택하세요" readonly>
-                                        <button type="button" class="btn btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
+                                        <button type="button" class="btn btn-outline" onclick="openModal('templateSelectModal')" style="min-width: 140px;">템플릿 선택</button>
                                     </div>
                                 </div>
 
