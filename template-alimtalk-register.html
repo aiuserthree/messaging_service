@@ -1088,15 +1088,6 @@ body {
 
                         <!-- 템플릿 기본 정보 -->
                         <div class="form-group">
-                            <label class="form-label required">템플릿 코드</label>
-                            <div class="flex gap-2">
-                                <input type="text" class="form-input" placeholder="WELCOME_001" maxlength="30" required>
-                                <button type="button" class="btn btn-outline" onclick="checkCode()">중복 확인</button>
-                            </div>
-                            <div class="form-help">영문, 숫자, 언더스코어(_) 조합, 최대 30자</div>
-                        </div>
-
-                        <div class="form-group">
                             <label class="form-label required">템플릿명</label>
                             <input type="text" class="form-input" placeholder="템플릿 관리용 이름" maxlength="200" required>
                         </div>
@@ -1176,6 +1167,9 @@ body {
                             <div class="flex gap-2 mb-1">
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수1}')">#{변수1}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수2}')">#{변수2}</button>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수3}')">#{변수3}</button>
                             </div>
                             <textarea class="form-textarea" id="messageContent" rows="8" placeholder="내용을 입력해주세요." maxlength="1000" required oninput="updateCharCounter(); updatePreview();"></textarea>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
@@ -1290,7 +1284,7 @@ body {
                                     <div id="previewImageContent" style="display: none;"></div>
                                 </div>
                                 
-                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6; color: var(--text-secondary); font-size: 13px;">템플릿 내용을 입력해주세요.</div>
+                                <div id="previewContent" style="white-space: pre-wrap; line-height: 1.6; color: var(--text-secondary); font-size: 13px; text-align: left;">템플릿 내용을 입력해주세요.</div>
                                 <div class="button-preview" id="previewButtons"></div>
                             </div>
                         </div>
@@ -1331,10 +1325,6 @@ body {
                             <tr>
                                 <th style="width: 150px;">채널명</th>
                                 <td id="confirmChannel">-</td>
-                            </tr>
-                            <tr>
-                                <th>템플릿 코드</th>
-                                <td id="confirmCode">-</td>
                             </tr>
                             <tr>
                                 <th>템플릿명</th>
