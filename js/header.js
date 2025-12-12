@@ -173,8 +173,13 @@ function createHeader(activeMenu = '') {
                                 <span style="float: right; font-weight: 600;">1,000,000</span>
                             </div>
                             <div>
-                                <span style="color: #fbbf24; font-weight: 600;">마일리지</span>
-                                <span style="float: right; font-weight: 600;">92.6</span>
+                                <div style="margin-bottom: 4px;">
+                                    <span style="color: #fbbf24; font-weight: 600;">마일리지</span>
+                                    <span style="float: right; font-weight: 600;">92.6</span>
+                                </div>
+                                <div style="font-size: 11px; color: #94a3b8; margin-top: 4px; text-align: left;">
+                                    └ 문자발송 시 사용가능 (환불불가)
+                                </div>
                             </div>
                         </div>
                     </div>
