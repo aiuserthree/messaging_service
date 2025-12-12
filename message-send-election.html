@@ -1286,7 +1286,7 @@ body {
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수3}')">#{변수3}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
                             </div>
-                            <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="checkForbiddenWords(); updatePreview(); updateByteCounter();"></textarea>
+                            <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="updatePreview(); checkForbiddenWords(); updateByteCounter();"></textarea>
                             <div class="byte-counter" id="byteCounter">0 / 90 바이트</div>
                             <div class="forbidden-word-warning" id="forbiddenWordWarning">
                                 <strong>⚠️ 금지어가 검출되었습니다</strong>
@@ -1851,6 +1851,35 @@ body {
 
     <script>// 공통 JavaScript 함수
 
+// updatePreview 함수를 가장 먼저 정의 (oninput에서 사용)
+function updatePreview() {
+    const content = document.getElementById('messageContent')?.value || '';
+    const title = document.getElementById('messageTitle')?.value || '';
+    const candidateName = document.getElementById('candidateNameInput')?.value || '';
+    const preview = document.getElementById('previewMessage');
+    
+    if (!preview) return;
+    
+    // 메시지 내용의 줄바꿈을 <br>로 변환
+    const formattedContent = (content || '메시지 내용을 입력하세요').replace(/\n/g, '<br>');
+    
+    let previewContent = `<span style="color: var(--primary-color); font-weight: 600;">(선거운동정보)</span>`;
+    if (candidateName) {
+        previewContent += candidateName;
+    }
+    previewContent += `<br>`;
+    if (title) {
+        previewContent += `<div style="font-weight: 600; margin-bottom: 8px;">${title}</div>`;
+    }
+    // 메시지 내용이 있으면 항상 표시
+    previewContent += formattedContent;
+    previewContent += `<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">불법수집정보 신고 : 1390<br>개인정보침해 신고 : 118<br>무료거부 0801234567</div>`;
+    preview.innerHTML = previewContent;
+}
+
+// window 객체에도 노출 (안전장치)
+window.updatePreview = updatePreview;
+
 // 모달 열기/닫기
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
@@ -2154,17 +2183,27 @@ style.textContent = `
 document.head.appendChild(style);
 
 // 드롭다운 메뉴 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    initDropdownMenus();
-    // 발신번호 초기화
-    updateCandidateInfo();
-    // 미리보기 초기화
-    updatePreview();
-    
-    // 선거 아이디 신청 팝업 표시 (항상 표시)
-    setTimeout(function() {
-        openModal('electionIdModal');
-    }, 300);
+// 선거 아이디 신청 팝업 표시 (항상 표시)
+function showElectionIdModal() {
+    const modal = document.getElementById('electionIdModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// 페이지 로드 시 팝업 표시
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        initDropdownMenus();
+        // 발신번호 초기화
+        updateCandidateInfo();
+        // 미리보기 초기화
+        updatePreview();
+        
+        // 선거 아이디 신청 팝업 표시 (항상 표시)
+        setTimeout(showElectionIdModal, 500);
     
     // 메시지 내용 실시간 미리보기 업데이트
     const messageContent = document.getElementById('messageContent');
@@ -2189,7 +2228,38 @@ document.addEventListener('DOMContentLoaded', function() {
         messageTitle.addEventListener('input', updatePreview);
         messageTitle.addEventListener('keyup', updatePreview);
     }
-});
+    });
+} else {
+    // 이미 로드된 경우 즉시 실행
+    initDropdownMenus();
+    updateCandidateInfo();
+    updatePreview();
+    setTimeout(showElectionIdModal, 500);
+    
+    // 메시지 내용 실시간 미리보기 업데이트
+    const messageContent = document.getElementById('messageContent');
+    if (messageContent) {
+        messageContent.addEventListener('input', updatePreview);
+        messageContent.addEventListener('keyup', updatePreview);
+        messageContent.addEventListener('paste', function() {
+            setTimeout(updatePreview, 10);
+        });
+    }
+    
+    // 선거운동정보 실시간 미리보기 업데이트
+    const candidateNameInput = document.getElementById('candidateNameInput');
+    if (candidateNameInput) {
+        candidateNameInput.addEventListener('input', updatePreview);
+        candidateNameInput.addEventListener('keyup', updatePreview);
+    }
+    
+    // 제목 실시간 미리보기 업데이트
+    const messageTitle = document.getElementById('messageTitle');
+    if (messageTitle) {
+        messageTitle.addEventListener('input', updatePreview);
+        messageTitle.addEventListener('keyup', updatePreview);
+    }
+}
 
 </script>
     <script>
@@ -2324,8 +2394,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 checkItem.classList.add('valid');
                 checkItem.classList.remove('invalid');
             }
-            
-            updatePreview();
         }
 
         function updateByteCounter() {
@@ -2366,26 +2434,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        function updatePreview() {
-            const content = document.getElementById('messageContent').value;
-            const title = document.getElementById('messageTitle').value;
-            const candidateName = document.getElementById('candidateNameInput').value || '';
-            const preview = document.getElementById('previewMessage');
-            
-            // 메시지 내용의 줄바꿈을 <br>로 변환
-            const formattedContent = (content || '메시지 내용을 입력하세요').replace(/\n/g, '<br>');
-            
-            let previewContent = `<span style="color: var(--primary-color); font-weight: 600;">(선거운동정보)</span>`;
-            if (candidateName) {
-                previewContent += candidateName;
-            }
-            previewContent += `<br>`;
-            if (title) {
-                previewContent += `<div style="font-weight: 600; margin-bottom: 8px;">${title}</div>`;
-            }
-            previewContent += `${formattedContent}<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">불법수집정보 신고 : 1390<br>개인정보침해 신고 : 118<br>무료거부 0801234567</div>`;
-            preview.innerHTML = previewContent;
-        }
 
         function handleImageUpload(event) {
             const file = event.target.files[0];
@@ -4026,6 +4074,16 @@ document.addEventListener('DOMContentLoaded', function() {
     <script>
         document.write(createFloatingMenu());
         document.write(createFooter());
+        
+        // 페이지 로드 완료 후 팝업 표시 (백업)
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const modal = document.getElementById('electionIdModal');
+                if (modal && !modal.classList.contains('active')) {
+                    showElectionIdModal();
+                }
+            }, 1000);
+        });
     </script>
             </div>
 </body>
