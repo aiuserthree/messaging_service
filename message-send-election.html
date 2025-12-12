@@ -1370,6 +1370,63 @@ body {
         </main>
     </div>
 
+    <!-- 선거 아이디 신청 모달 -->
+    <div class="modal-overlay" id="electionIdModal">
+        <div class="modal" style="max-width: 580px; width: 95%;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <h3 class="modal-title">선거 아이디 신청</h3>
+                <button class="modal-close" onclick="closeElectionIdModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding-top: 16px;">
+                <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 14px; line-height: 1.6;">
+                    선거 아이디 신청 후 담당자 승인 시 선거문자 최저 단가로 적용되며, 선거 전문 담당자가 별도 관리해 드립니다.
+                </p>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label" style="font-weight: 500;">후보자명</label>
+                    <input type="text" class="form-input" id="electionCandidateName" placeholder="ex) 홍길동">
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label" style="font-weight: 500;">소속/기관</label>
+                    <input type="text" class="form-input" id="electionOrganization" placeholder="ex) 대한민국당">
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <label class="form-label" style="font-weight: 500;">지역</label>
+                    <input type="text" class="form-input" id="electionRegion" placeholder="ex) 서울 경성구 갑">
+                </div>
+                
+                <div style="margin-bottom: 16px;">
+                    <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="electionAgreeCheckbox" style="margin-top: 4px;">
+                        <span><span style="color: var(--primary-color); font-weight: 500;">[필수]</span> 제 3자 정보제공 동의</span>
+                    </label>
+                </div>
+                
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                    본인은 선거관리위원회가 관리하는 선거(대통령 선거, 국회의원 선거, 지방의회 의원 및 지방자치단체의 장의 선거, 조합장 선거 등)에서 ㈜다우기술(이하 '회사')의 '뿌리오' 선거문자 서비스를 이용하기 위하여 아래의 내용에 동의합니다.
+                </p>
+                
+                <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                    <p style="margin-bottom: 8px;"><strong style="color: var(--warning-color);">※아래※</strong></p>
+                    <p>회사는 선거관리위원회의 요청이 있는 경우 정치자금법, 공직선거법 등 관련법령에 따라 아래와 같이 관련 자료를 선거관리위원회에 제공할 수 있으며, 본인은 이에 대하여 민형사상의 일체의 이의를 제기하지 않겠습니다.</p>
+                </div>
+                
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <tr>
+                        <td style="border: 1px solid var(--border-color); padding: 12px 16px; background: var(--bg-color); font-weight: 500; width: 50%; text-align: center;">제공받는 자</td>
+                        <td style="border: 1px solid var(--border-color); padding: 12px 16px; text-align: center; color: var(--primary-color); font-weight: 500;">선거관리위원회</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer" style="border-top: none; padding-top: 16px;">
+                <button class="btn btn-outline" onclick="closeElectionIdModal()">닫기</button>
+                <button class="btn btn-primary" onclick="submitElectionId()" style="flex: 1;">신청하기</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 템플릿 선택 모달 -->
     <div class="modal-overlay" id="templateSelectModal">
         <div class="modal" style="max-width: 800px;">
@@ -1843,6 +1900,47 @@ function calculateByteLength(str) {
     return byteLength;
 }
 
+// 선거 아이디 신청 모달 닫기
+function closeElectionIdModal() {
+    closeModal('electionIdModal');
+}
+
+// 선거 아이디 신청하기
+function submitElectionId() {
+    const candidateName = document.getElementById('electionCandidateName').value.trim();
+    const organization = document.getElementById('electionOrganization').value.trim();
+    const region = document.getElementById('electionRegion').value.trim();
+    const agreeCheckbox = document.getElementById('electionAgreeCheckbox').checked;
+    
+    if (!candidateName) {
+        showToast('후보자명을 입력해주세요.', 'warning');
+        document.getElementById('electionCandidateName').focus();
+        return;
+    }
+    
+    if (!organization) {
+        showToast('소속/기관을 입력해주세요.', 'warning');
+        document.getElementById('electionOrganization').focus();
+        return;
+    }
+    
+    if (!region) {
+        showToast('지역을 입력해주세요.', 'warning');
+        document.getElementById('electionRegion').focus();
+        return;
+    }
+    
+    if (!agreeCheckbox) {
+        showToast('제 3자 정보제공에 동의해주세요.', 'warning');
+        return;
+    }
+    
+    // 신청 완료 처리
+    sessionStorage.setItem('electionIdApplied', 'true');
+    closeModal('electionIdModal');
+    showToast('선거 아이디 신청이 완료되었습니다. 담당자 승인 후 이용 가능합니다.', 'success');
+}
+
 // 토스트 메시지
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
@@ -2032,6 +2130,13 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCandidateInfo();
     // 미리보기 초기화
     updatePreview();
+    
+    // 선거 아이디 신청 팝업 표시 (세션에서 이미 신청했는지 확인)
+    if (!sessionStorage.getItem('electionIdApplied')) {
+        setTimeout(function() {
+            openModal('electionIdModal');
+        }, 300);
+    }
     
     // 메시지 내용 실시간 미리보기 업데이트
     const messageContent = document.getElementById('messageContent');
