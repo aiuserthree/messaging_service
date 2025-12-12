@@ -19,6 +19,8 @@
     --success-color: #10b981;
     --danger-color: #ef4444;
     --warning-color: #f59e0b;
+    --purple-color: #7c5cdb;
+    --purple-light: #a78bfa;
     --bg-color: #f8fafc;
     --surface-color: #ffffff;
     --border-color: #e2e8f0;
@@ -28,9 +30,12 @@
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
 }
 
 body {
@@ -735,23 +740,65 @@ body {
 .stat-card {
     background-color: var(--surface-color);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 24px;
+    border-radius: var(--radius-2xl);
+    padding: 20px 24px;
     display: flex;
     align-items: center;
     gap: 16px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-card);
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .stat-icon {
-    font-size: 40px;
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-color);
-    border-radius: var(--radius-md);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.stat-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.stat-icon.blue {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+.stat-icon.blue svg {
+    color: #2563eb;
+}
+
+.stat-icon.green {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.stat-icon.green svg {
+    color: #10b981;
+}
+
+.stat-icon.orange {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.stat-icon.orange svg {
+    color: #f59e0b;
+}
+
+.stat-icon.red {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+}
+
+.stat-icon.red svg {
+    color: #ef4444;
 }
 
 .stat-content h3 {
@@ -1050,7 +1097,7 @@ body {
                 <div class="tab-list">
                     <button class="tab-item" onclick="window.location.href='template-message.html'">일반문자</button>
                     <button class="tab-item active" onclick="window.location.href='template-message-ad.html'">광고문자</button>
-                    <button class="tab-item" onclick="window.location.href='template-message-election.html'">공직선거문자</button>
+                    <button class="tab-item" onclick="window.location.href='template-message-election.html'">선거문자</button>
                     <button class="tab-item" onclick="window.location.href='template-alimtalk.html'">알림톡</button>
                     <button class="tab-item" onclick="window.location.href='template-brandtalk.html'">브랜드 메시지</button>
                 </div>
@@ -1059,28 +1106,44 @@ body {
             <!-- 통계 요약 -->
             <div class="dashboard-grid" style="margin-bottom: 24px;">
                 <div class="stat-card">
-                    <div class="stat-icon">📝</div>
+                    <div class="stat-icon blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                        </svg>
+                    </div>
                     <div class="stat-content">
                         <h3>전체 템플릿</h3>
                         <p class="stat-value">24개</p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">📱</div>
+                    <div class="stat-icon green">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
                     <div class="stat-content">
                         <h3>SMS</h3>
                         <p class="stat-value">12개</p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">📄</div>
+                    <div class="stat-icon orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+                        </svg>
+                    </div>
                     <div class="stat-content">
                         <h3>LMS</h3>
                         <p class="stat-value">8개</p>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon">🖼️</div>
+                    <div class="stat-icon red">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        </svg>
+                    </div>
                     <div class="stat-content">
                         <h3>MMS</h3>
                         <p class="stat-value">4개</p>
