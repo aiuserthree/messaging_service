@@ -1405,20 +1405,36 @@ body {
                 </div>
                 
                 <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
-                    본인은 선거관리위원회가 관리하는 선거(대통령 선거, 국회의원 선거, 지방의회 의원 및 지방자치단체의 장의 선거, 조합장 선거 등)에서 ㈜다우기술(이하 '회사')의 '뿌리오' 선거문자 서비스를 이용하기 위하여 아래의 내용에 동의합니다.
+                    본인은 선거관리위원회가 관리하는 선거(대통령 선거, 국회의원 선거, 지방의회 의원 및 지방자치단체의 장의 선거, 조합장 선거 등)에서 '톡벨' 선거문자 서비스를 이용하기 위하여 아래의 내용에 동의합니다.
                 </p>
                 
-                <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
-                    <p style="margin-bottom: 8px;"><strong style="color: var(--warning-color);">※아래※</strong></p>
-                    <p>회사는 선거관리위원회의 요청이 있는 경우 정치자금법, 공직선거법 등 관련법령에 따라 아래와 같이 관련 자료를 선거관리위원회에 제공할 수 있으며, 본인은 이에 대하여 민형사상의 일체의 이의를 제기하지 않겠습니다.</p>
+                <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; max-height: 300px; overflow-y: auto;">
+                    <p style="margin-bottom: 12px;"><strong style="color: var(--warning-color);">※아래※</strong></p>
+                    <p style="margin-bottom: 12px;">회사는 선거관리위원회의 요청이 있는 경우 정치자금법, 공직선거법 등 관련법령에 따라 아래와 같이 관련 자료를 선거관리위원회에 제공할 수 있으며, 본인은 이에 대하여 민형사상의 일체의 이의를 제기하지 않겠습니다.</p>
+                    
+                    <p style="margin-bottom: 12px;"><strong>1. 제공 목적</strong></p>
+                    <p style="margin-bottom: 12px;">선거관리위원회가 공직선거법, 정치자금법 등 관련 법령에 따라 선거 관련 자료를 요청하는 경우, 해당 목적에 한하여 정보를 제공합니다.</p>
+                    
+                    <p style="margin-bottom: 12px;"><strong>2. 제공 항목</strong></p>
+                    <p style="margin-bottom: 8px;">- 후보자명, 소속/기관, 지역 등 선거 아이디 신청 시 입력한 정보</p>
+                    <p style="margin-bottom: 8px;">- 선거문자 발송 내역 (발송일시, 수신번호, 발송 내용 등)</p>
+                    <p style="margin-bottom: 8px;">- 발송 건수 및 비용 관련 정보</p>
+                    <p style="margin-bottom: 12px;">- 기타 선거관리위원회가 법령에 따라 요청하는 관련 자료</p>
+                    
+                    <p style="margin-bottom: 12px;"><strong>3. 제공 기간</strong></p>
+                    <p style="margin-bottom: 12px;">선거관리위원회의 요청이 있는 시점부터 관련 법령에 따라 보관 기간이 종료될 때까지 제공될 수 있습니다.</p>
+                    
+                    <p style="margin-bottom: 12px;"><strong>4. 거부 권리 및 불이익</strong></p>
+                    <p style="margin-bottom: 12px;">귀하는 위 개인정보 제공에 대한 동의를 거부할 권리가 있습니다. 다만, 동의를 거부하실 경우 선거문자 서비스 이용이 제한될 수 있습니다.</p>
+                    
+                    <p style="margin-bottom: 12px;"><strong>5. 법적 근거</strong></p>
+                    <p style="margin-bottom: 8px;">- 공직선거법 제82조의2 (선거운동을 위한 전화·문자메시지 전송의 제한)</p>
+                    <p style="margin-bottom: 8px;">- 정치자금법 제49조 (정치자금의 수수·기부 등에 관한 자료의 제출)</p>
+                    <p style="margin-bottom: 12px;">- 개인정보 보호법 제17조 (개인정보의 제공)</p>
+                    
+                    <p style="margin-bottom: 12px;"><strong>6. 동의 철회</strong></p>
+                    <p style="margin-bottom: 12px;">본 동의는 선거문자 서비스 이용 중 언제든지 철회할 수 있으며, 동의를 철회하시는 경우 선거문자 서비스 이용이 중단될 수 있습니다.</p>
                 </div>
-                
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <tr>
-                        <td style="border: 1px solid var(--border-color); padding: 12px 16px; background: var(--bg-color); font-weight: 500; width: 50%; text-align: center;">제공받는 자</td>
-                        <td style="border: 1px solid var(--border-color); padding: 12px 16px; text-align: center; color: var(--primary-color); font-weight: 500;">선거관리위원회</td>
-                    </tr>
-                </table>
             </div>
             <div class="modal-footer" style="border-top: none; padding-top: 16px;">
                 <button class="btn btn-outline" onclick="closeElectionIdModal()">닫기</button>
@@ -1936,7 +1952,6 @@ function submitElectionId() {
     }
     
     // 신청 완료 처리
-    sessionStorage.setItem('electionIdApplied', 'true');
     closeModal('electionIdModal');
     showToast('선거 아이디 신청이 완료되었습니다. 담당자 승인 후 이용 가능합니다.', 'success');
 }
@@ -2131,12 +2146,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 미리보기 초기화
     updatePreview();
     
-    // 선거 아이디 신청 팝업 표시 (세션에서 이미 신청했는지 확인)
-    if (!sessionStorage.getItem('electionIdApplied')) {
-        setTimeout(function() {
-            openModal('electionIdModal');
-        }, 300);
-    }
+    // 선거 아이디 신청 팝업 표시 (항상 표시)
+    setTimeout(function() {
+        openModal('electionIdModal');
+    }, 300);
     
     // 메시지 내용 실시간 미리보기 업데이트
     const messageContent = document.getElementById('messageContent');
