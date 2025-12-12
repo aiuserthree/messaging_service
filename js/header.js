@@ -36,7 +36,7 @@ function createHeader(activeMenu = '') {
             items: [
                 { label: '일반문자', url: 'template-message.html' },
                 { label: '광고문자', url: 'template-message-ad.html' },
-                { label: '공직선거문자', url: 'template-message-election.html' },
+                { label: '선거문자', url: 'template-message-election.html' },
                 { label: '알림톡', url: 'template-alimtalk.html' },
                 { label: '브랜드 메시지', url: 'template-brandtalk.html' }
             ]
@@ -267,27 +267,50 @@ function createFloatingMenu() {
     return `
         <div class="floating-menu active" id="floatingMenu">
             <button class="floating-menu-toggle active" id="floatingMenuToggle" onclick="toggleFloatingMenu()">
-                <span class="floating-menu-icon">+</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
             </button>
             <div class="floating-menu-items" id="floatingMenuItems">
                 <a href="message-send-general.html" class="floating-menu-item" title="일반문자 발송">
-                    <span class="floating-menu-icon-item"><img src="img/text.png" alt="일반문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </span>
                     <span class="floating-menu-label">일반문자 발송</span>
                 </a>
                 <a href="message-send-ad.html" class="floating-menu-item" title="광고문자 발송">
-                    <span class="floating-menu-icon-item"><img src="img/ad.png" alt="광고문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 6h-4v2h4v2h-4v2h4v2H9V7h6v2z"/>
+                        </svg>
+                    </span>
                     <span class="floating-menu-label">광고문자 발송</span>
                 </a>
                 <a href="message-send-election.html" class="floating-menu-item" title="선거문자 발송">
-                    <span class="floating-menu-icon-item"><img src="img/elect.png" alt="선거문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 13h-.68l-2 2h1.91L19 17H5l1.78-2h2.05l-2-2H6l-3 3v4c0 1.1.89 2 1.99 2H19c1.1 0 2-.89 2-2v-4l-3-3zm-1-5.05l-4.95 4.95-3.54-3.54 4.95-4.95L17 7.95zm-4.24-5.66L6.39 8.66a.996.996 0 0 0 0 1.41l4.95 4.95c.39.39 1.02.39 1.41 0l6.36-6.36a.996.996 0 0 0 0-1.41L14.16 2.3a.975.975 0 0 0-1.4-.01z"/>
+                        </svg>
+                    </span>
                     <span class="floating-menu-label">선거문자 발송</span>
                 </a>
                 <a href="kakao-send-alimtalk.html" class="floating-menu-item" title="알림톡 발송">
-                    <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item yellow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 3C6.48 3 2 6.58 2 11c0 2.52 1.56 4.76 4 6.22V21l3.5-2.1c.78.13 1.62.1 2.5.1 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+                        </svg>
+                    </span>
                     <span class="floating-menu-label">알림톡 발송</span>
                 </a>
                 <a href="kakao-send-brandtalk.html" class="floating-menu-item" title="브랜드 메시지 발송">
-                    <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-icon-item purple">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                        </svg>
+                    </span>
                     <span class="floating-menu-label">브랜드 메시지 발송</span>
                 </a>
             </div>
@@ -370,19 +393,44 @@ function createFloatingMenu() {
             }
             
             .floating-menu-icon-item {
-                font-size: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 20px;
-                height: 20px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
                 flex-shrink: 0;
+                transition: all 0.2s ease;
             }
             
-            .floating-menu-icon-item img {
-                width: 100%;
-                height: 100%;
-                object-fit: contain;
+            .floating-menu-icon-item.blue {
+                background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+                color: #2563eb;
+            }
+            
+            .floating-menu-icon-item.green {
+                background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+                color: #10b981;
+            }
+            
+            .floating-menu-icon-item.orange {
+                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                color: #f59e0b;
+            }
+            
+            .floating-menu-icon-item.yellow {
+                background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+                color: #ca8a04;
+            }
+            
+            .floating-menu-icon-item.purple {
+                background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+                color: #7c3aed;
+            }
+            
+            .floating-menu-item:hover .floating-menu-icon-item {
+                background: rgba(255, 255, 255, 0.2);
+                color: white;
             }
             
             .floating-menu-label {

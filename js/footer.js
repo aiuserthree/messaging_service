@@ -14,7 +14,7 @@ function createFooter() {
                 <div class="footer-section">
                     <h4 class="footer-title">회사정보</h4>
                     <div class="footer-info">
-                        <p class="footer-text">상호: (주)톡벨</p>
+                        <p class="footer-text">상호 : 톡벨</p>
                         <p class="footer-text">대표자: 정용관</p>
                         <p class="footer-text">사업자등록번호: 116-81-68774</p>
                         <p class="footer-text">통신판매업신고번호: 제2025-서울-0000호</p>
