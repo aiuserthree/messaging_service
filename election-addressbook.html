@@ -1145,8 +1145,8 @@ body {
                             <tbody>
                                 <tr data-group-id="group1">
                                     <td><input type="checkbox"></td>
-                                    <td>홍길동</td>
-                                    <td>010-1234-5678</td>
+                                    <td>홍*동</td>
+                                    <td>010-****-5678</td>
                                     <td>2024-01-15</td>
                                     <td><span class="badge badge-success">정상</span></td>
                                     <td>
@@ -1156,8 +1156,8 @@ body {
                                 </tr>
                                 <tr data-group-id="group2">
                                     <td><input type="checkbox"></td>
-                                    <td>김철수</td>
-                                    <td>010-9876-5432</td>
+                                    <td>김*수</td>
+                                    <td>010-****-5432</td>
                                     <td>2024-01-14</td>
                                     <td><span class="badge badge-success">정상</span></td>
                                     <td>
@@ -1167,8 +1167,8 @@ body {
                                 </tr>
                                 <tr data-group-id="group3">
                                     <td><input type="checkbox"></td>
-                                    <td>이영희</td>
-                                    <td>010-5555-7777</td>
+                                    <td>이*희</td>
+                                    <td>010-****-7777</td>
                                     <td>2024-01-13</td>
                                     <td><span class="badge badge-danger">수신거부</span></td>
                                     <td>
@@ -1478,6 +1478,40 @@ function formatPhoneNumber(value) {
     if (numbers.length <= 3) return numbers;
     if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
     return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+}
+
+// 이름 마스킹 처리 (홍길동 -> 홍*동)
+function maskName(name) {
+    if (!name || name.length === 0) return '';
+    if (name.length === 1) return '*';
+    if (name.length === 2) return name[0] + '*';
+    return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+}
+
+// 전화번호 마스킹 처리 (010-1234-5678 -> 010-****-5678)
+function maskPhone(phone) {
+    if (!phone) return '';
+    const cleaned = phone.replace(/[^\d]/g, '');
+    if (cleaned.length < 8) return phone;
+    if (cleaned.length === 10) {
+        // 010-123-4567 형식 (10자리)
+        return cleaned.slice(0, 3) + '-***-' + cleaned.slice(6);
+    } else if (cleaned.length === 11) {
+        // 010-1234-5678 형식 (11자리)
+        return cleaned.slice(0, 3) + '-****-' + cleaned.slice(7);
+    }
+    // 이미 하이픈이 포함된 경우
+    if (phone.includes('-')) {
+        const parts = phone.split('-');
+        if (parts.length === 3) {
+            // 010-1234-5678 형식
+            return parts[0] + '-****-' + parts[2];
+        } else if (parts.length === 2) {
+            // 010-12345678 형식
+            return parts[0] + '-****-' + parts[1].slice(-4);
+        }
+    }
+    return phone;
 }
 
 // 바이트 계산 (한글 3바이트, 영문/숫자 1바이트)
@@ -2593,12 +2627,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 주소록 다운로드 함수
         function downloadAddressBook() {
-            // 현재 주소록 데이터를 엑셀로 다운로드
+            // 현재 주소록 데이터를 엑셀로 다운로드 (마스킹 처리)
+            const rawData = [
+                { name: '홍길동', phone: '010-1234-5678', date: '2024-01-15', status: '정상' },
+                { name: '김철수', phone: '010-9876-5432', date: '2024-01-14', status: '정상' },
+                { name: '이영희', phone: '010-5555-7777', date: '2024-01-13', status: '수신거부' }
+            ];
+            
+            // 마스킹 처리된 데이터 생성
             const addressData = [
                 ['이름', '전화번호', '등록일', '상태'],
-                ['홍길동', '010-1234-5678', '2024-01-15', '정상'],
-                ['김철수', '010-9876-5432', '2024-01-14', '정상'],
-                ['이영희', '010-5555-7777', '2024-01-13', '수신거부']
+                ...rawData.map(item => [
+                    maskName(item.name),
+                    maskPhone(item.phone),
+                    item.date,
+                    item.status
+                ])
             ];
             
             // 워크북 생성
