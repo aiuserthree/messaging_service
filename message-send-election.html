@@ -1274,8 +1274,9 @@ body {
                         <!-- 선거운동정보 입력 -->
                         <div class="form-group">
                             <label class="form-label required">선거운동정보</label>
-                            <input type="text" class="form-input" id="candidateNameInput" placeholder="선거운동정보를 입력하세요" required oninput="updatePreview(); updateByteCounter();">
+                            <input type="text" class="form-input" id="candidateNameInput" placeholder="선거운동정보를 입력하세요 (최대 40바이트)" required oninput="validateElectionInfo(); updatePreview(); updateByteCounter();">
                             <div class="form-help">(선거운동정보) 옆에 표시될 내용을 입력하세요</div>
+                            <div class="byte-counter" id="electionInfoByteCounter" style="margin-top: 4px;">0 / 40 바이트</div>
                         </div>
 
                         <!-- 제목 (LMS/MMS만) -->
@@ -2037,6 +2038,38 @@ function calculateByteLength(str) {
     return byteLength;
 }
 
+// 선거운동정보 40바이트 제한 검증
+function validateElectionInfo() {
+    const input = document.getElementById('candidateNameInput');
+    const counter = document.getElementById('electionInfoByteCounter');
+    if (!input || !counter) return;
+    
+    let value = input.value;
+    let byteLength = calculateByteLength(value);
+    const maxBytes = 40;
+    
+    // 40바이트를 초과하면 마지막 문자를 제거
+    if (byteLength > maxBytes) {
+        // 한 글자씩 제거하면서 40바이트 이하가 될 때까지 반복
+        while (byteLength > maxBytes && value.length > 0) {
+            value = value.slice(0, -1);
+            byteLength = calculateByteLength(value);
+        }
+        input.value = value;
+    }
+    
+    // 바이트 카운터 업데이트
+    counter.textContent = `${byteLength} / ${maxBytes} 바이트`;
+    counter.className = 'byte-counter';
+    
+    if (byteLength > maxBytes * 0.9) {
+        counter.classList.add('warning');
+    }
+    if (byteLength >= maxBytes) {
+        counter.classList.add('danger');
+    }
+}
+
 // 선거 아이디 신청 모달 닫기
 function closeElectionIdModal() {
     closeModal('electionIdModal');
@@ -2305,6 +2338,9 @@ if (document.readyState === 'loading') {
         updateCandidateInfo();
         // 미리보기 초기화
         updatePreview();
+        
+        // 선거운동정보 바이트 카운터 초기화
+        validateElectionInfo();
         
         // 선거 아이디 신청 팝업 표시 (항상 표시)
         setTimeout(showElectionIdModal, 500);
@@ -3171,6 +3207,15 @@ if (document.readyState === 'loading') {
         }
 
         function confirmSend() {
+            // 선거운동정보 40바이트 제한 검증
+            const candidateName = document.getElementById('candidateNameInput')?.value || '';
+            const electionInfoBytes = calculateByteLength(candidateName);
+            if (electionInfoBytes > 40) {
+                showToast('선거운동정보는 최대 40바이트까지 입력 가능합니다.', 'warning');
+                document.getElementById('candidateNameInput')?.focus();
+                return;
+            }
+            
             // SMS 발송 시 변수값 길이 체크
             const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
             if (messageType === 'SMS') {
