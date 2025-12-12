@@ -163,10 +163,20 @@ function createHeader(activeMenu = '') {
                     ${navHTML}
                 </nav>
                 <div class="header-actions" style="gap: 4px;">
-                    <div class="balance-info">
-                        <span class="balance-label">전체 포인트</span>
+                    <div class="balance-info balance-tooltip-wrapper">
+                        <span class="balance-label">잔액</span>
                         <span class="balance-amount">1,000,000</span>
                         <a href="payment-charge.html" class="btn btn-sm btn-primary" style="margin-left: 12px; padding: 6px 12px; font-size: 12px;">충전하기</a>
+                        <div class="balance-tooltip-content">
+                            <div style="margin-bottom: 8px;">
+                                <span style="color: #fbbf24; font-weight: 600;">포인트</span>
+                                <span style="float: right; font-weight: 600;">1,000,000</span>
+                            </div>
+                            <div>
+                                <span style="color: #fbbf24; font-weight: 600;">마일리지</span>
+                                <span style="float: right; font-weight: 600;">92.6</span>
+                            </div>
+                        </div>
                     </div>
                     <button class="btn btn-sm btn-outline" onclick="handleLogout()" style="padding: 6px 12px; font-size: 12px;">로그아웃</button>
                 </div>
@@ -399,6 +409,49 @@ function createFloatingMenu() {
                 .floating-menu-label {
                     font-size: 13px;
                 }
+            }
+            
+            /* 잔액 툴팁 스타일 */
+            .balance-tooltip-wrapper {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+            }
+            
+            .balance-tooltip-content {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-top: 8px;
+                background: #1e293b;
+                color: white;
+                padding: 16px;
+                border-radius: 8px;
+                font-size: 13px;
+                line-height: 1.6;
+                white-space: normal;
+                width: 200px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.2s;
+                z-index: 1000;
+            }
+            
+            .balance-tooltip-wrapper:hover .balance-tooltip-content {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .balance-tooltip-content::after {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border: 6px solid transparent;
+                border-bottom-color: #1e293b;
             }
         </style>
         <script>
