@@ -1,0 +1,2608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선거문자 주소록 - 메시징 서비스</title>
+    <script src="js/header.js"></script>
+    <style>/* 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --secondary-color: #64748b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --bg-color: #f8fafc;
+    --surface-color: #ffffff;
+    --border-color: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background-color: var(--bg-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+/* 입력 필드 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: var(--danger-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-error {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--danger-color);
+}
+
+.form-help {
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 카드 */
+.card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 모달 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* 배지 */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+}
+
+.badge-primary {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.badge-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.badge-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+}
+
+.badge-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+/* 탭 */
+.tabs {
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 24px;
+}
+
+.tab-list {
+    display: flex;
+    gap: 8px;
+}
+
+.tab-item {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.tab-item:hover {
+    color: var(--text-primary);
+}
+
+.tab-item.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* 테이블 */
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table th {
+    background-color: var(--bg-color);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.table tbody tr:hover {
+    background-color: var(--bg-color);
+}
+
+/* 알림 */
+.alert {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+.alert-info {
+    background-color: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    color: var(--primary-color);
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    color: var(--warning-color);
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: var(--danger-color);
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+}
+
+/* 유틸리티 */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+
+.flex {
+    display: flex;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* 검색/필터 섹션 */
+.search-filter-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-filter-section > div {
+    display: flex;
+    align-items: center;
+}
+
+/* 기간 선택 영역 */
+.date-range-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.date-range-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.date-input-wrapper {
+    min-width: 140px;
+    max-width: 160px;
+    flex-shrink: 0;
+}
+
+.date-input-wrapper input[type="date"] {
+    width: 100%;
+    min-width: 140px;
+}
+
+/* 필터 섹션 */
+.filter-section {
+    margin-bottom: 24px;
+}
+
+.filter-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    min-width: 150px;
+    flex: 1;
+}
+
+.filter-group .form-label {
+    margin-bottom: 8px;
+}
+
+.filter-group .flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-group .flex input[type="date"] {
+    flex: 1;
+    min-width: 140px;
+}
+
+.filter-group .flex span {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+    .search-filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-filter-section > div {
+        width: 100%;
+    }
+    
+    .date-input-wrapper {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .filter-group .flex {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-group .flex input[type="date"] {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .date-range-separator {
+        display: none;
+    }
+}
+
+
+/* 레이아웃 스타일 */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 헤더 */
+.header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+.logo h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.logo a:hover h1 {
+    opacity: 0.8;
+}
+
+.main-nav {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    position: relative;
+}
+
+.nav-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-item:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+/* 드롭다운 메뉴 */
+.nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+    z-index: 1000;
+    padding: 8px 0;
+}
+
+.nav-item.open .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-dropdown-item:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.nav-dropdown-item.active {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.balance-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.balance-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.balance-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
+
+.page-header {
+    margin-bottom: 32px;
+}
+
+.page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.page-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* 대시보드 */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+    font-size: 40px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+}
+
+.stat-content h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.quick-actions {
+    margin-top: 32px;
+}
+
+.quick-actions h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.action-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.action-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.action-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.action-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 2단 레이아웃 */
+.two-column-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 16px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        margin: 16px 0;
+        width: 100%;
+    }
+
+    .nav-dropdown {
+        position: static;
+        margin-top: 4px;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        border-radius: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+
+    .nav-item.open .nav-dropdown {
+        display: block;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+    <style>
+        .addressbook-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 24px;
+        }
+        .group-sidebar {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+        .group-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .group-item {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        .group-item:hover {
+            background: var(--bg-color);
+        }
+        .group-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .group-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+        }
+        .group-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .group-menu-btn {
+            padding: 4px 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1;
+            opacity: 0;
+            transition: opacity 0.2s;
+            margin-left: 8px;
+        }
+        .group-item:hover .group-menu-btn {
+            opacity: 1;
+        }
+        .group-menu-btn:hover {
+            color: var(--primary-color);
+        }
+        .group-menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+            margin-top: 4px;
+        }
+        .group-menu-dropdown.show {
+            display: block;
+        }
+        .group-menu-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .group-menu-item:hover {
+            background: var(--bg-color);
+        }
+        .group-menu-item.danger {
+            color: var(--danger-color);
+        }
+        .addressbook-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .search-filter {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        @media (max-width: 1024px) {
+            .addressbook-layout {
+                grid-template-columns: 1fr;
+            }
+            .group-sidebar {
+                position: static;
+            }
+        }
+    </style>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader());
+        </script>
+
+        <!-- 메인 컨텐츠 -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>선거문자</h2>
+                <p class="page-description">선거문자 발송을 위한 주소록을 그룹별로 관리합니다</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="tabs">
+                <div class="tab-list">
+                    <button class="tab-item" onclick="window.location.href='message-send-election.html'">선거문자 발송</button>
+                    <button class="tab-item active" onclick="window.location.href='election-addressbook.html'">선거문자 주소록</button>
+                </div>
+            </div>
+
+            <!-- 통계 정보 -->
+            <div class="dashboard-grid" style="margin-bottom: 24px;">
+                <div class="stat-card">
+                    <div class="stat-icon">📇</div>
+                    <div class="stat-content">
+                        <h3>전체 주소</h3>
+                        <p class="stat-value">1,234명</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <h3>정상 주소</h3>
+                        <p class="stat-value">1,200명</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚫</div>
+                    <div class="stat-content">
+                        <h3>수신거부</h3>
+                        <p class="stat-value">34명</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 주소록 목록 -->
+            <div class="card">
+                    <div class="addressbook-actions">
+                        <div class="search-filter">
+                            <input type="text" class="form-input" placeholder="이름 또는 전화번호로 검색" style="width: 300px;">
+                            <select class="form-select" style="width: 150px;">
+                                <option>전체</option>
+                                <option>정상</option>
+                                <option>수신거부</option>
+                            </select>
+                            <button class="btn btn-outline">검색</button>
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn btn-primary" onclick="openAddAddressModal()">주소 추가</button>
+                            <input type="file" id="addressBookMainExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleAddressBookExcelFileSelect(event)">
+                            <button class="btn btn-outline" onclick="document.getElementById('addressBookMainExcelFileInput').click()">엑셀 업로드</button>
+                            <button class="btn btn-outline" onclick="downloadAddressBook()">다운로드</button>
+                            <button class="btn btn-outline" onclick="downloadSampleFile()">엑셀 샘플파일</button>
+                            <button class="btn btn-outline" onclick="sendMessage()">문자 보내기</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" onchange="toggleAll(this)"></th>
+                                    <th>이름</th>
+                                    <th>전화번호</th>
+                                    <th>등록일</th>
+                                    <th>상태</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-group-id="group1">
+                                    <td><input type="checkbox"></td>
+                                    <td>홍길동</td>
+                                    <td>010-1234-5678</td>
+                                    <td>2024-01-15</td>
+                                    <td><span class="badge badge-success">정상</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="editAddress(1)">수정</button>
+                                        <button class="btn btn-sm btn-outline" onclick="deleteAddress(1)">삭제</button>
+                                    </td>
+                                </tr>
+                                <tr data-group-id="group2">
+                                    <td><input type="checkbox"></td>
+                                    <td>김철수</td>
+                                    <td>010-9876-5432</td>
+                                    <td>2024-01-14</td>
+                                    <td><span class="badge badge-success">정상</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="editAddress(2)">수정</button>
+                                        <button class="btn btn-sm btn-outline" onclick="deleteAddress(2)">삭제</button>
+                                    </td>
+                                </tr>
+                                <tr data-group-id="group3">
+                                    <td><input type="checkbox"></td>
+                                    <td>이영희</td>
+                                    <td>010-5555-7777</td>
+                                    <td>2024-01-13</td>
+                                    <td><span class="badge badge-danger">수신거부</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline" onclick="editAddress(3)">수정</button>
+                                        <button class="btn btn-sm btn-outline" onclick="deleteAddress(3)">삭제</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 페이지네이션 -->
+                    <div id="pagination"></div>
+                </div>
+        </main>
+    </div>
+
+    <!-- 주소 추가 모달 -->
+    <div class="modal-overlay" id="addAddressModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="addAddressModalTitle">주소 추가</h3>
+                <button class="modal-close" onclick="closeModal('addAddressModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addAddressForm">
+                    <div class="form-group">
+                        <label class="form-label required">이름</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">전화번호</label>
+                        <input type="text" class="form-input" placeholder="010-1234-5678" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addAddressModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveAddress()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그룹 추가 모달 -->
+    <div class="modal-overlay" id="addGroupModal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">그룹 추가</h3>
+                <button class="modal-close" onclick="closeModal('addGroupModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <form id="addGroupForm">
+                    <div class="form-group">
+                        <label class="form-label required">그룹명</label>
+                        <input type="text" class="form-input" id="newGroupName" required>
+                    </div>
+                </form>
+                
+                <!-- 수신번호 입력 영역 (엑셀 업로드 모달과 동일) -->
+                <div class="form-group" style="margin-top: 20px; margin-bottom: 0;">
+                    <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                        <!-- 상단 버튼 영역 -->
+                        <div style="display: flex; justify-content: flex-start; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="file" id="groupExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleGroupExcelFileSelect(event)">
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('groupExcelFileInput').click()">엑셀업로드</button>
+                                <button type="button" class="btn btn-outline" onclick="downloadGroupSampleFile()">엑셀샘플 다운로드</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 데이터 테이블 영역 (편집 가능) -->
+                        <div id="groupUploadContent" style="display: block;">
+                            <div style="padding: 20px;">
+                                <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                                    <div style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                                        <table class="data-table" id="groupDataTable" style="width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                                <tr>
+                                                    <th style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); min-width: 50px;">
+                                                        <input type="checkbox" id="selectAllGroupCheckbox" onchange="toggleSelectAllGroup(this.checked)">
+                                                    </th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="groupDataTableBody">
+                                                <!-- 기본 5개 행이 자동으로 생성됩니다 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 하단 버튼 영역 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="addGroupRow()">행 추가</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedGroupRows()">선택 행 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllGroupRows()">전체삭제</button>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateGroupNumbers()">중복번호 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectGroupNumbers()">수신거부번호 삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-help" style="margin-top: 8px;">
+                        총 <strong id="groupCount">0</strong>명
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('addGroupModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveGroup()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그룹명 수정 모달 -->
+    <div class="modal-overlay" id="editGroupNameModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">그룹명 수정</h3>
+                <button class="modal-close" onclick="closeModal('editGroupNameModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editGroupNameForm">
+                    <div class="form-group">
+                        <label class="form-label required">그룹명</label>
+                        <input type="text" class="form-input" id="editGroupNameInput" required>
+                        <input type="hidden" id="editGroupId">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('editGroupNameModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveGroupName()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 그룹 삭제 확인 모달 -->
+    <div class="modal-overlay" id="deleteGroupModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">그룹 삭제</h3>
+                <button class="modal-close" onclick="closeModal('deleteGroupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>정말로 "<span id="deleteGroupNameText"></span>" 그룹을 삭제하시겠습니까?</p>
+                <div class="alert alert-warning" style="margin-top: 16px;">
+                    <strong>주의사항</strong>
+                    <ul style="margin: 8px 0 0 20px; padding: 0;">
+                        <li>그룹을 삭제하면 해당 그룹에 속한 주소록은 "전체" 그룹으로 이동됩니다.</li>
+                        <li>이 작업은 되돌릴 수 없습니다.</li>
+                    </ul>
+                </div>
+                <div class="form-group" style="margin-top: 16px;">
+                    <label class="form-label">
+                        <input type="checkbox" id="deleteGroupConfirm"> 위 내용을 확인했습니다.
+                    </label>
+                </div>
+                <input type="hidden" id="deleteGroupId">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('deleteGroupModal')">취소</button>
+                <button class="btn btn-danger" onclick="confirmDeleteGroup()" id="confirmDeleteGroupBtn" disabled>삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 엑셀 업로드 모달 -->
+    <div class="modal-overlay" id="excelUploadModal">
+        <div class="modal" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">엑셀 업로드</h3>
+                <button class="modal-close" onclick="closeModal('excelUploadModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <!-- 수신번호 입력 영역 (문자발송 페이지와 동일, 주소록 불러오기/그룹선택 제외) -->
+                <div class="form-group" style="margin: 0;">
+                    <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                        <!-- 상단 버튼 영역 -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="file" id="addressBookExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleAddressBookExcelFileSelect(event)">
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('addressBookExcelFileInput').click()">엑셀업로드</button>
+                                <button type="button" class="btn btn-outline" onclick="downloadAddressBookSampleFile()">엑셀샘플 다운로드</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 데이터 테이블 영역 (편집 가능) -->
+                        <div id="addressBookUploadContent" style="display: block;">
+                            <div style="padding: 20px;">
+                                <div style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                                    <div style="overflow-x: auto; overflow-y: auto; max-height: 500px;">
+                                        <table class="data-table" id="addressBookDataTable" style="width: 100%; border-collapse: collapse;">
+                                            <thead style="background-color: var(--bg-color); position: sticky; top: 0; z-index: 10;">
+                                                <tr>
+                                                    <th style="padding: 12px; text-align: center; border-bottom: 1px solid var(--border-color); min-width: 50px;">
+                                                        <input type="checkbox" id="selectAllAddressBookCheckbox" onchange="toggleSelectAllAddressBook(this.checked)">
+                                                    </th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
+                                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="addressBookDataTableBody">
+                                                <!-- 기본 5개 행이 자동으로 생성됩니다 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 하단 버튼 영역 -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-top: 1px solid var(--border-color);">
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="addAddressBookRow()">행 추가</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteSelectedAddressBookRows()">선택 행 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="deleteAllAddressBookRows()">전체삭제</button>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeDuplicateAddressBookNumbers()">중복번호 삭제</button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="removeRejectAddressBookNumbers()">수신거부번호 삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-help" style="margin-top: 8px;">
+                        총 <strong id="addressBookCount">0</strong>명
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal('excelUploadModal')">취소</button>
+                <button class="btn btn-primary" onclick="saveAddressBookFromTable()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>// 공통 JavaScript 함수
+
+// 모달 열기/닫기
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex'; // 인라인 스타일 제거 후 다시 설정
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.modal-overlay.active');
+        if (activeModal) {
+            activeModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+});
+
+// 모달 외부 클릭 시 닫기
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// 탭 전환
+function switchTab(tabId, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    // 모든 탭 비활성화
+    container.querySelectorAll('.tab-item').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    container.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // 선택한 탭 활성화
+    const tab = document.querySelector(`[data-tab="${tabId}"]`);
+    const content = document.getElementById(tabId);
+    if (tab) tab.classList.add('active');
+    if (content) content.classList.add('active');
+}
+
+// 전화번호 포맷팅
+function formatPhoneNumber(value) {
+    const numbers = value.replace(/[^\d]/g, '');
+    if (numbers.length <= 3) return numbers;
+    if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+}
+
+// 바이트 계산 (한글 3바이트, 영문/숫자 1바이트)
+function calculateByteLength(str) {
+    let byteLength = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charAt(i);
+        if (escape(char).length > 4) {
+            byteLength += 3; // 한글
+        } else {
+            byteLength += 1; // 영문/숫자
+        }
+    }
+    return byteLength;
+}
+
+// 토스트 메시지
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 16px 24px;
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 2000;
+        animation: slideIn 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// 날짜 포맷팅
+function formatDate(date, format = 'YYYY-MM-DD HH:mm') {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+
+    return format
+        .replace('YYYY', year)
+        .replace('MM', month)
+        .replace('DD', day)
+        .replace('HH', hours)
+        .replace('mm', minutes);
+}
+
+// 숫자 포맷팅 (천단위 콤마)
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// 파일 업로드 미리보기
+function previewFile(input, previewId) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById(previewId);
+        if (preview) {
+            if (file.type.startsWith('image/')) {
+                preview.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; max-height: 200px;">`;
+            } else {
+                preview.textContent = file.name;
+            }
+        }
+    };
+    reader.readAsDataURL(file);
+}
+
+// 드래그 앤 드롭
+function setupDragAndDrop(dropZone, callback) {
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('drag-over');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && callback) {
+            callback(files[0]);
+        }
+    });
+}
+
+// 페이지네이션
+function createPagination(currentPage, totalPages, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    let html = '<div class="pagination">';
+    
+    // 이전 버튼
+    if (currentPage > 1) {
+        html += `<button class="page-btn" onclick="goToPage(${currentPage - 1})">이전</button>`;
+    }
+
+    // 페이지 번호
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+
+    if (startPage > 1) {
+        html += `<button class="page-btn" onclick="goToPage(1)">1</button>`;
+        if (startPage > 2) html += '<span class="page-ellipsis">...</span>';
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    }
+
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) html += '<span class="page-ellipsis">...</span>';
+        html += `<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+    }
+
+    // 다음 버튼
+    if (currentPage < totalPages) {
+        html += `<button class="page-btn" onclick="goToPage(${currentPage + 1})">다음</button>`;
+    }
+
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// CSS 애니메이션 추가
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    .drag-over {
+        border-color: var(--primary-color) !important;
+        background-color: rgba(37, 99, 235, 0.05) !important;
+    }
+    .pagination {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 24px;
+    }
+    .page-btn {
+        padding: 8px 12px;
+        border: 1px solid var(--border-color);
+        background-color: var(--surface-color);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .page-btn:hover {
+        background-color: var(--bg-color);
+    }
+    .page-btn.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    .page-ellipsis {
+        padding: 8px 4px;
+    }
+`;
+document.head.appendChild(style);
+
+// 드롭다운 메뉴 초기화
+document.addEventListener('DOMContentLoaded', function() {
+    initDropdownMenus();
+});
+
+</script>
+    <script>
+        let currentGroupMenu = null;
+
+        function selectGroup(groupId) {
+            // 그룹 아이템 활성화
+            document.querySelectorAll('.group-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const groupItem = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupItem) {
+                groupItem.classList.add('active');
+            }
+            
+            // 테이블 목록 필터링
+            const tbody = document.querySelector('.table tbody');
+            if (tbody) {
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const rowGroupId = row.getAttribute('data-group-id');
+                    if (rowGroupId === groupId) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        function toggleGroupMenu(groupId) {
+            // 다른 메뉴 닫기
+            document.querySelectorAll('.group-menu-dropdown').forEach(menu => {
+                if (menu.id !== 'menu-' + groupId) {
+                    menu.classList.remove('show');
+                }
+            });
+            
+            // 현재 메뉴 토글
+            const menu = document.getElementById('menu-' + groupId);
+            if (menu) {
+                menu.classList.toggle('show');
+                currentGroupMenu = menu.classList.contains('show') ? groupId : null;
+            }
+        }
+
+        // 외부 클릭 시 메뉴 닫기
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.group-menu-btn') && !e.target.closest('.group-menu-dropdown')) {
+                document.querySelectorAll('.group-menu-dropdown').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+                currentGroupMenu = null;
+            }
+        });
+
+        function editGroupName(groupId, currentName) {
+            document.getElementById('editGroupId').value = groupId;
+            document.getElementById('editGroupNameInput').value = currentName;
+            closeAllGroupMenus();
+            openModal('editGroupNameModal');
+        }
+
+        function saveGroupName() {
+            const groupId = document.getElementById('editGroupId').value;
+            const newName = document.getElementById('editGroupNameInput').value;
+            
+            if (!newName.trim()) {
+                showToast('그룹명을 입력해주세요.', 'warning');
+                return;
+            }
+
+            // 그룹명 업데이트
+            const groupItem = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupItem) {
+                groupItem.setAttribute('data-group-name', newName);
+                const nameSpan = groupItem.querySelector('.group-item-content span:first-child');
+                if (nameSpan) {
+                    nameSpan.textContent = newName;
+                }
+            }
+
+            showToast('그룹명이 수정되었습니다.', 'success');
+            closeModal('editGroupNameModal');
+        }
+
+        function deleteGroup(groupId, groupName) {
+            document.getElementById('deleteGroupId').value = groupId;
+            document.getElementById('deleteGroupNameText').textContent = groupName;
+            document.getElementById('deleteGroupConfirm').checked = false;
+            document.getElementById('confirmDeleteGroupBtn').disabled = true;
+            closeAllGroupMenus();
+            openModal('deleteGroupModal');
+        }
+
+        // 삭제 확인 체크박스 이벤트
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmCheckbox = document.getElementById('deleteGroupConfirm');
+            const confirmBtn = document.getElementById('confirmDeleteGroupBtn');
+            if (confirmCheckbox && confirmBtn) {
+                confirmCheckbox.addEventListener('change', function() {
+                    confirmBtn.disabled = !this.checked;
+                });
+            }
+        });
+
+        function confirmDeleteGroup() {
+            const groupId = document.getElementById('deleteGroupId').value;
+            const groupName = document.getElementById('deleteGroupNameText').textContent;
+            
+            // 그룹 삭제 (실제로는 서버에 요청)
+            const groupItem = document.querySelector(`[data-group-id="${groupId}"]`);
+            if (groupItem) {
+                groupItem.remove();
+            }
+
+            showToast(`"${groupName}" 그룹이 삭제되었습니다.`, 'success');
+            closeModal('deleteGroupModal');
+        }
+
+
+        function closeAllGroupMenus() {
+            document.querySelectorAll('.group-menu-dropdown').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            currentGroupMenu = null;
+        }
+
+        function toggleAll(checkbox) {
+            document.querySelectorAll('tbody input[type="checkbox"]').forEach(cb => {
+                cb.checked = checkbox.checked;
+            });
+        }
+
+        function openAddAddressModal() {
+            const modalTitle = document.getElementById('addAddressModalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = '주소 추가';
+            }
+            const form = document.getElementById('addAddressForm');
+            if (form) form.reset();
+            openModal('addAddressModal');
+        }
+
+        function editAddress(id) {
+            const modalTitle = document.getElementById('addAddressModalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = '주소 수정';
+            }
+            openModal('addAddressModal');
+            // 주소 정보 로드
+        }
+
+        function deleteAddress(id) {
+            if (confirm('정말 삭제하시겠습니까?')) {
+                showToast('삭제되었습니다.', 'success');
+            }
+        }
+
+        function saveAddress() {
+            showToast('저장되었습니다.', 'success');
+            closeModal('addAddressModal');
+        }
+
+        // 그룹 추가 모달용 변수 및 함수
+        let groupTableData = [];
+        let selectedGroupIndices = new Set();
+        const DEFAULT_GROUP_ROWS = 5;
+        
+        // 그룹 엑셀 파일 선택 처리
+        function handleGroupExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const headers = jsonData[0];
+                    const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
+                    const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
+                    
+                    groupTableData = [];
+                    const rows = jsonData.slice(1);
+                    rows.forEach((row, index) => {
+                        const rowData = {
+                            index: index,
+                            name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
+                            phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : ''
+                        };
+                        groupTableData.push(rowData);
+                    });
+                    
+                    renderGroupTable();
+                    updateGroupCount();
+                    showToast(`엑셀 파일이 로드되었습니다. (${groupTableData.length}건)`, 'success');
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 그룹 테이블 렌더링
+        function renderGroupTable() {
+            const tbody = document.getElementById('groupDataTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const rowCount = Math.max(groupTableData.length, DEFAULT_GROUP_ROWS);
+            
+            for (let i = 0; i < rowCount; i++) {
+                const tr = document.createElement('tr');
+                const row = i < groupTableData.length ? groupTableData[i] : null;
+                
+                tr.innerHTML = `
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <input type="checkbox" class="group-row-checkbox" data-row="${i}" onchange="toggleGroupRowSelection(${i}, this.checked)">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <span style="display: inline-block; padding: 6px; font-size: 13px; color: var(--text-secondary);">${i + 1}</span>
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input group-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="name"
+                               value="${row ? (row.name || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateGroupTableData(${i}, 'name', this.value)"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextGroupCell(this); }">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input group-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="phone"
+                               value="${row ? (row.phone || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateGroupTableData(${i}, 'phone', this.value); updateGroupCount();"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextGroupCell(this); }">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // 그룹 테이블 데이터 업데이트
+        function updateGroupTableData(index, field, value) {
+            while (index >= groupTableData.length) {
+                groupTableData.push({
+                    index: groupTableData.length,
+                    name: '',
+                    phone: ''
+                });
+            }
+            
+            const row = groupTableData[index];
+            if (!row) {
+                groupTableData[index] = {
+                    index: index,
+                    name: '',
+                    phone: ''
+                };
+            }
+            
+            const finalRow = groupTableData[index];
+            if (field === 'name') {
+                finalRow.name = value;
+            } else if (field === 'phone') {
+                finalRow.phone = value;
+            }
+        }
+
+        // 그룹 개수 업데이트
+        function updateGroupCount() {
+            const phoneCount = groupTableData.filter(row => row.phone && row.phone.trim()).length;
+            const countElement = document.getElementById('groupCount');
+            if (countElement) {
+                countElement.textContent = phoneCount;
+            }
+        }
+
+        // 체크박스 선택 기능
+        function toggleSelectAllGroup(checked) {
+            const checkboxes = document.querySelectorAll('.group-row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                const rowIndex = parseInt(cb.getAttribute('data-row'));
+                if (checked) {
+                    selectedGroupIndices.add(rowIndex);
+                } else {
+                    selectedGroupIndices.delete(rowIndex);
+                }
+            });
+        }
+
+        function toggleGroupRowSelection(rowIndex, checked) {
+            if (checked) {
+                selectedGroupIndices.add(rowIndex);
+            } else {
+                selectedGroupIndices.delete(rowIndex);
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.checked = false;
+                }
+            }
+        }
+
+        // 행 추가 기능
+        function addGroupRow() {
+            groupTableData.push({
+                index: groupTableData.length,
+                name: '',
+                phone: ''
+            });
+            renderGroupTable();
+            
+            setTimeout(() => {
+                const tbody = document.getElementById('groupDataTableBody');
+                if (tbody && tbody.lastElementChild) {
+                    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    const firstInput = tbody.lastElementChild.querySelector('.group-input');
+                    if (firstInput) firstInput.focus();
+                }
+            }, 100);
+        }
+
+        // 선택 행 삭제
+        function deleteSelectedGroupRows() {
+            if (selectedGroupIndices.size === 0) {
+                showToast('삭제할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            if (confirm(`${selectedGroupIndices.size}개 행을 삭제하시겠습니까?`)) {
+                const sortedIndices = Array.from(selectedGroupIndices).sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    groupTableData.splice(index, 1);
+                });
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast(`${sortedIndices.length}개 행이 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 전체 삭제
+        function deleteAllGroupRows() {
+            if (groupTableData.length === 0) return;
+            if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                groupTableData = [];
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+
+        // 중복번호 삭제
+        function removeDuplicateGroupNumbers() {
+            const phoneMap = new Map();
+            const duplicates = [];
+            groupTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                if (phone) {
+                    if (phoneMap.has(phone)) {
+                        duplicates.push(index);
+                    } else {
+                        phoneMap.set(phone, index);
+                    }
+                }
+            });
+            if (duplicates.length === 0) {
+                showToast('중복된 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${duplicates.length}개의 중복 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = duplicates.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    groupTableData.splice(index, 1);
+                });
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast(`${duplicates.length}개의 중복 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 수신거부번호 삭제
+        function removeRejectGroupNumbers() {
+            const rejectNumbers = [];
+            const toRemove = [];
+            groupTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                const rejectPhone = rejectNumbers.find(rn => rn.replace(/[^\d]/g, '') === phone);
+                if (rejectPhone) {
+                    toRemove.push(index);
+                }
+            });
+            if (toRemove.length === 0) {
+                showToast('수신거부 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${toRemove.length}개의 수신거부 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = toRemove.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    groupTableData.splice(index, 1);
+                });
+                selectedGroupIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllGroupCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderGroupTable();
+                updateGroupCount();
+                showToast(`${toRemove.length}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 다음 셀로 이동
+        function moveToNextGroupCell(currentInput) {
+            const inputs = Array.from(document.querySelectorAll('.group-input'));
+            const currentIndex = inputs.indexOf(currentInput);
+            if (currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+            }
+        }
+
+        function saveGroup() {
+            const groupName = document.getElementById('newGroupName').value.trim();
+            
+            if (!groupName) {
+                showToast('그룹명을 입력해주세요.', 'warning');
+                return;
+            }
+            
+            // 테이블에서 유효한 데이터 가져오기
+            const validData = groupTableData.filter(row => row.phone && row.phone.trim());
+            
+            // 그룹 생성 및 주소록 데이터 저장 (실제로는 API 호출)
+            showToast(`"${groupName}" 그룹이 생성되었습니다. (${validData.length}개 주소록 포함)`, 'success');
+            closeModal('addGroupModal');
+            
+            // 폼 및 테이블 초기화
+            document.getElementById('addGroupForm').reset();
+            groupTableData = [];
+            selectedGroupIndices.clear();
+            renderGroupTable();
+            updateGroupCount();
+            
+            // 여기에 실제 그룹 생성 및 주소록 저장 API 호출 로직 추가
+        }
+
+        // 그룹 추가 모달용 샘플 파일 다운로드
+        function downloadGroupSampleFile() {
+            const sampleData = [
+                ['이름', '전화번호'],
+                ['홍길동', '010-1234-5678'],
+                ['김철수', '010-9876-5432']
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            ws['!cols'] = [
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 }
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+        
+        // 페이지 로드 시 그룹 테이블 미리 렌더링
+        function initGroupTableOnLoad() {
+            const tbody = document.getElementById('groupDataTableBody');
+            if (tbody && tbody.children.length === 0) {
+                groupTableData = [];
+                selectedGroupIndices.clear();
+                renderGroupTable();
+                updateGroupCount();
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initGroupTableOnLoad, 100);
+            });
+        } else {
+            setTimeout(initGroupTableOnLoad, 100);
+        }
+        
+        // 페이지 로드 시 그룹 테이블 미리 렌더링
+        function initGroupTableOnLoad() {
+            const tbody = document.getElementById('groupDataTableBody');
+            if (tbody && tbody.children.length === 0) {
+                groupTableData = [];
+                selectedGroupIndices.clear();
+                renderGroupTable();
+                updateGroupCount();
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initGroupTableOnLoad, 100);
+            });
+        } else {
+            setTimeout(initGroupTableOnLoad, 100);
+        }
+
+        // 주소록 엑셀 업로드 모달용 변수 및 함수
+        let addressBookTableData = [];
+        let selectedAddressBookIndices = new Set();
+        const DEFAULT_ADDRESS_BOOK_ROWS = 5;
+        
+        // 페이지 로드 시 테이블 미리 렌더링 (모달이 닫혀있어도)
+        function initAddressBookTableOnLoad() {
+            const tbody = document.getElementById('addressBookDataTableBody');
+            if (tbody && tbody.children.length === 0) {
+                addressBookTableData = [];
+                selectedAddressBookIndices.clear();
+                renderAddressBookTable();
+                updateAddressBookCount();
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(initAddressBookTableOnLoad, 100);
+            });
+        } else {
+            setTimeout(initAddressBookTableOnLoad, 100);
+        }
+
+        // 주소록 엑셀 파일 선택 처리
+        function handleAddressBookExcelFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    if (jsonData.length < 2) {
+                        showToast('데이터가 없습니다.', 'warning');
+                        return;
+                    }
+                    
+                    const headers = jsonData[0];
+                    const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
+                    const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
+                    
+                    addressBookTableData = [];
+                    const rows = jsonData.slice(1);
+                    rows.forEach((row, index) => {
+                        const rowData = {
+                            index: index,
+                            name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
+                            phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : ''
+                        };
+                        addressBookTableData.push(rowData);
+                    });
+                    
+                    renderAddressBookTable();
+                    updateAddressBookCount();
+                    
+                    // 메인 페이지에서 업로드한 경우 모달 열기
+                    if (event.target.id === 'addressBookMainExcelFileInput') {
+                        openModal('excelUploadModal');
+                    }
+                    
+                    showToast(`엑셀 파일이 로드되었습니다. (${addressBookTableData.length}건)`, 'success');
+                } catch (error) {
+                    console.error('엑셀 파일 읽기 오류:', error);
+                    showToast('엑셀 파일을 읽는 중 오류가 발생했습니다.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 주소록 테이블 렌더링
+        function renderAddressBookTable() {
+            const tbody = document.getElementById('addressBookDataTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            const rowCount = Math.max(addressBookTableData.length, DEFAULT_ADDRESS_BOOK_ROWS);
+            
+            for (let i = 0; i < rowCount; i++) {
+                const tr = document.createElement('tr');
+                const row = i < addressBookTableData.length ? addressBookTableData[i] : null;
+                
+                tr.innerHTML = `
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <input type="checkbox" class="address-book-row-checkbox" data-row="${i}" onchange="toggleAddressBookRowSelection(${i}, this.checked)">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color); text-align: center;">
+                        <span style="display: inline-block; padding: 6px; font-size: 13px; color: var(--text-secondary);">${i + 1}</span>
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input address-book-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="name"
+                               value="${row ? (row.name || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateAddressBookTableData(${i}, 'name', this.value)"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextAddressBookCell(this); }">
+                    </td>
+                    <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
+                        <input type="text" class="form-input address-book-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
+                               data-row="${i}" data-field="phone"
+                               value="${row ? (row.phone || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               onblur="updateAddressBookTableData(${i}, 'phone', this.value); updateAddressBookCount();"
+                               onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextAddressBookCell(this); }">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // 주소록 테이블 데이터 업데이트
+        function updateAddressBookTableData(index, field, value) {
+            while (index >= addressBookTableData.length) {
+                addressBookTableData.push({
+                    index: addressBookTableData.length,
+                    name: '',
+                    phone: ''
+                });
+            }
+            
+            const row = addressBookTableData[index];
+            if (!row) {
+                addressBookTableData[index] = {
+                    index: index,
+                    name: '',
+                    phone: ''
+                };
+            }
+            
+            const finalRow = addressBookTableData[index];
+            if (field === 'name') {
+                finalRow.name = value;
+            } else if (field === 'phone') {
+                finalRow.phone = value;
+            }
+        }
+
+        // 주소록 개수 업데이트
+        function updateAddressBookCount() {
+            const phoneCount = addressBookTableData.filter(row => row.phone && row.phone.trim()).length;
+            const countElement = document.getElementById('addressBookCount');
+            if (countElement) {
+                countElement.textContent = phoneCount;
+            }
+        }
+
+        // 체크박스 선택 기능
+        function toggleSelectAllAddressBook(checked) {
+            const checkboxes = document.querySelectorAll('.address-book-row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                const rowIndex = parseInt(cb.getAttribute('data-row'));
+                if (checked) {
+                    selectedAddressBookIndices.add(rowIndex);
+                } else {
+                    selectedAddressBookIndices.delete(rowIndex);
+                }
+            });
+        }
+
+        function toggleAddressBookRowSelection(rowIndex, checked) {
+            if (checked) {
+                selectedAddressBookIndices.add(rowIndex);
+            } else {
+                selectedAddressBookIndices.delete(rowIndex);
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.checked = false;
+                }
+            }
+        }
+
+        // 행 추가 기능
+        function addAddressBookRow() {
+            addressBookTableData.push({
+                index: addressBookTableData.length,
+                name: '',
+                phone: ''
+            });
+            renderAddressBookTable();
+            
+            setTimeout(() => {
+                const tbody = document.getElementById('addressBookDataTableBody');
+                if (tbody && tbody.lastElementChild) {
+                    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    const firstInput = tbody.lastElementChild.querySelector('.address-book-input');
+                    if (firstInput) firstInput.focus();
+                }
+            }, 100);
+        }
+
+        // 선택 행 삭제
+        function deleteSelectedAddressBookRows() {
+            if (selectedAddressBookIndices.size === 0) {
+                showToast('삭제할 행을 선택해주세요.', 'warning');
+                return;
+            }
+            if (confirm(`${selectedAddressBookIndices.size}개 행을 삭제하시겠습니까?`)) {
+                const sortedIndices = Array.from(selectedAddressBookIndices).sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    addressBookTableData.splice(index, 1);
+                });
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast(`${sortedIndices.length}개 행이 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 전체 삭제
+        function deleteAllAddressBookRows() {
+            if (addressBookTableData.length === 0) return;
+            if (confirm('모든 데이터를 삭제하시겠습니까?')) {
+                addressBookTableData = [];
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast('모든 데이터가 삭제되었습니다.', 'success');
+            }
+        }
+
+        // 중복번호 삭제
+        function removeDuplicateAddressBookNumbers() {
+            const phoneMap = new Map();
+            const duplicates = [];
+            addressBookTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                if (phone) {
+                    if (phoneMap.has(phone)) {
+                        duplicates.push(index);
+                    } else {
+                        phoneMap.set(phone, index);
+                    }
+                }
+            });
+            if (duplicates.length === 0) {
+                showToast('중복된 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${duplicates.length}개의 중복 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = duplicates.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    addressBookTableData.splice(index, 1);
+                });
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast(`${duplicates.length}개의 중복 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 수신거부번호 삭제
+        function removeRejectAddressBookNumbers() {
+            const rejectNumbers = [];
+            const toRemove = [];
+            addressBookTableData.forEach((row, index) => {
+                const phone = row.phone ? row.phone.replace(/[^\d]/g, '') : '';
+                const rejectPhone = rejectNumbers.find(rn => rn.replace(/[^\d]/g, '') === phone);
+                if (rejectPhone) {
+                    toRemove.push(index);
+                }
+            });
+            if (toRemove.length === 0) {
+                showToast('수신거부 번호가 없습니다.', 'info');
+                return;
+            }
+            if (confirm(`${toRemove.length}개의 수신거부 번호를 삭제하시겠습니까?`)) {
+                const sortedIndices = toRemove.sort((a, b) => b - a);
+                sortedIndices.forEach(index => {
+                    addressBookTableData.splice(index, 1);
+                });
+                selectedAddressBookIndices.clear();
+                const selectAllCheckbox = document.getElementById('selectAllAddressBookCheckbox');
+                if (selectAllCheckbox) selectAllCheckbox.checked = false;
+                renderAddressBookTable();
+                updateAddressBookCount();
+                showToast(`${toRemove.length}개의 수신거부 번호가 삭제되었습니다.`, 'success');
+            }
+        }
+
+        // 다음 셀로 이동
+        function moveToNextAddressBookCell(currentInput) {
+            const inputs = Array.from(document.querySelectorAll('.address-book-input'));
+            const currentIndex = inputs.indexOf(currentInput);
+            if (currentIndex < inputs.length - 1) {
+                inputs[currentIndex + 1].focus();
+            }
+        }
+
+        // 주소록 샘플 파일 다운로드
+        function downloadAddressBookSampleFile() {
+            const sampleData = [
+                ['이름', '전화번호'],
+                ['홍길동', '010-1234-5678'],
+                ['김철수', '010-9876-5432']
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            ws['!cols'] = [
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 },
+                { wch: 20 },
+                { wch: 15 }
+            ];
+            
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+
+        // 주소록 테이블에서 저장
+        function saveAddressBookFromTable() {
+            const validData = addressBookTableData.filter(row => row.phone && row.phone.trim());
+            if (validData.length === 0) {
+                showToast('저장할 유효한 데이터가 없습니다.', 'warning');
+                return;
+            }
+            
+            // 여기에 실제 저장 로직 구현 (API 호출 등)
+            showToast(`${validData.length}개의 주소록이 저장되었습니다.`, 'success');
+            closeModal('excelUploadModal');
+            
+            // 테이블 초기화
+            addressBookTableData = [];
+            selectedAddressBookIndices.clear();
+            renderAddressBookTable();
+            updateAddressBookCount();
+        }
+
+        // 엑셀 업로드 모달 열 때 테이블 초기화
+        const originalOpenModalFunc = window.openModal;
+        window.openModal = function(modalId) {
+            if (originalOpenModalFunc) {
+                originalOpenModalFunc(modalId);
+            } else {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+            if (modalId === 'excelUploadModal') {
+                // 모달이 열릴 때 테이블이 이미 렌더링되어 있으면 유지, 없으면 렌더링
+                const tbody = document.getElementById('addressBookDataTableBody');
+                if (!tbody || tbody.children.length === 0) {
+                    // 테이블이 없으면 초기화하고 렌더링
+                    addressBookTableData = [];
+                    selectedAddressBookIndices.clear();
+                    renderAddressBookTable();
+                    updateAddressBookCount();
+                } else {
+                    // 테이블이 이미 있으면 카운트만 업데이트
+                    updateAddressBookCount();
+                }
+            }
+            
+            if (modalId === 'addGroupModal') {
+                // 그룹 추가 모달이 열릴 때 테이블이 이미 렌더링되어 있으면 유지, 없으면 렌더링
+                const tbody = document.getElementById('groupDataTableBody');
+                if (!tbody || tbody.children.length === 0) {
+                    // 테이블이 없으면 초기화하고 렌더링
+                    groupTableData = [];
+                    selectedGroupIndices.clear();
+                    renderGroupTable();
+                    updateGroupCount();
+                } else {
+                    // 테이블이 이미 있으면 카운트만 업데이트
+                    updateGroupCount();
+                }
+            }
+        };
+
+        // 주소록 다운로드 함수
+        function downloadAddressBook() {
+            // 현재 주소록 데이터를 엑셀로 다운로드
+            const addressData = [
+                ['이름', '전화번호', '등록일', '상태'],
+                ['홍길동', '010-1234-5678', '2024-01-15', '정상'],
+                ['김철수', '010-9876-5432', '2024-01-14', '정상'],
+                ['이영희', '010-5555-7777', '2024-01-13', '수신거부']
+            ];
+            
+            // 워크북 생성
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(addressData);
+            
+            // 컬럼 너비 설정
+            ws['!cols'] = [
+                { wch: 15 }, // 이름
+                { wch: 20 }, // 전화번호
+                { wch: 15 }, // 등록일
+                { wch: 15 }  // 상태
+            ];
+            
+            // 워크시트를 워크북에 추가
+            XLSX.utils.book_append_sheet(wb, ws, '선거문자 주소록');
+            
+            // XLSX 파일로 다운로드
+            XLSX.writeFile(wb, '선거문자_주소록.xlsx');
+            
+            showToast('주소록 다운로드가 시작되었습니다.', 'success');
+        }
+
+        function downloadSampleFile() {
+            // 샘플 파일 다운로드 (변경된 형식)
+            const sampleData = [
+                ['이름', '전화번호'],
+                ['홍길동', '010-1234-5678'],
+                ['김철수', '010-9876-5432']
+            ];
+            
+            // 워크북 생성
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(sampleData);
+            
+            // 컬럼 너비 설정
+            ws['!cols'] = [
+                { wch: 15 }, // 이름
+                { wch: 20 }  // 전화번호
+            ];
+            
+            // 워크시트를 워크북에 추가
+            XLSX.utils.book_append_sheet(wb, ws, '주소록');
+            
+            // XLSX 파일로 다운로드
+            XLSX.writeFile(wb, '주소록_샘플파일.xlsx');
+            
+            showToast('샘플 파일 다운로드가 시작되었습니다.', 'success');
+        }
+
+        function sendMessage() {
+            const selected = document.querySelectorAll('tbody input[type="checkbox"]:checked');
+            if (selected.length === 0) {
+                showToast('선택된 주소가 없습니다.', 'warning');
+                return;
+            }
+            window.location.href = 'message-send-election.html';
+        }
+
+        // 페이지네이션 생성
+        createPagination(1, 10, 'pagination');
+    </script>
+    <script src="js/footer.js"></script>
+    <script>
+        document.write(createFloatingMenu());
+        document.write(createFooter());
+    </script>
+</body>
+</html>
+

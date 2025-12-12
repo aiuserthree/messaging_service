@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공직선거문자 발송 - 메시징 서비스</title>
+    <title>선거문자 발송 - 메시징 서비스</title>
     <script src="js/header.js"></script>
     <style>/* 공통 스타일 */
 * {
@@ -1124,7 +1124,7 @@ body {
             <div class="page-header">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <h2>문자 발송</h2>
+                        <h2>선거문자</h2>
                         <p class="page-description">공직선거법에 따른 선거운동 문자메시지를 발송합니다</p>
                     </div>
                 </div>
@@ -1133,12 +1133,10 @@ body {
             <!-- 탭 메뉴 -->
             <div class="tabs">
                 <div class="tab-list">
-                    <button class="tab-item" onclick="window.location.href='message-send-general.html'">일반문자 발송</button>
-                    <button class="tab-item" onclick="window.location.href='message-send-ad.html'">광고문자 발송</button>
-                    <button class="tab-item active" onclick="window.location.href='message-send-election.html'">공직선거문자 발송</button>
+                    <button class="tab-item active" onclick="window.location.href='message-send-election.html'">선거문자 발송</button>
+                    <button class="tab-item" onclick="window.location.href='election-addressbook.html'">선거문자 주소록</button>
                 </div>
             </div>
-
             <!-- 법적 안내사항 -->
             <div class="legal-notice">
                 <h4>⚠️ 공직선거법 준수 안내</h4>
@@ -1151,35 +1149,6 @@ body {
                 </ul>
             </div>
 
-            <!-- 선거 정보 -->
-            <div class="election-info">
-                <h4>현재 진행 중인 선거 정보</h4>
-                <div class="table-container">
-                    <table class="table">
-                        <tr>
-                            <th style="width: 150px;">선거명</th>
-                            <td>제21대 국회의원 선거</td>
-                        </tr>
-                        <tr>
-                            <th>선거구</th>
-                            <td>서울 강남구 갑</td>
-                        </tr>
-                        <tr>
-                            <th>투표일</th>
-                            <td>2024-04-10</td>
-                        </tr>
-                        <tr>
-                            <th>선거운동 기간</th>
-                            <td>2024-03-27 ~ 2024-04-09</td>
-                        </tr>
-                        <tr>
-                            <th>남은 기간</th>
-                            <td><strong>D-15</strong></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
             <div class="send-form-container">
                 <!-- 입력 영역 -->
                 <div class="card">
@@ -1187,18 +1156,16 @@ body {
                         <!-- 발신번호 설정 -->
                         <div class="form-group">
                             <label class="form-label required">발신번호</label>
-                            <select class="form-select" id="senderNumber" required onchange="updateCandidateInfo()">
-                                <option value="">발신번호를 선택하세요</option>
-                                <option value="010-1234-5678" data-candidate="홍길동 후보" data-party="">010-1234-5678</option>
-                                <option value="02-1234-5678" data-candidate="" data-party="○○당">02-1234-5678</option>
-                            </select>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-weight: 600;">010-1234-5678</span>
+                            </div>
+                            <input type="hidden" id="senderNumber" value="010-1234-5678">
                         </div>
                         <div style="margin-top: 16px; margin-bottom: 24px; display: flex; align-items: center; justify-content: flex-end;">
                             <div class="current-balance-display" id="currentBalanceDisplay" style="display: flex; margin-right: auto;">
                                 <span class="current-balance-label">현재 잔여 포인트:</span>
                                 <span class="current-balance-amount" id="currentBalanceAmount">1,000,000</span>
                             </div>
-                            <a href="mypage-caller-number.html" class="btn btn-primary btn-lg">새 발신번호 등록하기</a>
                         </div>
 
                         <!-- 수신번호 설정 -->
@@ -1214,12 +1181,6 @@ body {
                                     </div>
                                     <div style="display: flex; gap: 8px;">
                                         <button type="button" class="btn btn-outline btn-sm" onclick="loadRecipientAddressBook()">주소록 불러오기</button>
-                                        <select class="form-select" style="width: 120px;" id="recipientGroupSelect">
-                                            <option value="">그룹선택</option>
-                                            <option value="group1">VIP 고객</option>
-                                            <option value="group2">일반 고객</option>
-                                            <option value="group3">신규 고객</option>
-                                        </select>
                                         <button type="button" class="btn btn-primary btn-sm" onclick="addToAddressBook()">주소록에 추가</button>
                                     </div>
                                 </div>
@@ -1290,17 +1251,17 @@ body {
                             </div>
                         </div>
 
-                        <!-- 후보자/정당 정보 입력 -->
+                        <!-- 선거운동정보 입력 -->
                         <div class="form-group">
-                            <label class="form-label required">후보자명/정당명</label>
-                            <input type="text" class="form-input" id="candidateNameInput" placeholder="후보자명/정당명" required oninput="updateCandidateNamePreview()">
-                            <div class="form-help">[선거] 옆에 표시될 후보자명 또는 정당명을 입력하세요</div>
+                            <label class="form-label required">선거운동정보</label>
+                            <input type="text" class="form-input" id="candidateNameInput" placeholder="선거운동정보를 입력하세요" required oninput="updatePreview(); updateByteCounter();">
+                            <div class="form-help">(선거운동정보) 옆에 표시될 내용을 입력하세요</div>
                         </div>
 
                         <!-- 제목 (LMS/MMS만) -->
                         <div class="form-group" id="titleGroup" style="display: none;">
                             <label class="form-label">제목</label>
-                            <input type="text" class="form-input" id="messageTitle" placeholder="제목을 입력하세요 (최대 40자)" maxlength="40">
+                            <input type="text" class="form-input" id="messageTitle" placeholder="제목을 입력하세요 (최대 40자)" maxlength="40" oninput="updatePreview(); updateByteCounter();">
                         </div>
 
                         <!-- 메시지 내용 -->
@@ -1322,15 +1283,6 @@ body {
                             </div>
                         </div>
 
-                        <!-- 080 수신거부 번호 (고정값) -->
-                        <div class="form-group">
-                            <label class="form-label required">080 수신거부 번호</label>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-weight: 600;">080-123-4567</span>
-                            </div>
-                            <input type="hidden" id="rejectNumberInput" value="123-4567">
-                        </div>
-
                         <!-- 이미지 첨부 (MMS만) -->
                         <div class="form-group" id="imageGroup" style="display: none;">
                             <label class="form-label">이미지 첨부</label>
@@ -1338,27 +1290,6 @@ body {
                             <button type="button" class="btn btn-outline" id="addImageBtn" onclick="document.getElementById('imageInput').click()">이미지 추가</button>
                             <div class="form-help">JPG, PNG, GIF (최대 300KB, 최대 3개)</div>
                             <div class="image-preview" id="imagePreview"></div>
-                        </div>
-
-                        <!-- 공직선거법 준수 체크리스트 -->
-                        <div class="compliance-checklist">
-                            <h4 style="margin-bottom: 12px;">공직선거법 준수 체크리스트</h4>
-                            <div class="compliance-item" id="checkCandidate">
-                                <span>✓</span>
-                                <span>후보자/정당명 포함</span>
-                            </div>
-                            <div class="compliance-item" id="checkReject">
-                                <span>✓</span>
-                                <span>수신거부 안내 포함</span>
-                            </div>
-                            <div class="compliance-item" id="checkForbidden">
-                                <span>✓</span>
-                                <span>금지어 미검출</span>
-                            </div>
-                            <div class="compliance-item" id="checkTime">
-                                <span>✓</span>
-                                <span>발송 시간 적합</span>
-                            </div>
                         </div>
 
                         <!-- 발송 시간 -->
@@ -1407,7 +1338,8 @@ body {
                         <div class="flex gap-2 mt-3">
                             <button type="button" class="btn btn-outline" onclick="testSend()">테스트 발송</button>
                             <button type="button" class="btn btn-outline" onclick="saveTemplate()">템플릿으로 저장</button>
-                            <button type="submit" class="btn btn-primary" style="margin-left: auto;">발송하기</button>
+                            <button type="button" class="btn btn-primary" style="margin-left: auto;" onclick="openManualSendModal()">발송하기(20건 수동)</button>
+                            <button type="submit" class="btn btn-primary">발송하기</button>
                         </div>
                     </form>
                 </div>
@@ -1421,10 +1353,14 @@ body {
                                 <div id="previewSenderNumber">010-1234-5678</div>
                             </div>
                             <div class="preview-phone-body">
-                                <div id="previewMessage" style="white-space: pre-wrap; line-height: 1.6;">
-                                    <span style="color: var(--primary-color); font-weight: 600;">[선거]</span>후보자명/정당명
+                                <div id="previewMessage" style="line-height: 1.6;">
+                                    <span style="color: var(--primary-color); font-weight: 600;">(선거운동정보)</span><br>
                                     메시지 내용을 입력하세요
-                                    <div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">수신거부 080-</div>
+                                    <div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">
+                                        불법수집정보 신고 : 1390<br>
+                                        개인정보침해 신고 : 118<br>
+                                        무료거부 0801234567
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1532,6 +1468,80 @@ body {
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeModal('confirmModal')">취소</button>
                 <button class="btn btn-primary" onclick="confirmSend()">발송하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 선거문자 20건 전송 모달 -->
+    <div class="modal-overlay" id="manualSendModal">
+        <div class="modal" style="max-width: 850px; width: 95%;">
+            <div class="modal-header" style="background: var(--primary-color); color: white; padding: 12px 20px;">
+                <h3 class="modal-title" style="color: white;">선거문자 20건 전송</h3>
+                <button class="modal-close" onclick="closeManualModal('manualSendModal')" style="color: white;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+                <div style="display: flex; min-height: 720px;">
+                    <!-- 좌측 영역 -->
+                    <div style="flex: 1; padding: 20px; border-right: 1px solid var(--border-color); font-size: 13px;">
+                        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 10px;">
+                            <span>마지막 발송일자 :</span>
+                            <span id="manualLastSendDate">-</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 10px; text-align: center; color: var(--text-secondary);">
+                            요청 : <span style="color: var(--primary-color); font-weight: 600;" id="manualRequestCount">0</span> 건, 
+                            발송 : <span style="color: var(--primary-color); font-weight: 600;" id="manualSentCount">0</span> 건, 
+                            수신거부 : <span style="color: var(--primary-color); font-weight: 600;" id="manualRejectCount">0</span> 건
+                        </div>
+                        
+                        <div style="margin-bottom: 10px; text-align: center; padding: 8px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+                            현재 페이지 : <span style="color: var(--primary-color); font-weight: 600;" id="manualCurrentPage">1</span> / <span style="color: var(--primary-color); font-weight: 600;" id="manualTotalPages">1</span>
+                        </div>
+                        
+                        <div style="margin-bottom: 12px; text-align: center;">
+                            누적 발송 건수 : <span style="color: var(--primary-color); font-weight: 600;" id="manualCumulativeSent">0</span> / <span style="color: var(--primary-color); font-weight: 600;" id="manualTotalRecipients">5</span> 건
+                        </div>
+                        
+                        <div style="margin-top: 24px;">
+                            <h4 style="margin-bottom: 14px; font-weight: 600; text-align: center; font-size: 16px;">이용방법 안내</h4>
+                            <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.8;">
+                                <p style="margin-bottom: 10px;">1. 오른쪽의 20개씩 나오는 수신번호 리스트를 하나씩(선택 및 마우스 드래그) 선택합니다.</p>
+                                <p style="margin-bottom: 10px;">2. 마우스로 전송 버튼을 클릭하시거나 키보드의 스페이스바[space bar] 키를 누르면 전송됩니다.</p>
+                                <p style="margin-bottom: 10px;">3. 선택된 수신번호를 발송 후 자동으로 다음 페이지로 이동되면 반복해서 발송하시면 됩니다.</p>
+                                <p>4. 발송된 수신번호는 더이상 선택할 수 없습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 우측 영역 -->
+                    <div style="flex: 1; padding: 20px; display: flex; flex-direction: column;">
+                        <div id="manualRecipientContainer" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                            <table class="table" style="margin: 0; width: 100%;">
+                                <tbody id="manualRecipientList">
+                                    <!-- 동적으로 채워짐 -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div style="margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 13px;">
+                            <span>페이지 :</span>
+                            <input type="text" class="form-input" style="width: 50px; text-align: center; padding: 4px;" id="manualPageInput" value="1">
+                            <button class="btn btn-sm btn-outline" style="padding: 4px 8px;" onclick="goToManualPage()">이동</button>
+                        </div>
+                        
+                        <div style="margin-top: 6px; text-align: center;">
+                            <button class="btn btn-sm btn-outline" style="padding: 2px 6px;" onclick="manualFirstPage()">◀◀</button>
+                            <button class="btn btn-sm btn-outline" style="padding: 2px 6px;" onclick="manualPrevPage()">◀</button>
+                            <span style="margin: 0 8px; color: var(--primary-color); font-weight: 600;" id="manualPageIndicator">1</span>
+                            <span style="font-size: 13px;">/ <span id="manualTotalPagesIndicator">1</span></span>
+                            <button class="btn btn-sm btn-outline" style="padding: 2px 6px;" onclick="manualNextPage()">▶</button>
+                            <button class="btn btn-sm btn-outline" style="padding: 2px 6px;" onclick="manualLastPage()">▶▶</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: center; background: var(--bg-color); padding: 10px;">
+                <button class="btn btn-primary" style="padding: 8px 36px;" onclick="executeManualSend()">전송</button>
             </div>
         </div>
     </div>
@@ -2018,9 +2028,33 @@ document.head.appendChild(style);
 // 드롭다운 메뉴 초기화
 document.addEventListener('DOMContentLoaded', function() {
     initDropdownMenus();
-    // 수신거부 번호 고정값 설정 및 미리보기 업데이트
-    if (typeof updateRejectNumberPreview === 'function') {
-        updateRejectNumberPreview();
+    // 발신번호 초기화
+    updateCandidateInfo();
+    // 미리보기 초기화
+    updatePreview();
+    
+    // 메시지 내용 실시간 미리보기 업데이트
+    const messageContent = document.getElementById('messageContent');
+    if (messageContent) {
+        messageContent.addEventListener('input', updatePreview);
+        messageContent.addEventListener('keyup', updatePreview);
+        messageContent.addEventListener('paste', function() {
+            setTimeout(updatePreview, 10);
+        });
+    }
+    
+    // 선거운동정보 실시간 미리보기 업데이트
+    const candidateNameInput = document.getElementById('candidateNameInput');
+    if (candidateNameInput) {
+        candidateNameInput.addEventListener('input', updatePreview);
+        candidateNameInput.addEventListener('keyup', updatePreview);
+    }
+    
+    // 제목 실시간 미리보기 업데이트
+    const messageTitle = document.getElementById('messageTitle');
+    if (messageTitle) {
+        messageTitle.addEventListener('input', updatePreview);
+        messageTitle.addEventListener('keyup', updatePreview);
     }
 });
 
@@ -2035,8 +2069,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         function updateCandidateInfo() {
-            const select = document.getElementById('senderNumber');
-            document.getElementById('previewSenderNumber').textContent = select.value;
+            const senderNumber = document.getElementById('senderNumber').value;
+            document.getElementById('previewSenderNumber').textContent = senderNumber;
             updateCandidateNamePreview();
             updateCurrentBalance();
         }
@@ -2052,25 +2086,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function updateCandidateNamePreview() {
-            const candidateName = document.getElementById('candidateNameInput').value;
-            if (candidateName) {
-                document.getElementById('checkCandidate').classList.add('valid');
-            } else {
-                document.getElementById('checkCandidate').classList.remove('valid');
-            }
+            // 공직선거법 준수 체크리스트가 삭제되어 더 이상 체크하지 않음
             updatePreview();
         }
 
         function updateRejectNumberPreview() {
-            const rejectInput = document.getElementById('rejectNumberInput').value;
-            const checkItem = document.getElementById('checkReject');
-            if (rejectInput) {
-                checkItem.classList.add('valid');
-                checkItem.classList.remove('invalid');
-            } else {
-                checkItem.classList.remove('valid');
-                checkItem.classList.add('invalid');
-            }
+            // 수신거부 번호 영역이 삭제되어 더 이상 필요 없음
             updatePreview();
         }
 
@@ -2178,11 +2199,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const content = document.getElementById('messageContent').value;
             const title = document.getElementById('messageTitle').value;
             const candidateName = document.getElementById('candidateNameInput').value || '';
-            const rejectInput = document.getElementById('rejectNumberInput').value;
-            const rejectText = rejectInput ? '수신거부 080-' + rejectInput : '수신거부 080-';
-            const electionPrefix = '[선거]';
+            const rejectText = '\n불법수집정보 신고 : 1390\n개인정보침해 신고 : 118\n무료거부 0801234567';
+            const electionPrefix = '(선거운동정보)';
             
-            // 전체 텍스트 구성: [선거] + 후보자명/정당명 + 제목 + 내용 + 수신거부
+            // 전체 텍스트 구성: (선거운동정보) + 후보자명/정당명 + 제목 + 내용 + 수신거부
             let fullText = electionPrefix;
             if (candidateName) {
                 fullText += candidateName;
@@ -2216,15 +2236,21 @@ document.addEventListener('DOMContentLoaded', function() {
         function updatePreview() {
             const content = document.getElementById('messageContent').value;
             const title = document.getElementById('messageTitle').value;
-            const candidateName = document.getElementById('candidateNameInput').value || '후보자명/정당명';
-            const rejectInput = document.getElementById('rejectNumberInput').value;
-            const rejectNumber = rejectInput ? '080-' + rejectInput : '080-';
+            const candidateName = document.getElementById('candidateNameInput').value || '';
             const preview = document.getElementById('previewMessage');
-            let previewContent = `<span style="color: var(--primary-color); font-weight: 600;">[선거]</span>${candidateName}\n`;
+            
+            // 메시지 내용의 줄바꿈을 <br>로 변환
+            const formattedContent = (content || '메시지 내용을 입력하세요').replace(/\n/g, '<br>');
+            
+            let previewContent = `<span style="color: var(--primary-color); font-weight: 600;">(선거운동정보)</span>`;
+            if (candidateName) {
+                previewContent += candidateName;
+            }
+            previewContent += `<br>`;
             if (title) {
                 previewContent += `<div style="font-weight: 600; margin-bottom: 8px;">${title}</div>`;
             }
-            previewContent += `${content || '메시지 내용을 입력하세요'}<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">수신거부 ${rejectNumber}</div>`;
+            previewContent += `${formattedContent}<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">불법수집정보 신고 : 1390<br>개인정보침해 신고 : 118<br>무료거부 0801234567</div>`;
             preview.innerHTML = previewContent;
         }
 
@@ -2415,20 +2441,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('testPreviewTitle').style.display = 'none';
             }
             
-            // 내용 ([선거] 문구 포함)
+            // 내용 ((선거운동정보) 문구 포함)
             const candidateName = document.getElementById('candidateNameInput').value || '후보자명/정당명';
             const content = document.getElementById('messageContent').value || '메시지 내용을 입력하세요';
-            const rejectInput = document.getElementById('rejectNumberInput').value || '';
-            const rejectNumber = rejectInput ? '080-' + rejectInput : '080-';
             
-            let previewContent = `[선거] ${candidateName}\n${content}`;
+            let previewContent = `(선거운동정보) ${candidateName}\n${content}`;
             
             // 변수 치환 예시
             previewContent = previewContent.replace(/#{유권자명}/g, '홍길동');
             previewContent = previewContent.replace(/#{선거구}/g, '서울 강남구 갑');
             previewContent = previewContent.replace(/#{투표일}/g, '2024-04-10');
             
-            previewContent += `\n\n수신거부 ${rejectNumber}`;
+            previewContent += `\n\n불법수집정보 신고 : 1390\n개인정보침해 신고 : 118\n무료거부 0801234567`;
             
             document.getElementById('testPreviewContent').textContent = previewContent;
             
@@ -2530,6 +2554,336 @@ document.addEventListener('DOMContentLoaded', function() {
             
             openModal('confirmModal');
         });
+
+        // 선거문자 20건 수동 발송 관련 변수 및 함수
+        let manualSendData = {
+            recipients: [],
+            currentPage: 1,
+            pageSize: 20,
+            totalPages: 1,
+            sentCount: 0,
+            selectedCount: 0,
+            isDragging: false,
+            dragStartIndex: -1
+        };
+
+        function openManualSendModal() {
+            // 수신번호 목록 가져오기
+            const recipientRows = document.querySelectorAll('#recipientDataTableBody tr');
+            manualSendData.recipients = [];
+            
+            recipientRows.forEach((row, index) => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 4) {
+                    const nameInput = cells[2]?.querySelector('input');
+                    const phoneInput = cells[3]?.querySelector('input');
+                    if (nameInput && phoneInput && phoneInput.value) {
+                        manualSendData.recipients.push({
+                            id: index,
+                            name: nameInput.value || '-',
+                            phone: phoneInput.value,
+                            sent: false,
+                            selected: false
+                        });
+                    }
+                }
+            });
+            
+            // 수신번호가 없으면 더미 데이터로 채우기 (200개)
+            if (manualSendData.recipients.length === 0) {
+                const baseNames = ['장형', '윤영미', '이지', '최아', '이수', '김민수', '박지현', '정수연', '한상우', '오세진', 
+                                   '송미라', '임태호', '강은주', '조영호', '배수진', '신현우', '유지민', '권혁준', '홍서연', '문재희',
+                                   '김철수', '이영희', '박민수', '최지영', '정대현', '한소희', '오준호', '윤서진', '강민호', '조수진',
+                                   '배현우', '신지은', '유민준', '권서연', '홍지훈', '문수진', '김도현', '이서연', '박준영', '최민지'];
+                
+                // 200개 생성
+                for (let i = 0; i < 200; i++) {
+                    const nameIndex = i % baseNames.length;
+                    const nameSuffix = Math.floor(i / baseNames.length);
+                    const name = nameSuffix > 0 ? `${baseNames[nameIndex]}${nameSuffix + 1}` : baseNames[nameIndex];
+                    
+                    // 전화번호 생성 (010-XXXX-YYYY 형식)
+                    const middle = String(Math.floor(1000 + (i % 9000))).padStart(4, '0');
+                    const last = String(Math.floor(1000 + ((i * 7) % 9000))).padStart(4, '0');
+                    const phone = `010-${middle}-${last}`;
+                    
+                    manualSendData.recipients.push({
+                        id: i,
+                        name: name,
+                        phone: phone,
+                        sent: false,
+                        selected: false
+                    });
+                }
+            }
+            
+            // 초기화
+            manualSendData.currentPage = 1;
+            manualSendData.totalPages = Math.ceil(manualSendData.recipients.length / manualSendData.pageSize);
+            manualSendData.sentCount = 0;
+            manualSendData.selectedIndex = -1;
+            
+            // 통계 업데이트
+            updateManualSendStats();
+            
+            // 수신번호 목록 렌더링
+            renderManualRecipientList();
+            
+            // 모달 열기
+            openModal('manualSendModal');
+            
+            // 키보드 이벤트 리스너 추가
+            document.addEventListener('keydown', handleManualSendKeydown);
+        }
+
+        function updateManualSendStats() {
+            const total = manualSendData.recipients.length;
+            const sent = manualSendData.sentCount;
+            const selected = manualSendData.recipients.filter(r => r.selected && !r.sent).length;
+            
+            document.getElementById('manualRequestCount').textContent = selected;
+            document.getElementById('manualSentCount').textContent = sent;
+            document.getElementById('manualRejectCount').textContent = '0';
+            document.getElementById('manualCurrentPage').textContent = manualSendData.currentPage;
+            document.getElementById('manualTotalPages').textContent = manualSendData.totalPages;
+            document.getElementById('manualTotalPagesIndicator').textContent = manualSendData.totalPages;
+            document.getElementById('manualCumulativeSent').textContent = sent;
+            document.getElementById('manualTotalRecipients').textContent = total;
+            document.getElementById('manualPageIndicator').textContent = manualSendData.currentPage;
+        }
+
+        function renderManualRecipientList() {
+            const start = (manualSendData.currentPage - 1) * manualSendData.pageSize;
+            const end = Math.min(start + manualSendData.pageSize, manualSendData.recipients.length);
+            const pageRecipients = manualSendData.recipients.slice(start, end);
+            
+            const tbody = document.getElementById('manualRecipientList');
+            tbody.innerHTML = '';
+            
+            pageRecipients.forEach((recipient, index) => {
+                const globalIndex = start + index;
+                const tr = document.createElement('tr');
+                tr.dataset.index = globalIndex;
+                tr.style.cursor = recipient.sent ? 'not-allowed' : 'pointer';
+                tr.style.opacity = recipient.sent ? '0.5' : '1';
+                tr.style.backgroundColor = recipient.selected ? '#dbeafe' : 'transparent';
+                tr.style.userSelect = 'none';
+                
+                // 드래그 선택 이벤트
+                tr.onmousedown = (e) => startDragSelect(globalIndex, e);
+                tr.onmouseenter = (e) => handleDragOver(globalIndex, e);
+                tr.onclick = (e) => {
+                    if (!manualSendData.isDragging) {
+                        toggleSingleRecipient(globalIndex, e);
+                    }
+                };
+                
+                tr.innerHTML = `
+                    <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-color); width: 30px;">
+                        <input type="checkbox" ${recipient.selected ? 'checked' : ''} ${recipient.sent ? 'disabled' : ''} onclick="event.stopPropagation();" onchange="toggleManualRecipient(${globalIndex}, event)">
+                    </td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-color); font-size: 13px;">${recipient.name}</td>
+                    <td style="padding: 6px 10px; border-bottom: 1px solid var(--border-color); font-size: 13px;">${recipient.phone}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // 드래그 선택 시작
+        function startDragSelect(index, e) {
+            if (e.button !== 0) return; // 좌클릭만
+            const recipient = manualSendData.recipients[index];
+            if (recipient.sent) return;
+            
+            manualSendData.isDragging = true;
+            manualSendData.dragStartIndex = index;
+            
+            // 기존 선택 해제 (Ctrl 키 없이 드래그 시)
+            if (!e.ctrlKey && !e.metaKey) {
+                manualSendData.recipients.forEach(r => {
+                    if (!r.sent) r.selected = false;
+                });
+            }
+            
+            recipient.selected = true;
+            renderManualRecipientList();
+            updateManualSendStats();
+            
+            e.preventDefault();
+        }
+        
+        // 드래그 중
+        function handleDragOver(index, e) {
+            if (!manualSendData.isDragging) return;
+            
+            const startIdx = manualSendData.dragStartIndex;
+            const endIdx = index;
+            const minIdx = Math.min(startIdx, endIdx);
+            const maxIdx = Math.max(startIdx, endIdx);
+            
+            // 범위 내 모든 항목 선택
+            manualSendData.recipients.forEach((r, i) => {
+                if (!r.sent) {
+                    if (i >= minIdx && i <= maxIdx) {
+                        r.selected = true;
+                    } else if (!e.ctrlKey && !e.metaKey) {
+                        r.selected = false;
+                    }
+                }
+            });
+            
+            renderManualRecipientList();
+            updateManualSendStats();
+        }
+        
+        // 드래그 종료
+        document.addEventListener('mouseup', function() {
+            if (manualSendData.isDragging) {
+                manualSendData.isDragging = false;
+                manualSendData.dragStartIndex = -1;
+            }
+        });
+        
+        // 단일 선택/해제 (클릭)
+        function toggleSingleRecipient(index, e) {
+            const recipient = manualSendData.recipients[index];
+            if (recipient.sent) return;
+            
+            if (!e.ctrlKey && !e.metaKey) {
+                // Ctrl 없이 클릭하면 기존 선택 해제 후 해당 항목만 토글
+                const wasSelected = recipient.selected;
+                manualSendData.recipients.forEach(r => {
+                    if (!r.sent) r.selected = false;
+                });
+                recipient.selected = !wasSelected;
+            } else {
+                // Ctrl+클릭은 해당 항목만 토글
+                recipient.selected = !recipient.selected;
+            }
+            
+            renderManualRecipientList();
+            updateManualSendStats();
+        }
+
+        function selectManualRecipient(index) {
+            // 이제 toggleSingleRecipient에서 처리됨
+        }
+
+        function toggleManualRecipient(index, event) {
+            event.stopPropagation();
+            const recipient = manualSendData.recipients[index];
+            if (recipient.sent) return;
+            
+            recipient.selected = !recipient.selected;
+            
+            renderManualRecipientList();
+            updateManualSendStats();
+        }
+
+        function handleManualSendKeydown(e) {
+            if (e.code === 'Space' && document.getElementById('manualSendModal').classList.contains('active')) {
+                e.preventDefault();
+                executeManualSend();
+            }
+        }
+
+        function executeManualSend() {
+            const selected = manualSendData.recipients.filter(r => r.selected && !r.sent);
+            
+            if (selected.length === 0) {
+                showToast('발송할 수신번호를 선택해주세요.', 'warning');
+                return;
+            }
+            
+            // 발송 처리
+            selected.forEach(recipient => {
+                recipient.sent = true;
+                recipient.selected = false;
+                manualSendData.sentCount++;
+            });
+            
+            showToast(`${selected.length}건이 발송되었습니다.`, 'success');
+            
+            // 통계 업데이트
+            updateManualSendStats();
+            
+            // 현재 페이지의 모든 항목이 발송되었는지 확인
+            const start = (manualSendData.currentPage - 1) * manualSendData.pageSize;
+            const end = Math.min(start + manualSendData.pageSize, manualSendData.recipients.length);
+            const pageRecipients = manualSendData.recipients.slice(start, end);
+            const allSent = pageRecipients.every(r => r.sent);
+            
+            // 현재 페이지의 모든 항목이 발송되었고 다음 페이지가 있으면 자동 이동
+            if (allSent && manualSendData.currentPage < manualSendData.totalPages) {
+                setTimeout(() => {
+                    manualSendData.currentPage++;
+                    updateManualSendStats();
+                    renderManualRecipientList();
+                    showToast('다음 페이지로 이동했습니다.', 'info');
+                }, 500);
+            } else {
+                renderManualRecipientList();
+            }
+            
+            // 모든 발송 완료 시
+            if (manualSendData.sentCount === manualSendData.recipients.length) {
+                setTimeout(() => {
+                    showToast('모든 수신번호에 발송이 완료되었습니다.', 'success');
+                }, 500);
+            }
+        }
+
+        function manualFirstPage() {
+            manualSendData.currentPage = 1;
+            updateManualSendStats();
+            renderManualRecipientList();
+        }
+
+        function manualPrevPage() {
+            if (manualSendData.currentPage > 1) {
+                manualSendData.currentPage--;
+                updateManualSendStats();
+                renderManualRecipientList();
+            }
+        }
+
+        function manualNextPage() {
+            if (manualSendData.currentPage < manualSendData.totalPages) {
+                manualSendData.currentPage++;
+                updateManualSendStats();
+                renderManualRecipientList();
+            }
+        }
+
+        function manualLastPage() {
+            manualSendData.currentPage = manualSendData.totalPages;
+            updateManualSendStats();
+            renderManualRecipientList();
+        }
+
+        function goToManualPage() {
+            const page = parseInt(document.getElementById('manualPageInput').value);
+            if (page >= 1 && page <= manualSendData.totalPages) {
+                manualSendData.currentPage = page;
+                updateManualSendStats();
+                renderManualRecipientList();
+            } else {
+                showToast('유효한 페이지 번호를 입력해주세요.', 'warning');
+            }
+        }
+
+        // 모달 닫을 때 키보드 이벤트 리스너 제거
+        const originalCloseModal = typeof closeModal === 'function' ? closeModal : null;
+        function closeManualModal(modalId) {
+            if (modalId === 'manualSendModal') {
+                document.removeEventListener('keydown', handleManualSendKeydown);
+            }
+            if (originalCloseModal) {
+                originalCloseModal(modalId);
+            } else {
+                document.getElementById(modalId)?.classList.remove('active');
+            }
+        }
 
         function confirmSend() {
             // SMS 발송 시 변수값 길이 체크
@@ -2987,40 +3341,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 주소록 불러오기
         function loadRecipientAddressBook() {
-            const groupSelect = document.getElementById('recipientGroupSelect');
-            const selectedGroup = groupSelect.value;
-            
-            if (!selectedGroup) {
-                alert('그룹을 선택해주세요.');
-                return;
-            }
-            
-            // 그룹 선택에 따른 주소록 데이터 가져오기 (실제로는 API 호출)
-            const addressBookData = {
-                'group1': [
-                    { name: '홍길동', phone: '010-1234-5678', variables: ['VIP', '서울', '2024', '1', 'A'] },
-                    { name: '김철수', phone: '010-2345-6789', variables: ['VIP', '부산', '2024', '2', 'B'] }
-                ],
-                'group2': [
-                    { name: '이영희', phone: '010-3456-7890', variables: ['일반', '대구', '2023', '3', 'C'] },
-                    { name: '박민수', phone: '010-4567-8901', variables: ['일반', '인천', '2023', '4', 'D'] }
-                ],
-                'group3': [
-                    { name: '최지영', phone: '010-5678-9012', variables: ['신규', '광주', '2024', '5', 'E'] }
-                ]
-            };
-            
-            const groupData = addressBookData[selectedGroup] || [];
+            // 선거문자 주소록의 모든 주소록 데이터 가져오기 (실제로는 API 호출)
+            // 모든 그룹의 주소록을 합쳐서 가져옴
+            const addressBookData = [
+                { name: '홍길동', phone: '010-1234-5678', variables: ['홍길동', '서울시 강남구', 'VIP'] },
+                { name: '김철수', phone: '010-9876-5432', variables: ['김철수', '서울시 서초구', '일반'] },
+                { name: '이영희', phone: '010-5555-7777', variables: ['이영희', '부산시 해운대구', '신규'] },
+                { name: '박민수', phone: '010-1111-2222', variables: ['박민수', '대구시 수성구', '일반'] },
+                { name: '최지영', phone: '010-3333-4444', variables: ['최지영', '인천시 남동구', 'VIP'] }
+            ];
             
             // 기존 데이터에 추가 (중복 제거)
-            groupData.forEach(item => {
+            addressBookData.forEach(item => {
                 const existingIndex = recipientTableData.findIndex(row => row.phone === item.phone);
                 if (existingIndex < 0) {
                     recipientTableData.push({
                         index: recipientTableData.length,
                         name: item.name || '',
                         phone: item.phone || '',
-                        variables: item.variables || ['', '', '', '', '']
+                        variables: (item.variables || ['', '', '']).slice(0, 3)
                     });
                 } else {
                     recipientTableData[existingIndex].name = item.name || recipientTableData[existingIndex].name;
@@ -3031,7 +3370,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 테이블 다시 렌더링 (데이터 개수에 맞춰)
             renderRecipientTable();
             updateRecipientCount();
-            showToast(`${groupData.length}개의 주소록이 추가되었습니다.`, 'success');
+            showToast(`${addressBookData.length}개의 주소록이 추가되었습니다.`, 'success');
         }
 
         // 주소록에 추가 기능
@@ -3548,12 +3887,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             reader.readAsArrayBuffer(file);
         }
+
     </script>
     <script src="js/footer.js"></script>
     <script>
         document.write(createFloatingMenu());
         document.write(createFooter());
     </script>
+            </div>
 </body>
 </html>
 
