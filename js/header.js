@@ -2,13 +2,21 @@
 function createHeader(activeMenu = '') {
     const menuStructure = {
         'message': {
-            label: '문자 발송',
+            label: '문자발송',
             url: '#',
             hasDropdown: true,
             items: [
                 { label: '일반문자 발송', url: 'message-send-general.html' },
-                { label: '광고문자 발송', url: 'message-send-ad.html' },
-                { label: '공직선거문자 발송', url: 'message-send-election.html' }
+                { label: '광고문자 발송', url: 'message-send-ad.html' }
+            ]
+        },
+        'election': {
+            label: '선거문자',
+            url: 'message-send-election.html',
+            hasDropdown: true,
+            items: [
+                { label: '선거문자 발송', url: 'message-send-election.html' },
+                { label: '선거문자 주소록', url: 'election-addressbook.html' }
             ]
         },
         'kakao': {
@@ -77,7 +85,8 @@ function createHeader(activeMenu = '') {
     const urlToMenuKey = {
         'message-send-general.html': 'message',
         'message-send-ad.html': 'message',
-        'message-send-election.html': 'message',
+        'message-send-election.html': 'election',
+        'election-addressbook.html': 'election',
         'kakao-send-alimtalk.html': 'kakao',
         'kakao-send-brandtalk.html': 'kakao',
         'kakao-profile-manage.html': 'kakao',
@@ -254,9 +263,9 @@ function createFloatingMenu() {
                     <span class="floating-menu-icon-item"><img src="img/ad.png" alt="광고문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
                     <span class="floating-menu-label">광고문자 발송</span>
                 </a>
-                <a href="message-send-election.html" class="floating-menu-item" title="공직선거문자 발송">
-                    <span class="floating-menu-icon-item"><img src="img/elect.png" alt="공직선거문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
-                    <span class="floating-menu-label">공직선거문자 발송</span>
+                <a href="message-send-election.html" class="floating-menu-item" title="선거문자 발송">
+                    <span class="floating-menu-icon-item"><img src="img/elect.png" alt="선거문자" style="width: 20px; height: 20px; object-fit: contain;"></span>
+                    <span class="floating-menu-label">선거문자 발송</span>
                 </a>
                 <a href="kakao-send-alimtalk.html" class="floating-menu-item" title="알림톡 발송">
                     <span class="floating-menu-icon-item"><img src="img/talk.png" alt="카카오톡" style="width: 20px; height: 20px; object-fit: contain;"></span>

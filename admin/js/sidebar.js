@@ -70,9 +70,17 @@ function getSidebarHTML(activeMenu) {
                     <a href="../message-send-ad.html" class="menu-item ${activeMenu === 'message-send-ad' ? 'active' : ''}">
                         <span>광고문자 발송</span>
                     </a>
-                    <a href="../message-send-election.html" class="menu-item ${activeMenu === 'message-send-election' ? 'active' : ''}">
-                        <span>공직선거문자 발송</span>
+                    <a href="../message-send-election.html" class="menu-item has-submenu ${activeMenu === 'message-send-election' || activeMenu === 'election-addressbook' ? 'active' : ''}">
+                        <span>선거문자</span>
                     </a>
+                    <div class="submenu ${activeMenu === 'message-send-election' || activeMenu === 'election-addressbook' ? 'open' : ''}">
+                        <a href="../message-send-election.html" class="submenu-item ${activeMenu === 'message-send-election' ? 'active' : ''}">
+                            <span>선거문자 발송</span>
+                        </a>
+                        <a href="../election-addressbook.html" class="submenu-item ${activeMenu === 'election-addressbook' ? 'active' : ''}">
+                            <span>선거문자 주소록</span>
+                        </a>
+                    </div>
                     <a href="../kakao-send-alimtalk.html" class="menu-item ${activeMenu === 'kakao-send-alimtalk' ? 'active' : ''}">
                         <span>알림톡 발송</span>
                     </a>
