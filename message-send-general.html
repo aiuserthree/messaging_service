@@ -3107,6 +3107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
                                data-row="${i}" data-field="phone"
                                value="${row ? (row.phone || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : ''}" 
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                onblur="updateRecipientTableData(${i}, 'phone', this.value); updateRecipientCount();"
                                onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextCell(this); }">
                     </td>
