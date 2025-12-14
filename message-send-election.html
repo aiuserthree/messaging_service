@@ -1219,9 +1219,6 @@ body {
                                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 80px;">순번</th>
                                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
                                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">전화번호</th>
-                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
-                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
-                                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="recipientDataTableBody">
@@ -1291,9 +1288,6 @@ body {
                             <div class="flex gap-2 mb-1">
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{이름}')">#{이름}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{전화번호}')">#{전화번호}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수1}')">#{변수1}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수2}')">#{변수2}</button>
-                                <button type="button" class="btn btn-sm btn-outline" onclick="insertVariable('#{변수3}')">#{변수3}</button>
                                 <button type="button" class="btn btn-sm btn-outline" onclick="openModal('templateSelectModal')">템플릿 선택</button>
                             </div>
                             <textarea class="form-textarea" id="messageContent" rows="6" placeholder="메시지 내용을 입력하세요" required oninput="updatePreview(); checkForbiddenWords(); updateByteCounter();"></textarea>
@@ -1759,9 +1753,6 @@ body {
                                         <tr>
                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">이름</th>
                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 120px;">휴대폰</th>
-                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수1</th>
-                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수2</th>
-                                            <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수3</th>
                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수4</th>
                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수5</th>
                                             <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); min-width: 100px;">변수6</th>
@@ -1771,7 +1762,7 @@ body {
                                     </thead>
                                     <tbody id="excelDataTableBody">
                                         <!-- 빈 행 12개 표시 -->
-                                        <tr><td colspan="10" style="padding: 12px; text-align: center; color: var(--text-muted);">엑셀 파일을 업로드하세요</td></tr>
+                                        <tr><td colspan="2" style="padding: 12px; text-align: center; color: var(--text-muted);">엑셀 파일을 업로드하세요</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -3232,19 +3223,12 @@ if (document.readyState === 'loading') {
                     
                     // 변수값 가져오기
                     const cells = row.querySelectorAll('td');
-                    if (cells.length < 8) return; // 체크박스, 순번, 이름, 전화번호, 변수1, 변수2, 변수3 (총 7개) 필요
-                    
-                    const var1 = cells[4]?.querySelector('input')?.value || '';
-                    const var2 = cells[5]?.querySelector('input')?.value || '';
-                    const var3 = cells[6]?.querySelector('input')?.value || '';
+                    if (cells.length < 5) return; // 체크박스, 순번, 이름, 전화번호 (총 4개) 필요
                     
                     // 변수 치환
                     let replacedContent = messageContent;
                     replacedContent = replacedContent.replace(/#\{이름\}/g, cells[2]?.querySelector('input')?.value || '');
                     replacedContent = replacedContent.replace(/#\{전화번호\}/g, cells[3]?.querySelector('input')?.value || '');
-                    replacedContent = replacedContent.replace(/#\{변수1\}/g, var1);
-                    replacedContent = replacedContent.replace(/#\{변수2\}/g, var2);
-                    replacedContent = replacedContent.replace(/#\{변수3\}/g, var3);
                     
                     // 바이트 계산
                     let totalBytes = calculateByteLength(replacedContent);
@@ -3277,8 +3261,6 @@ if (document.readyState === 'loading') {
             let convertedContent = content;
             // 기존 선거 관련 변수를 새로운 변수로 변환
             convertedContent = convertedContent.replace(/#{유권자명}/g, '#{이름}');
-            convertedContent = convertedContent.replace(/#{선거구}/g, '#{변수1}');
-            convertedContent = convertedContent.replace(/#{투표일}/g, '#{변수2}');
             
             document.getElementById('messageContent').value = convertedContent;
             updateByteCounter();
@@ -3316,9 +3298,9 @@ if (document.readyState === 'loading') {
         // 샘플 파일 다운로드 (주소록 관리와 동일)
         function downloadSampleFile() {
             const sampleData = [
-                ['이름', '전화번호', '변수 1', '변수 2', '변수 3'],
-                ['홍길동', '010-1234-5678', '홍길동', '서울시 강남구', 'VIP'],
-                ['김철수', '010-9876-5432', '김철수', '서울시 서초구', '일반']
+                ['이름', '전화번호'],
+                ['홍길동', '010-1234-5678'],
+                ['김철수', '010-9876-5432']
             ];
             
             const wb = XLSX.utils.book_new();
@@ -3438,11 +3420,6 @@ if (document.readyState === 'loading') {
                     const headers = jsonData[0];
                     const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
                     const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
-                    const varIndices = [];
-                    for (let i = 1; i <= 3; i++) {
-                        const varIndex = headers.findIndex(h => h === `변수${i}` || h === `Variable ${i}` || h === `변수 ${i}`);
-                        varIndices.push(varIndex);
-                    }
                     
                     excelTableData = [];
                     const rows = jsonData.slice(1);
@@ -3451,7 +3428,7 @@ if (document.readyState === 'loading') {
                             index: index,
                             name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
                             phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : '',
-                            variables: varIndices.map(idx => idx >= 0 ? (row[idx] || '') : '').slice(0, 3)
+                            variables: []
                         };
                         excelTableData.push(rowData);
                     });
@@ -3476,14 +3453,6 @@ if (document.readyState === 'loading') {
                     tr.innerHTML = `
                         <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
                         <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
                     `;
                     tbody.appendChild(tr);
                 }
@@ -3498,18 +3467,9 @@ if (document.readyState === 'loading') {
                     tr.innerHTML = `
                         <td style="padding: 12px; border-bottom: 1px solid var(--border-color);">${row.name || ''}</td>
                         <td style="padding: 12px; border-bottom: 1px solid var(--border-color);">${row.phone || ''}</td>
-                        ${row.variables.map(v => `<td style="padding: 12px; border-bottom: 1px solid var(--border-color);">${v || ''}</td>`).join('')}
                     `;
                 } else {
                     tr.innerHTML = `
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
-                        <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
                         <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
                         <td style="padding: 12px; border-bottom: 1px solid var(--border-color);"></td>
                     `;
@@ -3689,11 +3649,11 @@ if (document.readyState === 'loading') {
                         index: recipientTableData.length,
                         name: item.name || '',
                         phone: item.phone || '',
-                        variables: (item.variables || ['', '', '']).slice(0, 3)
+                        variables: []
                     });
                 } else {
                     recipientTableData[existingIndex].name = item.name || recipientTableData[existingIndex].name;
-                    recipientTableData[existingIndex].variables = (item.variables || recipientTableData[existingIndex].variables || ['', '', '']).slice(0, 3);
+                    recipientTableData[existingIndex].variables = [];
                 }
             });
             
@@ -3841,11 +3801,6 @@ if (document.readyState === 'loading') {
                     const headers = jsonData[0];
                     const nameIndex = headers.findIndex(h => h === '이름' || h === 'Name' || h === 'name');
                     const phoneIndex = headers.findIndex(h => h === '전화번호' || h === '휴대폰' || h === 'Phone' || h === 'phone');
-                    const varIndices = [];
-                    for (let i = 1; i <= 3; i++) {
-                        const varIndex = headers.findIndex(h => h === `변수${i}` || h === `Variable ${i}` || h === `변수 ${i}`);
-                        varIndices.push(varIndex);
-                    }
                     
                     recipientTableData = [];
                     const rows = jsonData.slice(1);
@@ -3854,7 +3809,7 @@ if (document.readyState === 'loading') {
                             index: index,
                             name: nameIndex >= 0 ? (row[nameIndex] || '') : '',
                             phone: phoneIndex >= 0 ? (row[phoneIndex] || '') : '',
-                            variables: varIndices.map(idx => idx >= 0 ? (row[idx] || '') : '').slice(0, 3)
+                            variables: []
                         };
                         recipientTableData.push(rowData);
                     });
@@ -3907,15 +3862,6 @@ if (document.readyState === 'loading') {
                                onblur="updateRecipientTableData(${i}, 'phone', this.value); updateRecipientCount();"
                                onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextCell(this); }">
                     </td>
-                    ${[1,2,3].map(v => `
-                        <td style="padding: 4px; border-bottom: 1px solid var(--border-color);">
-                            <input type="text" class="form-input recipient-input" style="width: 100%; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px;" 
-                                   data-row="${i}" data-field="var${v}"
-                                   value="${row ? (row.variables && row.variables[v-1] ? (row.variables[v-1] || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '') : ''}" 
-                                   onblur="updateRecipientTableData(${i}, 'var${v}', this.value)"
-                                   onkeypress="if(event.key==='Enter') { event.preventDefault(); moveToNextCell(this); }">
-                        </td>
-                    `).join('')}
                 `;
                 tbody.appendChild(tr);
             }
@@ -3954,7 +3900,7 @@ if (document.readyState === 'loading') {
                 index: recipientTableData.length,
                 name: '',
                 phone: '',
-                variables: ['', '', '']
+                variables: []
             });
             renderRecipientTable();
             
@@ -3986,7 +3932,7 @@ if (document.readyState === 'loading') {
                     index: recipientTableData.length,
                     name: '',
                     phone: '',
-                    variables: ['', '', '']
+                    variables: []
                 });
             }
             
@@ -3997,7 +3943,7 @@ if (document.readyState === 'loading') {
                     index: index,
                     name: '',
                     phone: '',
-                    variables: ['', '', '']
+                    variables: []
                 };
             }
             
@@ -4006,12 +3952,6 @@ if (document.readyState === 'loading') {
                 finalRow.name = value;
             } else if (field === 'phone') {
                 finalRow.phone = value;
-            } else if (field.startsWith('var')) {
-                const varIndex = parseInt(field.replace('var', '')) - 1;
-                if (varIndex >= 0 && varIndex < 3) {
-                    if (!finalRow.variables) finalRow.variables = ['', '', ''];
-                    finalRow.variables[varIndex] = value;
-                }
             }
         }
 
