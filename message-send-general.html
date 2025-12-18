@@ -2038,6 +2038,51 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             contentEl.textContent = content || '메시지 내용을 입력하세요';
+            
+            // 이미지 미리보기 업데이트
+            updatePreviewImages();
+        }
+        
+        function updatePreviewImages() {
+            const previewImages = document.getElementById('previewImages');
+            const imagePreview = document.getElementById('imagePreview');
+            const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+            
+            if (!previewImages) return;
+            
+            // MMS가 아니거나 이미지가 없으면 숨김
+            if (messageType !== 'MMS') {
+                previewImages.innerHTML = '';
+                previewImages.style.display = 'none';
+                return;
+            }
+            
+            const images = imagePreview ? imagePreview.querySelectorAll('.image-preview-item img') : [];
+            
+            if (images.length === 0) {
+                previewImages.innerHTML = '';
+                previewImages.style.display = 'none';
+                return;
+            }
+            
+            // 이미지가 있으면 미리보기에 표시
+            previewImages.style.display = 'block';
+            previewImages.innerHTML = '';
+            
+            const imageContainer = document.createElement('div');
+            imageContainer.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap;';
+            
+            images.forEach((img, index) => {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.style.cssText = 'width: 60px; height: 60px; border-radius: 8px; overflow: hidden;';
+                const imgClone = document.createElement('img');
+                imgClone.src = img.src;
+                imgClone.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
+                imgWrapper.appendChild(imgClone);
+                imageContainer.appendChild(imgWrapper);
+            });
+            
+            previewImages.appendChild(imageContainer);
         }
 
         function processRecipients(value) {
@@ -2087,6 +2132,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // 이미지가 3개가 되면 추가 버튼 숨기기
                 updateAddImageButton();
+                
+                // 우측 미리보기에 이미지 실시간 반영
+                updatePreviewImages();
             };
             reader.readAsDataURL(file);
             
@@ -2097,6 +2145,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function removeImage(btn) {
             btn.parentElement.remove();
             updateAddImageButton();
+            // 우측 미리보기에서 이미지 실시간 제거
+            updatePreviewImages();
         }
 
         function updateAddImageButton() {

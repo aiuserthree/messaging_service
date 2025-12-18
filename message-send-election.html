@@ -1381,6 +1381,7 @@ body {
                                         무료거부 0801234567
                                     </div>
                                 </div>
+                                <div id="previewImage" style="margin-top: 12px;"></div>
                             </div>
                         </div>
                     </div>
@@ -1944,6 +1945,51 @@ function updatePreview() {
     previewContent += formattedContent;
     previewContent += `<div class="reject-number" style="margin-top: 8px; color: var(--text-secondary);">불법수집정보 신고 : 1390<br>개인정보침해 신고 : 118<br>무료거부 0801234567</div>`;
     preview.innerHTML = previewContent;
+    
+    // 이미지 미리보기 업데이트
+    updatePreviewImages();
+}
+
+function updatePreviewImages() {
+    const previewImage = document.getElementById('previewImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const messageType = document.querySelector('input[name="messageType"]:checked')?.value || 'SMS';
+    
+    if (!previewImage) return;
+    
+    // MMS가 아니거나 이미지가 없으면 숨김
+    if (messageType !== 'MMS') {
+        previewImage.innerHTML = '';
+        previewImage.style.display = 'none';
+        return;
+    }
+    
+    const images = imagePreview ? imagePreview.querySelectorAll('.image-preview-item img') : [];
+    
+    if (images.length === 0) {
+        previewImage.innerHTML = '';
+        previewImage.style.display = 'none';
+        return;
+    }
+    
+    // 이미지가 있으면 미리보기에 표시
+    previewImage.style.display = 'block';
+    previewImage.innerHTML = '';
+    
+    const imageContainer = document.createElement('div');
+    imageContainer.style.cssText = 'display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;';
+    
+    images.forEach((img, index) => {
+        const imgWrapper = document.createElement('div');
+        imgWrapper.style.cssText = 'width: 60px; height: 60px; border-radius: 8px; overflow: hidden;';
+        const imgClone = document.createElement('img');
+        imgClone.src = img.src;
+        imgClone.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
+        imgWrapper.appendChild(imgClone);
+        imageContainer.appendChild(imgWrapper);
+    });
+    
+    previewImage.appendChild(imageContainer);
 }
 
 // window 객체에도 노출 (안전장치)
@@ -2589,17 +2635,11 @@ if (document.readyState === 'loading') {
                 `;
                 preview.appendChild(div);
                 
-                // 미리보기에도 추가
-                const previewImage = document.getElementById('previewImage');
-                if (previewImage) {
-                    const imgDiv = document.createElement('div');
-                    imgDiv.style.marginTop = '8px';
-                    imgDiv.innerHTML = `<img src="${e.target.result}" style="max-width: 100%; border-radius: var(--radius-md);">`;
-                    previewImage.appendChild(imgDiv);
-                }
-                
                 // 이미지가 3개가 되면 추가 버튼 숨기기
                 updateAddImageButton();
+                
+                // 우측 미리보기에 이미지 실시간 반영
+                updatePreviewImages();
             };
             reader.readAsDataURL(file);
             
@@ -2608,17 +2648,10 @@ if (document.readyState === 'loading') {
         }
 
         function removeImage(btn) {
-            const preview = document.getElementById('imagePreview');
-            const previewImage = document.getElementById('previewImage');
-            const item = btn.parentElement;
-            const index = Array.from(preview.children).indexOf(item);
-            
-            item.remove();
-            if (previewImage && previewImage.children[index]) {
-                previewImage.children[index].remove();
-            }
-            
+            btn.parentElement.remove();
             updateAddImageButton();
+            // 우측 미리보기에서 이미지 실시간 제거
+            updatePreviewImages();
         }
 
         function updateAddImageButton() {
