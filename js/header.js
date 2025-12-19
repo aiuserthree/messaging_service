@@ -16,7 +16,8 @@ function createHeader(activeMenu = '') {
             hasDropdown: true,
             items: [
                 { label: '선거문자 발송', url: 'message-send-election.html' },
-                { label: '선거문자 주소록', url: 'election-addressbook.html' }
+                { label: '선거문자 주소록', url: 'election-addressbook.html' },
+                { label: '수신거부관리', url: 'election-reject.html' }
             ]
         },
         'kakao': {
