@@ -1132,15 +1132,6 @@ body {
                                     </div>
                                     <div style="font-weight: 600;">신용카드</div>
                                 </div>
-                                <div class="payment-method" onclick="selectPayment('bank')">
-                                    <div class="payment-icon" style="background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                        </svg>
-                                    </div>
-                                    <div style="font-weight: 600;">무통장입금</div>
-                                </div>
                                 <div class="payment-method" onclick="selectPayment('virtual')">
                                     <div class="payment-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1149,6 +1140,14 @@ body {
                                         </svg>
                                     </div>
                                     <div style="font-weight: 600;">가상계좌</div>
+                                </div>
+                                <div class="payment-method" onclick="selectPayment('realtime')">
+                                    <div class="payment-icon" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 12h-8M3 12h8M12 3v18M21 5l-9-2-9 2M21 19l-9 2-9-2"></path>
+                                        </svg>
+                                    </div>
+                                    <div style="font-weight: 600;">실시간 계좌이체</div>
                                 </div>
                                 <div class="payment-method" onclick="selectPayment('transfer')">
                                     <div class="payment-icon" style="background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);">
@@ -1680,6 +1679,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const chargeButton = document.getElementById('chargeButton');
             
             if (method === 'transfer') {
+                // 전용계좌 선택 시
                 if (dedicatedAccountSection) {
                     dedicatedAccountSection.style.display = 'block';
                 }
@@ -1690,6 +1690,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     chargeButton.style.display = 'none';
                 }
             } else {
+                // 실시간 계좌이체 및 기타 결제 수단
                 if (dedicatedAccountSection) {
                     dedicatedAccountSection.style.display = 'none';
                 }
@@ -1801,9 +1802,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            if (selectedPayment === 'bank') {
-                showToast('무통장입금 안내 팝업이 표시됩니다.', 'info');
-                // 무통장입금 안내 모달 표시
+            if (selectedPayment === 'realtime') {
+                // 실시간 계좌이체 - PG사 연동하여 즉시 이체 처리
+                showToast('실시간 계좌이체 결제를 진행합니다.', 'info');
+                // PG사 실시간 계좌이체 모듈 호출
+                // 이체 완료 시 즉시 충전 처리
             } else {
                 showToast('결제가 완료되었습니다. 디파짓에 충전되었습니다.', 'success');
                 // 실제 결제 처리
