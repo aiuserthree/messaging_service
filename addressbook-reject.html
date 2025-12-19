@@ -1503,24 +1503,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return phone;
         }
 
-        // 발신번호 마스킹 함수 (중간 4자리 마스킹)
-        function maskSenderNumber(sender) {
-            if (!sender) return '';
-            // 하이픈 제거
-            const numbers = sender.replace(/[^\d]/g, '');
-            if (numbers.length === 11) {
-                // 010-1234-5678 형식
-                return `${numbers.slice(0, 3)}-****-${numbers.slice(7)}`;
-            } else if (numbers.length === 10) {
-                // 02-1234-5678 형식
-                return `${numbers.slice(0, 2)}-****-${numbers.slice(6)}`;
-            } else if (numbers.length >= 4) {
-                // 기타 형식 (앞 3자리, 뒤 4자리만 표시)
-                return `${numbers.slice(0, 3)}-****-${numbers.slice(-4)}`;
-            }
-            return sender;
-        }
-
         function downloadExcel() {
             // 테이블에서 모든 데이터 추출
             const table = document.querySelector('.table tbody');
@@ -1540,10 +1522,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const registrationPath = cells[4].textContent.trim();
                     const memo = cells[5].textContent.trim();
                     
-                    // 전화번호와 발신번호 마스킹 처리
+                    // 수신자 전화번호만 마스킹 처리 (발신번호는 그대로)
                     tableData.push([
                         maskPhone(phoneNumber),
-                        maskSenderNumber(senderNumber),
+                        senderNumber,
                         registrationDate,
                         registrationPath,
                         memo
