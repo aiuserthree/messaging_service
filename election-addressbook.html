@@ -1124,7 +1124,6 @@ body {
                             <button class="btn btn-primary" onclick="openAddAddressModal()">주소 추가</button>
                             <input type="file" id="addressBookMainExcelFileInput" class="form-input" accept=".xlsx,.xls,.csv" style="display: none;" onchange="handleAddressBookExcelFileSelect(event)">
                             <button class="btn btn-outline" onclick="document.getElementById('addressBookMainExcelFileInput').click()">엑셀 업로드</button>
-                            <button class="btn btn-outline" onclick="downloadAddressBook()">다운로드</button>
                             <button class="btn btn-outline" onclick="downloadSampleFile()">엑셀 샘플파일</button>
                             <button class="btn btn-outline" onclick="sendMessage()">문자 보내기</button>
                         </div>
@@ -2624,47 +2623,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         };
-
-        // 주소록 다운로드 함수
-        function downloadAddressBook() {
-            // 현재 주소록 데이터를 엑셀로 다운로드 (마스킹 처리)
-            const rawData = [
-                { name: '홍길동', phone: '010-1234-5678', date: '2024-01-15', status: '정상' },
-                { name: '김철수', phone: '010-9876-5432', date: '2024-01-14', status: '정상' },
-                { name: '이영희', phone: '010-5555-7777', date: '2024-01-13', status: '수신거부' }
-            ];
-            
-            // 마스킹 처리된 데이터 생성
-            const addressData = [
-                ['이름', '전화번호', '등록일', '상태'],
-                ...rawData.map(item => [
-                    maskName(item.name),
-                    maskPhone(item.phone),
-                    item.date,
-                    item.status
-                ])
-            ];
-            
-            // 워크북 생성
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(addressData);
-            
-            // 컬럼 너비 설정
-            ws['!cols'] = [
-                { wch: 15 }, // 이름
-                { wch: 20 }, // 전화번호
-                { wch: 15 }, // 등록일
-                { wch: 15 }  // 상태
-            ];
-            
-            // 워크시트를 워크북에 추가
-            XLSX.utils.book_append_sheet(wb, ws, '선거문자 주소록');
-            
-            // XLSX 파일로 다운로드
-            XLSX.writeFile(wb, '선거문자_주소록.xlsx');
-            
-            showToast('주소록 다운로드가 시작되었습니다.', 'success');
-        }
 
         function downloadSampleFile() {
             // 샘플 파일 다운로드 (변경된 형식)

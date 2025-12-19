@@ -1488,9 +1488,92 @@ document.addEventListener('DOMContentLoaded', function() {
             updateSelectDeleteButton();
         }
 
+        // 전화번호 마스킹 함수 (중간 4자리 마스킹)
+        function maskPhone(phone) {
+            if (!phone) return '';
+            // 하이픈 제거
+            const numbers = phone.replace(/[^\d]/g, '');
+            if (numbers.length === 11) {
+                // 010-1234-5678 형식
+                return `${numbers.slice(0, 3)}-****-${numbers.slice(7)}`;
+            } else if (numbers.length === 10) {
+                // 02-1234-5678 형식
+                return `${numbers.slice(0, 2)}-****-${numbers.slice(6)}`;
+            }
+            return phone;
+        }
+
+        // 발신번호 마스킹 함수 (중간 4자리 마스킹)
+        function maskSenderNumber(sender) {
+            if (!sender) return '';
+            // 하이픈 제거
+            const numbers = sender.replace(/[^\d]/g, '');
+            if (numbers.length === 11) {
+                // 010-1234-5678 형식
+                return `${numbers.slice(0, 3)}-****-${numbers.slice(7)}`;
+            } else if (numbers.length === 10) {
+                // 02-1234-5678 형식
+                return `${numbers.slice(0, 2)}-****-${numbers.slice(6)}`;
+            } else if (numbers.length >= 4) {
+                // 기타 형식 (앞 3자리, 뒤 4자리만 표시)
+                return `${numbers.slice(0, 3)}-****-${numbers.slice(-4)}`;
+            }
+            return sender;
+        }
+
         function downloadExcel() {
-            showToast('엑셀 다운로드가 시작됩니다.', 'info');
-            // 실제로는 엑셀 다운로드 API 호출
+            // 테이블에서 모든 데이터 추출
+            const table = document.querySelector('.table tbody');
+            const rows = table.querySelectorAll('tr');
+            
+            // 헤더 데이터
+            const headerData = [['전화번호', '발신번호', '등록일', '등록 경로', '메모']];
+            
+            // 테이블 데이터 추출 및 마스킹 처리
+            const tableData = [];
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length >= 6) {
+                    const phoneNumber = cells[1].textContent.trim();
+                    const senderNumber = cells[2].textContent.trim();
+                    const registrationDate = cells[3].textContent.trim();
+                    const registrationPath = cells[4].textContent.trim();
+                    const memo = cells[5].textContent.trim();
+                    
+                    // 전화번호와 발신번호 마스킹 처리
+                    tableData.push([
+                        maskPhone(phoneNumber),
+                        maskSenderNumber(senderNumber),
+                        registrationDate,
+                        registrationPath,
+                        memo
+                    ]);
+                }
+            });
+            
+            // 헤더와 데이터 결합
+            const excelData = [...headerData, ...tableData];
+            
+            // 워크북 생성
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            
+            // 컬럼 너비 설정
+            ws['!cols'] = [
+                { wch: 20 }, // 전화번호
+                { wch: 20 }, // 발신번호
+                { wch: 20 }, // 등록일
+                { wch: 15 }, // 등록 경로
+                { wch: 30 }  // 메모
+            ];
+            
+            // 워크시트를 워크북에 추가
+            XLSX.utils.book_append_sheet(wb, ws, '수신거부관리');
+            
+            // XLSX 파일로 다운로드
+            XLSX.writeFile(wb, '수신거부관리_목록.xlsx');
+            
+            showToast('수신거부관리 목록 다운로드가 시작되었습니다.', 'success');
         }
 
         // 선택 삭제 버튼 활성화/비활성화
