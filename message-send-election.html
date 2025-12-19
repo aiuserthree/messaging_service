@@ -1160,7 +1160,6 @@ body {
                     <button class="tab-item active" onclick="window.location.href='message-send-election.html'">선거문자 발송</button>
                     <button class="tab-item" onclick="window.location.href='election-addressbook.html'">선거문자 주소록</button>
                     <button class="tab-item" onclick="window.location.href='election-reject.html'">수신거부관리</button>
-                    <button class="tab-item" onclick="window.location.href='election-addressbook.html'">선거문자 주소록</button>
                 </div>
             </div>
             <!-- 법적 안내사항 -->
@@ -2372,6 +2371,9 @@ function showElectionIdModal() {
 // 페이지 로드 시 팝업 표시
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
+        // 선거 아이디 신청 팝업 표시 (항상 표시 - 가장 먼저)
+        showElectionIdModal();
+        
         initDropdownMenus();
         // 발신번호 초기화
         updateCandidateInfo();
@@ -2380,9 +2382,6 @@ if (document.readyState === 'loading') {
         
         // 선거운동정보 바이트 카운터 초기화
         validateElectionInfo();
-        
-        // 선거 아이디 신청 팝업 표시 (항상 표시)
-        setTimeout(showElectionIdModal, 500);
     
     // 메시지 내용 실시간 미리보기 업데이트
     const messageContent = document.getElementById('messageContent');
@@ -2410,10 +2409,12 @@ if (document.readyState === 'loading') {
     });
 } else {
     // 이미 로드된 경우 즉시 실행
+    // 선거 아이디 신청 팝업 표시 (항상 표시 - 가장 먼저)
+    showElectionIdModal();
+    
     initDropdownMenus();
     updateCandidateInfo();
     updatePreview();
-    setTimeout(showElectionIdModal, 500);
     
     // 메시지 내용 실시간 미리보기 업데이트
     const messageContent = document.getElementById('messageContent');
@@ -2480,11 +2481,27 @@ if (document.readyState === 'loading') {
         function updateMessageType(type) {
             const titleGroup = document.getElementById('titleGroup');
             const imageGroup = document.getElementById('imageGroup');
+            const reservedRadio = document.querySelector('input[name="sendTime"][value="reserved"]');
+            const immediateRadio = document.querySelector('input[name="sendTime"][value="immediate"]');
+            const reservedTimeGroup = document.getElementById('reservedTimeGroup');
             
             if (type === 'LMS' || type === 'MMS') {
                 titleGroup.style.display = 'block';
+                // LMS, MMS일 때 예약발송 비활성화
+                if (reservedRadio) {
+                    reservedRadio.disabled = true;
+                    // 예약발송이 선택되어 있으면 즉시발송으로 변경
+                    if (reservedRadio.checked) {
+                        immediateRadio.checked = true;
+                        reservedTimeGroup.style.display = 'none';
+                    }
+                }
             } else {
                 titleGroup.style.display = 'none';
+                // SMS일 때 예약발송 활성화
+                if (reservedRadio) {
+                    reservedRadio.disabled = false;
+                }
             }
             
             if (type === 'MMS') {

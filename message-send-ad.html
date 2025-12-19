@@ -2043,11 +2043,27 @@ document.addEventListener('DOMContentLoaded', function() {
         function updateMessageType(type) {
             const titleGroup = document.getElementById('titleGroup');
             const imageGroup = document.getElementById('imageGroup');
+            const reservedRadio = document.querySelector('input[name="sendTime"][value="reserved"]');
+            const immediateRadio = document.querySelector('input[name="sendTime"][value="immediate"]');
+            const reservedTimeGroup = document.getElementById('reservedTimeGroup');
             
             if (type === 'LMS' || type === 'MMS') {
                 titleGroup.style.display = 'block';
+                // LMS, MMS일 때 예약발송 비활성화
+                if (reservedRadio) {
+                    reservedRadio.disabled = true;
+                    // 예약발송이 선택되어 있으면 즉시발송으로 변경
+                    if (reservedRadio.checked) {
+                        immediateRadio.checked = true;
+                        reservedTimeGroup.style.display = 'none';
+                    }
+                }
             } else {
                 titleGroup.style.display = 'none';
+                // SMS일 때 예약발송 활성화
+                if (reservedRadio) {
+                    reservedRadio.disabled = false;
+                }
             }
             
             if (type === 'MMS') {
