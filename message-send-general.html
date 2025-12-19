@@ -1983,7 +1983,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (type === 'LMS' || type === 'MMS') {
                 titleGroup.style.display = 'block';
-                // LMS, MMS일 때 예약발송 비활성화
+            } else {
+                titleGroup.style.display = 'none';
+            }
+            
+            // MMS일 때만 예약발송 비활성화
+            if (type === 'MMS') {
+                imageGroup.style.display = 'block';
+                updateAddImageButton();
                 if (reservedRadio) {
                     reservedRadio.disabled = true;
                     // 예약발송이 선택되어 있으면 즉시발송으로 변경
@@ -1993,18 +2000,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             } else {
-                titleGroup.style.display = 'none';
-                // SMS일 때 예약발송 활성화
+                imageGroup.style.display = 'none';
+                // SMS, LMS일 때 예약발송 활성화
                 if (reservedRadio) {
                     reservedRadio.disabled = false;
                 }
-            }
-            
-            if (type === 'MMS') {
-                imageGroup.style.display = 'block';
-                updateAddImageButton();
-            } else {
-                imageGroup.style.display = 'none';
             }
             
             updateByteCounter();
