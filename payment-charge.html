@@ -1113,9 +1113,6 @@ body {
                                 <div class="amount-btn" onclick="selectAmount(3000000)">
                                     <div class="amount-btn-value">300만</div>
                                 </div>
-                                <div class="amount-btn" onclick="selectAmount(5000000)">
-                                    <div class="amount-btn-value">500만</div>
-                                </div>
                             </div>
                         </div>
 
@@ -1652,8 +1649,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let selectedPayment = 'card';
 
         function selectAmount(amount) {
-            // 신용카드 선택 시 300만원, 500만원 선택 불가
-            if (selectedPayment === 'card' && (amount === 3000000 || amount === 5000000)) {
+            // 신용카드 선택 시 300만원 선택 불가
+            if (selectedPayment === 'card' && amount === 3000000) {
                 alert('신용카드로 결제 시 충전 금액은 최대 200만원입니다.');
                 return;
             }
@@ -1702,8 +1699,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // 신용카드로 변경 시 300만원, 500만원이 선택되어 있으면 해제
-            if (method === 'card' && (selectedAmount === 3000000 || selectedAmount === 5000000)) {
+            // 신용카드로 변경 시 300만원이 선택되어 있으면 해제
+            if (method === 'card' && selectedAmount === 3000000) {
                 alert('신용카드로 결제 시 충전 금액은 최대 200만원입니다.');
                 selectedAmount = 0;
                 document.querySelectorAll('.amount-btn').forEach(btn => {
