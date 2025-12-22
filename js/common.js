@@ -19,13 +19,20 @@ function closeModal(modalId) {
     }
 }
 
-// ESC 키로 모달 닫기
+// ESC 키로 모달 닫기 (모든 레이어 팝업 닫기)
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' || e.keyCode === 27) {
         const activeModal = document.querySelector('.modal-overlay.active');
         if (activeModal) {
-            activeModal.classList.remove('active');
-            document.body.style.overflow = '';
+            const modalId = activeModal.id;
+            if (modalId && typeof closeModal === 'function') {
+                closeModal(modalId);
+            } else {
+                // closeModal 함수가 없는 경우 직접 닫기
+                activeModal.classList.remove('active');
+                activeModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
     }
 });

@@ -497,13 +497,20 @@ function openPolicyModal(type) {
         document.head.appendChild(style);
     }
     
-    // ESC 키로 모달 닫기
+    // ESC 키로 모달 닫기 (모든 레이어 팝업 닫기)
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape' || e.keyCode === 27) {
             const activeModal = document.querySelector('.modal-overlay.active');
             if (activeModal) {
                 const modalId = activeModal.id;
-                closeModal(modalId);
+                if (modalId && typeof closeModal === 'function') {
+                    closeModal(modalId);
+                } else {
+                    // closeModal 함수가 없는 경우 직접 닫기
+                    activeModal.classList.remove('active');
+                    activeModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
             }
         }
     });

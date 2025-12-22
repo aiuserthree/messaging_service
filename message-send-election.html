@@ -2017,11 +2017,21 @@ function closeModal(modalId) {
 
 // ESC 키로 모달 닫기
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' || e.keyCode === 27) {
         const activeModal = document.querySelector('.modal-overlay.active');
         if (activeModal) {
-            activeModal.classList.remove('active');
-            document.body.style.overflow = '';
+            const modalId = activeModal.id;
+            // 선거 아이디 모달인 경우 플래그 설정
+            if (modalId === 'electionIdModal') {
+                electionIdModalClosed = true;
+            }
+            if (modalId && typeof closeModal === 'function') {
+                closeModal(modalId);
+            } else {
+                activeModal.classList.remove('active');
+                activeModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
     }
 });
@@ -2108,9 +2118,13 @@ function validateElectionInfo() {
     }
 }
 
+// 선거 아이디 신청 모달이 닫혔는지 추적
+let electionIdModalClosed = false;
+
 // 선거 아이디 신청 모달 닫기
 function closeElectionIdModal() {
     closeModal('electionIdModal');
+    electionIdModalClosed = true; // 사용자가 모달을 닫았음을 표시
 }
 
 // 선거 아이디 신청하기
@@ -2360,6 +2374,10 @@ document.head.appendChild(style);
 // 드롭다운 메뉴 초기화
 // 선거 아이디 신청 팝업 표시 (항상 표시)
 function showElectionIdModal() {
+    // 사용자가 이미 모달을 닫았다면 다시 열지 않음
+    if (electionIdModalClosed) {
+        return;
+    }
     const modal = document.getElementById('electionIdModal');
     if (modal) {
         modal.style.display = 'flex';
@@ -4220,9 +4238,12 @@ if (document.readyState === 'loading') {
         // 페이지 로드 완료 후 팝업 표시 (백업)
         window.addEventListener('load', function() {
             setTimeout(function() {
-                const modal = document.getElementById('electionIdModal');
-                if (modal && !modal.classList.contains('active')) {
-                    showElectionIdModal();
+                // 사용자가 모달을 닫지 않았다면만 표시
+                if (!electionIdModalClosed) {
+                    const modal = document.getElementById('electionIdModal');
+                    if (modal && !modal.classList.contains('active')) {
+                        showElectionIdModal();
+                    }
                 }
             }, 1000);
         });

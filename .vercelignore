@@ -1,1 +1,5 @@
-﻿Tokbell_v1.2.zip
+*.zip
+excel/
+.git/
+Tokbell_v1.7.zip
+frontend/

@@ -1004,12 +1004,6 @@ body {
 
             <!-- 수신거부 목록 -->
             <div class="card">
-                <div class="template-actions" style="margin-bottom: 24px;">
-                    <div>
-                        <button class="btn btn-primary" onclick="openModal('addRejectModal')">수신거부 추가</button>
-                        <button class="btn btn-outline" onclick="openModal('excelUploadModal')">엑셀 업로드</button>
-                    </div>
-                </div>
 
                 <div class="table-container">
                     <table class="table">
@@ -1317,11 +1311,17 @@ function closeModal(modalId) {
 
 // ESC 키로 모달 닫기
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' || e.keyCode === 27) {
         const activeModal = document.querySelector('.modal-overlay.active');
         if (activeModal) {
-            activeModal.classList.remove('active');
-            document.body.style.overflow = '';
+            const modalId = activeModal.id;
+            if (modalId && typeof closeModal === 'function') {
+                closeModal(modalId);
+            } else {
+                activeModal.classList.remove('active');
+                activeModal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
         }
     }
 });
