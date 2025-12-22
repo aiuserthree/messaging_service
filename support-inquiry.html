@@ -145,12 +145,25 @@
             gap: 8px;
         }
 
-        .email-input-group input {
+        .email-input-group input#emailId {
+            flex: 2;
+            min-width: 160px;
+        }
+
+        .email-input-group input#emailDomain {
             flex: 1;
+            min-width: 120px;
+        }
+
+        .email-input-group select {
+            flex: 0 0 130px;
+            width: 130px;
+            min-width: 130px;
         }
 
         .email-input-group span {
             color: var(--text-secondary);
+            flex-shrink: 0;
         }
 
         .file-input-group {
