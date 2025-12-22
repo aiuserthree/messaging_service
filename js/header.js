@@ -7,7 +7,9 @@ function createHeader(activeMenu = '') {
             hasDropdown: true,
             items: [
                 { label: '일반문자 발송', url: 'message-send-general.html' },
-                { label: '광고문자 발송', url: 'message-send-ad.html' }
+                { label: '광고문자 발송', url: 'message-send-ad.html' },
+                { label: '일반문자 템플릿', url: 'template-message.html' },
+                { label: '광고문자 템플릿', url: 'template-message-ad.html' }
             ]
         },
         'election': {
@@ -17,7 +19,8 @@ function createHeader(activeMenu = '') {
             items: [
                 { label: '선거문자 발송', url: 'message-send-election.html' },
                 { label: '선거문자 주소록', url: 'election-addressbook.html' },
-                { label: '수신거부관리', url: 'election-reject.html' }
+                { label: '수신거부관리', url: 'election-reject.html' },
+                { label: '선거문자 템플릿', url: 'template-message-election.html' }
             ]
         },
         'kakao': {
@@ -27,19 +30,9 @@ function createHeader(activeMenu = '') {
             items: [
                 { label: '알림톡 발송', url: 'kakao-send-alimtalk.html' },
                 { label: '브랜드 메시지 발송', url: 'kakao-send-brandtalk.html' },
-                { label: '카카오톡 발신 프로필', url: 'kakao-profile-manage.html' }
-            ]
-        },
-        'template': {
-            label: '템플릿',
-            url: '#',
-            hasDropdown: true,
-            items: [
-                { label: '일반문자', url: 'template-message.html' },
-                { label: '광고문자', url: 'template-message-ad.html' },
-                { label: '선거문자', url: 'template-message-election.html' },
-                { label: '알림톡', url: 'template-alimtalk.html' },
-                { label: '브랜드 메시지', url: 'template-brandtalk.html' }
+                { label: '카카오톡 발신 프로필', url: 'kakao-profile-manage.html' },
+                { label: '알림톡 템플릿', url: 'template-alimtalk.html' },
+                { label: '브랜드 메시지 템플릿', url: 'template-brandtalk.html' }
             ]
         },
         'send': {
@@ -79,6 +72,16 @@ function createHeader(activeMenu = '') {
                 { label: '비밀번호 변경', url: 'mypage-password.html' },
                 { label: '발신번호 관리', url: 'mypage-caller-number.html' }
             ]
+        },
+        'support': {
+            label: '고객센터',
+            url: 'support-notice.html',
+            hasDropdown: true,
+            items: [
+                { label: '공지사항', url: 'support-notice.html' },
+                { label: '이벤트', url: 'support-event.html' },
+                { label: '1:1 문의', url: 'support-inquiry.html' }
+            ]
         }
     };
     
@@ -86,16 +89,17 @@ function createHeader(activeMenu = '') {
     const urlToMenuKey = {
         'message-send-general.html': 'message',
         'message-send-ad.html': 'message',
+        'template-message.html': 'message',
+        'template-message-ad.html': 'message',
         'message-send-election.html': 'election',
         'election-addressbook.html': 'election',
+        'election-reject.html': 'election',
+        'template-message-election.html': 'election',
         'kakao-send-alimtalk.html': 'kakao',
         'kakao-send-brandtalk.html': 'kakao',
         'kakao-profile-manage.html': 'kakao',
-        'template-message.html': 'template',
-        'template-message-ad.html': 'template',
-        'template-message-election.html': 'template',
-        'template-alimtalk.html': 'template',
-        'template-brandtalk.html': 'template',
+        'template-alimtalk.html': 'kakao',
+        'template-brandtalk.html': 'kakao',
         'addressbook.html': 'addressbook',
         'addressbook-reject.html': 'addressbook',
         'send-result.html': 'send',
@@ -106,7 +110,10 @@ function createHeader(activeMenu = '') {
         'payment-tax.html': 'payment',
         'mypage-profile.html': 'mypage',
         'mypage-password.html': 'mypage',
-        'mypage-caller-number.html': 'mypage'
+        'mypage-caller-number.html': 'mypage',
+        'support-notice.html': 'support',
+        'support-event.html': 'support',
+        'support-inquiry.html': 'support'
     };
     
     // 현재 페이지 URL에서 활성 메뉴 결정
@@ -152,11 +159,57 @@ function createHeader(activeMenu = '') {
         }
     });
     
+    // 현재 페이지와 로그인 상태 확인
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const isLoggedIn = typeof localStorage !== 'undefined' && localStorage.getItem('isLoggedIn') === 'true';
+    const isIndexPage = currentPage === 'index.html';
+    
+    // 헤더 액션 HTML 생성
+    let headerActionsHTML = '';
+    if (isIndexPage && !isLoggedIn) {
+        // 로그인 전 메인 페이지
+        headerActionsHTML = `
+            <a href="login.html" class="btn btn-outline">로그인</a>
+            <a href="login.html" class="btn btn-primary">톡벨 가입하기</a>
+        `;
+    } else if (isLoggedIn) {
+        // 로그인 후
+        headerActionsHTML = `
+            <div class="balance-info balance-tooltip-wrapper">
+                <span class="balance-label">잔액</span>
+                <span class="balance-amount">1,000,000</span>
+                <div class="balance-tooltip-content">
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #fbbf24; font-weight: 600;">포인트</span>
+                        <span style="float: right; font-weight: 600;">1,000,000</span>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: 4px;">
+                            <span style="color: #fbbf24; font-weight: 600;">마일리지</span>
+                            <span style="float: right; font-weight: 600;">92.6</span>
+                        </div>
+                        <div style="font-size: 11px; color: #94a3b8; margin-top: 4px; text-align: left;">
+                            └ 문자발송 시 사용가능 (환불불가)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="payment-charge.html" class="btn btn-sm btn-primary" style="padding: 6px 12px; font-size: 12px;">충전하기</a>
+            <button class="btn btn-sm btn-outline" onclick="handleLogout()" style="padding: 6px 12px; font-size: 12px;">로그아웃</button>
+        `;
+    } else {
+        // 로그인 페이지 등
+        headerActionsHTML = `
+            <a href="login.html" class="btn btn-outline">로그인</a>
+            <a href="login.html" class="btn btn-primary">톡벨 가입하기</a>
+        `;
+    }
+    
     return `
         <header class="header">
             <div class="header-content">
                 <div class="logo">
-                    <a href="main.html" style="text-decoration: none; color: inherit;">
+                    <a href="index.html" style="text-decoration: none; color: inherit;">
                         <h1>Tokbell</h1>
                     </a>
                 </div>
@@ -164,27 +217,7 @@ function createHeader(activeMenu = '') {
                     ${navHTML}
                 </nav>
                 <div class="header-actions" style="gap: 4px;">
-                    <div class="balance-info balance-tooltip-wrapper">
-                        <span class="balance-label">잔액</span>
-                        <span class="balance-amount">1,000,000</span>
-                        <a href="payment-charge.html" class="btn btn-sm btn-primary" style="margin-left: 12px; padding: 6px 12px; font-size: 12px;">충전하기</a>
-                        <div class="balance-tooltip-content">
-                            <div style="margin-bottom: 8px;">
-                                <span style="color: #fbbf24; font-weight: 600;">포인트</span>
-                                <span style="float: right; font-weight: 600;">1,000,000</span>
-                            </div>
-                            <div>
-                                <div style="margin-bottom: 4px;">
-                                    <span style="color: #fbbf24; font-weight: 600;">마일리지</span>
-                                    <span style="float: right; font-weight: 600;">92.6</span>
-                                </div>
-                                <div style="font-size: 11px; color: #94a3b8; margin-top: 4px; text-align: left;">
-                                    └ 문자발송 시 사용가능 (환불불가)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-sm btn-outline" onclick="handleLogout()" style="padding: 6px 12px; font-size: 12px;">로그아웃</button>
+                    ${headerActionsHTML}
                 </div>
             </div>
         </header>
@@ -314,6 +347,22 @@ function createFloatingMenu() {
                     </span>
                     <span class="floating-menu-label">브랜드 메시지 발송</span>
                 </a>
+                <a href="support-event.html" class="floating-menu-item" title="이벤트">
+                    <span class="floating-menu-icon-item pink">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+                        </svg>
+                    </span>
+                    <span class="floating-menu-label">이벤트</span>
+                </a>
+                <a href="support-inquiry.html" class="floating-menu-item" title="1:1 문의">
+                    <span class="floating-menu-icon-item teal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
+                        </svg>
+                    </span>
+                    <span class="floating-menu-label">1:1 문의</span>
+                </a>
             </div>
         </div>
         <style>
@@ -427,6 +476,16 @@ function createFloatingMenu() {
             .floating-menu-icon-item.purple {
                 background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
                 color: #7c3aed;
+            }
+            
+            .floating-menu-icon-item.pink {
+                background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+                color: #db2777;
+            }
+            
+            .floating-menu-icon-item.teal {
+                background: linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%);
+                color: #0d9488;
             }
             
             .floating-menu-item:hover .floating-menu-icon-item {

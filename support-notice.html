@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 - 톡벨</title>
+    <script src="js/header.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 탭 메뉴 */
+        .support-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .support-tab {
+            padding: 14px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .support-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .support-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* 검색바 */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            padding-right: 100px;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-buttons {
+            display: flex;
+            gap: 8px;
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .search-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .refresh-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background-color: var(--bg-color);
+            border-color: var(--primary-color);
+        }
+
+        /* 테이블 */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .table tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .table tbody tr:hover {
+            background-color: #fafbfc;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table td {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .table td:first-child {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .table td:nth-child(3),
+        .table td:nth-child(4) {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .notice-title {
+            color: var(--text-primary);
+        }
+
+        .notice-title:hover {
+            color: var(--primary-color);
+        }
+
+        /* 페이지네이션 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background-color: var(--bg-color);
+            border-color: #cbd5e1;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-ellipsis {
+            padding: 8px 4px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader('support'));
+        </script>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>고객센터</h2>
+                <p class="page-description">톡벨의 공지사항, 이벤트 및 문의를 확인하실 수 있습니다.</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="support-tabs">
+                <a href="support-notice.html" class="support-tab active">공지사항</a>
+                <a href="support-event.html" class="support-tab">이벤트</a>
+                <a href="support-inquiry.html" class="support-tab">1:1 문의</a>
+            </div>
+
+            <!-- 검색바 -->
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput"
+                        placeholder="검색할 내용을 입력해주세요"
+                    >
+                    <div class="search-buttons">
+                        <button class="search-btn" onclick="handleSearch()" title="검색">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                        <button class="refresh-btn" onclick="handleRefresh()" title="새로고침">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                                <path d="M21 3v5h-5"></path>
+                                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                                <path d="M3 21v-5h5"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 공지사항 테이블 -->
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">번호</th>
+                            <th>제목</th>
+                            <th style="width: 120px;">등록일</th>
+                            <th style="width: 100px;">조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr onclick="window.location.href='#'">
+                            <td>683</td>
+                            <td><span class="notice-title">[공지] 모바일설문 단가 변경 안내</span></td>
+                            <td>2025-11-27</td>
+                            <td>33</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>682</td>
+                            <td><span class="notice-title">11월 세금계산서 발행 안내</span></td>
+                            <td>2025-11-26</td>
+                            <td>226</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>681</td>
+                            <td><span class="notice-title">[공지] 톡벨몰 서비스 종료 안내</span></td>
+                            <td>2025-11-26</td>
+                            <td>19</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>680</td>
+                            <td><span class="notice-title">[공지] RCS (스마트문자) '동영상' 유형 일부 단말기 재생 불가 안내</span></td>
+                            <td>2025-11-19</td>
+                            <td>123</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>679</td>
+                            <td><span class="notice-title">카카오 브랜드메시지 이용요금 변경 예정</span></td>
+                            <td>2025-11-04</td>
+                            <td>405</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>678</td>
+                            <td><span class="notice-title">10월 세금계산서 발행 안내</span></td>
+                            <td>2025-10-29</td>
+                            <td>236</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>677</td>
+                            <td><span class="notice-title">[공지] 10/23(목) 시스템 점검 안내</span></td>
+                            <td>2025-10-16</td>
+                            <td>114</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>676</td>
+                            <td><span class="notice-title">9월 세금계산서 발행 안내</span></td>
+                            <td>2025-09-24</td>
+                            <td>327</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>675</td>
+                            <td><span class="notice-title">[공지] 추석 연휴 환불, 환급 일정 안내</span></td>
+                            <td>2025-09-24</td>
+                            <td>210</td>
+                        </tr>
+                        <tr onclick="window.location.href='#'">
+                            <td>674</td>
+                            <td><span class="notice-title">[공지] 이슈캘린더 퀴즈 이벤트 당첨자 발표 🏆</span></td>
+                            <td>2025-09-04</td>
+                            <td>159</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <button class="page-btn" disabled>이전</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn" onclick="goToPage(2)">2</button>
+                <button class="page-btn" onclick="goToPage(3)">3</button>
+                <button class="page-btn" onclick="goToPage(4)">4</button>
+                <button class="page-btn" onclick="goToPage(2)">다음</button>
+                <button class="page-btn" onclick="goToPage(4)">마지막</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchInput').value;
+            console.log('검색:', searchTerm);
+            // 검색 로직 구현
+        }
+
+        function handleRefresh() {
+            document.getElementById('searchInput').value = '';
+            // 새로고침 로직 구현
+        }
+
+        function goToPage(page) {
+            console.log('페이지 이동:', page);
+            // 페이지 이동 로직 구현
+        }
+
+        // 엔터키로 검색
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleSearch();
+            }
+        });
+
+        // 드롭다운 메뉴 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
+            }
+        });
+    </script>
+</body>
+</html>
+

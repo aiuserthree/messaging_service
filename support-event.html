@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 - 톡벨</title>
+    <script src="js/header.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* 탭 메뉴 */
+        .support-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .support-tab {
+            padding: 14px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .support-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .support-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* 이벤트 탭 (1:1 문의와 동일한 스타일) */
+        .event-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+            background-color: #f1f5f9;
+            border-radius: var(--radius-md);
+            padding: 4px;
+        }
+
+        .event-tab {
+            flex: 1;
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            border-radius: var(--radius-md);
+        }
+
+        .event-tab.active {
+            background-color: var(--surface-color);
+            color: var(--primary-color);
+        }
+
+        /* 이벤트 그리드 */
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .event-card {
+            background-color: var(--surface-color);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .event-banner {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-banner.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .event-banner.black {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+
+        .event-banner.light-blue {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        .event-banner-text {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.3;
+            z-index: 2;
+        }
+
+        .event-banner-image {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 80px;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .event-info {
+            padding: 20px;
+        }
+
+        .event-date {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .event-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .event-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* 페이지네이션 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--surface-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background-color: var(--bg-color);
+            border-color: #cbd5e1;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 1024px) {
+            .event-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .event-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader('support'));
+        </script>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>고객센터</h2>
+                <p class="page-description">톡벨에서 제공하는 다양한 이벤트를 확인하실 수 있습니다.</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="support-tabs">
+                <a href="support-notice.html" class="support-tab">공지사항</a>
+                <a href="support-event.html" class="support-tab active">이벤트</a>
+                <a href="support-inquiry.html" class="support-tab">1:1 문의</a>
+            </div>
+
+            <!-- 이벤트 탭 -->
+            <div class="tab-content active">
+                <div class="event-tabs">
+                    <button class="event-tab active" onclick="switchEventTab('ongoing')">진행 중 & 진행예정 이벤트</button>
+                    <button class="event-tab" onclick="switchEventTab('ended')">종료된 이벤트</button>
+                </div>
+
+                <!-- 진행 중 이벤트 -->
+                <div id="ongoingEvents" class="event-tab-content">
+                    <div class="event-grid">
+                        <!-- 상품권 이벤트 -->
+                        <div class="event-card" onclick="window.location.href='#'">
+                            <div class="event-banner blue">
+                                <div class="event-banner-text">
+                                    충전만 해도<br>무조건<br>상품권 증정
+                                </div>
+                                <div class="event-banner-image">💰</div>
+                            </div>
+                            <div class="event-info">
+                                <div class="event-date">2025.12.01 ~ 2025.12.31</div>
+                                <div class="event-title">2025년 12월 상품권이벤트</div>
+                                <div class="event-description">충전만 해도 100% 상품권 지급!</div>
+                            </div>
+                        </div>
+
+                        <!-- 신규회원 이벤트 -->
+                        <div class="event-card" onclick="window.location.href='#'">
+                            <div class="event-banner black">
+                                <div class="event-banner-text">
+                                    톡벨이<br>처음이라면
+                                </div>
+                                <div class="event-banner-image">🎁</div>
+                            </div>
+                            <div class="event-info">
+                                <div class="event-date">2025.12.01 ~ 2025.12.31</div>
+                                <div class="event-title">2025년 12월 신규회원 이벤트</div>
+                                <div class="event-description">톡벨이 처음이라면? 문자 2배 적립!</div>
+                            </div>
+                        </div>
+
+                        <!-- 기업전환 이벤트 -->
+                        <div class="event-card" onclick="window.location.href='#'">
+                            <div class="event-banner light-blue">
+                                <div class="event-banner-text">
+                                    기업 전환 시 문자<br>1천건 무료 지급!
+                                </div>
+                                <div class="event-banner-image">🎁</div>
+                            </div>
+                            <div class="event-info">
+                                <div class="event-date">2025.12.01 ~ 2025.12.31</div>
+                                <div class="event-title">2025년 12월 기업전환 이벤트</div>
+                                <div class="event-description">기업회원 전환하면 문자 1천건을 드려요!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 종료된 이벤트 -->
+                <div id="endedEvents" class="event-tab-content" style="display: none;">
+                    <div style="text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                        종료된 이벤트가 없습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <button class="page-btn active">1</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function switchEventTab(tab) {
+            const ongoingTab = document.querySelector('.event-tabs button:first-child');
+            const endedTab = document.querySelector('.event-tabs button:last-child');
+            const ongoingContent = document.getElementById('ongoingEvents');
+            const endedContent = document.getElementById('endedEvents');
+
+            if (tab === 'ongoing') {
+                ongoingTab.classList.add('active');
+                endedTab.classList.remove('active');
+                ongoingContent.style.display = 'block';
+                endedContent.style.display = 'none';
+            } else {
+                ongoingTab.classList.remove('active');
+                endedTab.classList.add('active');
+                ongoingContent.style.display = 'none';
+                endedContent.style.display = 'block';
+            }
+        }
+
+        // 드롭다운 메뉴 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
+            }
+        });
+    </script>
+</body>
+</html>
+

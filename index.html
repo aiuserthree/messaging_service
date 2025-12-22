@@ -3,600 +3,1713 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 - Tokbell Admin</title>
-    <script src="js/header.js"></script>
+    <title>톡벨 - 메시징 서비스</title>
+    <script src="js/header.js?v=3"></script>
+    <link rel="stylesheet" href="css/common.css">
     <style>
-/* 공통 스타일 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --secondary-color: #64748b;
-    --success-color: #10b981;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
-    --bg-color: #f8fafc;
-    --surface-color: #ffffff;
-    --border-color: #e2e8f0;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --text-muted: #94a3b8;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--text-primary);
-    background-color: var(--bg-color);
-}
-
-/* 레이아웃 스타일 */
-.app-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* 헤더 */
-.header {
-    background-color: var(--surface-color);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-}
-
-.logo h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin: 0;
-}
-
-.logo a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-.logo a:hover h1 {
-    opacity: 0.8;
-}
-
-.main-nav {
-    display: flex;
-    gap: 4px;
-    flex: 1;
-    justify-content: center;
-    position: relative;
-}
-
-.nav-item {
-    padding: 8px 16px;
-    text-decoration: none;
-    color: var(--text-secondary);
-    font-weight: 500;
-    border-radius: var(--radius-md);
-    transition: all 0.2s;
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.nav-item:hover {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-}
-
-.nav-item.active {
-    background-color: rgba(37, 99, 235, 0.1);
-    color: var(--primary-color);
-}
-
-.nav-item.has-dropdown {
-    position: relative;
-}
-
-.nav-item.has-dropdown .nav-link::after {
-    content: '▼';
-    font-size: 10px;
-    margin-left: 4px;
-    transition: transform 0.2s;
-    display: inline-block;
-}
-
-.nav-item.has-dropdown.open .nav-link::after {
-    transform: rotate(180deg);
-}
-
-.nav-item.has-dropdown .nav-link {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    align-items: center;
-}
-
-/* 드롭다운 메뉴 */
-.nav-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    margin-top: 8px;
-    background-color: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg);
-    min-width: 180px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.2s;
-    z-index: 1000;
-    padding: 8px 0;
-}
-
-.nav-item.open .nav-dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.nav-dropdown-item {
-    display: block;
-    padding: 10px 20px;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.nav-dropdown-item:hover {
-    background-color: var(--bg-color);
-    color: var(--primary-color);
-}
-
-.nav-dropdown-item.active {
-    background-color: rgba(37, 99, 235, 0.1);
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.balance-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    background-color: var(--bg-color);
-    border-radius: var(--radius-md);
-}
-
-.balance-label {
-    font-size: 12px;
-    color: var(--text-secondary);
-}
-
-.balance-amount {
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-/* 잔액 툴팁 스타일 */
-.balance-tooltip-wrapper {
-    position: relative;
-    display: inline-flex;
-    cursor: pointer;
-}
-
-.balance-tooltip-content {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 8px;
-    background: #1e293b;
-    color: white;
-    padding: 16px;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.6;
-    white-space: normal;
-    width: 200px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s;
-    z-index: 1000;
-}
-
-.balance-tooltip-wrapper:hover .balance-tooltip-content {
-    opacity: 1;
-    visibility: visible;
-}
-
-.balance-tooltip-content::after {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 6px solid transparent;
-    border-bottom-color: #1e293b;
-}
-
-/* 버튼 스타일 */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    gap: 8px;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-    background-color: var(--primary-hover);
-}
-
-.btn-outline {
-    background-color: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-}
-
-.btn-outline:hover:not(:disabled) {
-    background-color: var(--bg-color);
-}
-
-.btn-sm {
-    padding: 6px 12px;
-    font-size: 12px;
-}
-
-/* 메인 컨텐츠 */
-.main-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    min-height: calc(100vh - 64px);
-}
-
-.login-container {
-    background-color: var(--surface-color);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    width: 100%;
-    max-width: 440px;
-    padding: 48px 40px;
-}
-
-.login-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.login-logo {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 8px;
-}
-
-.login-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-}
-
-.login-subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: var(--text-primary);
-    font-size: 14px;
-}
-
-.form-input {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    background-color: var(--surface-color);
-    color: var(--text-primary);
-    transition: all 0.2s;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.form-input::placeholder {
-    color: var(--text-muted);
-}
-
-.login-button {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    width: 100%;
-}
-
-.divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin: 24px 0;
-    color: var(--text-secondary);
-    font-size: 14px;
-}
-
-.divider::before,
-.divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.divider::before {
-    margin-right: 16px;
-}
-
-.divider::after {
-    margin-left: 16px;
-}
-
-.login-footer {
-    margin-top: 32px;
-    text-align: center;
-    font-size: 13px;
-    color: var(--text-secondary);
-}
-
-.login-footer a {
-    color: var(--primary-color);
-    text-decoration: none;
-    margin: 0 8px;
-}
-
-.login-footer a:hover {
-    text-decoration: underline;
-}
-
-.form-error {
-    margin-top: 8px;
-    font-size: 12px;
-    color: var(--danger-color);
-    display: none;
-}
-
-.form-error.show {
-    display: block;
-}
-
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-.checkbox-group label {
-    font-size: 14px;
-    color: var(--text-secondary);
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        height: auto;
-        padding: 16px;
-    }
-
-    .main-nav {
-        flex-wrap: wrap;
-        margin: 16px 0;
-        width: 100%;
-    }
-
-    .nav-dropdown {
-        position: static;
-        margin-top: 4px;
-        width: 100%;
-        box-shadow: none;
-        border: none;
-        border-top: 1px solid var(--border-color);
-        border-radius: 0;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        display: none;
-    }
-
-    .nav-item.open .nav-dropdown {
-        display: block;
-    }
-
-    .header-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .main-content {
-        padding: 24px 16px;
-    }
-
-    .login-container {
-        padding: 32px 24px;
-    }
-    
-    .login-logo {
-        font-size: 28px;
-    }
-    
-    .login-title {
-        font-size: 20px;
-    }
+        .main-content {
+            width: 100%;
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 히어로 섹션 */
+        .hero-section {
+            background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+        }
+
+        /* 가격 카드 섹션 */
+        .pricing-section {
+            padding: 60px 24px;
+            background: #ffffff;
+        }
+
+        .pricing-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* 가격 탭 */
+        .pricing-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-tab {
+            padding: 12px 32px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 24px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pricing-tab.active {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+        }
+
+        .pricing-tab:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        /* 가격 카드 */
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .pricing-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 32px;
+            text-align: left;
+            transition: all 0.3s;
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .pricing-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .pricing-type {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .pricing-badge {
+            padding: 4px 12px;
+            background: #fef3c7;
+            color: #b45309;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .pricing-price {
+            margin-bottom: 16px;
+        }
+
+        .pricing-amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .pricing-unit {
+            font-size: 20px;
+            color: #64748b;
+            margin-left: 4px;
+        }
+
+        .pricing-per {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .pricing-byte {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .pricing-features {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .pricing-feature::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #2563eb;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .pricing-note {
+            margin-top: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* 배너 & 공지사항 그리드 섹션 */
+        .banner-notice-section {
+            padding: 40px 24px;
+            background: #ffffff;
+        }
+
+        .banner-notice-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* 배너 캐러셀 */
+        .banner-carousel {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 100%;
+            min-height: 200px;
+        }
+
+        .banner-slides {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .banner-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .insight-card {
+            border-radius: 20px;
+            padding: 32px 48px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .banner-guide {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+        }
+
+        .banner-event {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+        }
+
+        .insight-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .insight-main-text {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #1e293b;
+        }
+
+        .insight-subtitle {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #1e293b;
+            opacity: 0.8;
+        }
+
+        .insight-gift-icon {
+            font-size: 18px;
+        }
+
+        .insight-link {
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            color: #2563eb;
+        }
+
+        .insight-link:hover {
+            text-decoration: underline;
+        }
+
+        .insight-illustration {
+            flex-shrink: 0;
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .insight-money {
+            font-size: 100px;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .insight-book {
+            font-size: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .insight-bulb {
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .insight-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .insight-stars .star {
+            position: absolute;
+            font-size: 20px;
+            animation: twinkle 2s infinite;
+        }
+
+        .insight-stars .star:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .insight-stars .star:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 0.5s;
+        }
+
+        .insight-stars .star:nth-child(3) {
+            bottom: 20%;
+            left: 30%;
+            animation-delay: 1s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .banner-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            color: #374151;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .banner-nav:hover {
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .banner-nav.prev {
+            left: 16px;
+        }
+
+        .banner-nav.next {
+            right: 16px;
+        }
+
+        /* 공지사항 카드 */
+        .notice-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .notice-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0;
+            border: none;
+        }
+
+        .notice-card .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .notice-card .more-link {
+            font-size: 13px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .notice-card .more-link:hover {
+            color: #2563eb;
+        }
+
+        .notice-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notice-item {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 14px 0;
+        }
+
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+
+        .notice-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s;
+            padding: 2px 0;
+        }
+
+        .notice-link:hover {
+            color: #2563eb;
+        }
+
+        .notice-title {
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-right: 12px;
+        }
+
+        .notice-date {
+            font-size: 12px;
+            color: #94a3b8;
+            flex-shrink: 0;
+        }
+
+        /* 서비스 카탈로그 섹션 */
+        .service-catalog-section {
+            padding: 80px 24px;
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+        }
+
+        .service-catalog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.3;
+        }
+
+        /* 서비스 탭 */
+        .service-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .service-tab {
+            padding: 12px 24px;
+            border: none;
+            background: #ffffff;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .service-tab.active {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .service-tab:hover:not(.active) {
+            background: #f1f5f9;
+        }
+
+        /* 서비스 카드 그리드 */
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 16px;
+        }
+
+        .service-card-icon.blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        }
+
+        .service-card-icon.yellow {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+
+        .service-card-icon.gray {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+
+        .service-card-icon.orange {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+        }
+
+        .service-card-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .service-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        .service-card-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .service-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .service-card-link:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        /* 브랜드 메시지 섹션 */
+        .brand-message-section {
+            padding: 80px 24px;
+            background: #ffffff;
+        }
+
+        .brand-message-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .brand-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+
+        .brand-section-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .brand-section-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            margin-bottom: 50px;
+        }
+
+        .brand-content-card {
+            background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+            border-radius: 32px;
+            padding: 48px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .brand-card-text {
+            flex: 1;
+        }
+
+        .brand-card-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .brand-card-title .highlight {
+            color: #2563eb;
+        }
+
+        .brand-card-desc {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .brand-card-illustration {
+            flex: 1;
+            position: relative;
+        }
+
+        .brand-upgrade-badge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 24px;
+            background: #1e293b;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .brand-icons-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            padding-top: 60px;
+        }
+
+        .brand-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .brand-icon-circle.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .brand-icon-circle.yellow {
+            background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+        }
+
+        .brand-icon-check {
+            color: white;
+            font-size: 48px;
+        }
+
+        .brand-icon-label {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .brand-icon-sublabel {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        /* FAQ 섹션 */
+        .faq-section {
+            padding: 80px 24px;
+            background: #f8fafc;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .faq-intro {
+            flex: 1;
+        }
+
+        .faq-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .faq-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .faq-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #475569;
+            text-decoration: none;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .faq-link:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .faq-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+            background: #f8fafc;
+        }
+
+        .faq-question-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .faq-toggle {
+            width: 28px;
+            height: 28px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .faq-item.open .faq-toggle {
+            background: #2563eb;
+            color: white;
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 24px 20px;
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.7;
+            display: none;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        /* FAQ 도움말 영역 */
+        .faq-help-area {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .faq-help-text {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .faq-help-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+        }
+
+        .faq-help-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        /* CTA 섹션 */
+        .cta-section {
+            padding: 80px 24px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 13px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .cta-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .cta-btn {
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .cta-btn.outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cta-btn.outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .cta-btn.primary {
+            background: white;
+            color: #2563eb;
+            border: none;
+        }
+
+        .cta-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 푸터 */
+        .footer {
+            background: #1e293b;
+            color: white;
+            padding: 60px 24px 40px;
+        }
+
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 60px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-info {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-legal a {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+        }
+
+        .footer-legal a:hover {
+            color: white;
+        }
+
+        /* 토스트 알림 */
+        .toast-notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-icon svg {
+            color: white;
+        }
+
+        .toast-message {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .banner-notice-container {
+                grid-template-columns: 1fr;
+            }
+
+            .service-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .brand-content-card {
+                flex-direction: column;
+                padding: 32px;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .brand-section-title {
+                font-size: 24px;
+            }
+
+            .pricing-tabs,
+            .service-tabs {
+                flex-wrap: wrap;
+            }
+
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-icons-wrapper {
+                gap: 24px;
+            }
+
+            .brand-icon-circle {
+                width: 80px;
+                height: 80px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .insight-card {
+                flex-direction: column;
+                padding: 24px;
+            }
+
+            .insight-illustration {
+                width: 100px;
+                height: 100px;
+            }
+
+            .insight-money {
+                font-size: 70px;
+            }
+
+            .insight-book {
+                font-size: 60px;
+            }
+
+            .insight-bulb {
+                font-size: 40px;
+            }
+
+            .insight-main-text {
+                font-size: 20px;
+            }
+
+            .banner-nav {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
         <script>
-            document.write(createHeader());
+            document.write(createHeader(''));
         </script>
 
-        <!-- 메인 컨텐츠 -->
         <main class="main-content">
-            <div class="login-container">
-                <form id="loginForm" onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label class="form-label" for="userId">아이디</label>
-                        <input 
-                            type="text" 
-                            id="userId" 
-                            class="form-input" 
-                            placeholder="아이디를 입력하세요" 
-                            autocomplete="username"
-                        >
-                        <div class="form-error" id="userIdError">아이디를 입력해주세요.</div>
-            </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="password">비밀번호</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            class="form-input" 
-                            placeholder="비밀번호를 입력하세요" 
-                            autocomplete="current-password"
-                        >
-                        <div class="form-error" id="passwordError">비밀번호를 입력해주세요.</div>
-            </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="rememberId" name="rememberId">
-                        <label for="rememberId">아이디 저장</label>
-            </div>
-
-                    <button type="submit" class="btn btn-primary login-button">로그인</button>
-                </form>
-
-                <div style="margin-top: 8px;">
-                    <a href="signup.html" class="btn btn-outline" style="width: 100%;">회원가입</a>
+            <!-- 히어로 섹션 -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">예산에 맞게, 목적에 맞게.<br>부담없이 경험해보세요</h1>
+                    <p class="hero-subtitle">기업규모에 맞는 단가로 모든 마케팅 메시지를 사용할 수 있어요</p>
+                    <a href="support-inquiry.html" class="hero-cta">대량 발송 문의하기</a>
                 </div>
+            </section>
 
-                <div class="login-footer">
-                    <a href="#" onclick="showFindId(); return false;">아이디 찾기</a>
-                    <span>|</span>
-                    <a href="#" onclick="showFindPassword(); return false;">비밀번호 찾기</a>
+            <!-- 가격 카드 섹션 -->
+            <section class="pricing-section">
+                <div class="pricing-container">
+                    <div class="pricing-tabs">
+                        <button class="pricing-tab active" onclick="switchPricingTab('sms')">문자</button>
+                        <button class="pricing-tab" onclick="switchPricingTab('kakao')">카카오</button>
+                        <button class="pricing-tab" onclick="switchPricingTab('election')">선거문자</button>
+                    </div>
+
+                    <div class="pricing-cards" id="pricingCards">
+                        <!-- SMS -->
+                        <div class="pricing-card">
+                            <div class="pricing-card-header">
+                                <div class="pricing-type">단문 문자 (SMS)</div>
+                                <span class="pricing-badge">34% 할인가</span>
+                            </div>
+                            <div class="pricing-price">
+                                <span class="pricing-amount">7.4</span>
+                                <span class="pricing-unit">원 / 건</span>
+                                <div class="pricing-per">사업자 1회 충전 시</div>
+                            </div>
+                            <div class="pricing-byte">90byte</div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">건당 단가 기준 대비 20% 이상 낮은 시작해요.</div>
+                                <div class="pricing-feature">단 한 건도 놓치지 않도록 최선을 다합니다.</div>
+                            </div>
+                            <div class="pricing-note">
+                                이 가격은 순수 발송 비용입니다. 서비스 이용료는 무료입니다.
+                            </div>
+                        </div>
+
+                        <!-- LMS -->
+                        <div class="pricing-card">
+                            <div class="pricing-card-header">
+                                <div class="pricing-type">장문 문자 (LMS)</div>
+                                <span class="pricing-badge">30% 할인가</span>
+                            </div>
+                            <div class="pricing-price">
+                                <span class="pricing-amount">24.5</span>
+                                <span class="pricing-unit">원 / 건</span>
+                                <div class="pricing-per">사업자 82.5원 할인</div>
+                            </div>
+                            <div class="pricing-byte">2,000 byte</div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">건당 30% 할인으로 더욱 합리적인 가격으로 시작해요.</div>
+                                <div class="pricing-feature">더 많은 내용을 전달하고 싶다면 LMS를 추천드립니다.</div>
+                            </div>
+                            <div class="pricing-note">
+                                이 가격은 순수 발송 비용입니다.
+                            </div>
+                        </div>
+
+                        <!-- MMS -->
+                        <div class="pricing-card">
+                            <div class="pricing-card-header">
+                                <div class="pricing-type">그림 문자 (MMS)</div>
+                                <span class="pricing-badge">34% 할인가</span>
+                            </div>
+                            <div class="pricing-price">
+                                <span class="pricing-amount">59.2</span>
+                                <span class="pricing-unit">원 / 건</span>
+                                <div class="pricing-per">사업자 기준 할인</div>
+                            </div>
+                            <div class="pricing-byte">2,000 byte</div>
+                            <div class="pricing-features">
+                                <div class="pricing-feature">건당 34% 할인으로 가장 합리적인 가격으로 시작해요.</div>
+                                <div class="pricing-feature">쿠폰이나 20% 이상의 광고 할인 가격이 적용됩니다.</div>
+                            </div>
+                            <div class="pricing-note">
+                                1회 1건 발송 시 수행 비용이 추가됩니다.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- 배너 & 공지사항 섹션 -->
+            <section class="banner-notice-section">
+                <div class="banner-notice-container">
+                    <!-- 마케팅 인사이트 롤링 배너 -->
+                    <div class="banner-carousel">
+                        <div class="banner-slides">
+                            <!-- 배너 1: 사용자 가이드 -->
+                            <div class="banner-slide active">
+                                <div class="insight-card banner-guide">
+                                    <div class="insight-content">
+                                        <div class="insight-subtitle">사용법이 더 궁금하다면?</div>
+                                        <div class="insight-main-text">지금 사용자 가이드를 확인해보세요</div>
+                                        <a href="#" class="insight-link">가이드 바로가기 ></a>
+                                    </div>
+                                    <div class="insight-illustration">
+                                        <div class="insight-book">📖</div>
+                                        <div class="insight-bulb">💡</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 배너 2: 이벤트 -->
+                            <div class="banner-slide">
+                                <div class="insight-card banner-event">
+                                    <div class="insight-content">
+                                        <div class="insight-main-text">발송만 해도 무조건</div>
+                                        <div class="insight-subtitle">
+                                            <span class="insight-gift-icon">🎁</span>
+                                            포인트 최대 50만원 증정
+                                        </div>
+                                        <a href="#" class="insight-link">이벤트 자세히 보기 ></a>
+                                    </div>
+                                    <div class="insight-illustration">
+                                        <div class="insight-money">💰</div>
+                                        <div class="insight-stars">
+                                            <span class="star">✨</span>
+                                            <span class="star">⭐</span>
+                                            <span class="star">✨</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 네비게이션 버튼 -->
+                        <button class="banner-nav prev" onclick="changeBanner(-1)">‹</button>
+                        <button class="banner-nav next" onclick="changeBanner(1)">›</button>
+                    </div>
+
+                    <!-- 공지사항 카드 -->
+                    <div class="notice-card">
+                        <div class="card-header">
+                            <h3 class="card-title">공지사항</h3>
+                            <a href="support-notice.html" class="more-link">더보기 ></a>
+                        </div>
+                        <ul class="notice-list">
+                            <li class="notice-item">
+                                <a href="#" class="notice-link">
+                                    <span class="notice-title">2025년 신년 이벤트 안내</span>
+                                    <span class="notice-date">2025-01-15</span>
+                                </a>
+                            </li>
+                            <li class="notice-item">
+                                <a href="#" class="notice-link">
+                                    <span class="notice-title">시스템 점검 안내 (1월 20일)</span>
+                                    <span class="notice-date">2025-01-10</span>
+                                </a>
+                            </li>
+                            <li class="notice-item">
+                                <a href="#" class="notice-link">
+                                    <span class="notice-title">새로운 기능 업데이트 안내</span>
+                                    <span class="notice-date">2025-01-05</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 서비스 카탈로그 섹션 -->
+            <section class="service-catalog-section">
+                <div class="service-catalog-container">
+                    <h2 class="section-title">커뮤니케이션에 필요한 모든 서비스를<br>톡벨에서 한번에</h2>
+
+                    <div class="service-cards">
+                        <div class="service-card">
+                            <div class="service-card-icon orange">🗳️</div>
+                            <span class="service-card-badge">Hot</span>
+                            <h3 class="service-card-title">공직선거 문자</h3>
+                            <p class="service-card-desc">공직선거법을 준수한 선거 문자 발송 서비스로 후보자 홍보와 선거 운동을 효과적으로 지원하는 상품</p>
+                            <a href="message-send-election.html" class="service-card-link">자세히 보기 →</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card-icon yellow">💬</div>
+                            <span class="service-card-badge">New</span>
+                            <h3 class="service-card-title">카카오 브랜드 메시지</h3>
+                            <p class="service-card-desc">카카오톡 채널로 고객사 마케팅 수신 동의 회원과 채널 친구 모두에게 광고성 메시지를 발송하는 상품</p>
+                            <a href="kakao-send-brandtalk.html" class="service-card-link">자세히 보기 →</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card-icon yellow">💬</div>
+                            <h3 class="service-card-title">카카오 알림톡</h3>
+                            <p class="service-card-desc">주문, 결제, 배송 등 정보성 메시지를 스팸 걱정 없이 문자보다 더 저렴하게 보낼 수 있는 상품</p>
+                            <a href="kakao-send-alimtalk.html" class="service-card-link">자세히 보기 →</a>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-card-icon gray">✉️</div>
+                            <h3 class="service-card-title">문자 메시지</h3>
+                            <p class="service-card-desc">SMS, LMS, LMS 짧은 문자부터 문자까지 원하는 형태의 문자를 자유롭게 이용할 수 있는 상품</p>
+                            <a href="message-send-general.html" class="service-card-link">자세히 보기 →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 브랜드 메시지 섹션 -->
+            <section class="brand-message-section">
+                <div class="brand-message-container">
+                    <span class="brand-badge">브랜드 메시지</span>
+                    <h2 class="brand-section-title">세분화된 타겟팅으로<br>고객에게 딱 맞는 메시지를 발송해요</h2>
+                    <p class="brand-section-subtitle">브랜드 메시지를 톡벨에서 가장 먼저 이용해 보세요!</p>
+
+                    <div class="brand-content-card">
+                        <div class="brand-card-text">
+                            <h3 class="brand-card-title">카카오 브랜드 메시지로<br><span class="highlight">채널 친구가 아닌 고객</span>까지!</h3>
+                            <p class="brand-card-desc">채널 친구와 마케팅 수신 동의 고객에게 브랜드 메시지를 보낼 수 있어요</p>
+                        </div>
+                        <div class="brand-card-illustration">
+                            <div class="brand-upgrade-badge">친구톡 Upgrade</div>
+                            <div class="brand-icons-wrapper">
+                                <div class="brand-icon-item">
+                                    <div class="brand-icon-circle blue">
+                                        <span class="brand-icon-check">✓</span>
+                                    </div>
+                                    <div class="brand-icon-label">동의함!</div>
+                                    <div class="brand-icon-sublabel">브랜드 마케팅<br>수신 동의자</div>
+                                </div>
+                                <div class="brand-icon-item">
+                                    <div class="brand-icon-circle yellow">
+                                        <span style="font-size: 48px;">💬</span>
+                                    </div>
+                                    <div class="brand-icon-sublabel">카카오톡<br>채널 친구</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ 섹션 -->
+            <section class="faq-section">
+                <div class="faq-container">
+                    <div class="faq-header">
+                        <div class="faq-intro">
+                            <h2 class="faq-title">자주 묻는 질문</h2>
+                        </div>
+                    </div>
+
+                    <ul class="faq-list">
+                        <li class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span class="faq-question-text">Q. 가입 프로모션 혜택이 궁금해요!</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                신규 가입 시 첫 충전 금액의 100% 추가 적립 혜택을 받으실 수 있습니다. 또한 30일간 최대 할인가로 메시지를 발송하실 수 있어요.
+                            </div>
+                        </li>
+                        <li class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span class="faq-question-text">Q. 문자 전체 건당서를 미리 받아볼 수 있나요?</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                네, 발송 전 미리보기 기능을 통해 예상 비용과 발송 결과를 확인하실 수 있습니다.
+                            </div>
+                        </li>
+                        <li class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span class="faq-question-text">Q. 대량 발송을 하고 싶은데 별도 상담도 가능한가요?</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                물론입니다. 대량 발송 고객을 위한 별도 견적 상담을 제공하고 있습니다. 1:1 문의 또는 고객센터로 연락해주세요.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- 원하는 답변이 없나요? 영역 분리 -->
+                    <div class="faq-help-area">
+                        <p class="faq-help-text">원하는 답변이 없나요?<br>고객센터에서 빠르게 답변받으실수있어요.</p>
+                        <a href="support-inquiry.html" class="faq-help-link">1:1 고객센터</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA 섹션 -->
+            <section class="cta-section">
+                <div class="cta-content">
+                    <span class="cta-badge">더 많이 발송하세요!</span>
+                    <h2 class="cta-title">대량발송 고객이라면<br>견적 상담 받아보세요</h2>
+                    <p class="cta-subtitle">기업 규모에 맞는 맞춤 견적을 제공해드립니다</p>
+                    <div class="cta-buttons">
+                        <a href="#" class="cta-btn outline" onclick="downloadServiceGuide(event)">서비스 소개서 받기</a>
+                        <a href="support-inquiry.html" class="cta-btn primary">상담 신청서 작성하기</a>
+                    </div>
+                </div>
+            </section>
         </main>
+
+        <!-- 푸터 -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-top">
+                    <div class="footer-brand">
+                        <div class="footer-logo">Tokbell</div>
+                        <p class="footer-description">
+                            기업 규모에 맞는 합리적인 가격으로<br>
+                            효과적인 마케팅 메시지를 발송하세요.
+                        </p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4>서비스</h4>
+                            <ul>
+                                <li><a href="#">서비스 소개</a></li>
+                                <li><a href="#">가격 안내</a></li>
+                                <li><a href="#">API 문서</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>고객지원</h4>
+                            <ul>
+                                <li><a href="support-notice.html">공지사항</a></li>
+                                <li><a href="support-event.html">이벤트</a></li>
+                                <li><a href="support-inquiry.html">1:1 문의</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>회사 정보</h4>
+                            <ul>
+                                <li><a href="#">회사 소개</a></li>
+                                <li><a href="#">채용 안내</a></li>
+                                <li><a href="#">제휴 문의</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="footer-info">
+                        (주)톡벨 | 대표이사: 홍길동 | 사업자등록번호: 123-45-67890<br>
+                        서울특별시 강남구 테헤란로 123, 4층 | 고객센터: 1599-0000
+                    </div>
+                    <div class="footer-legal">
+                        <a href="#">이용약관</a>
+                        <a href="#">개인정보처리방침</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
-        // 로그인 처리
-        function handleLogin(event) {
+        function switchPricingTab(tab) {
+            const tabs = document.querySelectorAll('.pricing-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function switchServiceTab(element, tab) {
+            const tabs = document.querySelectorAll('.service-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('open');
+        }
+
+        // 서비스 소개서 다운로드 토스트
+        function downloadServiceGuide(event) {
             event.preventDefault();
+            showToast('서비스 소개서 다운로드가 시작됩니다.');
+            // 실제 다운로드 로직 (예시)
+            setTimeout(() => {
+                // window.location.href = '/downloads/service-guide.pdf';
+            }, 500);
+        }
+
+        // 토스트 알림 표시
+        function showToast(message) {
+            // 기존 토스트 제거
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // 토스트 생성
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                </div>
+                <span class="toast-message">${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            // 애니메이션 시작
+            setTimeout(() => toast.classList.add('show'), 10);
+
+            // 3초 후 제거
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 배너 롤링 기능
+        let currentBanner = 0;
+        const banners = document.querySelectorAll('.banner-slide');
+        const totalBanners = banners.length;
+
+        function changeBanner(direction) {
+            banners[currentBanner].classList.remove('active');
+            currentBanner += direction;
             
-            const userId = document.getElementById('userId').value.trim();
-            const rememberId = document.getElementById('rememberId').checked;
-            
-            // 아이디 저장 처리
-            if (rememberId && userId) {
-                localStorage.setItem('savedUserId', userId);
-        } else {
-                localStorage.removeItem('savedUserId');
+            if (currentBanner >= totalBanners) {
+                currentBanner = 0;
+            } else if (currentBanner < 0) {
+                currentBanner = totalBanners - 1;
             }
             
-            // 로그인 성공 처리 (아이디, 비밀번호 검증 없이 바로 로그인)
-            localStorage.setItem('isLoggedIn', 'true');
-            window.location.href = 'main.html';
+            banners[currentBanner].classList.add('active');
         }
 
-        // 아이디 찾기
-        function showFindId() {
-            alert('아이디 찾기 기능은 준비 중입니다.');
+        // 자동 롤링 (5초마다)
+        let autoRotateInterval;
+        function startAutoRotate() {
+            autoRotateInterval = setInterval(() => {
+                changeBanner(1);
+            }, 5000);
         }
 
-        // 비밀번호 찾기
-        function showFindPassword() {
-            alert('비밀번호 찾기 기능은 준비 중입니다.');
+        function stopAutoRotate() {
+            if (autoRotateInterval) {
+                clearInterval(autoRotateInterval);
+            }
         }
 
-        // 아이디 저장 기능
         document.addEventListener('DOMContentLoaded', function() {
-            // 저장된 아이디 불러오기
-            const savedUserId = localStorage.getItem('savedUserId');
-            if (savedUserId) {
-                document.getElementById('userId').value = savedUserId;
-                document.getElementById('rememberId').checked = true;
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
             }
 
-// 드롭다운 메뉴 초기화
-    initDropdownMenus();
-});
+            // 배너 자동 롤링 시작
+            if (banners.length > 1) {
+                startAutoRotate();
+                
+                // 배너 영역에 마우스 오버 시 자동 롤링 정지
+                const carousel = document.querySelector('.banner-carousel');
+                if (carousel) {
+                    carousel.addEventListener('mouseenter', stopAutoRotate);
+                    carousel.addEventListener('mouseleave', startAutoRotate);
+                }
+            }
+        });
     </script>
 </body>
 </html>

@@ -98,7 +98,7 @@ body {
 
 .nav-item {
     padding: 8px 16px;
-    text-decoration: none;
+    text-decoration: none !important;
     color: var(--text-secondary);
     font-weight: 500;
     border-radius: var(--radius-md);
@@ -107,19 +107,55 @@ body {
     display: flex;
     align-items: center;
     gap: 4px;
+    cursor: pointer;
 }
 
 .nav-item:hover {
     background-color: var(--bg-color);
     color: var(--text-primary);
+    text-decoration: none !important;
 }
 
 .nav-item.active {
     background-color: rgba(37, 99, 235, 0.1);
     color: var(--primary-color);
+    text-decoration: none !important;
 }
 
 /* 드롭다운 메뉴 */
+.nav-item.has-dropdown {
+    position: relative;
+}
+
+.nav-item.has-dropdown .nav-link {
+    text-decoration: none !important;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    border: none;
+    background: none;
+}
+
+.nav-item.has-dropdown .nav-link:hover,
+.nav-item.has-dropdown .nav-link:focus,
+.nav-item.has-dropdown .nav-link:active {
+    text-decoration: none !important;
+    outline: none;
+}
+
+.nav-item.has-dropdown .nav-link::after {
+    content: '▼';
+    font-size: 10px;
+    margin-left: 4px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.nav-item.has-dropdown.open .nav-link::after {
+    transform: rotate(180deg);
+}
+
 .nav-dropdown {
     position: absolute;
     top: 100%;
@@ -147,21 +183,24 @@ body {
 .nav-dropdown-item {
     display: block;
     padding: 10px 20px;
-    text-decoration: none;
+    text-decoration: none !important;
     color: var(--text-primary);
     font-size: 14px;
+    font-weight: 500;
     transition: all 0.2s;
 }
 
 .nav-dropdown-item:hover {
     background-color: var(--bg-color);
     color: var(--primary-color);
+    text-decoration: none !important;
 }
 
 .nav-dropdown-item.active {
     background-color: rgba(37, 99, 235, 0.1);
     color: var(--primary-color);
-    font-weight: 600;
+    font-weight: 500;
+    text-decoration: none !important;
 }
 
 /* 헤더 액션 */
@@ -172,22 +211,79 @@ body {
 }
 
 .balance-info {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     gap: 8px;
     padding: 8px 16px;
     background-color: var(--bg-color);
     border-radius: var(--radius-md);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.balance-info:hover {
+    background-color: #e2e8f0;
+    border-color: var(--border-color);
 }
 
 .balance-label {
     font-size: 12px;
     color: var(--text-secondary);
+    white-space: nowrap;
 }
 
 .balance-amount {
     font-weight: 600;
     color: var(--primary-color);
+    white-space: nowrap;
+}
+
+/* 잔액 툴팁 스타일 */
+.balance-tooltip-wrapper {
+    position: relative;
+    display: flex !important;
+    align-items: center !important;
+    cursor: pointer;
+}
+
+.balance-tooltip-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: white;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: normal;
+    width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 9999;
+}
+
+.balance-info:hover .balance-tooltip-content,
+.balance-tooltip-wrapper:hover .balance-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.balance-tooltip-content::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-bottom-color: #1e293b;
 }
 
 /* 메인 컨텐츠 */
