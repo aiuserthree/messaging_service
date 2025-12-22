@@ -80,6 +80,7 @@ function createHeader(activeMenu = '') {
             items: [
                 { label: '공지사항', url: 'support-notice.html' },
                 { label: '이벤트', url: 'support-event.html' },
+                { label: 'FAQ', url: 'support-faq.html' },
                 { label: '1:1 문의', url: 'support-inquiry.html' }
             ]
         }
@@ -113,6 +114,7 @@ function createHeader(activeMenu = '') {
         'mypage-caller-number.html': 'mypage',
         'support-notice.html': 'support',
         'support-event.html': 'support',
+        'support-faq.html': 'support',
         'support-inquiry.html': 'support'
     };
     

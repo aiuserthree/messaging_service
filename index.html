@@ -795,12 +795,33 @@
         .faq-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 40px;
         }
 
         .faq-intro {
             flex: 1;
+        }
+
+        .faq-shortcut-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .faq-shortcut-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
         .faq-title {
@@ -905,6 +926,25 @@
             padding-top: 40px;
             border-top: 1px solid #e2e8f0;
             text-align: center;
+        }
+
+        .faq-view-all {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+
+        .faq-view-all:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
 
         .faq-help-text {
@@ -1494,8 +1534,9 @@
                 <div class="faq-container">
                     <div class="faq-header">
                         <div class="faq-intro">
-                            <h2 class="faq-title">자주 묻는 질문</h2>
+                            <h2 class="faq-title">자주 묻는 질문(FAQ)</h2>
                         </div>
+                        <a href="support-faq.html" class="faq-shortcut-btn">전체 FAQ 보기 →</a>
                     </div>
 
                     <ul class="faq-list">

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - 톡벨</title>
+    <script src="js/header.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 탭 메뉴 */
+        .support-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .support-tab {
+            padding: 14px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .support-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .support-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* 검색바 */
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+            max-width: 600px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            padding-right: 50px;
+            font-size: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* 카테고리 필터 */
+        .category-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background: var(--surface-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .category-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        /* FAQ 목록 */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .faq-item {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            cursor: pointer;
+            gap: 16px;
+        }
+
+        .faq-question-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .faq-category {
+            padding: 4px 12px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .faq-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .faq-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .faq-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.open .faq-icon {
+            background: var(--primary-color);
+        }
+
+        .faq-item.open .faq-icon svg {
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 24px 24px 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: 0;
+        }
+
+        .faq-answer-content p {
+            margin-bottom: 12px;
+        }
+
+        .faq-answer-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer-content ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .faq-answer-content li {
+            margin-bottom: 8px;
+        }
+
+        /* 문의하기 안내 */
+        .inquiry-guide {
+            margin-top: 48px;
+            padding: 32px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .inquiry-guide-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .inquiry-guide-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .inquiry-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .inquiry-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* 인기 질문 */
+        .popular-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '🔥';
+        }
+
+        .popular-questions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .popular-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .popular-item:hover {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.02);
+        }
+
+        .popular-number {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .popular-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .popular-questions {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-question-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader('support'));
+        </script>
+
+        <main class="main-content">
+        <div class="content-wrapper">
+            <!-- 페이지 헤더 -->
+            <div class="page-header">
+                <h2>고객센터</h2>
+                <p class="page-description">자주 묻는 질문에서 궁금하신 내용을 빠르게 확인하세요.</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="support-tabs">
+                <a href="support-notice.html" class="support-tab">공지사항</a>
+                <a href="support-event.html" class="support-tab">이벤트</a>
+                <a href="support-faq.html" class="support-tab active">FAQ</a>
+                <a href="support-inquiry.html" class="support-tab">1:1 문의</a>
+            </div>
+
+            <!-- 검색바 -->
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input type="text" class="search-input" placeholder="궁금한 내용을 검색해보세요">
+                    <span class="search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 인기 질문 -->
+            <div class="popular-section">
+                <h3 class="section-title">인기 질문</h3>
+                <div class="popular-questions">
+                    <a href="#faq1" class="popular-item" onclick="openFaq('faq1')">
+                        <span class="popular-number">1</span>
+                        <span class="popular-text">문자 발송 요금은 어떻게 되나요?</span>
+                    </a>
+                    <a href="#faq2" class="popular-item" onclick="openFaq('faq2')">
+                        <span class="popular-number">2</span>
+                        <span class="popular-text">포인트 충전은 어떻게 하나요?</span>
+                    </a>
+                    <a href="#faq3" class="popular-item" onclick="openFaq('faq3')">
+                        <span class="popular-number">3</span>
+                        <span class="popular-text">발신번호 등록 방법을 알려주세요.</span>
+                    </a>
+                    <a href="#faq4" class="popular-item" onclick="openFaq('faq4')">
+                        <span class="popular-number">4</span>
+                        <span class="popular-text">알림톡과 문자의 차이점이 무엇인가요?</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 카테고리 필터 -->
+            <div class="category-filters">
+                <button class="category-btn active" onclick="filterCategory('all')">전체</button>
+                <button class="category-btn" onclick="filterCategory('account')">회원/계정</button>
+                <button class="category-btn" onclick="filterCategory('payment')">결제/포인트</button>
+                <button class="category-btn" onclick="filterCategory('message')">문자발송</button>
+                <button class="category-btn" onclick="filterCategory('kakao')">카카오톡</button>
+                <button class="category-btn" onclick="filterCategory('etc')">기타</button>
+            </div>
+
+            <!-- FAQ 목록 -->
+            <div class="faq-list">
+                <!-- FAQ 1 -->
+                <div class="faq-item" id="faq1" data-category="payment">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">결제/포인트</span>
+                            <span class="faq-title">문자 발송 요금은 어떻게 되나요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>톡벨의 문자 발송 요금은 다음과 같습니다:</p>
+                            <ul>
+                                <li><strong>SMS (단문)</strong>: 건당 8.4원 (90byte 이하)</li>
+                                <li><strong>LMS (장문)</strong>: 건당 25원 (2,000byte 이하)</li>
+                                <li><strong>MMS (포토)</strong>: 건당 55원 (이미지 첨부)</li>
+                            </ul>
+                            <p>대량 발송 고객의 경우 별도 할인이 적용될 수 있습니다. 자세한 내용은 1:1 문의를 통해 상담 받으실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item" id="faq2" data-category="payment">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">결제/포인트</span>
+                            <span class="faq-title">포인트 충전은 어떻게 하나요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>포인트 충전은 다음과 같은 방법으로 가능합니다:</p>
+                            <ul>
+                                <li><strong>신용카드</strong>: 실시간 충전</li>
+                                <li><strong>계좌이체</strong>: 실시간 충전</li>
+                                <li><strong>무통장입금</strong>: 입금 확인 후 충전 (평일 기준 1시간 이내)</li>
+                            </ul>
+                            <p>마이페이지 > 포인트 충전 메뉴에서 원하시는 결제 방법을 선택하여 충전하실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item" id="faq3" data-category="message">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">문자발송</span>
+                            <span class="faq-title">발신번호 등록 방법을 알려주세요.</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>발신번호 등록은 통신사 정책에 따라 사전 등록이 필요합니다:</p>
+                            <ul>
+                                <li><strong>휴대폰 번호</strong>: 본인 인증 후 등록 (실시간)</li>
+                                <li><strong>유선 전화번호</strong>: 통신사 가입 증명서 제출 후 등록 (1~2 영업일)</li>
+                                <li><strong>대표번호 (1588, 1577 등)</strong>: 대표번호 가입 증명서 제출 후 등록</li>
+                            </ul>
+                            <p>마이페이지 > 발신번호 관리에서 등록하실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item" id="faq4" data-category="kakao">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">카카오톡</span>
+                            <span class="faq-title">알림톡과 문자의 차이점이 무엇인가요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>알림톡과 문자는 다음과 같은 차이점이 있습니다:</p>
+                            <ul>
+                                <li><strong>발송 채널</strong>: 알림톡은 카카오톡, 문자는 SMS/LMS/MMS</li>
+                                <li><strong>발송 조건</strong>: 알림톡은 카카오톡 사용자에게만 발송 가능</li>
+                                <li><strong>요금</strong>: 알림톡이 일반적으로 더 저렴 (건당 6원~)</li>
+                                <li><strong>도달률</strong>: 알림톡은 카카오톡 앱 알림으로 더 높은 확인률</li>
+                            </ul>
+                            <p>톡벨에서는 알림톡 발송 실패 시 자동으로 문자로 대체 발송하는 기능도 제공합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item" id="faq5" data-category="account">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">회원/계정</span>
+                            <span class="faq-title">회원가입은 어떻게 하나요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>톡벨 회원가입은 간단한 절차로 진행됩니다:</p>
+                            <ul>
+                                <li>홈페이지 우측 상단 '톡벨 가입하기' 클릭</li>
+                                <li>이메일 또는 휴대폰 번호로 본인 인증</li>
+                                <li>기본 정보 입력 (이름, 연락처, 비밀번호)</li>
+                                <li>이용약관 동의 후 가입 완료</li>
+                            </ul>
+                            <p>가입 즉시 무료 테스트 포인트가 지급되어 바로 서비스를 이용해보실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="faq-item" id="faq6" data-category="message">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">문자발송</span>
+                            <span class="faq-title">예약 발송은 어떻게 설정하나요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>예약 발송 설정 방법:</p>
+                            <ul>
+                                <li>문자 발송 화면에서 메시지 작성</li>
+                                <li>발송 옵션에서 '예약 발송' 선택</li>
+                                <li>원하는 발송 일시 설정</li>
+                                <li>'예약 발송' 버튼 클릭</li>
+                            </ul>
+                            <p>예약된 메시지는 발송 전까지 수정 또는 취소가 가능합니다. 발송내역 > 예약 발송에서 확인하실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 7 -->
+                <div class="faq-item" id="faq7" data-category="kakao">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">카카오톡</span>
+                            <span class="faq-title">카카오톡 발신 프로필은 어떻게 등록하나요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>카카오톡 발신 프로필 등록 절차:</p>
+                            <ul>
+                                <li>카카오톡 채널 개설 (카카오 비즈니스 센터)</li>
+                                <li>톡벨에서 발신 프로필 등록 신청</li>
+                                <li>카카오 검수 진행 (1~3 영업일)</li>
+                                <li>검수 완료 후 알림톡/브랜드 메시지 발송 가능</li>
+                            </ul>
+                            <p>자세한 등록 가이드는 카카오톡 발송 > 발신 프로필 관리에서 확인하실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 8 -->
+                <div class="faq-item" id="faq8" data-category="payment">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">결제/포인트</span>
+                            <span class="faq-title">세금계산서 발급이 가능한가요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>네, 세금계산서 발급이 가능합니다:</p>
+                            <ul>
+                                <li>포인트 충전 시 사업자 정보 입력</li>
+                                <li>충전 완료 후 자동 발급 (이메일 발송)</li>
+                                <li>마이페이지 > 결제내역에서 재발급 가능</li>
+                            </ul>
+                            <p>개인 회원의 경우 현금영수증 발급이 가능합니다. 충전 시 휴대폰 번호 또는 현금영수증 카드번호를 입력해주세요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 9 -->
+                <div class="faq-item" id="faq9" data-category="etc">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">기타</span>
+                            <span class="faq-title">API 연동은 어떻게 하나요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>톡벨 API 연동 절차:</p>
+                            <ul>
+                                <li>마이페이지 > API 설정에서 API Key 발급</li>
+                                <li>개발자 문서 확인 (REST API 지원)</li>
+                                <li>테스트 환경에서 연동 테스트</li>
+                                <li>운영 환경 적용</li>
+                            </ul>
+                            <p>PHP, Java, Python, Node.js 등 다양한 언어의 SDK를 제공하고 있습니다. 상세한 기술 문서는 개발자 센터에서 확인하실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 10 -->
+                <div class="faq-item" id="faq10" data-category="message">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <div class="faq-question-content">
+                            <span class="faq-category">문자발송</span>
+                            <span class="faq-title">광고 문자 발송 시 주의사항은 무엇인가요?</span>
+                        </div>
+                        <div class="faq-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            <p>광고 문자 발송 시 법적 필수 사항:</p>
+                            <ul>
+                                <li><strong>(광고)</strong> 문구 표기 필수 (메시지 시작 부분)</li>
+                                <li><strong>수신거부 안내</strong>: "무료거부 080-XXX-XXXX" 표기</li>
+                                <li><strong>발송 시간 제한</strong>: 오후 9시 ~ 오전 8시 발송 금지</li>
+                                <li><strong>수신 동의자에게만 발송</strong>: 사전 동의 필수</li>
+                            </ul>
+                            <p>톡벨 광고문자 발송 기능 사용 시 필수 문구가 자동으로 포함됩니다.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 문의하기 안내 -->
+            <div class="inquiry-guide">
+                <h3 class="inquiry-guide-title">원하는 답변을 찾지 못하셨나요?</h3>
+                <p class="inquiry-guide-desc">1:1 문의를 통해 더 자세한 상담을 받으실 수 있습니다.</p>
+                <a href="support-inquiry.html" class="inquiry-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    1:1 문의하기
+                </a>
+            </div>
+        </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
+            }
+        });
+
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const allItems = document.querySelectorAll('.faq-item');
+            
+            allItems.forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('open');
+                }
+            });
+            
+            faqItem.classList.toggle('open');
+        }
+
+        function openFaq(faqId) {
+            const faqItem = document.getElementById(faqId);
+            if (faqItem) {
+                // 모든 FAQ 닫기
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('open');
+                });
+                // 해당 FAQ 열기
+                faqItem.classList.add('open');
+                // 스크롤 이동
+                setTimeout(() => {
+                    faqItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+            }
+        }
+
+        function filterCategory(category) {
+            // 버튼 활성화 상태 변경
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // FAQ 필터링
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // 검색 기능
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const title = item.querySelector('.faq-title').textContent.toLowerCase();
+                const content = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // 카테고리 버튼 초기화
+            if (searchTerm) {
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            } else {
+                document.querySelector('.category-btn').classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
+
