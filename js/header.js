@@ -172,7 +172,7 @@ function createHeader(activeMenu = '') {
         // 로그인 전 메인 페이지
         headerActionsHTML = `
             <a href="login.html" class="btn btn-outline">로그인</a>
-            <a href="login.html" class="btn btn-primary">톡벨 가입하기</a>
+            <a href="signup.html" class="btn btn-primary">톡벨 가입하기</a>
         `;
     } else if (isLoggedIn) {
         // 로그인 후
@@ -203,7 +203,7 @@ function createHeader(activeMenu = '') {
         // 로그인 페이지 등
         headerActionsHTML = `
             <a href="login.html" class="btn btn-outline">로그인</a>
-            <a href="login.html" class="btn btn-primary">톡벨 가입하기</a>
+            <a href="signup.html" class="btn btn-primary">톡벨 가입하기</a>
         `;
     }
     
