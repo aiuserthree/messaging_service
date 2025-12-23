@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 상세 - 톡벨</title>
+    <script src="js/header.js"></script>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 탭 메뉴 */
+        .support-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .support-tab {
+            padding: 14px 24px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .support-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .support-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* 이벤트 상세 컨테이너 */
+        .event-detail-container {
+            background-color: var(--surface-color);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        /* 이벤트 배너 */
+        .event-detail-banner {
+            width: 100%;
+            height: 320px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-detail-banner.blue {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        .event-detail-banner.black {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+
+        .event-detail-banner.light-blue {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        }
+
+        .event-banner-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .event-banner-icon {
+            font-size: 72px;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        .event-banner-title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 1.3;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .event-banner-decoration {
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.1;
+            right: -30px;
+            bottom: -40px;
+        }
+
+        /* 이벤트 상태 뱃지 */
+        .event-status-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 3;
+        }
+
+        .event-status-badge.ongoing {
+            background-color: #10b981;
+            color: white;
+        }
+
+        .event-status-badge.ended {
+            background-color: #6b7280;
+            color: white;
+        }
+
+        .event-status-badge.upcoming {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        /* 이벤트 정보 헤더 */
+        .event-detail-header {
+            padding: 28px 32px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #f8fafc;
+        }
+
+        .event-detail-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .event-detail-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .event-detail-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-detail-meta-item svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        /* 이벤트 상세 내용 */
+        .event-detail-content {
+            padding: 32px;
+        }
+
+        .event-section {
+            margin-bottom: 32px;
+        }
+
+        .event-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .event-section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+
+        .event-section-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .event-section-content p {
+            margin-bottom: 12px;
+        }
+
+        .event-section-content ul,
+        .event-section-content ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+
+        .event-section-content li {
+            margin-bottom: 8px;
+        }
+
+        .event-section-content strong {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* 참여 방법 스텝 */
+        .event-steps {
+            display: flex;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .event-step {
+            flex: 1;
+            text-align: center;
+            padding: 24px 20px;
+            background-color: #f8fafc;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .event-step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .event-step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .event-step-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* 혜택 박스 */
+        .event-benefit-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .event-benefit-title {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .event-benefit-amount {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .event-benefit-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* 유의사항 */
+        .event-notice {
+            background-color: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .event-notice-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-notice ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .event-notice li {
+            font-size: 13px;
+            color: #78350f;
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        /* 참여하기 버튼 */
+        .event-cta {
+            text-align: center;
+            padding: 32px;
+            border-top: 1px solid var(--border-color);
+            background-color: #f8fafc;
+        }
+
+        .event-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        }
+
+        .event-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+        }
+
+        .event-cta-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* 버튼 영역 */
+        .event-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-color);
+            border-color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+            .event-steps {
+                flex-direction: column;
+            }
+
+            .event-detail-banner {
+                height: 240px;
+            }
+
+            .event-banner-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <script>
+            document.write(createHeader('support'));
+        </script>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>고객센터</h2>
+                <p class="page-description">톡벨에서 제공하는 다양한 이벤트를 확인하실 수 있습니다.</p>
+            </div>
+
+            <!-- 탭 메뉴 -->
+            <div class="support-tabs">
+                <a href="support-notice.html" class="support-tab">공지사항</a>
+                <a href="support-event.html" class="support-tab active">이벤트</a>
+                <a href="support-faq.html" class="support-tab">FAQ</a>
+                <a href="support-inquiry.html" class="support-tab">1:1 문의</a>
+            </div>
+
+            <!-- 이벤트 상세 -->
+            <div class="event-detail-container">
+                <!-- 배너 -->
+                <div class="event-detail-banner blue">
+                    <span class="event-status-badge ongoing">진행중</span>
+                    <div class="event-banner-content">
+                        <div class="event-banner-icon">💰</div>
+                        <div class="event-banner-title">충전만 해도<br>무조건 상품권 증정!</div>
+                    </div>
+                    <div class="event-banner-decoration">🎉</div>
+                </div>
+
+                <!-- 이벤트 정보 헤더 -->
+                <div class="event-detail-header">
+                    <h3 class="event-detail-title">2025년 12월 상품권이벤트</h3>
+                    <div class="event-detail-meta">
+                        <div class="event-detail-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                <line x1="16" x2="16" y1="2" y2="6"></line>
+                                <line x1="8" x2="8" y1="2" y2="6"></line>
+                                <line x1="3" x2="21" y1="10" y2="10"></line>
+                            </svg>
+                            <span>2025.12.01 ~ 2025.12.31</span>
+                        </div>
+                        <div class="event-detail-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>전체 회원 대상</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 이벤트 상세 내용 -->
+                <div class="event-detail-content">
+                    <!-- 이벤트 혜택 -->
+                    <div class="event-section">
+                        <h4 class="event-section-title">🎁 이벤트 혜택</h4>
+                        <div class="event-section-content">
+                            <p>12월 한 달간 톡벨에서 <strong>충전만 하면 100% 상품권</strong>을 드립니다!</p>
+                            
+                            <div class="event-benefit-box">
+                                <div class="event-benefit-title">충전 금액별 상품권 지급</div>
+                                <div class="event-benefit-amount">최대 50,000원</div>
+                                <div class="event-benefit-desc">충전 금액에 따라 상품권이 차등 지급됩니다</div>
+                            </div>
+
+                            <ul>
+                                <li><strong>5만원 이상</strong> 충전 시 → 커피 기프티콘 (5,000원)</li>
+                                <li><strong>10만원 이상</strong> 충전 시 → 편의점 상품권 (10,000원)</li>
+                                <li><strong>30만원 이상</strong> 충전 시 → 신세계 상품권 (30,000원)</li>
+                                <li><strong>50만원 이상</strong> 충전 시 → 신세계 상품권 (50,000원)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 참여 방법 -->
+                    <div class="event-section">
+                        <h4 class="event-section-title">📝 참여 방법</h4>
+                        <div class="event-steps">
+                            <div class="event-step">
+                                <div class="event-step-number">1</div>
+                                <div class="event-step-title">톡벨 로그인</div>
+                                <div class="event-step-desc">톡벨 홈페이지에<br>로그인합니다</div>
+                            </div>
+                            <div class="event-step">
+                                <div class="event-step-number">2</div>
+                                <div class="event-step-title">충전하기</div>
+                                <div class="event-step-desc">원하는 금액을<br>충전합니다</div>
+                            </div>
+                            <div class="event-step">
+                                <div class="event-step-number">3</div>
+                                <div class="event-step-title">자동 지급</div>
+                                <div class="event-step-desc">충전 후 3일 이내<br>상품권 자동 지급</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 이벤트 기간 -->
+                    <div class="event-section">
+                        <h4 class="event-section-title">📅 이벤트 기간</h4>
+                        <div class="event-section-content">
+                            <ul>
+                                <li><strong>이벤트 기간:</strong> 2025년 12월 1일(일) ~ 2025년 12월 31일(화)</li>
+                                <li><strong>상품권 지급:</strong> 충전 완료 후 3영업일 이내</li>
+                                <li><strong>지급 방법:</strong> 가입 시 등록한 휴대폰 번호로 MMS 발송</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 유의사항 -->
+                    <div class="event-section">
+                        <div class="event-notice">
+                            <div class="event-notice-title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                유의사항
+                            </div>
+                            <ul>
+                                <li>본 이벤트는 톡벨 회원만 참여 가능합니다.</li>
+                                <li>이벤트 기간 내 1인 1회만 참여 가능합니다.</li>
+                                <li>충전 취소 시 상품권 지급이 취소될 수 있습니다.</li>
+                                <li>부정한 방법으로 참여 시 혜택이 회수될 수 있습니다.</li>
+                                <li>상품권은 가입 시 등록한 휴대폰 번호로 발송됩니다.</li>
+                                <li>본 이벤트는 사정에 따라 변경되거나 조기 종료될 수 있습니다.</li>
+                                <li>기타 문의사항은 고객센터(1588-0000)로 연락바랍니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 참여하기 버튼 -->
+                <div class="event-cta">
+                    <button class="event-cta-btn" onclick="participateEvent()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v4"></path>
+                            <path d="m16.24 7.76-2.83 2.83"></path>
+                            <path d="M22 12h-4"></path>
+                            <path d="m16.24 16.24-2.83-2.83"></path>
+                            <path d="M12 22v-4"></path>
+                            <path d="m7.76 16.24 2.83-2.83"></path>
+                            <path d="M2 12h4"></path>
+                            <path d="m7.76 7.76 2.83 2.83"></path>
+                        </svg>
+                        지금 바로 충전하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 버튼 영역 -->
+            <div class="event-actions">
+                <a href="support-event.html" class="btn btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" x2="21" y1="6" y2="6"></line>
+                        <line x1="8" x2="21" y1="12" y2="12"></line>
+                        <line x1="8" x2="21" y1="18" y2="18"></line>
+                        <line x1="3" x2="3.01" y1="6" y2="6"></line>
+                        <line x1="3" x2="3.01" y1="12" y2="12"></line>
+                        <line x1="3" x2="3.01" y1="18" y2="18"></line>
+                    </svg>
+                    목록으로
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function participateEvent() {
+            // 충전 페이지로 이동
+            window.location.href = 'payment-charge.html';
+        }
+
+        // 드롭다운 메뉴 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initDropdownMenus === 'function') {
+                initDropdownMenus();
+            }
+        });
+    </script>
+</body>
+</html>
+
