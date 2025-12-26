@@ -1046,102 +1046,6 @@
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
         }
 
-        /* 푸터 */
-        .footer {
-            background: #1e293b;
-            color: white;
-            padding: 60px 24px 40px;
-        }
-
-        .footer-container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .footer-top {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-brand {
-            max-width: 300px;
-        }
-
-        .footer-logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 16px;
-        }
-
-        .footer-description {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.6;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 60px;
-        }
-
-        .footer-column h4 {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 16px;
-        }
-
-        .footer-column ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-column li {
-            margin-bottom: 10px;
-        }
-
-        .footer-column a {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-column a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-info {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.4);
-            line-height: 1.8;
-        }
-
-        .footer-legal {
-            display: flex;
-            gap: 24px;
-        }
-
-        .footer-legal a {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-        }
-
-        .footer-legal a:hover {
-            color: white;
-        }
 
         /* 토스트 알림 */
         .toast-notification {
@@ -1205,16 +1109,6 @@
                 flex-direction: column;
                 padding: 32px;
             }
-
-            .footer-top {
-                flex-direction: column;
-                gap: 40px;
-            }
-
-            .footer-links {
-                flex-wrap: wrap;
-                gap: 40px;
-            }
         }
 
         @media (max-width: 768px) {
@@ -1250,12 +1144,6 @@
 
             .cta-buttons {
                 flex-direction: column;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
             }
 
             .insight-card {
@@ -1592,55 +1480,10 @@
         </main>
 
         <!-- 푸터 -->
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-top">
-                    <div class="footer-brand">
-                        <div class="footer-logo">Tokbell</div>
-                        <p class="footer-description">
-                            기업 규모에 맞는 합리적인 가격으로<br>
-                            효과적인 마케팅 메시지를 발송하세요.
-                        </p>
-                    </div>
-                    <div class="footer-links">
-                        <div class="footer-column">
-                            <h4>서비스</h4>
-                            <ul>
-                                <li><a href="#">서비스 소개</a></li>
-                                <li><a href="#">가격 안내</a></li>
-                                <li><a href="#">API 문서</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h4>고객지원</h4>
-                            <ul>
-                                <li><a href="support-notice.html">공지사항</a></li>
-                                <li><a href="support-event.html">이벤트</a></li>
-                                <li><a href="support-inquiry.html">1:1 문의</a></li>
-                            </ul>
-                        </div>
-                        <div class="footer-column">
-                            <h4>회사 정보</h4>
-                            <ul>
-                                <li><a href="#">회사 소개</a></li>
-                                <li><a href="#">채용 안내</a></li>
-                                <li><a href="#">제휴 문의</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <div class="footer-info">
-                        (주)톡벨 | 대표이사: 홍길동 | 사업자등록번호: 123-45-67890<br>
-                        서울특별시 강남구 테헤란로 123, 4층 | 고객센터: 1599-0000
-                    </div>
-                    <div class="footer-legal">
-                        <a href="#">이용약관</a>
-                        <a href="#">개인정보처리방침</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <script src="js/footer.js"></script>
+        <script>
+            document.write(createFooter());
+        </script>
     </div>
 
     <script>
