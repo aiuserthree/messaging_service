@@ -177,9 +177,11 @@ function createHeader(activeMenu = '') {
     } else if (isLoggedIn) {
         // 로그인 후
         headerActionsHTML = `
-            <div class="balance-info balance-tooltip-wrapper">
-                <span class="balance-label">잔액</span>
-                <span class="balance-amount">1,000,000</span>
+            <div class="balance-tooltip-wrapper">
+                <div class="balance-info">
+                    <span class="balance-label">잔액</span>
+                    <span class="balance-amount">1,000,000</span>
+                </div>
                 <div class="balance-tooltip-content">
                     <div style="margin-bottom: 8px;">
                         <span style="color: #fbbf24; font-weight: 600;">포인트</span>
@@ -218,7 +220,7 @@ function createHeader(activeMenu = '') {
                 <nav class="main-nav">
                     ${navHTML}
                 </nav>
-                <div class="header-actions" style="gap: 4px;">
+                <div class="header-actions">
                     ${headerActionsHTML}
                 </div>
             </div>

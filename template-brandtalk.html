@@ -989,7 +989,7 @@ body {
             </div>
 
             <!-- 브랜드 메시지 안내 -->
-            <div class="alert alert-info">
+            <div class="alert alert-info" id="brandtalkInfoSection" style="display: none;">
                 <strong>브랜드 메시지 특징</strong>
                 <ul style="margin-top: 8px; padding-left: 20px; font-size: 12px;">
                     <li>템플릿 등록 즉시 사용 가능 (승인 절차 없음)</li>
@@ -1000,7 +1000,7 @@ body {
             </div>
 
             <!-- 검색 및 필터 -->
-            <div class="card" style="padding: 16px 24px; margin-bottom: 32px;">
+            <div class="card" id="searchFilterSection" style="padding: 16px 24px; margin-bottom: 32px; display: none;">
                 <div class="search-filter-section">
                     <div style="flex: 1; min-width: 200px;">
                         <input type="text" class="form-input" placeholder="템플릿명으로 검색">
@@ -1027,7 +1027,7 @@ body {
             </div>
 
             <!-- 템플릿 목록 -->
-            <div class="card">
+            <div class="card" id="templateListSection" style="display: none;">
                 <div class="template-actions" style="margin-bottom: 24px;">
                     <div>
                         <a href="template-brandtalk-register.html" class="btn btn-primary">브랜드 메시지 등록</a>
@@ -1537,6 +1537,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 페이지네이션 생성
         createPagination(1, 5, 'pagination');
+
+        // 발신프로필 선택 시 템플릿 리스트 표시
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileSelect = document.getElementById('profileSelect');
+            const brandtalkInfoSection = document.getElementById('brandtalkInfoSection');
+            const searchFilterSection = document.getElementById('searchFilterSection');
+            const templateListSection = document.getElementById('templateListSection');
+
+            if (profileSelect) {
+                profileSelect.addEventListener('change', function() {
+                    if (this.value) {
+                        brandtalkInfoSection.style.display = 'block';
+                        searchFilterSection.style.display = 'block';
+                        templateListSection.style.display = 'block';
+                    } else {
+                        brandtalkInfoSection.style.display = 'none';
+                        searchFilterSection.style.display = 'none';
+                        templateListSection.style.display = 'none';
+                    }
+                });
+            }
+        });
     </script>
     <style>
         .preview-kakao {
