@@ -1278,25 +1278,25 @@ body {
                 <div class="flex gap-2">
                     <button class="btn btn-outline" onclick="saveDraft()">임시 저장</button>
                     <button class="btn btn-outline" onclick="cancel()">취소</button>
-                    <button class="btn btn-primary" style="margin-left: auto;" onclick="submitReview()">검수 신청</button>
+                    <button class="btn btn-primary" style="margin-left: auto;" onclick="submitRegister()">등록하기</button>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- 검수 신청 확인 모달 -->
-    <div class="modal-overlay" id="reviewConfirmModal">
+    <!-- 등록 확인 모달 -->
+    <div class="modal-overlay" id="registerConfirmModal">
         <div class="modal">
             <div class="modal-header">
-                <h3 class="modal-title">검수 신청 확인</h3>
-                <button class="modal-close" onclick="closeModal('reviewConfirmModal')">&times;</button>
+                <h3 class="modal-title">템플릿 등록 확인</h3>
+                <button class="modal-close" onclick="closeModal('registerConfirmModal')">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info">
-                    <strong>검수 소요 시간 안내</strong>
+                    <strong>템플릿 등록 안내</strong>
                     <p style="margin-top: 8px; font-size: 12px;">
-                        템플릿 검수는 평균 2~3시간 소요됩니다 (영업일 기준).<br>
-                        영업시간 외 신청 시 익일 처리됩니다.
+                        템플릿이 등록되면 템플릿 목록에 표시됩니다.<br>
+                        등록 후 심사요청을 통해 검수를 신청할 수 있습니다.
                     </p>
                 </div>
                 <div class="card">
@@ -1319,12 +1319,12 @@ body {
                     </div>
                 </div>
                 <div class="alert alert-warning" style="margin-top: 16px;">
-                    검수 신청 시 수정이 불가합니다. 내용을 다시 한번 확인해주세요.
+                    등록 후 내용을 다시 한번 확인해주세요.
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal('reviewConfirmModal')">취소</button>
-                <button class="btn btn-primary" onclick="confirmReview()">검수 신청</button>
+                <button class="btn btn-outline" onclick="closeModal('registerConfirmModal')">취소</button>
+                <button class="btn btn-primary" onclick="confirmRegister()">등록하기</button>
             </div>
         </div>
     </div>
@@ -1934,19 +1934,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        function submitReview() {
+        function submitRegister() {
+            // 폼 유효성 검사
+            const form = document.getElementById('templateForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
             // 최종 확인 정보 설정
-            document.getElementById('confirmChannel').textContent = document.querySelector('.form-select').value;
-            // 실제로는 폼에서 가져와야 함
-            openModal('reviewConfirmModal');
+            const channelSelect = document.getElementById('channelSelect');
+            const templateNameInput = form.querySelector('input[placeholder="템플릿 관리용 이름"]');
+            const categorySelect = form.querySelector('select');
+            
+            document.getElementById('confirmChannel').textContent = channelSelect.value || '-';
+            document.getElementById('confirmName').textContent = templateNameInput.value || '-';
+            document.getElementById('confirmCategory').textContent = categorySelect.value || '-';
+            
+            openModal('registerConfirmModal');
         }
 
-        function confirmReview() {
-            showToast('검수 신청이 완료되었습니다. 검수 결과는 2~3시간 내에 알려드립니다.', 'success');
-            closeModal('reviewConfirmModal');
+        function confirmRegister() {
+            // 실제로는 API 호출로 템플릿 등록
+            showToast('템플릿이 등록되었습니다.', 'success');
+            closeModal('registerConfirmModal');
             setTimeout(() => {
                 window.location.href = 'template-alimtalk.html';
-            }, 2000);
+            }, 1500);
         }
     </script>
 </body>
