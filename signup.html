@@ -1043,10 +1043,38 @@ body {
                         </div>
                     </div>
 
+                    <div class="form-group" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-color);">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeMarketing" class="optional-agreement" onchange="updateAllAgreement()">
+                            <label for="agreeMarketing">마케팅 수신 동의 <span style="color: var(--text-secondary);">(선택)</span></label>
+                        </div>
+                        <div class="terms-section">
+                            <div class="terms-content">
+                                <h4>마케팅 정보 수신 동의</h4>
+                                회사는 다음과 같은 마케팅 및 광고성 정보를 제공하기 위해 개인정보를 활용할 수 있습니다.<br><br>
+                                
+                                <strong>수신 방법</strong><br>
+                                - SMS(문자메시지)<br>
+                                - 이메일<br>
+                                - 카카오톡 알림톡<br><br>
+                                
+                                <strong>수신 내용</strong><br>
+                                - 이벤트 및 프로모션 정보<br>
+                                - 신규 서비스 및 기능 안내<br>
+                                - 할인 및 특가 정보<br>
+                                - 설문조사 및 이벤트 참여 안내<br><br>
+                                
+                                마케팅 정보 수신 동의는 선택사항이며, 동의하지 않아도 서비스 이용에는 제한이 없습니다.<br>
+                                동의 후에도 언제든지 마이페이지에서 수신 동의를 철회할 수 있습니다.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group" style="margin-top: 24px;">
                         <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6;">
                             * 개인정보 수집 및 이용에 관한 동의에 관한 자세한 사항은 개인정보 처리방침에서 고지하고 있습니다.<br>
-                            * 필수 약관 동의 거부 시, 회원가입이 제한됩니다.
+                            * 필수 약관 동의 거부 시, 회원가입이 제한됩니다.<br>
+                            * 마케팅 수신 동의는 선택사항이며, 동의하지 않아도 서비스 이용에는 제한이 없습니다.
                         </p>
                     </div>
 
@@ -1348,16 +1376,30 @@ body {
         function toggleAllAgreements() {
             const agreeAll = document.getElementById('agreeAll');
             const requiredAgreements = document.querySelectorAll('.required-agreement');
-            const optionalAgreement = document.getElementById('agreeOptional');
+            const optionalAgreements = document.querySelectorAll('.optional-agreement');
             
             requiredAgreements.forEach(checkbox => {
                 checkbox.checked = agreeAll.checked;
             });
-            if (optionalAgreement) {
-                optionalAgreement.checked = agreeAll.checked;
-            }
+            optionalAgreements.forEach(checkbox => {
+                checkbox.checked = agreeAll.checked;
+            });
             
             checkRequiredAgreements();
+        }
+
+        // 전체 동의 상태 업데이트 (개별 체크박스 변경 시)
+        function updateAllAgreement() {
+            const agreeAll = document.getElementById('agreeAll');
+            const requiredAgreements = document.querySelectorAll('.required-agreement');
+            const optionalAgreements = document.querySelectorAll('.optional-agreement');
+            const allCheckboxes = [...requiredAgreements, ...optionalAgreements];
+            
+            const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
+            const someChecked = Array.from(allCheckboxes).some(cb => cb.checked);
+            
+            agreeAll.checked = allChecked;
+            agreeAll.indeterminate = someChecked && !allChecked;
         }
 
         // 필수 약관 체크
@@ -1367,6 +1409,9 @@ body {
             const step1Next = document.getElementById('step1-next');
             
             step1Next.disabled = !allChecked;
+            
+            // 전체 동의 상태 업데이트
+            updateAllAgreement();
         }
 
         // 회원유형 선택
