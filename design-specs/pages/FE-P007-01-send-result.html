@@ -141,10 +141,40 @@
                                                 <td><span class="status-badge info">SMS</span></td>
                                                 <td>일반</td>
                                                 <td>100건</td>
-                                                <td style="color: #28ca42;">95</td>
-                                                <td style="color: #f72585; cursor: pointer; text-decoration: underline;">5</td>
+                                                <td style="color: #28ca42; cursor: pointer; text-decoration: underline;">95</td>
+                                                <td style="color: #f72585; cursor: pointer; text-decoration: underline; font-weight: 600;">5 ▼</td>
                                                 <td>703P</td>
                                                 <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
+                                            </tr>
+                                            <!-- 아코디언 펼침 영역 (실패 숫자 클릭 시) -->
+                                            <tr style="position: relative;">
+                                                <td colspan="9" style="padding: 0; background: #fef2f2;">
+                                                    <div style="padding: 16px 24px;">
+                                                        <div style="font-size: 12px; font-weight: 600; color: #991b1b; margin-bottom: 12px;">📋 실패 내역 (5건)</div>
+                                                        <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
+                                                            <tr style="background: #fee2e2;">
+                                                                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #fca5a5;">수신번호</th>
+                                                                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #fca5a5;">실패 사유</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca;">010-****-1234</td>
+                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca; color: #dc2626;">수신거부</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca;">010-****-5678</td>
+                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca; color: #dc2626;">번호 없음</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding: 8px;">010-****-9012</td>
+                                                                <td style="padding: 8px; color: #dc2626;">통신사 오류</td>
+                                                            </tr>
+                                                        </table>
+                                                        <div style="text-align: center; margin-top: 8px;">
+                                                            <span style="font-size: 11px; color: #999;">+ 2건 더 있음 (상세 버튼에서 전체 보기)</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="marker" data-id="7" style="top: 16px; right: 16px;">7</div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>2</td>
@@ -308,13 +338,19 @@
                     <div class="desc-item-body">
                         <div class="desc-text">발송 내역을 목록으로 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>발송일시</td><td>발송 일자와 시간</td></tr>
-                            <tr><td>타입</td><td>메시지 유형</td></tr>
-                            <tr><td>구분</td><td>일반/광고/선거</td></tr>
-                            <tr><td>성공/실패</td><td>클릭 시 상세 모달 열림</td></tr>
-                            <tr><td>비용</td><td>사용된 포인트</td></tr>
+                            <tr><th>컬럼</th><th>설명</th><th>클릭 동작</th></tr>
+                            <tr><td>발송일시</td><td>발송 일자와 시간</td><td>-</td></tr>
+                            <tr><td>타입</td><td>메시지 유형</td><td>-</td></tr>
+                            <tr><td>구분</td><td>일반/광고/선거</td><td>-</td></tr>
+                            <tr><td>성공 (숫자)</td><td>발송 성공 건수</td><td><strong>아코디언 펼침</strong></td></tr>
+                            <tr><td>실패 (숫자)</td><td>발송 실패 건수</td><td><strong>아코디언 펼침</strong></td></tr>
+                            <tr><td>비용</td><td>사용된 포인트</td><td>-</td></tr>
+                            <tr><td>상세 버튼</td><td>전체 발송 상세</td><td><strong>모달 팝업</strong></td></tr>
                         </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 성공/실패 숫자 클릭</div>
+                            <div class="desc-note-text">성공 또는 실패 숫자를 클릭하면 해당 행 아래로 아코디언이 펼쳐지며 수신번호 목록이 표시됩니다.</div>
+                        </div>
                         <div class="desc-code">GET /api/v1/send-results
 Query: { startDate, endDate, messageType?, sendType?, page, limit }
 Response: {
@@ -331,14 +367,14 @@ Response: {
                 <div class="desc-item" data-id="5">
                     <div class="desc-item-header">
                         <div class="desc-number">5</div>
-                        <div class="desc-item-title">상세 모달</div>
+                        <div class="desc-item-title">상세 모달 (상세 버튼 클릭)</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">성공/실패 건수 클릭 시 상세 내역을 표시합니다.</div>
+                        <div class="desc-text"><strong>"상세" 버튼 클릭</strong> 시 모달 팝업으로 전체 발송 상세 내역을 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>탭</th><th>내용</th></tr>
-                            <tr><td>성공 내역</td><td>성공한 수신번호 목록</td></tr>
+                            <tr><td>성공 내역</td><td>성공한 수신번호 전체 목록</td></tr>
                             <tr><td>실패 내역</td><td>실패한 수신번호 + 사유 + 재발송 버튼</td></tr>
                         </table>
                         <div class="desc-note">
@@ -348,6 +384,39 @@ Response: {
                         <div class="desc-code">POST /api/v1/messages/resend
 Request: { resultId: string, phoneNumbers: string[] }
 Response: { sendId: string }</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="7">
+                    <div class="desc-item-header">
+                        <div class="desc-number">7</div>
+                        <div class="desc-item-title">아코디언 (성공/실패 숫자 클릭)</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text"><strong>성공/실패 숫자 클릭</strong> 시 해당 행 아래로 아코디언이 펼쳐집니다.</div>
+                        <table class="desc-table">
+                            <tr><th>클릭 대상</th><th>펼침 내용</th></tr>
+                            <tr><td>성공 숫자 (초록)</td><td>성공한 수신번호 일부 표시 (최대 10건)</td></tr>
+                            <tr><td>실패 숫자 (빨강)</td><td>실패한 수신번호 + 실패 사유 (최대 10건)</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 아코디언 vs 모달</div>
+                            <div class="desc-note-text">
+                                • <strong>아코디언 (숫자 클릭):</strong> 빠른 미리보기, 일부 데이터만 표시<br>
+                                • <strong>모달 (상세 버튼):</strong> 전체 목록 조회, 재발송 기능 제공
+                            </div>
+                        </div>
+                        <div class="desc-code">GET /api/v1/send-results/{id}/recipients
+Query: { status: 'SUCCESS' | 'FAIL', limit: 10 }
+Response: {
+  recipients: [{
+    phone: '010-****-1234',
+    status: 'SUCCESS' | 'FAIL',
+    failReason?: string
+  }],
+  hasMore: boolean
+}</div>
                     </div>
                 </div>
 
