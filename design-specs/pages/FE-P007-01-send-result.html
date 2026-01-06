@@ -25,6 +25,19 @@
 
     <div class="main-container">
         <div class="mockup-panel">
+            <!-- View Toggle Controls -->
+            <div class="view-toggle-controls">
+                <button class="view-toggle-btn active" data-view="base">
+                    <span class="icon">📄</span> 바닥 페이지
+                </button>
+                <button class="view-toggle-btn" data-view="modal">
+                    <span class="icon">🔲</span> 모달 팝업
+                </button>
+            </div>
+            <div class="view-state-badge">
+                <span class="dot"></span> 바닥 페이지 보기
+            </div>
+
             <div class="mockup-canvas">
                 <div class="mockup-frame wide">
                     <div class="browser-chrome">
@@ -169,8 +182,10 @@
                                     <div class="marker" data-id="6" style="top: -8px; right: -8px;">6</div>
                                 </div>
 
-                                <!-- 상세 모달 -->
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 700px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; max-height: 80%; overflow-y: auto;">
+                                <!-- 상세 모달 (토글 가능) -->
+                                <div class="modal-container">
+                                    <div class="modal-backdrop"></div>
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 700px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; max-height: 80%; overflow-y: auto;">
                                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
                                         <div style="font-size: 18px; font-weight: 600; color: #333;">발송 상세</div>
                                         <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
@@ -216,6 +231,7 @@
 
                                     <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
                                         <button class="mock-btn mock-btn-primary">선택 재발송</button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

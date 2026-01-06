@@ -25,6 +25,19 @@
 
     <div class="main-container">
         <div class="mockup-panel">
+            <!-- View Toggle Controls -->
+            <div class="view-toggle-controls">
+                <button class="view-toggle-btn active" data-view="base">
+                    <span class="icon">📄</span> 바닥 페이지
+                </button>
+                <button class="view-toggle-btn" data-view="modal">
+                    <span class="icon">🔲</span> 모달 팝업
+                </button>
+            </div>
+            <div class="view-state-badge">
+                <span class="dot"></span> 바닥 페이지 보기
+            </div>
+
             <div class="mockup-canvas">
                 <div class="mockup-frame wide">
                     <div class="browser-chrome">
@@ -142,8 +155,10 @@
                                     <div class="pagination-item">›</div>
                                 </div>
 
-                                <!-- 취소 확인 모달 -->
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; text-align: center;">
+                                <!-- 취소 확인 모달 (토글 가능) -->
+                                <div class="modal-container">
+                                    <div class="modal-backdrop"></div>
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; text-align: center;">
                                     <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
                                     <div style="font-size: 18px; font-weight: 600; color: #333; margin-bottom: 8px; position: relative;">
                                         예약 발송을 취소하시겠습니까?
@@ -161,6 +176,7 @@
                                     <div style="display: flex; gap: 12px;">
                                         <button class="mock-btn mock-btn-outline" style="flex: 1;">닫기</button>
                                         <button class="mock-btn" style="flex: 1; background: #f72585; color: white;">취소하기</button>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
