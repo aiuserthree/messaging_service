@@ -160,12 +160,13 @@
                                     <div class="marker" data-id="4" style="top: 20px; right: 20px;">4</div>
                                 </div>
 
-                                <div class="pagination" style="margin-top: 16px;">
+                                <div class="pagination" style="margin-top: 16px; position: relative;">
                                     <div class="pagination-item">‹</div>
                                     <div class="pagination-item active">1</div>
                                     <div class="pagination-item">2</div>
                                     <div class="pagination-item">3</div>
                                     <div class="pagination-item">›</div>
+                                    <div class="marker" data-id="6" style="top: -8px; right: -8px;">6</div>
                                 </div>
 
                                 <!-- 상세 모달 -->
@@ -327,6 +328,30 @@ Response: {
                         <div class="desc-note">
                             <div class="desc-note-title">💡 재발송 기능</div>
                             <div class="desc-note-text">실패 내역에서 선택한 번호로 재발송이 가능합니다. 문자 발송 페이지로 수신번호가 자동 입력됩니다.</div>
+                        </div>
+                        <div class="desc-code">POST /api/v1/messages/resend
+Request: { resultId: string, phoneNumbers: string[] }
+Response: { sendId: string }</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송결과 목록의 페이지 이동 컴포넌트입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>‹ (이전)</td><td>이전 페이지로 이동</td></tr>
+                            <tr><td>페이지 번호</td><td>해당 페이지로 이동</td></tr>
+                            <tr><td>› (다음)</td><td>다음 페이지로 이동</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 페이지 설정</div>
+                            <div class="desc-note-text">페이지당 10건 표시 (설정 불가)</div>
                         </div>
                     </div>
                 </div>

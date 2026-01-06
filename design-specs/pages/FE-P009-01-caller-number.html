@@ -65,7 +65,7 @@
                                     </div>
 
                                     <!-- 검색 및 등록 -->
-                                    <div class="form-section" style="margin-bottom: 16px;">
+                                    <div class="form-section" style="margin-bottom: 16px; position: relative;">
                                         <div style="display: flex; justify-content: space-between; align-items: center;">
                                             <div style="display: flex; gap: 8px;">
                                                 <select class="form-select" style="width: 120px;">
@@ -78,6 +78,7 @@
                                             </div>
                                             <button class="mock-btn mock-btn-primary">+ 발신번호 등록</button>
                                         </div>
+                                        <div class="marker" data-id="4" style="top: 50%; right: 150px; transform: translateY(-50%);">4</div>
                                     </div>
 
                                     <!-- 테이블 -->
@@ -244,6 +245,35 @@ Response: {
                                 • 타사(기업): 위임업체 사업자등록증 추가
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">검색 및 등록 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호 필터링 및 신규 등록 기능입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>상태 필터</td><td>승인완료/심사중/반려 필터링</td></tr>
+                            <tr><td>검색 버튼</td><td>필터 조건 적용</td></tr>
+                            <tr><td>발신번호 등록 버튼</td><td>등록 모달/위저드 열기</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 등록 제한</div>
+                            <div class="desc-note-text">발신번호는 최대 10개까지 등록 가능</div>
+                        </div>
+                        <div class="desc-code">POST /api/v1/caller-numbers
+Request: {
+  number: string,
+  type: 'MOBILE' | 'LANDLINE' | 'INTERNET',
+  ownerType: 'SELF' | 'OTHER' | 'COMPANY',
+  documents: string[]
+}
+Response: { id: string, status: 'REVIEWING' }</div>
                     </div>
                 </div>
             </div>

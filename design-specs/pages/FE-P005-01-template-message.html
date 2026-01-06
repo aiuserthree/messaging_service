@@ -138,15 +138,18 @@
 
                                 <!-- Bottom Actions -->
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; position: relative;">
-                                    <button class="mock-btn mock-btn-outline" style="color: #f72585;">선택 삭제</button>
-                                    <div class="pagination">
+                                    <div style="position: relative;">
+                                        <button class="mock-btn mock-btn-outline" style="color: #f72585;">선택 삭제</button>
+                                        <div class="marker" data-id="4" style="top: -8px; right: -8px;">4</div>
+                                    </div>
+                                    <div class="pagination" style="position: relative;">
                                         <div class="pagination-item">‹</div>
                                         <div class="pagination-item active">1</div>
                                         <div class="pagination-item">2</div>
                                         <div class="pagination-item">3</div>
                                         <div class="pagination-item">›</div>
+                                        <div class="marker" data-id="7" style="top: -8px; right: -8px;">7</div>
                                     </div>
-                                    <div class="marker" data-id="4" style="top: 50%; left: 100px; transform: translateY(-50%);">4</div>
                                 </div>
 
                                 <!-- 등록/수정 모달 -->
@@ -351,10 +354,28 @@ Request: {
   content: string,
   images?: string[]
 }
-Response: {
-  id: string,
-  message: '템플릿이 등록되었습니다.'
-}</div>
+Response: { id: string, message: '템플릿이 등록되었습니다.' }</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="7">
+                    <div class="desc-item-header">
+                        <div class="desc-number">7</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿 목록의 페이지 이동 컴포넌트입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>‹ (이전)</td><td>이전 페이지로 이동</td></tr>
+                            <tr><td>페이지 번호</td><td>해당 페이지로 이동</td></tr>
+                            <tr><td>› (다음)</td><td>다음 페이지로 이동</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 페이지 설정</div>
+                            <div class="desc-note-text">페이지당 10건 표시</div>
+                        </div>
                     </div>
                 </div>
             </div>

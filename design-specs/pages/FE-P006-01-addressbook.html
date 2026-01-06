@@ -51,14 +51,14 @@
 
                             <!-- Sub Navigation -->
                             <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
-                                <div style="display: flex; gap: 32px;">
+                                <div style="display: flex; gap: 32px; position: relative;">
                                     <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">주소록 관리</a>
                                     <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">수신거부 관리</a>
+                                    <div class="marker" data-id="1" style="top: 8px; right: -20px;">1</div>
                                 </div>
                                 <div style="position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #666;">
                                     전체: <strong style="color: #4361ee;">1,234</strong>명
                                 </div>
-                                <div class="marker" data-id="1" style="top: 50%; right: 120px; transform: translateY(-50%);">1</div>
                             </div>
 
                             <div class="screen-body" style="display: flex; gap: 0; padding: 0;">
@@ -154,12 +154,13 @@
                                             <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">선택 삭제</button>
                                             <button class="mock-btn mock-btn-outline mock-btn-sm">선택 그룹이동</button>
                                         </div>
-                                        <div class="pagination">
+                                        <div class="pagination" style="position: relative;">
                                             <div class="pagination-item">‹</div>
                                             <div class="pagination-item active">1</div>
                                             <div class="pagination-item">2</div>
                                             <div class="pagination-item">3</div>
                                             <div class="pagination-item">›</div>
+                                            <div class="marker" data-id="6" style="top: -8px; right: -8px;">6</div>
                                         </div>
                                         <div class="marker" data-id="5" style="top: -10px; left: 100px;">5</div>
                                     </div>
@@ -181,11 +182,20 @@
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">전체 건수 표시</div>
+                        <div class="desc-item-title">서브 네비게이션 탭</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">등록된 전체 주소록 수를 표시합니다.</div>
+                        <div class="desc-text">주소록 관련 기능 탭 및 전체 건수를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>탭</th><th>페이지</th></tr>
+                            <tr><td>주소록 관리</td><td>addressbook.html (현재)</td></tr>
+                            <tr><td>수신거부 관리</td><td>addressbook-reject.html</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 전체 건수</div>
+                            <div class="desc-note-text">우측에 현재 선택된 그룹의 총 주소록 수 표시</div>
+                        </div>
                     </div>
                 </div>
 
@@ -268,10 +278,43 @@ Response: {
                     <div class="desc-item-body">
                         <div class="desc-text">선택한 주소록에 대한 일괄 작업입니다.</div>
                         <table class="desc-table">
-                            <tr><th>기능</th><th>설명</th></tr>
-                            <tr><td>선택 삭제</td><td>선택한 주소록 일괄 삭제</td></tr>
-                            <tr><td>선택 그룹이동</td><td>선택한 주소록을 다른 그룹으로 이동</td></tr>
+                            <tr><th>기능</th><th>동작</th></tr>
+                            <tr><td>선택 삭제</td><td>삭제 확인 모달 후 선택 주소록 삭제</td></tr>
+                            <tr><td>선택 그룹이동</td><td>그룹 선택 모달 표시 후 이동</td></tr>
                         </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 선택 필수</div>
+                            <div class="desc-note-text">체크된 항목이 없으면 버튼 비활성화</div>
+                        </div>
+                        <div class="desc-code">DELETE /api/v1/addressbook
+Request: { contactIds: string[] }
+
+PUT /api/v1/addressbook/move
+Request: { contactIds: string[], targetGroupId: string }</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">주소록 목록 페이지 이동 컴포넌트입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>‹ (이전)</td><td>이전 페이지로 이동</td></tr>
+                            <tr><td>페이지 번호</td><td>해당 페이지로 이동</td></tr>
+                            <tr><td>› (다음)</td><td>다음 페이지로 이동</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 페이지 설정</div>
+                            <div class="desc-note-text">
+                                • 페이지당 표시: 20건 (설정 가능)<br>
+                                • 첫/마지막 페이지에서 이전/다음 비활성
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

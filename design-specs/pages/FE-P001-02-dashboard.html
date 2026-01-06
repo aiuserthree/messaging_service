@@ -39,21 +39,25 @@
                         <div class="screen-mock">
                             <!-- Header -->
                             <div class="screen-header" style="position: relative; padding: 16px 24px;">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
+                                <div class="screen-logo" style="position: relative;">
+                                    톡벨
+                                    <div class="marker" data-id="1" style="top: -8px; right: -30px;">1</div>
+                                </div>
+                                <div class="screen-nav" style="position: relative;">
                                     <span class="screen-nav-item active">대시보드</span>
                                     <span class="screen-nav-item">문자 발송</span>
                                     <span class="screen-nav-item">카카오톡</span>
                                     <span class="screen-nav-item">템플릿</span>
                                     <span class="screen-nav-item">주소록</span>
                                     <span class="screen-nav-item">발송관리</span>
+                                    <div class="marker" data-id="2" style="top: -8px; right: -8px;">2</div>
                                 </div>
-                                <div class="screen-user">
+                                <div class="screen-user" style="position: relative;">
                                     <span>홍길동님</span>
                                     <span style="color: #ddd;">|</span>
                                     <span style="cursor: pointer;">로그아웃</span>
+                                    <div class="marker" data-id="3" style="top: -8px; right: -8px;">3</div>
                                 </div>
-                                <div class="marker" data-id="1" style="top: 50%; right: 120px; transform: translateY(-50%);">1</div>
                             </div>
 
                             <!-- Welcome Section -->
@@ -69,7 +73,7 @@
                                         <button class="mock-btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);">브랜드메시지</button>
                                     </div>
                                 </div>
-                                <div class="marker" data-id="2" style="top: 20px; right: 20px;">2</div>
+                                <div class="marker" data-id="4" style="top: 20px; right: 20px;">4</div>
                             </div>
 
                             <!-- Stats Row -->
@@ -124,13 +128,13 @@
                                         <button class="mock-btn mock-btn-primary mock-btn-sm" style="width: 100%;">상담 신청하기</button>
                                     </div>
 
-                                    <div class="marker" data-id="3" style="top: -10px; right: -10px;">3</div>
+                                    <div class="marker" data-id="5" style="top: -10px; right: -10px;">5</div>
                                 </div>
 
                                 <!-- Balance & Chart Row -->
                                 <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; position: relative;">
                                     <!-- 잔액 카드 -->
-                                    <div class="form-section" style="margin: 0;">
+                                    <div class="form-section" style="margin: 0; position: relative;">
                                         <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 20px;">나의 잔액</div>
                                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                             <span style="font-size: 13px; color: #666;">포인트 (P)</span>
@@ -141,10 +145,11 @@
                                             <span style="font-size: 18px; font-weight: 600; color: #666;">92.6</span>
                                         </div>
                                         <button class="mock-btn mock-btn-primary" style="width: 100%;">충전하기</button>
+                                        <div class="marker" data-id="6" style="top: 12px; right: 12px;">6</div>
                                     </div>
 
                                     <!-- 최근 30일 통계 -->
-                                    <div class="form-section" style="margin: 0;">
+                                    <div class="form-section" style="margin: 0; position: relative;">
                                         <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 20px;">최근 30일 메시지 타입별 통계</div>
                                         <div class="chart-bar">
                                             <div class="chart-bar-label">SMS</div>
@@ -174,10 +179,8 @@
                                             </div>
                                             <div class="chart-bar-value">5%</div>
                                         </div>
+                                        <div class="marker" data-id="7" style="top: 12px; right: 12px;">7</div>
                                     </div>
-
-                                    <div class="marker" data-id="4" style="top: -10px; left: 50%; transform: translateX(-50%);">4</div>
-                                    <div class="marker" data-id="5" style="top: -10px; right: -10px;">5</div>
                                 </div>
                             </div>
                         </div>
@@ -196,15 +199,54 @@
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">로그인 상태 GNB</div>
+                        <div class="desc-item-title">로고</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">로그인 상태의 글로벌 네비게이션입니다. 사용자 정보와 로그아웃 버튼이 표시됩니다.</div>
+                        <div class="desc-text">서비스 로고입니다. 클릭 시 대시보드(메인 페이지)로 이동합니다.</div>
                         <table class="desc-table">
                             <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>사용자명</td><td>마이페이지로 이동</td></tr>
-                            <tr><td>로그아웃</td><td>세션 종료 후 index.html 이동</td></tr>
+                            <tr><td>로고 클릭</td><td>main.html (대시보드) 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">GNB 메뉴 네비게이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">주요 기능으로 이동하는 글로벌 네비게이션 메뉴입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>메뉴</th><th>이동 페이지</th></tr>
+                            <tr><td>대시보드</td><td>main.html (현재)</td></tr>
+                            <tr><td>문자 발송</td><td>message-send-general.html</td></tr>
+                            <tr><td>카카오톡</td><td>kakao-profile-manage.html</td></tr>
+                            <tr><td>템플릿</td><td>template-message.html</td></tr>
+                            <tr><td>주소록</td><td>addressbook.html</td></tr>
+                            <tr><td>발송관리</td><td>send-result.html</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 활성 메뉴 표시</div>
+                            <div class="desc-note-text">현재 위치한 메뉴는 파란색으로 하이라이트</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">사용자 정보 및 로그아웃</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">로그인된 사용자 정보와 로그아웃 기능입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>사용자명 클릭</td><td>mypage-profile.html 이동</td></tr>
+                            <tr><td>로그아웃 클릭</td><td>세션 종료 후 index.html 이동</td></tr>
                         </table>
                         <div class="desc-code">// 로그아웃
 localStorage.removeItem('accessToken');
@@ -213,9 +255,9 @@ location.href = '/index.html';</div>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="2">
+                <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
-                        <div class="desc-number">2</div>
+                        <div class="desc-number">4</div>
                         <div class="desc-item-title">환영 메시지 & 퀵메뉴</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -227,22 +269,26 @@ location.href = '/index.html';</div>
                             <tr><td>알림톡</td><td>kakao-send-alimtalk.html</td></tr>
                             <tr><td>브랜드메시지</td><td>kakao-send-brandtalk.html</td></tr>
                         </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 버튼 호버 효과</div>
+                            <div class="desc-note-text">마우스 오버 시 버튼 배경색 밝아짐</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="3">
+                <div class="desc-item" data-id="5">
                     <div class="desc-item-header">
-                        <div class="desc-number">3</div>
+                        <div class="desc-number">5</div>
                         <div class="desc-item-title">통계 카드 영역</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
                         <div class="desc-text">발송 성공률, 사용 통계, 상담 안내 3개의 카드로 구성됩니다.</div>
                         <table class="desc-table">
-                            <tr><th>카드</th><th>내용</th></tr>
-                            <tr><td>발송 성공률</td><td>원형 게이지 차트, 전체/성공/실패 건수</td></tr>
-                            <tr><td>사용통계</td><td>누적발송, SMS가능, 발송주기, 등록고객</td></tr>
-                            <tr><td>상담 카드</td><td>상담 신청 버튼 → inquiry 페이지 이동</td></tr>
+                            <tr><th>카드</th><th>내용</th><th>클릭 동작</th></tr>
+                            <tr><td>발송 성공률</td><td>원형 게이지 차트</td><td>send-result.html 이동</td></tr>
+                            <tr><td>사용통계</td><td>누적발송, SMS가능, 발송주기</td><td>-</td></tr>
+                            <tr><td>상담 카드</td><td>상담 신청 버튼</td><td>support-inquiry.html 이동</td></tr>
                         </table>
                         <div class="desc-code">GET /api/v1/dashboard/statistics
 Response: {
@@ -254,9 +300,9 @@ Response: {
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="4">
+                <div class="desc-item" data-id="6">
                     <div class="desc-item-header">
-                        <div class="desc-number">4</div>
+                        <div class="desc-number">6</div>
                         <div class="desc-item-title">잔액 카드</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -264,21 +310,22 @@ Response: {
                         <div class="desc-text">현재 보유 포인트와 마일리지를 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>포인트 (P)</td><td>메시지 발송에 사용</td></tr>
-                            <tr><td>마일리지 (M)</td><td>이벤트/리워드로 적립</td></tr>
-                            <tr><td>충전하기</td><td>payment-charge.html 이동</td></tr>
+                            <tr><td>포인트 (P)</td><td>메시지 발송에 사용, 천 단위 콤마 표시</td></tr>
+                            <tr><td>마일리지 (M)</td><td>이벤트/리워드로 적립, 소수점 1자리</td></tr>
+                            <tr><td>충전하기 버튼</td><td>payment-charge.html 이동</td></tr>
                         </table>
                         <div class="desc-code">GET /api/v1/dashboard/balance
-Response: {
-  point: 1000000,
-  mileage: 92.6
-}</div>
+Response: { point: 1000000, mileage: 92.6 }</div>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 잔액 부족 알림</div>
+                            <div class="desc-note-text">포인트 잔액이 10,000P 미만일 경우 빨간색으로 표시</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="5">
+                <div class="desc-item" data-id="7">
                     <div class="desc-item-header">
-                        <div class="desc-number">5</div>
+                        <div class="desc-number">7</div>
                         <div class="desc-item-title">메시지 타입별 통계</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -296,7 +343,8 @@ Response: {
   messageTypeStats: [
     { type: 'SMS', percentage: 80 },
     { type: 'LMS', percentage: 10 },
-    ...
+    { type: 'MMS', percentage: 5 },
+    { type: 'ALIMTALK', percentage: 5 }
   ]
 }</div>
                     </div>

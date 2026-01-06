@@ -142,9 +142,10 @@
                                     </div>
 
                                     <!-- 버튼 -->
-                                    <div class="btn-group">
+                                    <div class="btn-group" style="position: relative;">
                                         <button class="mock-btn mock-btn-outline">테스트 발송</button>
                                         <button class="mock-btn mock-btn-primary" style="flex: 1;">발송하기</button>
+                                        <div class="marker" data-id="8" style="top: -8px; right: -8px;">8</div>
                                     </div>
                                 </div>
 
@@ -179,12 +180,13 @@
                                         <div class="marker" data-id="7" style="top: 16px; right: 16px;">7</div>
                                     </div>
 
-                                    <div class="point-card">
+                                    <div class="point-card" style="position: relative;">
                                         <div class="point-label">예상 발송 비용</div>
                                         <div class="point-value">0 P</div>
                                         <div style="margin-top: 8px; font-size: 11px; color: #999;">
                                             알림톡: 6원/건 | 대체문자: 7.4원/건
                                         </div>
+                                        <div class="marker" data-id="9" style="top: 12px; right: 12px;">9</div>
                                     </div>
                                 </div>
                             </div>
@@ -311,24 +313,69 @@
                     </div>
                     <div class="desc-item-body">
                         <div class="desc-text">실제 카카오톡에서 표시되는 알림톡 형태를 미리봅니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>채널 정보</td><td>프로필 아이콘, 채널명, 알림톡 라벨</td></tr>
+                            <tr><td>메시지 본문</td><td>변수 치환된 실시간 미리보기</td></tr>
+                            <tr><td>버튼</td><td>템플릿에 설정된 버튼 미리보기</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="8">
+                    <div class="desc-item-header">
+                        <div class="desc-number">8</div>
+                        <div class="desc-item-title">발송 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">알림톡 테스트 및 실제 발송을 수행하는 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>테스트 발송</td><td>본인 번호로 1건 테스트 발송</td></tr>
+                            <tr><td>발송하기</td><td>전체 수신자에게 알림톡 발송</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 발송 전 검증</div>
+                            <div class="desc-note-text">
+                                • 프로필 선택 필수<br>
+                                • 템플릿 선택 필수<br>
+                                • 수신번호 1건 이상<br>
+                                • 잔액 확인
+                            </div>
+                        </div>
                         <div class="desc-code">POST /api/v1/kakao/alimtalk/send
 Request: {
   profileId: string,
   templateId: string,
-  recipients: [{
-    phone: string,
-    variables: { [key: string]: string }
-  }],
-  fallbackMessage?: {
-    enabled: boolean,
-    content: string
-  }
+  recipients: [{ phone, variables }],
+  fallbackMessage?: { enabled, content }
 }
-Response: {
-  sendId: string,
-  totalCount: number,
-  estimatedCost: number
-}</div>
+Response: { sendId, totalCount, estimatedCost }</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="9">
+                    <div class="desc-item-header">
+                        <div class="desc-number">9</div>
+                        <div class="desc-item-title">예상 발송 비용</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송에 필요한 예상 포인트를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>단가</th></tr>
+                            <tr><td>알림톡</td><td>6원/건</td></tr>
+                            <tr><td>대체 문자 (SMS)</td><td>7.4원/건</td></tr>
+                            <tr><td>대체 문자 (LMS)</td><td>24.5원/건</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 비용 계산</div>
+                            <div class="desc-note-text">
+                                예상 비용 = (수신자 수 × 알림톡 단가) + (미가입자 예상 × 대체문자 단가)<br>
+                                잔액 부족 시 빨간색으로 표시 및 충전 안내
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -141,7 +141,10 @@
                                         <div class="marker" data-id="5" style="top: 16px; right: 16px;">5</div>
                                     </div>
 
-                                    <button class="mock-btn mock-btn-primary" style="width: 100%; padding: 18px; font-size: 16px;">결제하기</button>
+                                    <div style="position: relative;">
+                                        <button class="mock-btn mock-btn-primary" style="width: 100%; padding: 18px; font-size: 16px;">결제하기</button>
+                                        <div class="marker" data-id="6" style="top: -8px; right: 50px;">6</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -239,6 +242,30 @@
                             <tr><td>부가세</td><td>충전금 × 10%</td></tr>
                             <tr><td>결제 금액</td><td>충전금 + 부가세</td></tr>
                         </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">결제하기 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">결제를 실행하는 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>결제 수단</th><th>동작</th></tr>
+                            <tr><td>카드/계좌이체</td><td>PG사 결제창 이동</td></tr>
+                            <tr><td>무통장입금</td><td>가상계좌 정보 모달 표시</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 결제 전 검증</div>
+                            <div class="desc-note-text">
+                                • 충전 금액 선택 필수<br>
+                                • 결제 수단 선택 필수<br>
+                                • 분배 합계 = 총 충전금 일치
+                            </div>
+                        </div>
                         <div class="desc-code">POST /api/v1/payment/charge
 Request: {
   amount: number,
