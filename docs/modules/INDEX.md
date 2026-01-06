@@ -19,6 +19,8 @@
 | FE-M007 | MyPageModule | 마이페이지 (내 정보/발신번호) | P0 | 10일 |
 | FE-M008 | AuthModule | 인증/인가 | P0 | 8일 |
 | FE-M009 | CommonUIModule | 공통 UI 컴포넌트 | P0 | 10일 |
+| FE-M010 | MainModule | 메인/대시보드 | P0 | 8일 |
+| FE-M011 | SupportModule | 고객센터 | P1 | 6일 |
 
 ### Backend 모듈
 
@@ -141,6 +143,8 @@ graph TD
 - [FE-M007: MyPageModule](./FE-M007-MyPageModule.md)
 - [FE-M008: AuthModule](./FE-M008-AuthModule.md)
 - [FE-M009: CommonUIModule](./FE-M009-CommonUIModule.md)
+- [FE-M010: MainModule](./FE-M010-MainModule.md)
+- [FE-M011: SupportModule](./FE-M011-SupportModule.md)
 
 ### Backend 모듈
 - [BE-M001: MessageServiceModule](./BE-M001-MessageServiceModule.md)
