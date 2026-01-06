@@ -105,8 +105,43 @@ function initZoomControls() {
     });
 }
 
+// View Toggle Controls (Modal Show/Hide)
+function initViewToggle() {
+    const toggleBtns = document.querySelectorAll('.view-toggle-btn');
+    const modalContainer = document.querySelector('.modal-container');
+    const viewStateBadge = document.querySelector('.view-state-badge');
+    
+    if (!toggleBtns.length || !modalContainer) return;
+
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+            
+            // Update button states
+            toggleBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Show/hide modal
+            if (view === 'modal') {
+                modalContainer.classList.add('visible');
+                if (viewStateBadge) {
+                    viewStateBadge.textContent = '';
+                    viewStateBadge.innerHTML = '<span class="dot"></span> 모달 팝업 보기';
+                }
+            } else {
+                modalContainer.classList.remove('visible');
+                if (viewStateBadge) {
+                    viewStateBadge.textContent = '';
+                    viewStateBadge.innerHTML = '<span class="dot"></span> 바닥 페이지 보기';
+                }
+            }
+        });
+    });
+}
+
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     initMarkerInteraction();
     initZoomControls();
+    initViewToggle();
 });

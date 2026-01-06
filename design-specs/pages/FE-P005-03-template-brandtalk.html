@@ -25,6 +25,19 @@
 
     <div class="main-container">
         <div class="mockup-panel">
+            <!-- View Toggle Controls -->
+            <div class="view-toggle-controls">
+                <button class="view-toggle-btn active" data-view="base">
+                    <span class="icon">📄</span> 바닥 페이지
+                </button>
+                <button class="view-toggle-btn" data-view="modal">
+                    <span class="icon">🔲</span> 모달 팝업
+                </button>
+            </div>
+            <div class="view-state-badge">
+                <span class="dot"></span> 바닥 페이지 보기
+            </div>
+
             <div class="mockup-canvas">
                 <div class="mockup-frame wide">
                     <div class="browser-chrome">
@@ -184,132 +197,135 @@
                                     <div class="marker" data-id="3" style="top: 0; right: -10px;">3</div>
                                 </div>
 
-                                <!-- 브랜드메시지 템플릿 등록 모달 -->
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 900px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; max-height: 90%; overflow-y: auto;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
-                                        <div style="font-size: 18px; font-weight: 600; color: #333;">브랜드메시지 템플릿 등록</div>
-                                        <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
-                                        <div class="marker" data-id="4" style="top: -8px; right: 40px;">4</div>
-                                    </div>
+                                <!-- 브랜드메시지 템플릿 등록 모달 (토글 가능) -->
+                                <div class="modal-container">
+                                    <div class="modal-backdrop"></div>
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 900px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; max-height: 90%; overflow-y: auto;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
+                                            <div style="font-size: 18px; font-weight: 600; color: #333;">브랜드메시지 템플릿 등록</div>
+                                            <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
+                                            <div class="marker" data-id="4" style="top: -8px; right: 40px;">4</div>
+                                        </div>
 
-                                    <div style="display: flex; gap: 24px;">
-                                        <!-- 좌측: 입력 폼 -->
-                                        <div style="flex: 1;">
-                                            <div class="form-row">
-                                                <label class="form-label">발신프로필 *</label>
-                                                <select class="form-select">
-                                                    <option>발신프로필 선택</option>
-                                                    <option>@tokbell - 톡벨 공식채널 (브랜드메시지 사용 가능)</option>
-                                                </select>
-                                                <div class="form-helper">브랜드메시지 권한이 있는 프로필만 선택 가능합니다.</div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <label class="form-label">템플릿명 *</label>
-                                                <input type="text" class="form-input" placeholder="템플릿명 입력 (최대 30자)">
-                                            </div>
-
-                                            <div class="form-row" style="position: relative;">
-                                                <label class="form-label">템플릿 타입 *</label>
-                                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                                                    <div style="border: 2px solid #4361ee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; background: #f0f4ff;">
-                                                        <div style="font-size: 20px; margin-bottom: 4px;">📝</div>
-                                                        <div style="font-size: 11px; font-weight: 600; color: #4361ee;">텍스트</div>
-                                                    </div>
-                                                    <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
-                                                        <div style="font-size: 20px; margin-bottom: 4px;">🖼️</div>
-                                                        <div style="font-size: 11px; color: #666;">이미지</div>
-                                                    </div>
-                                                    <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
-                                                        <div style="font-size: 20px; margin-bottom: 4px;">📐</div>
-                                                        <div style="font-size: 11px; color: #666;">와이드</div>
-                                                    </div>
-                                                    <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
-                                                        <div style="font-size: 20px; margin-bottom: 4px;">📋</div>
-                                                        <div style="font-size: 11px; color: #666;">리스트</div>
-                                                    </div>
-                                                    <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
-                                                        <div style="font-size: 20px; margin-bottom: 4px;">🎠</div>
-                                                        <div style="font-size: 11px; color: #666;">캐러셀</div>
-                                                    </div>
-                                                    <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
-                                                        <div style="font-size: 20px; margin-bottom: 4px;">🛒</div>
-                                                        <div style="font-size: 11px; color: #666;">커머스</div>
-                                                    </div>
+                                        <div style="display: flex; gap: 24px;">
+                                            <!-- 좌측: 입력 폼 -->
+                                            <div style="flex: 1;">
+                                                <div class="form-row">
+                                                    <label class="form-label">발신프로필 *</label>
+                                                    <select class="form-select">
+                                                        <option>발신프로필 선택</option>
+                                                        <option>@tokbell - 톡벨 공식채널 (브랜드메시지 사용 가능)</option>
+                                                    </select>
+                                                    <div class="form-helper">브랜드메시지 권한이 있는 프로필만 선택 가능합니다.</div>
                                                 </div>
-                                                <div class="marker" data-id="5" style="top: 0; right: -20px;">5</div>
-                                            </div>
 
-                                            <div class="form-row">
-                                                <label class="form-label">제목</label>
-                                                <input type="text" class="form-input" placeholder="제목 입력 (최대 50자)">
-                                            </div>
-
-                                            <div class="form-row" style="position: relative;">
-                                                <label class="form-label">메시지 내용 *</label>
-                                                <textarea class="form-textarea" style="min-height: 100px;" placeholder="메시지 내용을 입력하세요.&#10;광고 목적의 홍보/마케팅 메시지에 사용됩니다."></textarea>
-                                                <div class="form-helper">0 / 400자</div>
-                                                <div class="marker" data-id="6" style="top: 0; right: -20px;">6</div>
-                                            </div>
-
-                                            <div class="form-row" style="position: relative;">
-                                                <label class="form-label">이미지 업로드</label>
-                                                <div style="border: 2px dashed #ddd; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer;">
-                                                    <div style="font-size: 32px; margin-bottom: 8px;">📷</div>
-                                                    <div style="font-size: 13px; color: #666;">클릭하여 이미지 업로드</div>
-                                                    <div style="font-size: 11px; color: #999; margin-top: 4px;">JPG, PNG (최대 500KB)</div>
+                                                <div class="form-row">
+                                                    <label class="form-label">템플릿명 *</label>
+                                                    <input type="text" class="form-input" placeholder="템플릿명 입력 (최대 30자)">
                                                 </div>
-                                                <div class="form-helper">권장 크기: 500x250 (이미지 타입), 800x400 (와이드 타입)</div>
-                                                <div class="marker" data-id="7" style="top: 0; right: -20px;">7</div>
+
+                                                <div class="form-row" style="position: relative;">
+                                                    <label class="form-label">템플릿 타입 *</label>
+                                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                                        <div style="border: 2px solid #4361ee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer; background: #f0f4ff;">
+                                                            <div style="font-size: 20px; margin-bottom: 4px;">📝</div>
+                                                            <div style="font-size: 11px; font-weight: 600; color: #4361ee;">텍스트</div>
+                                                        </div>
+                                                        <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
+                                                            <div style="font-size: 20px; margin-bottom: 4px;">🖼️</div>
+                                                            <div style="font-size: 11px; color: #666;">이미지</div>
+                                                        </div>
+                                                        <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
+                                                            <div style="font-size: 20px; margin-bottom: 4px;">📐</div>
+                                                            <div style="font-size: 11px; color: #666;">와이드</div>
+                                                        </div>
+                                                        <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
+                                                            <div style="font-size: 20px; margin-bottom: 4px;">📋</div>
+                                                            <div style="font-size: 11px; color: #666;">리스트</div>
+                                                        </div>
+                                                        <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
+                                                            <div style="font-size: 20px; margin-bottom: 4px;">🎠</div>
+                                                            <div style="font-size: 11px; color: #666;">캐러셀</div>
+                                                        </div>
+                                                        <div style="border: 2px solid #eee; border-radius: 8px; padding: 12px; text-align: center; cursor: pointer;">
+                                                            <div style="font-size: 20px; margin-bottom: 4px;">🛒</div>
+                                                            <div style="font-size: 11px; color: #666;">커머스</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="marker" data-id="5" style="top: 0; right: -20px;">5</div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <label class="form-label">제목</label>
+                                                    <input type="text" class="form-input" placeholder="제목 입력 (최대 50자)">
+                                                </div>
+
+                                                <div class="form-row" style="position: relative;">
+                                                    <label class="form-label">메시지 내용 *</label>
+                                                    <textarea class="form-textarea" style="min-height: 100px;" placeholder="메시지 내용을 입력하세요.&#10;광고 목적의 홍보/마케팅 메시지에 사용됩니다."></textarea>
+                                                    <div class="form-helper">0 / 400자</div>
+                                                    <div class="marker" data-id="6" style="top: 0; right: -20px;">6</div>
+                                                </div>
+
+                                                <div class="form-row" style="position: relative;">
+                                                    <label class="form-label">이미지 업로드</label>
+                                                    <div style="border: 2px dashed #ddd; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer;">
+                                                        <div style="font-size: 32px; margin-bottom: 8px;">📷</div>
+                                                        <div style="font-size: 13px; color: #666;">클릭하여 이미지 업로드</div>
+                                                        <div style="font-size: 11px; color: #999; margin-top: 4px;">JPG, PNG (최대 500KB)</div>
+                                                    </div>
+                                                    <div class="form-helper">권장 크기: 500x250 (이미지 타입), 800x400 (와이드 타입)</div>
+                                                    <div class="marker" data-id="7" style="top: 0; right: -20px;">7</div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <label class="form-label">버튼 설정 (최대 2개)</label>
+                                                    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                                        <input type="text" class="form-input" placeholder="버튼명" style="width: 120px;">
+                                                        <input type="text" class="form-input" placeholder="이동할 URL" style="flex: 1;">
+                                                    </div>
+                                                    <button style="background: #f5f5f5; border: 1px dashed #ddd; padding: 8px; border-radius: 6px; font-size: 12px; color: #666; cursor: pointer; width: 100%;">
+                                                        + 버튼 추가
+                                                    </button>
+                                                </div>
                                             </div>
 
-                                            <div class="form-row">
-                                                <label class="form-label">버튼 설정 (최대 2개)</label>
-                                                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                                                    <input type="text" class="form-input" placeholder="버튼명" style="width: 120px;">
-                                                    <input type="text" class="form-input" placeholder="이동할 URL" style="flex: 1;">
+                                            <!-- 우측: 미리보기 -->
+                                            <div style="width: 280px;">
+                                                <div style="font-size: 12px; color: #666; margin-bottom: 12px;">미리보기</div>
+                                                <div style="background: #fae100; border-radius: 24px 24px 0 0; padding: 12px; text-align: center;">
+                                                    <span style="font-weight: 600; color: #3c1e1e;">카카오톡</span>
                                                 </div>
-                                                <button style="background: #f5f5f5; border: 1px dashed #ddd; padding: 8px; border-radius: 6px; font-size: 12px; color: #666; cursor: pointer; width: 100%;">
-                                                    + 버튼 추가
-                                                </button>
+                                                <div style="background: #b2c7d9; padding: 16px; min-height: 350px; border-radius: 0 0 24px 24px; position: relative;">
+                                                    <div style="background: white; border-radius: 12px; overflow: hidden;">
+                                                        <div style="height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                                            <span style="font-size: 12px;">이미지 영역</span>
+                                                        </div>
+                                                        <div style="padding: 12px;">
+                                                            <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">제목이 여기에 표시됩니다</div>
+                                                            <div style="font-size: 11px; color: #666; line-height: 1.5;">
+                                                                메시지 내용이 여기에 표시됩니다.
+                                                            </div>
+                                                            <div style="margin-top: 12px; display: flex; gap: 8px;">
+                                                                <button style="flex: 1; padding: 8px; background: #4361ee; border: none; border-radius: 6px; font-size: 11px; color: white;">
+                                                                    버튼 1
+                                                                </button>
+                                                                <button style="flex: 1; padding: 8px; background: #f5f5f5; border: none; border-radius: 6px; font-size: 11px; color: #333;">
+                                                                    버튼 2
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="marker" data-id="8" style="top: 16px; right: -8px;">8</div>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <!-- 우측: 미리보기 -->
-                                        <div style="width: 280px;">
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 12px;">미리보기</div>
-                                            <div style="background: #fae100; border-radius: 24px 24px 0 0; padding: 12px; text-align: center;">
-                                                <span style="font-weight: 600; color: #3c1e1e;">카카오톡</span>
-                                            </div>
-                                            <div style="background: #b2c7d9; padding: 16px; min-height: 350px; border-radius: 0 0 24px 24px; position: relative;">
-                                                <div style="background: white; border-radius: 12px; overflow: hidden;">
-                                                    <div style="height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
-                                                        <span style="font-size: 12px;">이미지 영역</span>
-                                                    </div>
-                                                    <div style="padding: 12px;">
-                                                        <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">제목이 여기에 표시됩니다</div>
-                                                        <div style="font-size: 11px; color: #666; line-height: 1.5;">
-                                                            메시지 내용이 여기에 표시됩니다.
-                                                        </div>
-                                                        <div style="margin-top: 12px; display: flex; gap: 8px;">
-                                                            <button style="flex: 1; padding: 8px; background: #4361ee; border: none; border-radius: 6px; font-size: 11px; color: white;">
-                                                                버튼 1
-                                                            </button>
-                                                            <button style="flex: 1; padding: 8px; background: #f5f5f5; border: none; border-radius: 6px; font-size: 11px; color: #333;">
-                                                                버튼 2
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="marker" data-id="8" style="top: 16px; right: -8px;">8</div>
-                                            </div>
+                                        <div style="display: flex; gap: 12px; margin-top: 24px; position: relative;">
+                                            <button class="mock-btn mock-btn-outline" style="flex: 1;">취소</button>
+                                            <button class="mock-btn mock-btn-primary" style="flex: 2;">저장하기</button>
+                                            <div class="marker" data-id="9" style="top: -8px; right: 100px;">9</div>
                                         </div>
-                                    </div>
-
-                                    <div style="display: flex; gap: 12px; margin-top: 24px; position: relative;">
-                                        <button class="mock-btn mock-btn-outline" style="flex: 1;">취소</button>
-                                        <button class="mock-btn mock-btn-primary" style="flex: 2;">저장하기</button>
-                                        <div class="marker" data-id="9" style="top: -8px; right: 100px;">9</div>
                                     </div>
                                 </div>
                             </div>
