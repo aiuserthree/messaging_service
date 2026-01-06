@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>선거문자 발송 - 톡벨 화면설계서</title>
+    <title>선거 문자 발송 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -13,12 +13,11 @@
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
                     <span class="page-id-badge">FE-P003-03</span>
-                    <span class="page-title-header">선거문자 발송</span>
+                    <span class="page-title-header">선거 문자 발송</span>
                 </div>
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../message-send-election.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,20 +32,130 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/message-send-election.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/message-send-election</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 800px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../message-send-election.html" style="height: 800px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item active">문자 발송 ▼</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">템플릿 관리</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 80px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 200px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 400px; right: 20px;">3</div>
-                                <div class="marker" data-id="4" style="top: 600px; right: 20px;">4</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="display: flex; padding: 24px; gap: 24px;">
+                                <!-- Left: Form Section -->
+                                <div style="flex: 1;">
+                                    <!-- 마커 1: 선거 문자 안내 -->
+                                    <div class="marker" data-id="1" style="top: 100px; left: 480px;">1</div>
+                                    <div style="background: #dbeafe; border: 1px solid #3b82f6; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                                        <div style="font-weight: 600; color: #1e40af; margin-bottom: 8px;">🗳️ 선거 문자 발송 안내</div>
+                                        <ul style="font-size: 13px; color: #1e40af; margin: 0; padding-left: 20px;">
+                                            <li>공직선거법에 따른 발송 시간 제한</li>
+                                            <li>후보자 정보 필수 기재</li>
+                                            <li>선거 관련 문구만 발송 가능</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- 마커 2: 선거 정보 -->
+                                    <div class="marker" data-id="2" style="top: 230px; left: 480px;">2</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">선거 정보</div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                            <div>
+                                                <label class="form-label">선거 유형 <span style="color: #ef4444;">*</span></label>
+                                                <select class="form-select">
+                                                    <option>대통령 선거</option>
+                                                    <option>국회의원 선거</option>
+                                                    <option>지방선거</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="form-label">후보자명 <span style="color: #ef4444;">*</span></label>
+                                                <input type="text" class="form-input" value="홍길동">
+                                            </div>
+                                        </div>
+                                        <div style="margin-top: 12px;">
+                                            <label class="form-label">기호 및 소속</label>
+                                            <input type="text" class="form-input" value="기호 1번 / ○○당">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 3: 발신번호 -->
+                                    <div class="marker" data-id="3" style="top: 400px; left: 480px;">3</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">발신번호</div>
+                                        <select class="form-select">
+                                            <option>010-1234-5678 (선거운동원)</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- 마커 4: 수신번호 -->
+                                    <div class="marker" data-id="4" style="top: 490px; left: 480px;">4</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">수신번호</div>
+                                        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                            <button class="mock-btn mock-btn-outline mock-btn-sm">📁 선거 주소록</button>
+                                            <button class="mock-btn mock-btn-outline mock-btn-sm">📄 엑셀 업로드</button>
+                                        </div>
+                                        <textarea class="form-textarea" placeholder="수신번호 입력" style="height: 60px;">01012345678</textarea>
+                                        <div class="form-helper">입력된 번호: 1건</div>
+                                    </div>
+                                    
+                                    <!-- 마커 5: 메시지 내용 -->
+                                    <div class="marker" data-id="5" style="top: 640px; left: 480px;">5</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">메시지 내용</div>
+                                        <textarea class="form-textarea" style="height: 100px;">[선거] 기호 1번 홍길동
+○○당 후보를 지지해주세요!
+지역 발전을 위해 최선을 다하겠습니다.
+
+발신: 선거운동원 홍길동</textarea>
+                                        <div class="form-helper">88 / 90 bytes (SMS)</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Right: Preview & Actions -->
+                                <div style="width: 280px;">
+                                    <!-- 마커 6: 미리보기 -->
+                                    <div class="marker" data-id="6" style="top: 100px; right: 20px;">6</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">📱 미리보기</div>
+                                        <div class="phone-mockup">
+                                            <div class="phone-screen">
+                                                <div class="phone-header">010-1234-5678</div>
+                                                <div class="phone-content">
+                                                    <div class="phone-message">
+                                                        [선거] 기호 1번 홍길동<br>
+                                                        ○○당 후보를 지지해주세요!<br>
+                                                        지역 발전을 위해 최선을 다하겠습니다.<br><br>
+                                                        발신: 선거운동원 홍길동
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 7: 발송 버튼 -->
+                                    <div class="marker" data-id="7" style="top: 500px; right: 20px;">7</div>
+                                    <div class="form-section">
+                                        <div style="text-align: center; margin-bottom: 16px;">
+                                            <div style="font-size: 12px; color: #666;">예상 비용</div>
+                                            <div style="font-size: 24px; font-weight: 700; color: #4361ee;">9.9원</div>
+                                        </div>
+                                        <button class="mock-btn mock-btn-primary" style="width: 100%;">발송하기</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,44 +163,43 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">message-send-election.html · 선거문자 발송 페이지</div>
+                <div class="desc-subtitle">message-send-election.html · 선거 문자 발송</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">선거문자 안내</div>
+                        <div class="desc-item-title">선거 문자 안내</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">선거문자 발송 시 필수 준수사항을 안내합니다.</div>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 선거문자 규정</div>
-                            <div class="desc-note-text">
-                                • 선거운동기간에만 발송 가능<br>
-                                • 후보자 정보 필수 표기<br>
-                                • 발송 시간 제한 준수
-                            </div>
-                        </div>
+                        <div class="desc-text">공직선거법에 따른 선거 문자 발송 안내입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>규정</th></tr>
+                            <tr><td>발송 시간</td><td>선거기간 중 08시~21시</td></tr>
+                            <tr><td>발송 횟수</td><td>유권자 1인당 8회 제한</td></tr>
+                            <tr><td>필수 표기</td><td>후보자명, 기호, 소속</td></tr>
+                        </table>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">후보자 정보</div>
+                        <div class="desc-item-title">선거 정보</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">선거문자에 포함될 후보자 정보를 설정합니다.</div>
+                        <div class="desc-text">선거 유형과 후보자 정보를 입력합니다.</div>
                         <table class="desc-table">
-                            <tr><th>필드</th><th>필수</th></tr>
-                            <tr><td>후보자명</td><td><span class="desc-badge required">필수</span></td></tr>
-                            <tr><td>선거구</td><td><span class="desc-badge required">필수</span></td></tr>
-                            <tr><td>정당</td><td><span class="desc-badge optional">선택</span></td></tr>
+                            <tr><th>필드</th><th>필수</th><th>설명</th></tr>
+                            <tr><td>선거 유형</td><td>Y</td><td>선거 종류 선택</td></tr>
+                            <tr><td>후보자명</td><td>Y</td><td>후보자 이름</td></tr>
+                            <tr><td>기호 및 소속</td><td>N</td><td>기호번호와 정당</td></tr>
                         </table>
                     </div>
                 </div>
@@ -99,30 +207,68 @@
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">메시지 작성</div>
+                        <div class="desc-item-title">발신번호</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">선거문자 내용을 작성합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>자동 삽입</th><th>위치</th></tr>
-                            <tr><td>후보자 정보</td><td>메시지 끝</td></tr>
-                        </table>
+                        <div class="desc-text">선거운동원 등록된 발신번호를 선택합니다.</div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
-                        <div class="desc-item-title">발송 시간</div>
+                        <div class="desc-item-title">수신번호</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">선거문자는 발송 가능 시간이 제한됩니다.</div>
-                        <table class="desc-table">
-                            <tr><th>발송가능시간</th><th>발송불가시간</th></tr>
-                            <tr><td>07:00 ~ 22:00</td><td>22:00 ~ 07:00</td></tr>
-                        </table>
+                        <div class="desc-text">선거 주소록에서 수신자를 선택합니다.</div>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 주의</div>
+                            <div class="desc-note-text">수신거부자 및 발송 횟수 초과자는 자동 제외됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">메시지 내용</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선거 문자 형식에 맞게 내용을 작성합니다.</div>
+                        <div class="desc-code">[선거] 기호 X번 후보자명
+소속정당
+선거 관련 메시지
+
+발신: 선거운동원 OOO</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">미리보기</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선거 문자 형식이 올바른지 확인합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="7">
+                    <div class="desc-item-header">
+                        <div class="desc-number">7</div>
+                        <div class="desc-item-title">발송 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선거 문자 규정 검증 후 발송합니다.</div>
+                        <div class="desc-note danger">
+                            <div class="desc-note-title">⚠️ 자동 검증</div>
+                            <div class="desc-note-text">발송 시간, 발송 횟수 제한을 자동으로 검증합니다.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,16 +276,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

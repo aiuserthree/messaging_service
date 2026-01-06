@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../signup.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -26,27 +25,117 @@
     <div class="main-container">
         <div class="mockup-panel">
             <div class="mockup-canvas">
-                <div class="mockup-frame wide">
+                <div class="mockup-frame medium">
                     <div class="browser-chrome">
                         <div class="browser-dots">
                             <div class="browser-dot red"></div>
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/signup.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/signup</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 800px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../signup.html" style="height: 800px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">템플릿 관리</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span>로그인</span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 200px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 400px; right: 20px;">3</div>
-                                <div class="marker" data-id="4" style="top: 650px; right: 20px;">4</div>
+                            
+                            <!-- Signup Form -->
+                            <div class="screen-body" style="display: flex; justify-content: center; padding: 40px;">
+                                <div style="background: white; padding: 40px; border-radius: 16px; width: 600px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                                    <div style="text-align: center; margin-bottom: 32px;">
+                                        <div style="font-size: 24px; font-weight: 700; color: #333;">회원가입</div>
+                                        <div style="font-size: 14px; color: #666; margin-top: 8px;">톡벨 서비스 이용을 위한 계정을 생성합니다</div>
+                                    </div>
+                                    
+                                    <!-- 마커 1: 기본 정보 입력 -->
+                                    <div class="marker" data-id="1" style="top: 180px; right: 20px;">1</div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                        <div class="form-row">
+                                            <label class="form-label">아이디 <span style="color: #ef4444;">*</span></label>
+                                            <div style="display: flex; gap: 8px;">
+                                                <input type="text" class="form-input" placeholder="아이디 입력" style="flex: 1;">
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm">중복확인</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">이메일 <span style="color: #ef4444;">*</span></label>
+                                            <input type="email" class="form-input" placeholder="이메일 입력">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 2: 비밀번호 입력 -->
+                                    <div class="marker" data-id="2" style="top: 280px; right: 20px;">2</div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                                        <div class="form-row">
+                                            <label class="form-label">비밀번호 <span style="color: #ef4444;">*</span></label>
+                                            <input type="password" class="form-input" placeholder="비밀번호 입력">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">비밀번호 확인 <span style="color: #ef4444;">*</span></label>
+                                            <input type="password" class="form-input" placeholder="비밀번호 재입력">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 3: 담당자 정보 -->
+                                    <div class="marker" data-id="3" style="top: 380px; right: 20px;">3</div>
+                                    
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                                        <div class="form-row">
+                                            <label class="form-label">담당자명 <span style="color: #ef4444;">*</span></label>
+                                            <input type="text" class="form-input" placeholder="담당자명 입력">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">연락처 <span style="color: #ef4444;">*</span></label>
+                                            <input type="tel" class="form-input" placeholder="010-0000-0000">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 4: 회사 정보 -->
+                                    <div class="marker" data-id="4" style="top: 480px; right: 20px;">4</div>
+                                    
+                                    <div class="form-row" style="margin-top: 16px;">
+                                        <label class="form-label">회사명</label>
+                                        <input type="text" class="form-input" placeholder="회사명 입력 (선택)">
+                                    </div>
+                                    
+                                    <!-- 마커 5: 약관 동의 -->
+                                    <div class="marker" data-id="5" style="top: 560px; right: 20px;">5</div>
+                                    
+                                    <div style="margin-top: 24px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                                        <div class="checkbox-item" style="margin-bottom: 12px;">
+                                            <div class="checkbox-box checked">✓</div>
+                                            <span style="font-weight: 600;">전체 동의</span>
+                                        </div>
+                                        <div class="checkbox-item" style="margin-bottom: 8px; padding-left: 26px;">
+                                            <div class="checkbox-box checked">✓</div>
+                                            <span>이용약관 동의 (필수)</span>
+                                        </div>
+                                        <div class="checkbox-item" style="padding-left: 26px;">
+                                            <div class="checkbox-box checked">✓</div>
+                                            <span>개인정보 처리방침 동의 (필수)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 6: 가입 버튼 -->
+                                    <div class="marker" data-id="6" style="top: 680px; right: 20px;">6</div>
+                                    
+                                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                        <button class="mock-btn mock-btn-outline" style="flex: 1; padding: 14px;">취소</button>
+                                        <button class="mock-btn mock-btn-primary" style="flex: 1; padding: 14px;">회원가입</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,6 +143,7 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
@@ -63,17 +153,15 @@
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">진행 단계 표시</div>
+                        <div class="desc-item-title">기본 정보 입력</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">회원가입 진행 단계를 시각적으로 표시합니다.</div>
+                        <div class="desc-text">아이디와 이메일을 입력합니다. 아이디는 중복 확인이 필요합니다.</div>
                         <table class="desc-table">
-                            <tr><th>단계</th><th>설명</th></tr>
-                            <tr><td>Step 1</td><td>약관 동의</td></tr>
-                            <tr><td>Step 2</td><td>회원유형 선택</td></tr>
-                            <tr><td>Step 3</td><td>본인인증</td></tr>
-                            <tr><td>Step 4</td><td>정보 입력</td></tr>
+                            <tr><th>필드</th><th>타입</th><th>필수</th><th>검증</th></tr>
+                            <tr><td>아이디</td><td>text</td><td>Y</td><td>4-20자, 영문/숫자</td></tr>
+                            <tr><td>이메일</td><td>email</td><td>Y</td><td>이메일 형식</td></tr>
                         </table>
                     </div>
                 </div>
@@ -81,18 +169,15 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">약관 동의</div>
+                        <div class="desc-item-title">비밀번호 입력</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">서비스 이용을 위한 필수/선택 약관 동의입니다.</div>
+                        <div class="desc-text">비밀번호와 확인을 입력합니다.</div>
                         <table class="desc-table">
-                            <tr><th>약관</th><th>필수여부</th></tr>
-                            <tr><td>이용약관</td><td><span class="desc-badge required">필수</span></td></tr>
-                            <tr><td>개인정보 수집 및 이용</td><td><span class="desc-badge required">필수</span></td></tr>
-                            <tr><td>개인정보 취급 위탁</td><td><span class="desc-badge required">필수</span></td></tr>
-                            <tr><td>불법스팸방지안내</td><td><span class="desc-badge required">필수</span></td></tr>
-                            <tr><td>마케팅 수신 동의</td><td><span class="desc-badge optional">선택</span></td></tr>
+                            <tr><th>필드</th><th>검증 규칙</th></tr>
+                            <tr><td>비밀번호</td><td>8자 이상, 영문+숫자+특수문자</td></tr>
+                            <tr><td>비밀번호 확인</td><td>비밀번호와 일치</td></tr>
                         </table>
                     </div>
                 </div>
@@ -100,36 +185,58 @@
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">회원유형 선택</div>
+                        <div class="desc-item-title">담당자 정보</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">개인회원 또는 기업회원을 선택합니다.</div>
+                        <div class="desc-text">담당자명과 연락처를 입력합니다.</div>
                         <table class="desc-table">
-                            <tr><th>유형</th><th>설명</th></tr>
-                            <tr><td>개인회원</td><td>개인 고객을 위한 서비스</td></tr>
-                            <tr><td>기업회원</td><td>기업/공공기관/단체 고객을 위한 서비스</td></tr>
+                            <tr><th>필드</th><th>타입</th><th>필수</th></tr>
+                            <tr><td>담당자명</td><td>text</td><td>Y</td></tr>
+                            <tr><td>연락처</td><td>tel</td><td>Y</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 참고</div>
-                            <div class="desc-note-text">기업회원 선택 시 사업자등록증 및 추가 정보 입력이 필요합니다.</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
-                        <div class="desc-item-title">본인인증 및 정보입력</div>
+                        <div class="desc-item-title">회사 정보</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">휴대폰 본인인증 후 회원 정보를 입력합니다.</div>
+                        <div class="desc-text">회사명은 선택 입력 사항입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">약관 동의</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">이용약관 및 개인정보 처리방침 동의가 필요합니다.</div>
                         <table class="desc-table">
-                            <tr><th>필드</th><th>검증</th></tr>
-                            <tr><td>아이디</td><td>8-12자, 영문/숫자 조합</td></tr>
-                            <tr><td>비밀번호</td><td>8-16자, 영문/숫자/특수문자 혼합</td></tr>
-                            <tr><td>이메일</td><td>이메일 형식</td></tr>
+                            <tr><th>항목</th><th>필수여부</th></tr>
+                            <tr><td>이용약관</td><td>필수</td></tr>
+                            <tr><td>개인정보 처리방침</td><td>필수</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">가입 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회원가입을 완료합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>취소</td><td>로그인 페이지로 이동</td></tr>
+                            <tr><td>회원가입</td><td>가입 처리 후 로그인 페이지 이동</td></tr>
                         </table>
                     </div>
                 </div>
@@ -138,16 +245,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

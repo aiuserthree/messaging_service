@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../main.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,20 +32,158 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/main.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/main</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 800px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../main.html" style="height: 800px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header" style="position: relative;">
+                                <div class="screen-logo">Tokbell</div>
+                                <!-- 마커 1: GNB -->
+                                <div class="marker" data-id="1" style="top: 20px; right: 400px;">1</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item active">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">템플릿 관리</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item">발송 결과</span>
+                                    <span class="screen-nav-item">요금/결제</span>
+                                </div>
+                                <!-- 마커 2: 잔액 정보 -->
+                                <div class="marker" data-id="2" style="top: 20px; right: 100px;">2</div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                    <span>홍길동님</span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 80px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 200px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 400px; right: 20px;">3</div>
-                                <div class="marker" data-id="4" style="top: 600px; right: 20px;">4</div>
+                            
+                            <!-- Dashboard Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 3: 통계 카드 -->
+                                <div class="marker" data-id="3" style="top: 100px; right: 20px;">3</div>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+                                    <div class="stat-card">
+                                        <div class="stat-card-value">1,234</div>
+                                        <div class="stat-card-label">오늘 발송 건수</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-value" style="color: #10b981;">98.5%</div>
+                                        <div class="stat-card-label">발송 성공률</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-value" style="color: #f59e0b;">15</div>
+                                        <div class="stat-card-label">예약 대기</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-value">125,000</div>
+                                        <div class="stat-card-label">잔여 포인트</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+                                    <!-- 마커 4: 발송 현황 차트 -->
+                                    <div class="marker" data-id="4" style="top: 260px; right: 400px;">4</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">📊 최근 7일 발송 현황</div>
+                                        <div style="padding: 20px;">
+                                            <div class="chart-bar">
+                                                <div class="chart-bar-label">월</div>
+                                                <div class="chart-bar-track">
+                                                    <div class="chart-bar-fill" style="width: 60%;"></div>
+                                                </div>
+                                                <div class="chart-bar-value">1,200</div>
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-bar-label">화</div>
+                                                <div class="chart-bar-track">
+                                                    <div class="chart-bar-fill" style="width: 85%;"></div>
+                                                </div>
+                                                <div class="chart-bar-value">1,680</div>
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-bar-label">수</div>
+                                                <div class="chart-bar-track">
+                                                    <div class="chart-bar-fill" style="width: 45%;"></div>
+                                                </div>
+                                                <div class="chart-bar-value">920</div>
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-bar-label">목</div>
+                                                <div class="chart-bar-track">
+                                                    <div class="chart-bar-fill" style="width: 72%;"></div>
+                                                </div>
+                                                <div class="chart-bar-value">1,440</div>
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-bar-label">금</div>
+                                                <div class="chart-bar-track">
+                                                    <div class="chart-bar-fill" style="width: 90%;"></div>
+                                                </div>
+                                                <div class="chart-bar-value">1,800</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 마커 5: 빠른 발송 -->
+                                    <div class="marker" data-id="5" style="top: 260px; right: 20px;">5</div>
+                                    <div class="form-section">
+                                        <div class="form-section-title">🚀 빠른 발송</div>
+                                        <div style="padding: 16px 0;">
+                                            <button class="mock-btn mock-btn-primary" style="width: 100%; margin-bottom: 12px;">
+                                                💬 문자 발송
+                                            </button>
+                                            <button class="mock-btn mock-btn-outline" style="width: 100%; margin-bottom: 12px;">
+                                                💛 알림톡 발송
+                                            </button>
+                                            <button class="mock-btn mock-btn-outline" style="width: 100%;">
+                                                📢 브랜드톡 발송
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 6: 최근 발송 내역 -->
+                                <div class="marker" data-id="6" style="top: 500px; right: 20px;">6</div>
+                                <div class="form-section" style="margin-top: 24px;">
+                                    <div class="form-section-title">📋 최근 발송 내역</div>
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th>발송일시</th>
+                                                <th>유형</th>
+                                                <th>내용</th>
+                                                <th>건수</th>
+                                                <th>상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2024-01-15 14:30</td>
+                                                <td>SMS</td>
+                                                <td>신규 회원 안내</td>
+                                                <td>150</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-01-15 11:00</td>
+                                                <td>알림톡</td>
+                                                <td>주문 확인 안내</td>
+                                                <td>89</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2024-01-15 09:00</td>
+                                                <td>LMS</td>
+                                                <td>프로모션 안내</td>
+                                                <td>500</td>
+                                                <td><span class="status-badge warning">예약</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,29 +191,30 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">main.html · 대시보드 페이지</div>
+                <div class="desc-subtitle">main.html · 대시보드</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">GNB (Global Navigation Bar)</div>
+                        <div class="desc-item-title">GNB (글로벌 네비게이션)</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">전체 서비스 메뉴와 사용자 정보를 표시합니다.</div>
+                        <div class="desc-text">로그인 후 메인 네비게이션 메뉴입니다.</div>
                         <table class="desc-table">
-                            <tr><th>메뉴</th><th>서브메뉴</th></tr>
-                            <tr><td>문자발송</td><td>일반문자, 광고문자</td></tr>
-                            <tr><td>선거문자</td><td>선거문자, 주소록, 수신거부</td></tr>
-                            <tr><td>카카오톡 발송</td><td>프로필관리, 알림톡, 브랜드톡</td></tr>
-                            <tr><td>발송관리</td><td>발송결과, 예약발송</td></tr>
-                            <tr><td>결제관리</td><td>포인트충전, 결제내역, 예치금분배, 세금계산서</td></tr>
-                            <tr><td>마이페이지</td><td>발신번호관리, 프로필관리, 비밀번호변경</td></tr>
-                            <tr><td>고객센터</td><td>FAQ, 공지사항, 이벤트, 1:1문의</td></tr>
+                            <tr><th>메뉴</th><th>이동 경로</th></tr>
+                            <tr><td>대시보드</td><td>main.html</td></tr>
+                            <tr><td>문자 발송</td><td>message-send-general.html</td></tr>
+                            <tr><td>카카오톡 발송</td><td>kakao-send-alimtalk.html</td></tr>
+                            <tr><td>템플릿 관리</td><td>template-message.html</td></tr>
+                            <tr><td>주소록</td><td>addressbook.html</td></tr>
+                            <tr><td>발송 결과</td><td>send-result.html</td></tr>
+                            <tr><td>요금/결제</td><td>payment-charge.html</td></tr>
                         </table>
                     </div>
                 </div>
@@ -88,15 +226,10 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">현재 보유 포인트와 예치금을 표시합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>보유 포인트</td><td>발송에 사용 가능한 포인트</td></tr>
-                            <tr><td>예치금</td><td>충전된 예치금 잔액</td></tr>
-                        </table>
+                        <div class="desc-text">현재 보유 포인트를 표시합니다. 클릭 시 상세 툴팁이 표시됩니다.</div>
                         <div class="desc-note">
-                            <div class="desc-note-title">💡 툴팁</div>
-                            <div class="desc-note-text">잔액에 마우스 호버 시 상세 내역이 표시됩니다.</div>
+                            <div class="desc-note-title">💡 참고</div>
+                            <div class="desc-note-text">포인트 hover 시 SMS/LMS/MMS/알림톡/브랜드톡 각 발송 가능 건수 표시</div>
                         </div>
                     </div>
                 </div>
@@ -104,16 +237,17 @@
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">발송 현황 요약</div>
+                        <div class="desc-item-title">통계 카드</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">최근 발송 현황을 요약하여 표시합니다.</div>
+                        <div class="desc-text">주요 발송 통계를 카드 형태로 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>오늘 발송</td><td>오늘 발송된 메시지 수</td></tr>
-                            <tr><td>성공률</td><td>발송 성공 비율</td></tr>
-                            <tr><td>예약 발송</td><td>대기 중인 예약 발송 수</td></tr>
+                            <tr><td>오늘 발송 건수</td><td>당일 발송된 총 건수</td></tr>
+                            <tr><td>발송 성공률</td><td>최근 발송 성공 비율</td></tr>
+                            <tr><td>예약 대기</td><td>예약 발송 대기 중인 건수</td></tr>
+                            <tr><td>잔여 포인트</td><td>현재 보유 포인트</td></tr>
                         </table>
                     </div>
                 </div>
@@ -121,17 +255,46 @@
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
+                        <div class="desc-item-title">발송 현황 차트</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">최근 7일간의 발송 현황을 막대 차트로 시각화합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">빠른 발송</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">각 발송 유형별 빠른 접근 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>이동 경로</th></tr>
+                            <tr><td>문자 발송</td><td>message-send-general.html</td></tr>
+                            <tr><td>알림톡 발송</td><td>kakao-send-alimtalk.html</td></tr>
+                            <tr><td>브랜드톡 발송</td><td>kakao-send-brandtalk.html</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
                         <div class="desc-item-title">최근 발송 내역</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">최근 발송된 메시지 목록을 표시합니다.</div>
+                        <div class="desc-text">최근 발송 내역을 테이블로 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>발송일시</td><td>메시지 발송 시간</td></tr>
-                            <tr><td>유형</td><td>SMS/LMS/MMS/알림톡 등</td></tr>
-                            <tr><td>발송수</td><td>발송된 메시지 수</td></tr>
-                            <tr><td>상태</td><td>성공/실패/대기</td></tr>
+                            <tr><td>발송일시</td><td>메시지 발송 시각</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS/알림톡/브랜드톡</td></tr>
+                            <tr><td>내용</td><td>발송 내용 요약</td></tr>
+                            <tr><td>건수</td><td>총 발송 건수</td></tr>
+                            <tr><td>상태</td><td>완료/예약/실패</td></tr>
                         </table>
                     </div>
                 </div>
@@ -140,16 +303,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

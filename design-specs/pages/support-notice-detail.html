@@ -12,13 +12,12 @@
             <div class="header-left">
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
-                    <span class="page-id-badge">FE-P010-02-01</span>
+                    <span class="page-id-badge">FE-P010-02-D</span>
                     <span class="page-title-header">공지사항 상세</span>
                 </div>
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../support-notice-detail.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -26,25 +25,74 @@
     <div class="main-container">
         <div class="mockup-panel">
             <div class="mockup-canvas">
-                <div class="mockup-frame wide">
+                <div class="mockup-frame medium">
                     <div class="browser-chrome">
                         <div class="browser-dots">
                             <div class="browser-dot red"></div>
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/support-notice-detail.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/support-notice-detail</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../support-notice-detail.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item active">고객지원 ▼</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span>홍길동님</span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 150px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 450px; right: 20px;">2</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 1: 공지 헤더 -->
+                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
+                                <div style="border-bottom: 1px solid #eee; padding-bottom: 16px; margin-bottom: 24px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                                        <span class="status-badge warning">공지</span>
+                                        <span class="status-badge info">서비스</span>
+                                    </div>
+                                    <h2 style="font-size: 22px; font-weight: 600; color: #333; margin-bottom: 12px;">[중요] 시스템 점검 안내 (1/20)</h2>
+                                    <div style="font-size: 13px; color: #666; display: flex; gap: 16px;">
+                                        <span>등록일: 2024-01-15</span>
+                                        <span>조회수: 1,234</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 2: 공지 내용 -->
+                                <div class="marker" data-id="2" style="top: 240px; right: 20px;">2</div>
+                                <div class="form-section" style="min-height: 300px;">
+                                    <div style="font-size: 14px; line-height: 1.8; color: #333;">
+                                        <p>안녕하세요, 톡벨입니다.</p>
+                                        <br>
+                                        <p>보다 나은 서비스 제공을 위해 아래와 같이 시스템 점검을 진행합니다.</p>
+                                        <br>
+                                        <p><strong>■ 점검 일시</strong></p>
+                                        <p>2024년 1월 20일(토) 02:00 ~ 06:00 (4시간)</p>
+                                        <br>
+                                        <p><strong>■ 점검 내용</strong></p>
+                                        <p>- 서버 인프라 업그레이드</p>
+                                        <p>- 데이터베이스 최적화</p>
+                                        <p>- 보안 패치 적용</p>
+                                        <br>
+                                        <p><strong>■ 영향 범위</strong></p>
+                                        <p>점검 시간 동안 모든 서비스 이용이 일시 중단됩니다.</p>
+                                        <br>
+                                        <p>서비스 이용에 불편을 드려 죄송합니다.</p>
+                                        <p>감사합니다.</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 3: 목록 버튼 -->
+                                <div class="marker" data-id="3" style="top: 620px; right: 20px;">3</div>
+                                <div style="display: flex; justify-content: center; margin-top: 24px;">
+                                    <button class="mock-btn mock-btn-outline">목록으로</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,27 +100,27 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">support-notice-detail.html · 공지사항 상세 페이지</div>
+                <div class="desc-subtitle">support-notice-detail.html · 공지사항 상세</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">공지 내용</div>
+                        <div class="desc-item-title">공지 헤더</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">공지사항 상세 내용을 표시합니다.</div>
+                        <div class="desc-text">공지사항의 기본 정보를 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>분류</td><td>공지/서비스/요금 등</td></tr>
                             <tr><td>제목</td><td>공지 제목</td></tr>
-                            <tr><td>분류</td><td>서비스/점검/이벤트</td></tr>
-                            <tr><td>작성일</td><td>등록 날짜</td></tr>
-                            <tr><td>조회수</td><td>열람 횟수</td></tr>
-                            <tr><td>내용</td><td>공지 상세 내용</td></tr>
+                            <tr><td>등록일</td><td>작성 날짜</td></tr>
+                            <tr><td>조회수</td><td>조회 횟수</td></tr>
                         </table>
                     </div>
                 </div>
@@ -80,17 +128,22 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">이전/다음 글</div>
+                        <div class="desc-item-title">공지 내용</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">이전 글, 다음 글로 이동합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>동작</th><th>설명</th></tr>
-                            <tr><td>이전 글</td><td>이전 공지로 이동</td></tr>
-                            <tr><td>다음 글</td><td>다음 공지로 이동</td></tr>
-                            <tr><td>목록</td><td>공지사항 목록으로 이동</td></tr>
-                        </table>
+                        <div class="desc-text">공지사항 본문 내용을 표시합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">목록 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">공지사항 목록으로 돌아갑니다.</div>
                     </div>
                 </div>
             </div>
@@ -98,16 +151,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

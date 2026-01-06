@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../mypage-caller-number.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,100 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/mypage-caller-number.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/mypage-caller-number</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../mypage-caller-number.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span>홍길동님 ▼</span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 1: 헤더 & 등록 버튼 -->
+                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <h2 style="font-size: 20px; font-weight: 600; color: #333;">발신번호 관리</h2>
+                                    <button class="mock-btn mock-btn-primary">+ 발신번호 등록</button>
+                                </div>
+                                
+                                <!-- 마커 2: 안내 메시지 -->
+                                <div class="marker" data-id="2" style="top: 160px; right: 20px;">2</div>
+                                <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                                    <div style="font-weight: 600; color: #0369a1; margin-bottom: 8px;">📱 발신번호 등록 안내</div>
+                                    <ul style="font-size: 13px; color: #0369a1; margin: 0; padding-left: 20px;">
+                                        <li>문자 발송을 위해서는 발신번호 사전 등록이 필요합니다.</li>
+                                        <li>발신번호는 본인 소유 또는 사용 권한이 있는 번호만 등록 가능합니다.</li>
+                                        <li>등록된 발신번호는 통신사 인증 후 사용 가능합니다.</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- 마커 3: 발신번호 목록 -->
+                                <div class="marker" data-id="3" style="top: 300px; right: 20px;">3</div>
+                                <div class="form-section" style="padding: 0;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">No</th>
+                                                <th>발신번호</th>
+                                                <th>유형</th>
+                                                <th>상태</th>
+                                                <th>등록일</th>
+                                                <th style="width: 120px;">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>010-1234-5678</td>
+                                                <td>휴대폰</td>
+                                                <td><span class="status-badge success">인증완료</span></td>
+                                                <td>2024-01-10</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #ef4444;">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>02-1234-5678</td>
+                                                <td>유선전화</td>
+                                                <td><span class="status-badge success">인증완료</span></td>
+                                                <td>2024-01-08</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #ef4444;">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>1588-1234</td>
+                                                <td>대표번호</td>
+                                                <td><span class="status-badge warning">인증대기</span></td>
+                                                <td>2024-01-12</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">인증</button>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #ef4444;">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- 마커 4: 페이지네이션 -->
+                                <div class="marker" data-id="4" style="top: 500px; right: 400px;">4</div>
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,16 +133,17 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">mypage-caller-number.html · 발신번호 관리 페이지</div>
+                <div class="desc-subtitle">mypage-caller-number.html · 발신번호 관리</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">발신번호 등록</div>
+                        <div class="desc-item-title">발신번호 등록 버튼</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
@@ -71,16 +152,23 @@
                             <tr><th>동작</th><th>설명</th></tr>
                             <tr><td>클릭</td><td>발신번호 등록 모달 표시</td></tr>
                         </table>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 본인인증 필요</div>
-                            <div class="desc-note-text">발신번호 등록 시 통신사업자 증빙서류가 필요합니다.</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
+                        <div class="desc-item-title">안내 메시지</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호 등록 관련 안내사항입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
                         <div class="desc-item-title">발신번호 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -88,29 +176,22 @@
                         <div class="desc-text">등록된 발신번호 목록입니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>발신번호</td><td>등록된 전화번호</td></tr>
-                            <tr><td>등록유형</td><td>휴대폰/유선전화/대표번호</td></tr>
-                            <tr><td>상태</td><td>승인대기/승인/반려</td></tr>
-                            <tr><td>등록일</td><td>등록 신청일</td></tr>
-                            <tr><td>관리</td><td>삭제 버튼</td></tr>
+                            <tr><td>발신번호</td><td>등록된 번호</td></tr>
+                            <tr><td>유형</td><td>휴대폰/유선전화/대표번호</td></tr>
+                            <tr><td>상태</td><td>인증완료/인증대기</td></tr>
+                            <tr><td>관리</td><td>인증/삭제 버튼</td></tr>
                         </table>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="3">
+                <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">발신번호 등록 모달</div>
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">페이지네이션</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">발신번호 등록 폼입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>필드</th><th>설명</th></tr>
-                            <tr><td>전화번호</td><td>등록할 발신번호</td></tr>
-                            <tr><td>유형</td><td>휴대폰/유선전화/대표번호</td></tr>
-                            <tr><td>증빙서류</td><td>통신가입증명서 등</td></tr>
-                        </table>
+                        <div class="desc-text">발신번호 목록 페이지 이동입니다.</div>
                     </div>
                 </div>
             </div>
@@ -118,16 +199,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

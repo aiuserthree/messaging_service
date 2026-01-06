@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../payment-history.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,18 +32,110 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/payment-history.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/payment-history</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../payment-history.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item active">요금/결제 ▼</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 24px;">결제 내역</h2>
+                                
+                                <!-- 마커 1: 검색 필터 -->
+                                <div class="marker" data-id="1" style="top: 130px; right: 20px;">1</div>
+                                <div class="form-section" style="padding: 16px; margin-bottom: 16px;">
+                                    <div style="display: flex; gap: 12px; align-items: flex-end;">
+                                        <div>
+                                            <label class="form-label">기간</label>
+                                            <div style="display: flex; gap: 8px; align-items: center;">
+                                                <input type="date" class="form-input" style="width: 150px;" value="2024-01-01">
+                                                <span>~</span>
+                                                <input type="date" class="form-input" style="width: 150px;" value="2024-01-15">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">결제 방법</label>
+                                            <select class="form-select" style="width: 120px;">
+                                                <option>전체</option>
+                                                <option>신용카드</option>
+                                                <option>계좌이체</option>
+                                                <option>무통장입금</option>
+                                            </select>
+                                        </div>
+                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 2: 결제 내역 목록 -->
+                                <div class="marker" data-id="2" style="top: 250px; right: 20px;">2</div>
+                                <div class="form-section" style="padding: 0;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">No</th>
+                                                <th>결제일시</th>
+                                                <th>결제 방법</th>
+                                                <th>충전 포인트</th>
+                                                <th>결제 금액</th>
+                                                <th>상태</th>
+                                                <th style="width: 100px;">영수증</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>2024-01-15 10:30</td>
+                                                <td>신용카드</td>
+                                                <td>50,000P</td>
+                                                <td>55,000원</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">보기</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>2024-01-10 14:20</td>
+                                                <td>계좌이체</td>
+                                                <td>100,000P</td>
+                                                <td>110,000원</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">보기</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>2024-01-05 09:00</td>
+                                                <td>무통장입금</td>
+                                                <td>300,000P</td>
+                                                <td>330,000원</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">보기</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- 마커 3: 페이지네이션 -->
+                                <div class="marker" data-id="3" style="top: 450px; right: 400px;">3</div>
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,10 +143,11 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">payment-history.html · 결제 내역 페이지</div>
+                <div class="desc-subtitle">payment-history.html · 결제 내역</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
@@ -65,13 +157,7 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">결제 내역 조회 필터입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>필터</th><th>옵션</th></tr>
-                            <tr><td>기간</td><td>오늘, 1주일, 1개월, 직접입력</td></tr>
-                            <tr><td>결제수단</td><td>전체, 카드, 계좌이체, 무통장</td></tr>
-                            <tr><td>상태</td><td>전체, 완료, 대기, 취소</td></tr>
-                        </table>
+                        <div class="desc-text">기간과 결제 방법으로 내역을 필터링합니다.</div>
                     </div>
                 </div>
 
@@ -85,13 +171,23 @@
                         <div class="desc-text">결제 내역을 테이블로 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>결제일시</td><td>결제 처리 시간</td></tr>
-                            <tr><td>결제수단</td><td>카드/계좌이체/무통장</td></tr>
-                            <tr><td>결제금액</td><td>결제된 금액</td></tr>
-                            <tr><td>충전포인트</td><td>충전된 포인트</td></tr>
-                            <tr><td>상태</td><td>완료/대기/취소</td></tr>
-                            <tr><td>영수증</td><td>영수증 출력 버튼</td></tr>
+                            <tr><td>결제일시</td><td>결제 완료 시각</td></tr>
+                            <tr><td>결제 방법</td><td>카드/이체/무통장</td></tr>
+                            <tr><td>충전 포인트</td><td>충전된 포인트</td></tr>
+                            <tr><td>결제 금액</td><td>VAT 포함 금액</td></tr>
+                            <tr><td>영수증</td><td>결제 영수증 보기</td></tr>
                         </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">결제 내역 페이지 이동입니다.</div>
                     </div>
                 </div>
             </div>
@@ -99,16 +195,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

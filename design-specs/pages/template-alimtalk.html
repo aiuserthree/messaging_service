@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../template-alimtalk.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,129 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/template-alimtalk.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/template-alimtalk</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../template-alimtalk.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item active">템플릿 관리 ▼</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 1: 헤더 & 등록 버튼 -->
+                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <h2 style="font-size: 20px; font-weight: 600; color: #333;">알림톡 템플릿</h2>
+                                    <button class="mock-btn mock-btn-primary" style="background: #fee500; color: #3c1e1e;">+ 템플릿 등록</button>
+                                </div>
+                                
+                                <!-- 마커 2: 안내 메시지 -->
+                                <div class="marker" data-id="2" style="top: 160px; right: 20px;">2</div>
+                                <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
+                                    <div style="font-weight: 600; color: #92400e; margin-bottom: 8px;">💡 알림톡 템플릿 안내</div>
+                                    <ul style="font-size: 13px; color: #92400e; margin: 0; padding-left: 20px;">
+                                        <li>알림톡 템플릿은 카카오 검수 후 승인되어야 발송 가능합니다.</li>
+                                        <li>검수 기간은 영업일 기준 1-3일 소요됩니다.</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- 마커 3: 프로필 선택 -->
+                                <div class="marker" data-id="3" style="top: 260px; left: 200px;">3</div>
+                                <div class="form-section" style="padding: 16px; margin-bottom: 16px;">
+                                    <div style="display: flex; gap: 12px; align-items: center;">
+                                        <label class="form-label" style="margin: 0;">발신 프로필</label>
+                                        <select class="form-select" style="width: 250px;">
+                                            <option>톡벨 공식채널 (@tokbell_official)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 4: 템플릿 목록 -->
+                                <div class="marker" data-id="4" style="top: 340px; right: 20px;">4</div>
+                                <div class="form-section" style="padding: 0;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">No</th>
+                                                <th>템플릿명</th>
+                                                <th>템플릿 코드</th>
+                                                <th>카테고리</th>
+                                                <th>상태</th>
+                                                <th>등록일</th>
+                                                <th style="width: 120px;">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>주문 접수 안내</td>
+                                                <td style="font-family: monospace; font-size: 12px;">TPL_ORDER_001</td>
+                                                <td>주문/배송</td>
+                                                <td><span class="status-badge success">승인완료</span></td>
+                                                <td>2024-01-10</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>배송 시작 안내</td>
+                                                <td style="font-family: monospace; font-size: 12px;">TPL_SHIP_001</td>
+                                                <td>주문/배송</td>
+                                                <td><span class="status-badge success">승인완료</span></td>
+                                                <td>2024-01-08</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>회원가입 환영</td>
+                                                <td style="font-family: monospace; font-size: 12px;">TPL_JOIN_001</td>
+                                                <td>회원</td>
+                                                <td><span class="status-badge warning">검수중</span></td>
+                                                <td>2024-01-12</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>결제 완료 안내</td>
+                                                <td style="font-family: monospace; font-size: 12px;">TPL_PAY_001</td>
+                                                <td>결제</td>
+                                                <td><span class="status-badge danger">반려</span></td>
+                                                <td>2024-01-05</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- 마커 5: 페이지네이션 -->
+                                <div class="marker" data-id="5" style="top: 580px; right: 400px;">5</div>
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,34 +162,53 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">template-alimtalk.html · 알림톡 템플릿 페이지</div>
+                <div class="desc-subtitle">template-alimtalk.html · 알림톡 템플릿</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">템플릿 등록 신청</div>
+                        <div class="desc-item-title">템플릿 등록 버튼</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">새 알림톡 템플릿을 등록 신청합니다.</div>
+                        <div class="desc-text">새 알림톡 템플릿을 등록합니다.</div>
                         <table class="desc-table">
                             <tr><th>동작</th><th>설명</th></tr>
                             <tr><td>클릭</td><td>템플릿 등록 페이지로 이동</td></tr>
                         </table>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 승인 필요</div>
-                            <div class="desc-note-text">알림톡 템플릿은 카카오 심사 후 승인되어야 사용 가능합니다. (1-3 영업일 소요)</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
+                        <div class="desc-item-title">안내 메시지</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">알림톡 템플릿 관련 주요 안내사항입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">프로필 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿을 조회할 발신 프로필을 선택합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
                         <div class="desc-item-title">템플릿 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -89,30 +217,29 @@
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
                             <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
-                            <tr><td>템플릿코드</td><td>카카오 템플릿 코드</td></tr>
-                            <tr><td>카테고리</td><td>템플릿 카테고리</td></tr>
-                            <tr><td>상태</td><td>대기/승인/반려</td></tr>
-                            <tr><td>등록일</td><td>등록 신청일</td></tr>
+                            <tr><td>템플릿 코드</td><td>카카오 발급 코드</td></tr>
+                            <tr><td>카테고리</td><td>템플릿 분류</td></tr>
+                            <tr><td>상태</td><td>승인완료/검수중/반려</td></tr>
                         </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 상태 설명</div>
+                            <div class="desc-note-text">
+                                • 승인완료: 발송 가능<br>
+                                • 검수중: 카카오 검수 대기<br>
+                                • 반려: 수정 후 재등록 필요
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="3">
+                <div class="desc-item" data-id="5">
                     <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">템플릿 등록 모달</div>
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">페이지네이션</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">알림톡 템플릿 등록 폼입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>필드</th><th>설명</th></tr>
-                            <tr><td>발신프로필</td><td>사용할 카카오 채널</td></tr>
-                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
-                            <tr><td>카테고리</td><td>템플릿 용도 분류</td></tr>
-                            <tr><td>내용</td><td>알림톡 내용</td></tr>
-                            <tr><td>버튼</td><td>링크 버튼 (선택)</td></tr>
-                        </table>
+                        <div class="desc-text">템플릿 목록 페이지 이동입니다.</div>
                     </div>
                 </div>
             </div>
@@ -120,16 +247,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

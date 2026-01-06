@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 800px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 16px; }
+        .card-title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px; }
+        
+        .form-row { margin-bottom: 16px; }
+        .form-label-actual { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #1e293b; }
+        .form-input-actual { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white; }
+        .form-input-actual:disabled { background: #f8fafc; color: #64748b; }
+        
+        .form-row-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        
+        .btn-group { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+        .btn-actual { padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-outline-actual { background: white; border: 1px solid #e2e8f0; color: #64748b; }
+        .btn-primary-actual { background: #2563eb; border: none; color: white; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P009-02</span>
+                    <span class="page-title-header">내 정보</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/mypage-profile', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/mypage-profile</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">마이페이지 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">👤 내 정보</h1>
+                                
+                                <div class="card">
+                                    <div class="card-title">계정 정보</div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">아이디</label>
+                                        <input type="text" class="form-input-actual" value="tokbell_user" disabled>
+                                    </div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">이메일</label>
+                                        <input type="email" class="form-input-actual" value="user@example.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-title">담당자 정보</div>
+                                    <div class="form-row-inline">
+                                        <div class="form-row">
+                                            <label class="form-label-actual">담당자명</label>
+                                            <input type="text" class="form-input-actual" value="홍길동">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label-actual">연락처</label>
+                                            <input type="tel" class="form-input-actual" value="010-1234-5678">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-title">회사 정보</div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">회사명</label>
+                                        <input type="text" class="form-input-actual" value="(주)테스트회사">
+                                    </div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">사업자등록번호</label>
+                                        <input type="text" class="form-input-actual" value="123-45-67890">
+                                    </div>
+                                </div>
+                                
+                                <div class="btn-group">
+                                    <button class="btn-actual btn-outline-actual">취소</button>
+                                    <button class="btn-actual btn-primary-actual">저장</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 130px; right: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 300px; right: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 450px; right: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 600px; right: 50px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">mypage-profile.html · 내 정보 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">계정 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">기본 계정 정보를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>수정 가능</th></tr>
+                            <tr><td>아이디</td><td>X (고정)</td></tr>
+                            <tr><td>이메일</td><td>O</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">담당자 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">담당자 정보를 수정합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>담당자명</td><td>실제 담당자 이름</td></tr>
+                            <tr><td>연락처</td><td>담당자 휴대폰 번호</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">회사 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회사 정보를 수정합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>회사명</td><td>법인명 또는 상호</td></tr>
+                            <tr><td>사업자등록번호</td><td>사업자등록증 번호</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">저장 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">변경 사항을 저장합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>취소</td><td>변경 사항 취소</td></tr>
+                            <tr><td>저장</td><td>변경 사항 저장</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

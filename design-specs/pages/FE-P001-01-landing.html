@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랜딩 페이지 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page {
+            background: #f8fafc;
+            min-height: 700px;
+        }
+        .actual-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .actual-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .actual-nav {
+            display: flex;
+            gap: 24px;
+        }
+        .actual-nav-item {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .actual-header-btn {
+            display: flex;
+            gap: 8px;
+        }
+        .actual-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .actual-btn-outline {
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+        .actual-btn-primary {
+            background: #2563eb;
+            border: none;
+            color: white;
+        }
+        .hero-section-actual {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+            padding: 80px 40px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+        .hero-title-actual {
+            font-size: 42px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+        .hero-subtitle-actual {
+            font-size: 18px;
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .hero-btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .hero-btn-primary {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+        .hero-btn-outline {
+            background: white;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+        }
+        .feature-section {
+            padding: 60px 40px;
+            background: white;
+        }
+        .section-title-actual {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 40px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            color: white;
+        }
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .feature-desc {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .pricing-section {
+            padding: 60px 40px;
+            background: #f8fafc;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .pricing-card-actual {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .pricing-card-actual:hover {
+            border-color: #2563eb;
+        }
+        .pricing-type {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .pricing-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .pricing-unit {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P001-01</span>
+                    <span class="page-title-header">랜딩 페이지</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav">
+                                    <span class="actual-nav-item">서비스 소개</span>
+                                    <span class="actual-nav-item">요금 안내</span>
+                                </div>
+                                <div class="actual-header-btn">
+                                    <button class="actual-btn actual-btn-outline">로그인</button>
+                                    <button class="actual-btn actual-btn-primary">무료 시작</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 히어로 섹션 -->
+                            <div class="hero-section-actual">
+                                <div class="hero-badge">✨ 쉽고 빠른 메시징 서비스</div>
+                                <h1 class="hero-title-actual">비즈니스 메시지,<br>더 스마트하게</h1>
+                                <p class="hero-subtitle-actual">SMS, LMS, MMS부터 카카오 알림톡까지<br>합리적인 가격으로 이용하세요</p>
+                                <div class="hero-buttons">
+                                    <button class="hero-btn hero-btn-primary">무료로 시작하기</button>
+                                    <button class="hero-btn hero-btn-outline">서비스 알아보기</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 서비스 특징 -->
+                            <div class="feature-section">
+                                <h2 class="section-title-actual">왜 톡벨인가요?</h2>
+                                <div class="feature-grid">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">💰</div>
+                                        <div class="feature-title">합리적인 가격</div>
+                                        <div class="feature-desc">업계 최저 수준의 발송 단가로<br>비용 부담을 줄여드립니다</div>
+                                    </div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon">⚡</div>
+                                        <div class="feature-title">빠른 발송</div>
+                                        <div class="feature-desc">평균 발송 시간 3초 이내<br>대량 발송도 빠르게</div>
+                                    </div>
+                                    <div class="feature-card">
+                                        <div class="feature-icon">🔒</div>
+                                        <div class="feature-title">안전한 보안</div>
+                                        <div class="feature-desc">개인정보 암호화 저장<br>안전한 데이터 관리</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 요금 안내 -->
+                            <div class="pricing-section">
+                                <h2 class="section-title-actual">합리적인 요금</h2>
+                                <div class="pricing-grid">
+                                    <div class="pricing-card-actual">
+                                        <div class="pricing-type">SMS</div>
+                                        <div class="pricing-value">9.9</div>
+                                        <div class="pricing-unit">원/건</div>
+                                    </div>
+                                    <div class="pricing-card-actual">
+                                        <div class="pricing-type">LMS</div>
+                                        <div class="pricing-value">28</div>
+                                        <div class="pricing-unit">원/건</div>
+                                    </div>
+                                    <div class="pricing-card-actual">
+                                        <div class="pricing-type">MMS</div>
+                                        <div class="pricing-value">110</div>
+                                        <div class="pricing-unit">원/건</div>
+                                    </div>
+                                    <div class="pricing-card-actual">
+                                        <div class="pricing-type">알림톡</div>
+                                        <div class="pricing-value">7.5</div>
+                                        <div class="pricing-unit">원/건</div>
+                                    </div>
+                                    <div class="pricing-card-actual">
+                                        <div class="pricing-type">브랜드톡</div>
+                                        <div class="pricing-value">15</div>
+                                        <div class="pricing-unit">원/건</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 20px; right: 200px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 180px; right: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 420px; right: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 620px; right: 50px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">index.html · 랜딩 페이지 (비로그인)</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">헤더 (비로그인 GNB)</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">비로그인 상태의 글로벌 네비게이션 바입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>Tokbell 로고</td><td>홈으로 이동 (현재 페이지)</td></tr>
+                            <tr><td>서비스 소개</td><td>서비스 소개 섹션으로 스크롤</td></tr>
+                            <tr><td>요금 안내</td><td>요금 섹션으로 스크롤</td></tr>
+                            <tr><td>로그인 버튼</td><td>login.html로 이동</td></tr>
+                            <tr><td>무료 시작 버튼</td><td>signup.html로 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">히어로 섹션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">서비스의 핵심 가치를 전달하는 메인 배너 영역입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>무료로 시작하기</td><td>signup.html로 이동</td></tr>
+                            <tr><td>서비스 알아보기</td><td>서비스 소개 섹션으로 스크롤</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">서비스 특징 섹션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">톡벨 서비스의 주요 특징을 아이콘과 함께 소개합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>특징</th><th>설명</th></tr>
+                            <tr><td>합리적인 가격</td><td>업계 최저 수준의 발송 단가</td></tr>
+                            <tr><td>빠른 발송</td><td>평균 발송 시간 3초 이내</td></tr>
+                            <tr><td>안전한 보안</td><td>개인정보 암호화 저장</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">요금 안내 섹션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">각 메시지 유형별 단가를 카드 형태로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>유형</th><th>단가</th></tr>
+                            <tr><td>SMS (단문)</td><td>9.9원/건</td></tr>
+                            <tr><td>LMS (장문)</td><td>28원/건</td></tr>
+                            <tr><td>MMS (이미지)</td><td>110원/건</td></tr>
+                            <tr><td>알림톡</td><td>7.5원/건</td></tr>
+                            <tr><td>브랜드톡</td><td>15원/건</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

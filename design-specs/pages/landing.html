@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../index.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,20 +32,93 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/index.html</div>
+                        <div class="browser-url">https://tokbell.co.kr</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 800px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../index.html" style="height: 800px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header" style="position: relative;">
+                                <div class="screen-logo">Tokbell</div>
+                                <!-- 마커 1: 헤더 -->
+                                <div class="marker" data-id="1" style="top: 20px; right: 100px;">1</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">서비스 소개</span>
+                                    <span class="screen-nav-item">요금 안내</span>
+                                    <span class="screen-nav-item">고객지원</span>
+                                </div>
+                                <div class="screen-user">
+                                    <button class="mock-btn mock-btn-outline mock-btn-sm">로그인</button>
+                                    <button class="mock-btn mock-btn-primary mock-btn-sm">무료 시작</button>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 80px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 250px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 500px; right: 20px;">3</div>
-                                <div class="marker" data-id="4" style="top: 700px; right: 20px;">4</div>
+                            
+                            <!-- Hero Section -->
+                            <!-- 마커 2: 히어로 섹션 -->
+                            <div class="marker" data-id="2" style="top: 120px; right: 20px;">2</div>
+                            <div class="hero-section" style="background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 100%); padding: 80px 40px; text-align: center;">
+                                <h1 class="hero-title" style="font-size: 40px; font-weight: 700; color: #1e293b; margin-bottom: 16px;">
+                                    문자 & 카카오톡 통합 발송 플랫폼
+                                </h1>
+                                <p class="hero-subtitle" style="font-size: 18px; color: #64748b; margin-bottom: 32px;">
+                                    SMS, LMS, MMS, 알림톡, 브랜드톡을 한 곳에서 간편하게
+                                </p>
+                                <div style="display: flex; gap: 16px; justify-content: center;">
+                                    <button class="mock-btn mock-btn-primary" style="padding: 16px 32px; font-size: 16px;">무료로 시작하기</button>
+                                    <button class="mock-btn mock-btn-outline" style="padding: 16px 32px; font-size: 16px;">서비스 알아보기</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Features Section -->
+                            <!-- 마커 3: 특징 섹션 -->
+                            <div class="marker" data-id="3" style="top: 350px; right: 20px;">3</div>
+                            <div style="padding: 60px 40px; background: white;">
+                                <h2 style="text-align: center; font-size: 28px; color: #1e293b; margin-bottom: 40px;">왜 톡벨인가요?</h2>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+                                    <div style="text-align: center; padding: 24px;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">💰</div>
+                                        <h3 style="font-size: 18px; color: #1e293b; margin-bottom: 8px;">합리적인 가격</h3>
+                                        <p style="font-size: 14px; color: #64748b;">업계 최저 수준의 발송 단가</p>
+                                    </div>
+                                    <div style="text-align: center; padding: 24px;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">⚡</div>
+                                        <h3 style="font-size: 18px; color: #1e293b; margin-bottom: 8px;">빠른 발송</h3>
+                                        <p style="font-size: 14px; color: #64748b;">평균 발송 시간 3초 이내</p>
+                                    </div>
+                                    <div style="text-align: center; padding: 24px;">
+                                        <div style="font-size: 48px; margin-bottom: 16px;">🔒</div>
+                                        <h3 style="font-size: 18px; color: #1e293b; margin-bottom: 8px;">안전한 보안</h3>
+                                        <p style="font-size: 14px; color: #64748b;">개인정보 암호화 및 안전한 관리</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Price Section -->
+                            <!-- 마커 4: 요금 섹션 -->
+                            <div class="marker" data-id="4" style="top: 580px; right: 20px;">4</div>
+                            <div style="padding: 60px 40px; background: #f8fafc;">
+                                <h2 style="text-align: center; font-size: 28px; color: #1e293b; margin-bottom: 40px;">합리적인 요금</h2>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 900px; margin: 0 auto;">
+                                    <div class="price-card">
+                                        <div class="price-card-title">SMS</div>
+                                        <div class="price-card-value">9.9</div>
+                                        <div class="price-card-unit">원/건</div>
+                                    </div>
+                                    <div class="price-card">
+                                        <div class="price-card-title">LMS</div>
+                                        <div class="price-card-value">28</div>
+                                        <div class="price-card-unit">원/건</div>
+                                    </div>
+                                    <div class="price-card">
+                                        <div class="price-card-title">알림톡</div>
+                                        <div class="price-card-value">7.5</div>
+                                        <div class="price-card-unit">원/건</div>
+                                    </div>
+                                    <div class="price-card">
+                                        <div class="price-card-title">브랜드톡</div>
+                                        <div class="price-card-value">15</div>
+                                        <div class="price-card-unit">원/건</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,6 +126,7 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
@@ -67,12 +140,12 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">로고와 로그인/회원가입 버튼이 위치합니다.</div>
+                        <div class="desc-text">비로그인 상태의 헤더입니다.</div>
                         <table class="desc-table">
                             <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>로고</td><td>index.html 새로고침</td></tr>
-                            <tr><td>로그인</td><td>login.html 이동</td></tr>
-                            <tr><td>회원가입</td><td>signup.html 이동</td></tr>
+                            <tr><td>로고</td><td>홈으로 이동</td></tr>
+                            <tr><td>로그인</td><td>login.html로 이동</td></tr>
+                            <tr><td>무료 시작</td><td>signup.html로 이동</td></tr>
                         </table>
                     </div>
                 </div>
@@ -84,12 +157,11 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">서비스 소개 및 주요 기능을 강조합니다.</div>
+                        <div class="desc-text">서비스의 핵심 가치를 전달하는 메인 배너 영역입니다.</div>
                         <table class="desc-table">
-                            <tr><th>요소</th><th>설명</th></tr>
-                            <tr><td>메인 타이틀</td><td>서비스 핵심 가치</td></tr>
-                            <tr><td>서브 타이틀</td><td>서비스 설명</td></tr>
-                            <tr><td>CTA 버튼</td><td>무료 시작하기 → signup.html</td></tr>
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>무료로 시작하기</td><td>signup.html로 이동</td></tr>
+                            <tr><td>서비스 알아보기</td><td>특징 섹션으로 스크롤</td></tr>
                         </table>
                     </div>
                 </div>
@@ -97,17 +169,16 @@
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">서비스 요금</div>
+                        <div class="desc-item-title">특징 섹션</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">메시지 유형별 단가를 표시합니다.</div>
+                        <div class="desc-text">톡벨 서비스의 주요 특징을 아이콘과 함께 소개합니다.</div>
                         <table class="desc-table">
-                            <tr><th>유형</th><th>단가</th></tr>
-                            <tr><td>SMS</td><td>9.9원</td></tr>
-                            <tr><td>LMS</td><td>30원</td></tr>
-                            <tr><td>MMS</td><td>110원</td></tr>
-                            <tr><td>알림톡</td><td>7.5원</td></tr>
+                            <tr><th>특징</th><th>설명</th></tr>
+                            <tr><td>합리적인 가격</td><td>업계 최저 수준의 발송 단가</td></tr>
+                            <tr><td>빠른 발송</td><td>평균 발송 시간 3초 이내</td></tr>
+                            <tr><td>안전한 보안</td><td>개인정보 암호화</td></tr>
                         </table>
                     </div>
                 </div>
@@ -115,17 +186,22 @@
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
-                        <div class="desc-item-title">푸터 영역</div>
+                        <div class="desc-item-title">요금 섹션</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">회사 정보 및 고객센터 정보를 표시합니다.</div>
+                        <div class="desc-text">각 메시지 유형별 단가를 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>정보</th><th>내용</th></tr>
-                            <tr><td>고객센터</td><td>1588-0000</td></tr>
-                            <tr><td>운영시간</td><td>평일 09:00~18:00</td></tr>
-                            <tr><td>이메일</td><td>support@tokbell.co.kr</td></tr>
+                            <tr><th>유형</th><th>단가</th></tr>
+                            <tr><td>SMS</td><td>9.9원/건</td></tr>
+                            <tr><td>LMS</td><td>28원/건</td></tr>
+                            <tr><td>알림톡</td><td>7.5원/건</td></tr>
+                            <tr><td>브랜드톡</td><td>15원/건</td></tr>
                         </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 참고</div>
+                            <div class="desc-note-text">요금은 VAT 별도이며, 대량 발송 시 할인 적용</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,16 +209,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

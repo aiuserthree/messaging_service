@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>알림톡 템플릿 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; }
+        .btn-actual { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-primary-actual { background: #fee500; border: none; color: #3c1e1e; font-weight: 500; }
+        
+        .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+        .search-input { flex: 1; padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .search-btn { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .table-actual { width: 100%; border-collapse: collapse; }
+        .table-actual th, .table-actual td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .table-actual th { background: #f8fafc; font-size: 12px; font-weight: 500; color: #64748b; }
+        .table-actual td { font-size: 14px; color: #1e293b; }
+        
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-badge.approved { background: #d1fae5; color: #065f46; }
+        .status-badge.pending { background: #fef3c7; color: #92400e; }
+        .status-badge.rejected { background: #fee2e2; color: #991b1b; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #64748b; margin-right: 4px; }
+        .action-btn:hover { background: #f1f5f9; }
+        
+        .pagination { display: flex; justify-content: center; gap: 4px; padding: 20px; }
+        .page-btn { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; cursor: pointer; font-size: 13px; color: #64748b; }
+        .page-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P005-02</span>
+                    <span class="page-title-header">알림톡 템플릿</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/template-alimtalk', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/template-alimtalk</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item active">템플릿 관리 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="page-header">
+                                    <h1 class="page-title">💬 알림톡 템플릿</h1>
+                                    <button class="btn-actual btn-primary-actual">+ 템플릿 등록</button>
+                                </div>
+                                
+                                <div class="search-bar">
+                                    <input type="text" class="search-input" placeholder="템플릿명 또는 코드로 검색">
+                                    <select style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                        <option>전체 상태</option>
+                                        <option>승인</option>
+                                        <option>검수중</option>
+                                        <option>반려</option>
+                                    </select>
+                                    <button class="search-btn">검색</button>
+                                </div>
+                                
+                                <div class="card">
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th>템플릿명</th>
+                                                <th>템플릿 코드</th>
+                                                <th>상태</th>
+                                                <th>내용</th>
+                                                <th>등록일</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>주문완료 알림</td>
+                                                <td style="font-family: monospace; font-size: 12px;">ORDER_COMPLETE_001</td>
+                                                <td><span class="status-badge approved">승인</span></td>
+                                                <td>#{고객명}님, 주문이 완료되었습니다...</td>
+                                                <td>2025-01-01</td>
+                                                <td>
+                                                    <button class="action-btn">상세</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>배송시작 알림</td>
+                                                <td style="font-family: monospace; font-size: 12px;">DELIVERY_START_001</td>
+                                                <td><span class="status-badge approved">승인</span></td>
+                                                <td>#{고객명}님, 상품이 발송되었습니다...</td>
+                                                <td>2025-01-02</td>
+                                                <td>
+                                                    <button class="action-btn">상세</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>예약확정 안내</td>
+                                                <td style="font-family: monospace; font-size: 12px;">RESERVE_CONFIRM_001</td>
+                                                <td><span class="status-badge pending">검수중</span></td>
+                                                <td>#{고객명}님, 예약이 확정되었습니다...</td>
+                                                <td>2025-01-05</td>
+                                                <td>
+                                                    <button class="action-btn">상세</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>이벤트 참여 완료</td>
+                                                <td style="font-family: monospace; font-size: 12px;">EVENT_JOIN_001</td>
+                                                <td><span class="status-badge rejected">반려</span></td>
+                                                <td>이벤트 참여가 완료되었습니다...</td>
+                                                <td>2025-01-04</td>
+                                                <td>
+                                                    <button class="action-btn">상세</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        <button class="page-btn">&lt;</button>
+                                        <button class="page-btn active">1</button>
+                                        <button class="page-btn">2</button>
+                                        <button class="page-btn">&gt;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 100px; right: 100px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 150px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 250px; left: 400px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 250px; right: 100px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">template-alimtalk.html · 알림톡 템플릿 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">템플릿 등록 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">새로운 알림톡 템플릿을 등록합니다.</div>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 템플릿 심사</div>
+                            <div class="desc-note-text">알림톡 템플릿은 카카오 검수를 거쳐 승인 후 사용 가능합니다. 검수 기간은 평균 1-3 영업일 소요됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">검색 & 필터</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿을 검색하고 상태별로 필터링합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필터</th><th>옵션</th></tr>
+                            <tr><td>검색어</td><td>템플릿명 또는 코드</td></tr>
+                            <tr><td>상태</td><td>전체/승인/검수중/반려</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">상태 표시</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿의 검수 상태를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>상태</th><th>의미</th><th>발송 가능</th></tr>
+                            <tr><td>승인</td><td>카카오 검수 완료</td><td>O</td></tr>
+                            <tr><td>검수중</td><td>카카오 검수 진행중</td><td>X</td></tr>
+                            <tr><td>반려</td><td>검수 불합격</td><td>X</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">관리 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿 상세 정보 확인 및 삭제</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>상세</td><td>템플릿 상세 정보 모달 (반려 시 반려 사유 확인)</td></tr>
+                            <tr><td>삭제</td><td>확인 후 템플릿 삭제</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

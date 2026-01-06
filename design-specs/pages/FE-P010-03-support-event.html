@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1000px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .event-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .event-card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; cursor: pointer; transition: transform 0.2s; }
+        .event-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .event-image { width: 100%; height: 160px; background: linear-gradient(135deg, #60a5fa, #2563eb); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+        .event-content { padding: 20px; }
+        .event-title-actual { font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+        .event-period { font-size: 13px; color: #64748b; }
+        .event-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-bottom: 8px; }
+        .event-badge.ongoing { background: #d1fae5; color: #065f46; }
+        .event-badge.ended { background: #e2e8f0; color: #64748b; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P010-03</span>
+                    <span class="page-title-header">이벤트</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/support-event', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/support-event</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">고객지원 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">🎉 이벤트</h1>
+                                
+                                <div class="event-grid">
+                                    <div class="event-card">
+                                        <div class="event-image">🎁</div>
+                                        <div class="event-content">
+                                            <span class="event-badge ongoing">진행중</span>
+                                            <div class="event-title-actual">신년 맞이 특별 충전 이벤트</div>
+                                            <div class="event-period">2025.01.01 ~ 2025.01.31</div>
+                                        </div>
+                                    </div>
+                                    <div class="event-card">
+                                        <div class="event-image" style="background: linear-gradient(135deg, #f59e0b, #f97316);">🔥</div>
+                                        <div class="event-content">
+                                            <span class="event-badge ongoing">진행중</span>
+                                            <div class="event-title-actual">친구 추천 보너스 2배 이벤트</div>
+                                            <div class="event-period">2025.01.01 ~ 2025.02.28</div>
+                                        </div>
+                                    </div>
+                                    <div class="event-card">
+                                        <div class="event-image" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">💰</div>
+                                        <div class="event-content">
+                                            <span class="event-badge ended">종료</span>
+                                            <div class="event-title-actual">연말 대박 포인트 이벤트</div>
+                                            <div class="event-period">2024.12.01 ~ 2024.12.31</div>
+                                        </div>
+                                    </div>
+                                    <div class="event-card">
+                                        <div class="event-image" style="background: linear-gradient(135deg, #10b981, #059669);">📱</div>
+                                        <div class="event-content">
+                                            <span class="event-badge ended">종료</span>
+                                            <div class="event-title-actual">알림톡 첫 발송 이벤트</div>
+                                            <div class="event-period">2024.11.01 ~ 2024.11.30</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 180px; left: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 250px; left: 50px;">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">support-event.html · 이벤트 목록</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">이벤트 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">진행중/종료된 이벤트를 카드 형태로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>이미지</td><td>이벤트 대표 이미지</td></tr>
+                            <tr><td>상태</td><td>진행중/종료</td></tr>
+                            <tr><td>제목</td><td>이벤트 제목</td></tr>
+                            <tr><td>기간</td><td>이벤트 기간</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">이벤트 카드</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">개별 이벤트 카드입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>이벤트 상세 페이지로 이동</td></tr>
+                            <tr><td>호버</td><td>카드 상승 효과</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1 문의 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 800px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; }
+        .form-row { margin-bottom: 16px; }
+        .form-label-actual { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #1e293b; }
+        .form-label-actual .required { color: #ef4444; }
+        .form-input-actual, .form-select-actual, .form-textarea-actual { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white; }
+        .form-textarea-actual { min-height: 200px; resize: vertical; }
+        .form-help { font-size: 12px; color: #64748b; margin-top: 4px; }
+        
+        .file-upload { border: 2px dashed #e2e8f0; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; }
+        .file-upload:hover { border-color: #2563eb; background: #f8fafc; }
+        .file-upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .file-upload-text { font-size: 14px; color: #64748b; }
+        
+        .btn-submit { width: 100%; padding: 14px 24px; background: #2563eb; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; color: white; cursor: pointer; margin-top: 16px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P010-04</span>
+                    <span class="page-title-header">1:1 문의</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/support-inquiry', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/support-inquiry</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">고객지원 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">💬 1:1 문의</h1>
+                                
+                                <div class="card">
+                                    <div class="form-row">
+                                        <label class="form-label-actual">문의 유형 <span class="required">*</span></label>
+                                        <select class="form-select-actual">
+                                            <option>문의 유형을 선택하세요</option>
+                                            <option>서비스 이용 문의</option>
+                                            <option>결제/환불 문의</option>
+                                            <option>오류/장애 신고</option>
+                                            <option>제안/건의</option>
+                                            <option>기타</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <label class="form-label-actual">제목 <span class="required">*</span></label>
+                                        <input type="text" class="form-input-actual" placeholder="문의 제목을 입력하세요">
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <label class="form-label-actual">내용 <span class="required">*</span></label>
+                                        <textarea class="form-textarea-actual" placeholder="문의 내용을 상세히 작성해 주세요"></textarea>
+                                        <div class="form-help">최대 2,000자까지 입력 가능합니다.</div>
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <label class="form-label-actual">첨부파일</label>
+                                        <div class="file-upload">
+                                            <div class="file-upload-icon">📎</div>
+                                            <div class="file-upload-text">파일을 드래그하거나 클릭하여 업로드<br>(최대 10MB, jpg/png/pdf)</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="btn-submit">문의하기</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 140px; right: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 220px; right: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 320px; right: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 530px; right: 50px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 660px; right: 50px;">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">support-inquiry.html · 1:1 문의하기</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">문의 유형</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">문의 유형을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>유형</th><th>설명</th></tr>
+                            <tr><td>서비스 이용 문의</td><td>서비스 사용 관련</td></tr>
+                            <tr><td>결제/환불 문의</td><td>결제, 환불, 포인트 관련</td></tr>
+                            <tr><td>오류/장애 신고</td><td>시스템 오류 신고</td></tr>
+                            <tr><td>제안/건의</td><td>기능 개선 제안</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">제목</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">문의 제목을 입력합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">내용</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">문의 내용을 상세히 작성합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>제한</th><th>값</th></tr>
+                            <tr><td>최대 글자수</td><td>2,000자</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">첨부파일</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">스크린샷 등 관련 파일을 첨부합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>제한</th></tr>
+                            <tr><td>최대 용량</td><td>10MB</td></tr>
+                            <tr><td>허용 형식</td><td>jpg, png, pdf</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">문의 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">문의를 등록합니다.</div>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 답변 안내</div>
+                            <div class="desc-note-text">문의 등록 후 평균 1-2 영업일 내 답변이 등록됩니다. 답변은 이메일로 알림이 발송됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

@@ -303,8 +303,8 @@ function initDropdownMenus() {
 // 플로팅 메뉴 생성 함수
 function createFloatingMenu() {
     return `
-        <div class="floating-menu active" id="floatingMenu">
-            <button class="floating-menu-toggle active" id="floatingMenuToggle" onclick="toggleFloatingMenu()">
+        <div class="floating-menu" id="floatingMenu">
+            <button class="floating-menu-toggle" id="floatingMenuToggle" onclick="toggleFloatingMenu()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>

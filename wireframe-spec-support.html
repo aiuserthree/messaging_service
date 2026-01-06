@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객센터 화면 - 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <style>
+        .page-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .page-nav-btn { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; }
+        .page-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <!-- 인덱스 바로가기 버튼 -->
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 고객센터 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-SUPPORT-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v1.0</span>
+            <span>📁 6개 파일</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <div class="page-nav">
+                    <button class="page-nav-btn active" onclick="showPage('notice')">공지사항</button>
+                    <button class="page-nav-btn" onclick="showPage('event')">이벤트</button>
+                    <button class="page-nav-btn" onclick="showPage('faq')">FAQ</button>
+                    <button class="page-nav-btn" onclick="showPage('inquiry')">1:1 문의</button>
+                </div>
+
+                <!-- 공지사항 화면 -->
+                <div class="page-content active" id="page-notice">
+                    <div class="mock-header">
+                        <span class="spec-marker" data-num="1" style="top: -10px; left: 10px;">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <div class="mock-nav-item-dropdown"><a href="#" class="mock-nav-item active">고객센터</a><div class="mock-dropdown-indicator">▼</div></div>
+                        </nav>
+                    </div>
+
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 600px;">
+                        <span class="spec-marker" data-num="2" style="top: 10px; left: 30px;">2</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">공지사항</h2>
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px;">서비스 관련 공지사항을 확인하세요</p>
+
+                        <!-- 검색 -->
+                        <span class="spec-marker" data-num="3" style="top: 100px; right: 30px;">3</span>
+                        <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+                            <select style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <option>전체</option>
+                                <option>서비스 안내</option>
+                                <option>점검 안내</option>
+                                <option>이벤트</option>
+                            </select>
+                            <input type="text" placeholder="검색어를 입력하세요" style="flex: 1; max-width: 300px; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px;">검색</button>
+                        </div>
+
+                        <!-- 공지사항 목록 -->
+                        <span class="spec-marker" data-num="4" style="top: 180px; left: 30px;">4</span>
+                        <div style="background: white; border-radius: 12px; overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; width: 80px;">번호</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">제목</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; width: 120px;">등록일</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; width: 80px;">조회수</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="background: #fffbeb;">
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;"><span style="padding: 2px 8px; background: #ef4444; color: white; border-radius: 4px; font-size: 11px;">중요</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><a href="#" style="color: #1e293b; text-decoration: none; font-weight: 500;">[안내] 2025년 요금제 개편 안내</a></td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">2025-01-05</td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">1,234</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">10</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><a href="#" style="color: #1e293b; text-decoration: none;">[서비스] 알림톡 신규 기능 추가 안내</a></td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">2025-01-04</td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">856</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">9</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><a href="#" style="color: #1e293b; text-decoration: none;">[점검] 1월 10일 서버 점검 안내</a></td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">2025-01-03</td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">523</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 이벤트 화면 -->
+                <div class="page-content" id="page-event">
+                    <div class="mock-header">
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                    </div>
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 400px;">
+                        <span class="spec-marker" data-num="5" style="top: 10px; left: 30px;">5</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">이벤트</h2>
+
+                        <!-- 이벤트 카드 -->
+                        <span class="spec-marker" data-num="6" style="top: 80px; right: 30px;">6</span>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+                            <div style="background: white; border-radius: 12px; overflow: hidden; cursor: pointer;">
+                                <div style="height: 160px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 48px;">🎉</span>
+                                </div>
+                                <div style="padding: 16px;">
+                                    <span style="padding: 2px 8px; background: #dcfce7; color: #16a34a; border-radius: 4px; font-size: 11px;">진행중</span>
+                                    <h3 style="font-size: 16px; font-weight: 600; margin: 8px 0;">신규 가입 이벤트</h3>
+                                    <p style="font-size: 13px; color: #64748b;">2025.01.01 ~ 2025.01.31</p>
+                                </div>
+                            </div>
+                            <div style="background: white; border-radius: 12px; overflow: hidden; cursor: pointer;">
+                                <div style="height: 160px; background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%); display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 48px;">💰</span>
+                                </div>
+                                <div style="padding: 16px;">
+                                    <span style="padding: 2px 8px; background: #dcfce7; color: #16a34a; border-radius: 4px; font-size: 11px;">진행중</span>
+                                    <h3 style="font-size: 16px; font-weight: 600; margin: 8px 0;">충전 보너스 이벤트</h3>
+                                    <p style="font-size: 13px; color: #64748b;">2025.01.01 ~ 2025.02.28</p>
+                                </div>
+                            </div>
+                            <div style="background: white; border-radius: 12px; overflow: hidden; cursor: pointer; opacity: 0.6;">
+                                <div style="height: 160px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 48px;">🎁</span>
+                                </div>
+                                <div style="padding: 16px;">
+                                    <span style="padding: 2px 8px; background: #f1f5f9; color: #64748b; border-radius: 4px; font-size: 11px;">종료</span>
+                                    <h3 style="font-size: 16px; font-weight: 600; margin: 8px 0;">연말 감사 이벤트</h3>
+                                    <p style="font-size: 13px; color: #64748b;">2024.12.01 ~ 2024.12.31</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 화면 -->
+                <div class="page-content" id="page-faq">
+                    <div class="mock-header">
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                    </div>
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 400px;">
+                        <span class="spec-marker" data-num="7" style="top: 10px; left: 30px;">7</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">자주 묻는 질문</h2>
+
+                        <!-- 카테고리 탭 -->
+                        <span class="spec-marker" data-num="8" style="top: 80px; right: 30px;">8</span>
+                        <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+                            <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px;">전체</button>
+                            <button style="padding: 10px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px;">가입/탈퇴</button>
+                            <button style="padding: 10px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px;">결제</button>
+                            <button style="padding: 10px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px;">발송</button>
+                            <button style="padding: 10px 20px; background: white; border: 1px solid #e2e8f0; border-radius: 8px;">기타</button>
+                        </div>
+
+                        <!-- FAQ 아코디언 -->
+                        <span class="spec-marker" data-num="9" style="top: 160px; left: 30px;">9</span>
+                        <div style="background: white; border-radius: 12px; overflow: hidden;">
+                            <div style="border-bottom: 1px solid #e2e8f0;">
+                                <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                    <span style="font-weight: 500;">Q. 발신번호는 어떻게 등록하나요?</span>
+                                    <span style="color: #64748b;">▼</span>
+                                </div>
+                                <div style="padding: 0 20px 16px; color: #64748b; font-size: 14px; line-height: 1.6;">
+                                    A. 마이페이지 > 발신번호 관리에서 등록할 수 있습니다. 휴대폰 번호는 본인 인증으로 즉시 등록되며, 유선 전화는 서류 심사가 필요합니다.
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #e2e8f0;">
+                                <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                    <span style="font-weight: 500;">Q. 포인트 충전은 어떻게 하나요?</span>
+                                    <span style="color: #64748b;">▶</span>
+                                </div>
+                            </div>
+                            <div style="border-bottom: 1px solid #e2e8f0;">
+                                <div style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                    <span style="font-weight: 500;">Q. 세금계산서 발행이 가능한가요?</span>
+                                    <span style="color: #64748b;">▶</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1:1 문의 화면 -->
+                <div class="page-content" id="page-inquiry">
+                    <div class="mock-header">
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                    </div>
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 400px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <div>
+                                <span class="spec-marker" data-num="10" style="top: -10px; left: -10px;">10</span>
+                                <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">1:1 문의</h2>
+                                <p style="font-size: 14px; color: #64748b;">궁금한 점을 문의해주세요</p>
+                            </div>
+                            <span class="spec-marker" data-num="11" style="top: -10px; right: 10px;">11</span>
+                            <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px;">✏️ 문의하기</button>
+                        </div>
+
+                        <!-- 문의 목록 -->
+                        <span class="spec-marker" data-num="12" style="top: 100px; left: 10px;">12</span>
+                        <div style="background: white; border-radius: 12px; overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; width: 100px;">상태</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">제목</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; width: 120px;">등록일</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;"><span style="padding: 4px 8px; background: #dcfce7; color: #16a34a; border-radius: 4px; font-size: 12px;">답변완료</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><a href="#" style="color: #1e293b; text-decoration: none;">발송 실패 건에 대한 문의</a></td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">2025-01-05</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;"><span style="padding: 4px 8px; background: #fef3c7; color: #d97706; border-radius: 4px; font-size: 12px;">대기중</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><a href="#" style="color: #1e293b; text-decoration: none;">세금계산서 발행 요청</a></td>
+                                        <td style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; color: #64748b;">2025-01-06</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 컴포넌트 명세</h2>
+                <p>고객센터 화면 구성 요소</p>
+            </div>
+            <div class="panel-content">
+                
+                <div class="spec-section">
+                    <div class="spec-section-title">페이지 정보</div>
+                    <div style="padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px;">
+                        <strong>파일 목록:</strong>
+                        <ul style="margin: 8px 0 0 16px;">
+                            <li>support-notice.html - 공지사항</li>
+                            <li>support-notice-detail.html - 공지사항 상세</li>
+                            <li>support-event.html - 이벤트</li>
+                            <li>support-event-detail.html - 이벤트 상세</li>
+                            <li>support-faq.html - FAQ</li>
+                            <li>support-inquiry.html - 1:1 문의</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">공지사항</div>
+                    <div class="spec-item" data-spec="1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>활성메뉴</th><td>고객센터</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>support-notice.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">검색 필터</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>카테고리</th><td>전체, 서비스 안내, 점검 안내, 이벤트</td></tr><tr><th>검색</th><td>제목 키워드 검색</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">공지사항 목록</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>번호, 제목, 등록일, 조회수</td></tr><tr><th>중요공지</th><td>상단 고정, 노란색 배경</td></tr></table></div></div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">이벤트</div>
+                    <div class="spec-item" data-spec="5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">이벤트 페이지</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>support-event.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">이벤트 카드</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>레이아웃</th><td>3열 그리드</td></tr><tr><th>상태</th><td>진행중, 예정, 종료</td></tr></table></div></div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">FAQ</div>
+                    <div class="spec-item" data-spec="7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">FAQ 페이지</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>support-faq.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">카테고리 탭</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>카테고리</th><td>전체, 가입/탈퇴, 결제, 발송, 기타</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">FAQ 아코디언</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컴포넌트</th><td>Accordion</td></tr><tr><th>동작</th><td>클릭 시 답변 영역 토글</td></tr></table></div></div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">1:1 문의</div>
+                    <div class="spec-item" data-spec="10"><div class="spec-item-header"><span class="spec-item-number">10</span><span class="spec-item-title">문의 페이지</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>support-inquiry.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="11"><div class="spec-item-header"><span class="spec-item-number">11</span><span class="spec-item-title">문의하기 버튼</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>동작</th><td>문의 작성 모달/페이지 오픈</td></tr><tr><th>입력</th><td>제목, 카테고리, 내용, 첨부파일</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="12"><div class="spec-item-header"><span class="spec-item-number">12</span><span class="spec-item-title">문의 목록</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>상태, 제목, 등록일</td></tr><tr><th>상태</th><td>대기중, 답변완료</td></tr></table></div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) { document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('page-' + pageId).classList.add('active'); event.target.classList.add('active'); }
+        document.querySelectorAll('.spec-item-header').forEach(header => { header.addEventListener('click', function() { this.parentElement.classList.toggle('open'); }); });
+        document.querySelectorAll('.spec-marker').forEach(marker => { marker.addEventListener('click', function() { const num = this.getAttribute('data-num'); const specItem = document.querySelector(`.spec-item[data-spec="${num}"]`); document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active')); document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active')); this.classList.add('active'); if (specItem) { specItem.classList.add('active', 'open'); specItem.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); });
+        document.querySelector('.spec-item')?.classList.add('open');
+    </script>
+</body>
+</html>

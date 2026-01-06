@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../template-brandtalk.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,104 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/template-brandtalk.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/template-brandtalk</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../template-brandtalk.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item active">템플릿 관리 ▼</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 1: 헤더 & 등록 버튼 -->
+                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <h2 style="font-size: 20px; font-weight: 600; color: #333;">브랜드톡 템플릿</h2>
+                                    <button class="mock-btn mock-btn-primary" style="background: #fee500; color: #3c1e1e;">+ 템플릿 등록</button>
+                                </div>
+                                
+                                <!-- 마커 2: 프로필 선택 -->
+                                <div class="marker" data-id="2" style="top: 160px; left: 200px;">2</div>
+                                <div class="form-section" style="padding: 16px; margin-bottom: 16px;">
+                                    <div style="display: flex; gap: 12px; align-items: center;">
+                                        <label class="form-label" style="margin: 0;">발신 프로필</label>
+                                        <select class="form-select" style="width: 250px;">
+                                            <option>톡벨 공식채널 (@tokbell_official)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 3: 템플릿 카드 목록 -->
+                                <div class="marker" data-id="3" style="top: 250px; right: 20px;">3</div>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                                    <!-- 템플릿 카드 1 -->
+                                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                            🎉 이벤트 배너
+                                        </div>
+                                        <div style="padding: 16px;">
+                                            <div style="font-weight: 600; margin-bottom: 8px;">신규 회원 환영 이벤트</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 12px;">회원가입 시 5,000P 지급 안내</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span class="status-badge success">승인완료</span>
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 템플릿 카드 2 -->
+                                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                            🔥 할인 배너
+                                        </div>
+                                        <div style="padding: 16px;">
+                                            <div style="font-weight: 600; margin-bottom: 8px;">월간 프로모션 안내</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 12px;">특별 할인 이벤트 안내</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span class="status-badge success">승인완료</span>
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 템플릿 카드 3 -->
+                                    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                            📢 공지 배너
+                                        </div>
+                                        <div style="padding: 16px;">
+                                            <div style="font-weight: 600; margin-bottom: 8px;">서비스 업데이트 안내</div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 12px;">새로운 기능 소개</div>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <span class="status-badge warning">검수중</span>
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 4: 페이지네이션 -->
+                                <div class="marker" data-id="4" style="top: 530px; right: 400px;">4</div>
+                                <div class="pagination" style="margin-top: 24px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,67 +137,70 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">template-brandtalk.html · 브랜드톡 템플릿 페이지</div>
+                <div class="desc-subtitle">template-brandtalk.html · 브랜드톡 템플릿</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">템플릿 등록 신청</div>
+                        <div class="desc-item-title">템플릿 등록 버튼</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">새 브랜드톡 템플릿을 등록 신청합니다.</div>
+                        <div class="desc-text">새 브랜드톡 템플릿을 등록합니다.</div>
                         <table class="desc-table">
                             <tr><th>동작</th><th>설명</th></tr>
                             <tr><td>클릭</td><td>템플릿 등록 페이지로 이동</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 브랜드톡 특징</div>
-                            <div class="desc-note-text">브랜드톡은 이미지, 버튼 등 다양한 형태의 마케팅 메시지를 지원합니다.</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">템플릿 목록</div>
+                        <div class="desc-item-title">프로필 선택</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">등록된 브랜드톡 템플릿 목록입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
-                            <tr><td>템플릿코드</td><td>카카오 템플릿 코드</td></tr>
-                            <tr><td>유형</td><td>텍스트/이미지/리스트</td></tr>
-                            <tr><td>상태</td><td>대기/승인/반려</td></tr>
-                            <tr><td>등록일</td><td>등록 신청일</td></tr>
-                        </table>
+                        <div class="desc-text">템플릿을 조회할 발신 프로필을 선택합니다.</div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">템플릿 등록 모달</div>
+                        <div class="desc-item-title">템플릿 카드 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">브랜드톡 템플릿 등록 폼입니다.</div>
+                        <div class="desc-text">등록된 브랜드톡 템플릿을 카드 형태로 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>필드</th><th>설명</th></tr>
-                            <tr><td>발신프로필</td><td>사용할 카카오 채널</td></tr>
-                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
-                            <tr><td>유형</td><td>텍스트/이미지/리스트</td></tr>
-                            <tr><td>내용</td><td>브랜드톡 내용</td></tr>
-                            <tr><td>이미지</td><td>첨부 이미지</td></tr>
-                            <tr><td>버튼</td><td>링크/앱링크 버튼</td></tr>
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>이미지</td><td>템플릿 배너 이미지</td></tr>
+                            <tr><td>템플릿명</td><td>템플릿 제목</td></tr>
+                            <tr><td>설명</td><td>템플릿 간략 설명</td></tr>
+                            <tr><td>상태</td><td>승인완료/검수중/반려</td></tr>
+                            <tr><td>수정</td><td>템플릿 수정 페이지</td></tr>
                         </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 참고</div>
+                            <div class="desc-note-text">브랜드톡은 이미지가 포함되어 시각적 표현을 위해 카드 형태로 목록을 표시합니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿 목록 페이지 이동입니다.</div>
                     </div>
                 </div>
             </div>
@@ -121,16 +208,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

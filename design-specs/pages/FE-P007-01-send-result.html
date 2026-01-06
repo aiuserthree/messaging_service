@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발송 결과 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .page-header { margin-bottom: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; }
+        
+        .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .filter-item { padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white; }
+        .search-btn { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .table-actual { width: 100%; border-collapse: collapse; }
+        .table-actual th, .table-actual td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .table-actual th { background: #f8fafc; font-size: 12px; font-weight: 500; color: #64748b; }
+        .table-actual td { font-size: 14px; color: #1e293b; }
+        
+        .type-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .type-badge.sms { background: #dbeafe; color: #1d4ed8; }
+        .type-badge.lms { background: #dcfce7; color: #166534; }
+        .type-badge.alimtalk { background: #fef9c3; color: #854d0e; }
+        
+        .result-count { cursor: pointer; color: #2563eb; text-decoration: underline; }
+        .result-count.success { color: #10b981; }
+        .result-count.fail { color: #ef4444; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #64748b; }
+        
+        .pagination { display: flex; justify-content: center; gap: 4px; padding: 20px; }
+        .page-btn { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; cursor: pointer; font-size: 13px; color: #64748b; }
+        .page-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        
+        .accordion-row { display: none; }
+        .accordion-row.open { display: table-row; }
+        .accordion-content { background: #f8fafc; padding: 16px; }
+        .accordion-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .accordion-table th, .accordion-table td { padding: 8px 12px; border: 1px solid #e2e8f0; }
+        .accordion-table th { background: #e2e8f0; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P007-01</span>
+                    <span class="page-title-header">발송 결과</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/send-result', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/send-result</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item">템플릿 관리 ▾</div>
+                                    <div class="nav-menu-item">주소록 ▾</div>
+                                    <div class="nav-menu-item active">발송 결과 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="page-header">
+                                    <h1 class="page-title">📊 발송 결과</h1>
+                                </div>
+                                
+                                <div class="filter-bar">
+                                    <input type="date" class="filter-item" value="2025-01-01">
+                                    <span style="line-height: 42px;">~</span>
+                                    <input type="date" class="filter-item" value="2025-01-06">
+                                    <select class="filter-item">
+                                        <option>전체 유형</option>
+                                        <option>SMS</option>
+                                        <option>LMS</option>
+                                        <option>MMS</option>
+                                        <option>알림톡</option>
+                                        <option>브랜드톡</option>
+                                    </select>
+                                    <select class="filter-item">
+                                        <option>전체 상태</option>
+                                        <option>성공</option>
+                                        <option>실패</option>
+                                    </select>
+                                    <button class="search-btn">검색</button>
+                                </div>
+                                
+                                <div class="card">
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th>발송일시</th>
+                                                <th>유형</th>
+                                                <th>내용</th>
+                                                <th>총 건수</th>
+                                                <th>성공</th>
+                                                <th>실패</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2025-01-06 14:30</td>
+                                                <td><span class="type-badge sms">SMS</span></td>
+                                                <td>[톡벨] 회원가입을 축하합니다...</td>
+                                                <td>150</td>
+                                                <td><span class="result-count success">148</span></td>
+                                                <td><span class="result-count fail">2</span></td>
+                                                <td><button class="action-btn">상세</button></td>
+                                            </tr>
+                                            <tr class="accordion-row open">
+                                                <td colspan="7">
+                                                    <div class="accordion-content">
+                                                        <table class="accordion-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>수신번호</th>
+                                                                    <th>상태</th>
+                                                                    <th>결과코드</th>
+                                                                    <th>발송시간</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr><td>010-1234-5678</td><td style="color: #10b981;">성공</td><td>0000</td><td>14:30:01</td></tr>
+                                                                <tr><td>010-2345-6789</td><td style="color: #ef4444;">실패</td><td>3005</td><td>14:30:02</td></tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-06 13:15</td>
+                                                <td><span class="type-badge alimtalk">알림톡</span></td>
+                                                <td>주문이 완료되었습니다...</td>
+                                                <td>89</td>
+                                                <td><span class="result-count success">89</span></td>
+                                                <td><span class="result-count fail">0</span></td>
+                                                <td><button class="action-btn">상세</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-06 11:00</td>
+                                                <td><span class="type-badge lms">LMS</span></td>
+                                                <td>이번 주 특별 프로모션...</td>
+                                                <td>500</td>
+                                                <td><span class="result-count success">495</span></td>
+                                                <td><span class="result-count fail">5</span></td>
+                                                <td><button class="action-btn">상세</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        <button class="page-btn">&lt;</button>
+                                        <button class="page-btn active">1</button>
+                                        <button class="page-btn">2</button>
+                                        <button class="page-btn">3</button>
+                                        <button class="page-btn">&gt;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 130px; left: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 220px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 220px; right: 250px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 320px; left: 50px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 220px; right: 100px;">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">send-result.html · 발송 결과 조회</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">검색 필터</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송 결과를 검색합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필터</th><th>설명</th></tr>
+                            <tr><td>기간</td><td>시작일 ~ 종료일</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS/알림톡/브랜드톡</td></tr>
+                            <tr><td>상태</td><td>성공/실패</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">발송 결과 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송 결과를 목록으로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>발송일시</td><td>메시지 발송 시각</td></tr>
+                            <tr><td>유형</td><td>메시지 유형</td></tr>
+                            <tr><td>내용</td><td>발송 내용 요약</td></tr>
+                            <tr><td>총 건수</td><td>발송 대상 총 수</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">성공/실패 건수</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">성공 또는 실패 건수를 클릭하면 아코디언 형태로 상세 내역이 펼쳐집니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>아코디언 펼침/접힘</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 아코디언 내용</div>
+                            <div class="desc-note-text">개별 수신자별 발송 결과, 상태, 결과코드, 발송시간이 표시됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">상세 아코디언</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">성공/실패 건수 클릭 시 펼쳐지는 아코디언 영역입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>수신번호</td><td>발송 대상 전화번호</td></tr>
+                            <tr><td>상태</td><td>성공/실패</td></tr>
+                            <tr><td>결과코드</td><td>통신사 반환 코드</td></tr>
+                            <tr><td>발송시간</td><td>실제 발송 완료 시간</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">상세 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송 건의 전체 상세 정보를 모달로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>상세 정보 모달 팝업 표시</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>알림톡 발송 (프로필 미등록) - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 800px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+        
+        .empty-state { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 60px 40px; }
+        .empty-icon { font-size: 80px; margin-bottom: 24px; }
+        .empty-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 12px; }
+        .empty-text { font-size: 16px; color: #64748b; margin-bottom: 32px; line-height: 1.6; }
+        .empty-btn { display: inline-block; padding: 14px 32px; background: #2563eb; color: white; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; text-decoration: none; border: none; }
+        
+        .step-list { text-align: left; background: #f8fafc; border-radius: 12px; padding: 24px; margin: 24px auto; max-width: 400px; }
+        .step-item { display: flex; gap: 12px; margin-bottom: 16px; }
+        .step-item:last-child { margin-bottom: 0; }
+        .step-num { width: 24px; height: 24px; background: #2563eb; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+        .step-text { font-size: 14px; color: #1e293b; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P004-02-B</span>
+                    <span class="page-title-header">알림톡 발송 (프로필 미등록)</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/kakao-send-alimtalk-before', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/kakao-send-alimtalk-before</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">카카오톡 발송 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="empty-state">
+                                    <div class="empty-icon">🔔</div>
+                                    <div class="empty-title">카카오톡 채널 프로필 등록이 필요합니다</div>
+                                    <div class="empty-text">
+                                        알림톡을 발송하려면 먼저 카카오톡 채널 프로필을 등록해야 합니다.<br>
+                                        아래 단계를 따라 프로필을 등록해주세요.
+                                    </div>
+                                    
+                                    <div class="step-list">
+                                        <div class="step-item">
+                                            <div class="step-num">1</div>
+                                            <div class="step-text">카카오 비즈니스 채널 개설</div>
+                                        </div>
+                                        <div class="step-item">
+                                            <div class="step-num">2</div>
+                                            <div class="step-text">톡벨에서 프로필 등록 신청</div>
+                                        </div>
+                                        <div class="step-item">
+                                            <div class="step-num">3</div>
+                                            <div class="step-text">카카오 심사 승인 (영업일 1~3일)</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button class="empty-btn">프로필 등록하기</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 200px; left: 50%;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 350px; left: 50%;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 500px; left: 50%;">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">kakao-send-alimtalk-before.html · 알림톡 발송 (프로필 미등록)</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">안내 메시지</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">프로필 미등록 상태를 안내합니다.</div>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 표시 조건</div>
+                            <div class="desc-note-text">카카오톡 채널 프로필이 미등록이거나 심사 대기 중일 때 표시됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">등록 안내 단계</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">프로필 등록을 위한 단계별 안내입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>단계</th><th>설명</th></tr>
+                            <tr><td>1단계</td><td>카카오 비즈니스에서 채널 개설</td></tr>
+                            <tr><td>2단계</td><td>톡벨에서 프로필 등록 신청</td></tr>
+                            <tr><td>3단계</td><td>카카오 심사 후 승인</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">프로필 등록 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">프로필 등록 페이지로 이동합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>클릭 시</th><th>동작</th></tr>
+                            <tr><td>이동 경로</td><td>/kakao-profile-manage 페이지로 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

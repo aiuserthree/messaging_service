@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 화면 - 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+</head>
+<body>
+    <!-- 인덱스 바로가기 버튼 -->
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 로그인 화면 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-AUTH-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v1.0</span>
+            <span>📁 파일: login.html</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <!-- 헤더 -->
+                <div class="mock-header" id="comp-header">
+                    <span class="spec-marker" data-num="1" style="top: -10px; left: 10px;">1</span>
+                    <div class="mock-logo"><span>Tokbell</span></div>
+                    
+                    <span class="spec-marker" data-num="2" style="top: -10px; left: 50%; transform: translateX(-50%);">2</span>
+                    <nav class="mock-nav">
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">문자발송</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">선거문자</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">카카오톡 발송</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">주소록</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">결제 관리</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">마이페이지</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">고객센터</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                    </nav>
+                    
+                    <span class="spec-marker" data-num="3" style="top: -10px; right: 10px;">3</span>
+                    <div class="mock-header-actions">
+                        <button class="mock-btn mock-btn-outline">로그인</button>
+                        <button class="mock-btn mock-btn-primary">톡벨 가입하기</button>
+                    </div>
+                </div>
+
+                <!-- 로그인 폼 영역 -->
+                <div style="background: #f8fafc; min-height: 600px; display: flex; align-items: center; justify-content: center; padding: 40px;">
+                    <div style="background: white; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 100%; max-width: 440px; padding: 48px 40px; position: relative;">
+                        
+                        <!-- 마커 4: 로그인 폼 컨테이너 -->
+                        <span class="spec-marker" data-num="4" style="top: -10px; left: -10px;">4</span>
+                        
+                        <!-- 마커 5: 아이디 입력 -->
+                        <span class="spec-marker" data-num="5" style="top: 20px; right: -10px;">5</span>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px;">아이디</label>
+                            <input type="text" placeholder="아이디를 입력하세요" style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                        </div>
+                        
+                        <!-- 마커 6: 비밀번호 입력 -->
+                        <span class="spec-marker" data-num="6" style="top: 100px; right: -10px;">6</span>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px;">비밀번호</label>
+                            <input type="password" placeholder="비밀번호를 입력하세요" style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                        </div>
+                        
+                        <!-- 마커 7: 아이디 저장 체크박스 -->
+                        <span class="spec-marker" data-num="7" style="top: 180px; left: -10px;">7</span>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                            <input type="checkbox" id="rememberId" style="width: 16px; height: 16px;">
+                            <label for="rememberId" style="font-size: 14px; color: #64748b;">아이디 저장</label>
+                        </div>
+                        
+                        <!-- 마커 8: 로그인 버튼 -->
+                        <span class="spec-marker" data-num="8" style="top: 230px; right: -10px;">8</span>
+                        <button style="width: 100%; padding: 12px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 8px;">로그인</button>
+                        
+                        <!-- 마커 9: 회원가입 버튼 -->
+                        <span class="spec-marker" data-num="9" style="top: 280px; right: -10px;">9</span>
+                        <button style="width: 100%; padding: 12px; background: white; color: #1e293b; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;">회원가입</button>
+                        
+                        <!-- 마커 10: 아이디/비밀번호 찾기 -->
+                        <span class="spec-marker" data-num="10" style="bottom: 20px; left: 50%; transform: translateX(-50%);">10</span>
+                        <div style="margin-top: 32px; text-align: center; font-size: 13px; color: #64748b;">
+                            <a href="#" style="color: #2563eb; text-decoration: none;">아이디 찾기</a>
+                            <span style="margin: 0 8px;">|</span>
+                            <a href="#" style="color: #2563eb; text-decoration: none;">비밀번호 찾기</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 컴포넌트 명세</h2>
+                <p>로그인 화면 구성 요소</p>
+            </div>
+            <div class="panel-content">
+                
+                <div class="spec-section">
+                    <div class="spec-section-title">헤더 영역</div>
+                    
+                    <div class="spec-item" data-spec="1">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">1</span>
+                            <span class="spec-item-title">로고</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Header Logo</td></tr>
+                                <tr><th>기능</th><td>클릭 시 index.html로 이동</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="2">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">2</span>
+                            <span class="spec-item-title">메인 네비게이션</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>GNB (Global Navigation Bar)</td></tr>
+                                <tr><th>메뉴</th><td>8개 Depth 1 메뉴 + 각 드롭다운</td></tr>
+                                <tr><th>동작</th><td>호버 시 드롭다운 표시, 클릭 시 첫 번째 Depth 2 페이지로 이동</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="3">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">3</span>
+                            <span class="spec-item-title">헤더 액션 버튼</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>버튼</th><td>로그인 (Outline), 톡벨 가입하기 (Primary)</td></tr>
+                                <tr><th>이동</th><td>login.html, signup.html</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">로그인 폼</div>
+                    
+                    <div class="spec-item" data-spec="4">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">4</span>
+                            <span class="spec-item-title">로그인 컨테이너</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Login Container</td></tr>
+                                <tr><th>레이아웃</th><td>중앙 정렬, 최대 너비 440px</td></tr>
+                                <tr><th>스타일</th><td>
+                                    <ul class="spec-list">
+                                        <li>배경: 흰색</li>
+                                        <li>그림자: shadow-lg</li>
+                                        <li>Border-radius: 12px</li>
+                                        <li>패딩: 48px 40px</li>
+                                    </ul>
+                                </td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="5">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">5</span>
+                            <span class="spec-item-title">아이디 입력 필드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Text Input</td></tr>
+                                <tr><th>라벨</th><td>아이디</td></tr>
+                                <tr><th>Placeholder</th><td>"아이디를 입력하세요"</td></tr>
+                                <tr><th>속성</th><td>
+                                    <ul class="spec-list">
+                                        <li>type: text</li>
+                                        <li>id: userId</li>
+                                        <li>autocomplete: username</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>유효성검사</th><td>
+                                    <ul class="spec-list">
+                                        <li>필수 입력</li>
+                                        <li>미입력 시 "아이디를 입력해주세요" 에러 메시지</li>
+                                    </ul>
+                                </td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="6">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">6</span>
+                            <span class="spec-item-title">비밀번호 입력 필드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Password Input</td></tr>
+                                <tr><th>라벨</th><td>비밀번호</td></tr>
+                                <tr><th>Placeholder</th><td>"비밀번호를 입력하세요"</td></tr>
+                                <tr><th>속성</th><td>
+                                    <ul class="spec-list">
+                                        <li>type: password</li>
+                                        <li>id: password</li>
+                                        <li>autocomplete: current-password</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>유효성검사</th><td>
+                                    <ul class="spec-list">
+                                        <li>필수 입력</li>
+                                        <li>미입력 시 "비밀번호를 입력해주세요" 에러 메시지</li>
+                                    </ul>
+                                </td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="7">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">7</span>
+                            <span class="spec-item-title">아이디 저장 체크박스</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Checkbox</td></tr>
+                                <tr><th>라벨</th><td>아이디 저장</td></tr>
+                                <tr><th>기능</th><td>
+                                    <ul class="spec-list">
+                                        <li>체크 시 localStorage에 아이디 저장</li>
+                                        <li>다음 접속 시 자동으로 아이디 입력</li>
+                                        <li>저장키: savedUserId</li>
+                                    </ul>
+                                </td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="8">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">8</span>
+                            <span class="spec-item-title">로그인 버튼</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Submit Button (Primary)</td></tr>
+                                <tr><th>레이블</th><td>로그인</td></tr>
+                                <tr><th>기능</th><td>
+                                    <ul class="spec-list">
+                                        <li>폼 유효성 검사</li>
+                                        <li>아이디 저장 처리</li>
+                                        <li>로그인 성공 시 localStorage에 isLoggedIn = 'true' 저장</li>
+                                        <li>main.html로 페이지 이동</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>함수</th><td><code>handleLogin(event)</code></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="9">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">9</span>
+                            <span class="spec-item-title">회원가입 버튼</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Button (Outline)</td></tr>
+                                <tr><th>레이블</th><td>회원가입</td></tr>
+                                <tr><th>기능</th><td>signup.html로 페이지 이동</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="10">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">10</span>
+                            <span class="spec-item-title">아이디/비밀번호 찾기 링크</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Text Link Group</td></tr>
+                                <tr><th>링크</th><td>
+                                    <ul class="spec-list">
+                                        <li><strong>아이디 찾기</strong> - showFindId() 함수 호출</li>
+                                        <li><strong>비밀번호 찾기</strong> - showFindPassword() 함수 호출</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>현재상태</th><td>준비 중 알림 표시 (alert)</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.spec-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.parentElement;
+                item.classList.toggle('open');
+            });
+        });
+
+        document.querySelectorAll('.spec-marker').forEach(marker => {
+            marker.addEventListener('click', function() {
+                const num = this.getAttribute('data-num');
+                const specItem = document.querySelector(`.spec-item[data-spec="${num}"]`);
+                
+                document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                
+                this.classList.add('active');
+                if (specItem) {
+                    specItem.classList.add('active');
+                    specItem.classList.add('open');
+                    specItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+
+        document.querySelector('.spec-item')?.classList.add('open');
+    </script>
+</body>
+</html>

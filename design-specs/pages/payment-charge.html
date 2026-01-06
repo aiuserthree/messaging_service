@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../payment-charge.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,143 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/payment-charge.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/payment-charge</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../payment-charge.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">템플릿 관리</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item">발송 결과</span>
+                                    <span class="screen-nav-item active">요금/결제 ▼</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 150px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 24px;">포인트 충전</h2>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                                    <!-- Left: 충전 정보 -->
+                                    <div>
+                                        <!-- 마커 1: 현재 잔액 -->
+                                        <div class="marker" data-id="1" style="top: 130px; left: 480px;">1</div>
+                                        <div class="form-section">
+                                            <div class="form-section-title">현재 잔액</div>
+                                            <div style="text-align: center; padding: 24px;">
+                                                <div style="font-size: 36px; font-weight: 700; color: #4361ee;">125,000</div>
+                                                <div style="font-size: 14px; color: #666;">포인트</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 마커 2: 충전 금액 선택 -->
+                                        <div class="marker" data-id="2" style="top: 280px; left: 480px;">2</div>
+                                        <div class="form-section">
+                                            <div class="form-section-title">충전 금액 선택</div>
+                                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                                                <div style="border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;">
+                                                    <div style="font-size: 18px; font-weight: 600;">10,000P</div>
+                                                    <div style="font-size: 12px; color: #666;">10,000원</div>
+                                                </div>
+                                                <div style="border: 2px solid #4361ee; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer; background: rgba(67, 97, 238, 0.1);">
+                                                    <div style="font-size: 18px; font-weight: 600; color: #4361ee;">50,000P</div>
+                                                    <div style="font-size: 12px; color: #4361ee;">50,000원</div>
+                                                </div>
+                                                <div style="border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;">
+                                                    <div style="font-size: 18px; font-weight: 600;">100,000P</div>
+                                                    <div style="font-size: 12px; color: #666;">100,000원</div>
+                                                </div>
+                                                <div style="border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;">
+                                                    <div style="font-size: 18px; font-weight: 600;">300,000P</div>
+                                                    <div style="font-size: 12px; color: #666;">300,000원</div>
+                                                </div>
+                                                <div style="border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;">
+                                                    <div style="font-size: 18px; font-weight: 600;">500,000P</div>
+                                                    <div style="font-size: 12px; color: #666;">500,000원</div>
+                                                </div>
+                                                <div style="border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; text-align: center; cursor: pointer;">
+                                                    <div style="font-size: 18px; font-weight: 600;">1,000,000P</div>
+                                                    <div style="font-size: 12px; color: #666;">1,000,000원</div>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 16px;">
+                                                <label class="form-label">직접 입력</label>
+                                                <input type="text" class="form-input" placeholder="충전할 금액을 입력하세요">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Right: 결제 방법 -->
+                                    <div>
+                                        <!-- 마커 3: 결제 방법 -->
+                                        <div class="marker" data-id="3" style="top: 130px; right: 20px;">3</div>
+                                        <div class="form-section">
+                                            <div class="form-section-title">결제 방법</div>
+                                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                                <div class="radio-item" style="padding: 16px; border: 2px solid #4361ee; border-radius: 8px; background: rgba(67, 97, 238, 0.1);">
+                                                    <div class="radio-circle active"></div>
+                                                    <div>
+                                                        <div style="font-weight: 600;">💳 신용카드</div>
+                                                        <div style="font-size: 12px; color: #666;">모든 카드사 지원</div>
+                                                    </div>
+                                                </div>
+                                                <div class="radio-item" style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                                    <div class="radio-circle"></div>
+                                                    <div>
+                                                        <div style="font-weight: 600;">🏦 계좌이체</div>
+                                                        <div style="font-size: 12px; color: #666;">실시간 계좌이체</div>
+                                                    </div>
+                                                </div>
+                                                <div class="radio-item" style="padding: 16px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                                                    <div class="radio-circle"></div>
+                                                    <div>
+                                                        <div style="font-weight: 600;">📄 무통장 입금</div>
+                                                        <div style="font-size: 12px; color: #666;">세금계산서 발행 가능</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 마커 4: 결제 정보 -->
+                                        <div class="marker" data-id="4" style="top: 400px; right: 20px;">4</div>
+                                        <div class="form-section">
+                                            <div class="form-section-title">결제 정보</div>
+                                            <div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                                                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                                    <span style="color: #666;">충전 금액</span>
+                                                    <span style="font-weight: 600;">50,000P</span>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                                    <span style="color: #666;">결제 금액</span>
+                                                    <span style="font-weight: 600;">50,000원</span>
+                                                </div>
+                                                <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                                    <span style="color: #666;">VAT</span>
+                                                    <span style="font-weight: 600;">5,000원</span>
+                                                </div>
+                                                <div style="border-top: 1px solid #e0e0e0; padding-top: 12px; display: flex; justify-content: space-between;">
+                                                    <span style="font-weight: 600;">총 결제 금액</span>
+                                                    <span style="font-size: 20px; font-weight: 700; color: #4361ee;">55,000원</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- 마커 5: 결제 버튼 -->
+                                        <div class="marker" data-id="5" style="top: 580px; right: 20px;">5</div>
+                                        <button class="mock-btn mock-btn-primary" style="width: 100%; padding: 16px; font-size: 16px; margin-top: 16px;">결제하기</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,25 +176,21 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">payment-charge.html · 포인트 충전 페이지</div>
+                <div class="desc-subtitle">payment-charge.html · 포인트 충전</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">현재 잔액 정보</div>
+                        <div class="desc-item-title">현재 잔액</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">현재 보유 포인트와 예치금을 표시합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>보유 포인트</td><td>사용 가능한 포인트</td></tr>
-                            <tr><td>예치금</td><td>충전된 예치금</td></tr>
-                        </table>
+                        <div class="desc-text">현재 보유 포인트 잔액을 표시합니다.</div>
                     </div>
                 </div>
 
@@ -82,14 +201,15 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">충전할 금액을 선택합니다.</div>
+                        <div class="desc-text">미리 정의된 금액 또는 직접 입력으로 충전 금액을 선택합니다.</div>
                         <table class="desc-table">
-                            <tr><th>금액</th><th>보너스</th></tr>
-                            <tr><td>10,000원</td><td>-</td></tr>
-                            <tr><td>30,000원</td><td>+1%</td></tr>
-                            <tr><td>50,000원</td><td>+2%</td></tr>
-                            <tr><td>100,000원</td><td>+3%</td></tr>
-                            <tr><td>직접입력</td><td>금액별 차등</td></tr>
+                            <tr><th>금액</th><th>포인트</th></tr>
+                            <tr><td>10,000원</td><td>10,000P</td></tr>
+                            <tr><td>50,000원</td><td>50,000P</td></tr>
+                            <tr><td>100,000원</td><td>100,000P</td></tr>
+                            <tr><td>300,000원</td><td>300,000P</td></tr>
+                            <tr><td>500,000원</td><td>500,000P</td></tr>
+                            <tr><td>1,000,000원</td><td>1,000,000P</td></tr>
                         </table>
                     </div>
                 </div>
@@ -97,16 +217,50 @@
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">결제 수단</div>
+                        <div class="desc-item-title">결제 방법</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">결제 방법을 선택합니다.</div>
+                        <div class="desc-text">결제 수단을 선택합니다.</div>
                         <table class="desc-table">
-                            <tr><th>결제수단</th><th>설명</th></tr>
-                            <tr><td>신용카드</td><td>신용/체크카드 결제</td></tr>
-                            <tr><td>무통장입금</td><td>가상계좌 발급</td></tr>
-                            <tr><td>계좌이체</td><td>실시간 계좌이체</td></tr>
+                            <tr><th>방법</th><th>설명</th></tr>
+                            <tr><td>신용카드</td><td>모든 카드사 지원, 즉시 충전</td></tr>
+                            <tr><td>계좌이체</td><td>실시간 계좌이체, 즉시 충전</td></tr>
+                            <tr><td>무통장 입금</td><td>입금 확인 후 충전, 세금계산서 발행</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">결제 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선택한 금액의 결제 상세 정보입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>충전 금액</td><td>충전될 포인트</td></tr>
+                            <tr><td>결제 금액</td><td>기본 결제 금액</td></tr>
+                            <tr><td>VAT</td><td>부가가치세 10%</td></tr>
+                            <tr><td>총 결제 금액</td><td>실제 결제될 금액</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">결제 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">결제를 진행합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>PG사 결제창 오픈</td></tr>
+                            <tr><td>결제 완료</td><td>포인트 즉시 충전</td></tr>
                         </table>
                     </div>
                 </div>
@@ -115,16 +269,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

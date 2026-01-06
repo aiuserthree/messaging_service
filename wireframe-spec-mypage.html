@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 화면 - 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <style>
+        .page-nav { display: flex; gap: 8px; margin-bottom: 20px; }
+        .page-nav-btn { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; }
+        .page-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <!-- 인덱스 바로가기 버튼 -->
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 마이페이지 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-MY-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v1.0</span>
+            <span>📁 3개 파일</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <div class="page-nav">
+                    <button class="page-nav-btn active" onclick="showPage('profile')">내 정보 수정</button>
+                    <button class="page-nav-btn" onclick="showPage('password')">비밀번호 변경</button>
+                    <button class="page-nav-btn" onclick="showPage('caller')">발신번호 관리</button>
+                </div>
+
+                <!-- 내 정보 수정 화면 -->
+                <div class="page-content active" id="page-profile">
+                    <div class="mock-header">
+                        <span class="spec-marker" data-num="1" style="top: -10px; left: 10px;">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <div class="mock-nav-item-dropdown"><a href="#" class="mock-nav-item active">마이페이지</a><div class="mock-dropdown-indicator">▼</div></div>
+                        </nav>
+                    </div>
+
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 600px;">
+                        <span class="spec-marker" data-num="2" style="top: 10px; left: 30px;">2</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">내 정보 수정</h2>
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px;">회원 정보를 수정합니다</p>
+
+                        <div style="max-width: 600px;">
+                            <div style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+                                <!-- 기본 정보 -->
+                                <span class="spec-marker" data-num="3" style="top: 10px; right: 10px;">3</span>
+                                <div style="font-weight: 600; margin-bottom: 20px;">기본 정보</div>
+                                
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #64748b;">아이디</label>
+                                    <input type="text" value="testuser123" style="width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc;" readonly>
+                                </div>
+                                
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #64748b;">회원유형</label>
+                                    <div style="padding: 10px 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                        <span style="padding: 4px 8px; background: #dbeafe; color: #2563eb; border-radius: 4px; font-size: 12px;">개인회원</span>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #64748b;">연락처 <span style="color: #ef4444;">*</span></label>
+                                    <input type="tel" value="010-1234-5678" style="width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                </div>
+                                
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #64748b;">이메일 <span style="color: #ef4444;">*</span></label>
+                                    <input type="email" value="test@example.com" style="width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                </div>
+                            </div>
+
+                            <!-- 마케팅 수신 -->
+                            <span class="spec-marker" data-num="4" style="top: 10px; left: 10px;">4</span>
+                            <div style="background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+                                <div style="font-weight: 600; margin-bottom: 16px;">마케팅 수신 설정</div>
+                                <div style="display: flex; gap: 24px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="checkbox" checked style="width: 18px; height: 18px;">
+                                        <span>SMS</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                        <input type="checkbox" style="width: 18px; height: 18px;">
+                                        <span>이메일</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button style="width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500;">저장</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 비밀번호 변경 화면 -->
+                <div class="page-content" id="page-password">
+                    <div class="mock-header">
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                    </div>
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 400px;">
+                        <span class="spec-marker" data-num="5" style="top: 10px; left: 30px;">5</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px;">비밀번호 변경</h2>
+
+                        <div style="max-width: 500px; background: white; border-radius: 12px; padding: 24px;">
+                            <span class="spec-marker" data-num="6" style="top: 10px; right: 10px;">6</span>
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 500;">현재 비밀번호 <span style="color: #ef4444;">*</span></label>
+                                <input type="password" placeholder="현재 비밀번호 입력" style="width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            </div>
+                            
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 500;">새 비밀번호 <span style="color: #ef4444;">*</span></label>
+                                <input type="password" placeholder="새 비밀번호 입력" style="width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <p style="font-size: 12px; color: #64748b; margin-top: 4px;">* 8~16자, 영문+숫자+특수문자 조합</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 24px;">
+                                <label style="display: block; margin-bottom: 8px; font-size: 13px; font-weight: 500;">새 비밀번호 확인 <span style="color: #ef4444;">*</span></label>
+                                <input type="password" placeholder="새 비밀번호 확인" style="width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                            </div>
+
+                            <button style="width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500;">비밀번호 변경</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 발신번호 관리 화면 -->
+                <div class="page-content" id="page-caller">
+                    <div class="mock-header">
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                    </div>
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 400px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <div>
+                                <span class="spec-marker" data-num="7" style="top: -10px; left: -10px;">7</span>
+                                <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">발신번호 관리</h2>
+                                <p style="font-size: 14px; color: #64748b;">문자 발송에 사용할 발신번호를 관리합니다</p>
+                            </div>
+                            <span class="spec-marker" data-num="8" style="top: -10px; right: 10px;">8</span>
+                            <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 14px;">+ 발신번호 등록</button>
+                        </div>
+
+                        <!-- 발신번호 목록 -->
+                        <span class="spec-marker" data-num="9" style="top: 100px; left: 10px;">9</span>
+                        <div style="background: white; border-radius: 12px; overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">발신번호</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">인증방법</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">등록일</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">상태</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; font-weight: 500;">010-1234-5678</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">휴대폰 인증</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">2025-01-01</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;"><span style="padding: 4px 8px; background: #dcfce7; color: #16a34a; border-radius: 4px; font-size: 12px;">승인</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;">
+                                            <button style="padding: 4px 8px; background: white; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 12px; color: #ef4444;">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; font-weight: 500;">02-1234-5678</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">서류 인증</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">2025-01-05</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;"><span style="padding: 4px 8px; background: #fef3c7; color: #d97706; border-radius: 4px; font-size: 12px;">심사중</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;">
+                                            <button style="padding: 4px 8px; background: white; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 12px; color: #ef4444;">삭제</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 안내 문구 -->
+                        <span class="spec-marker" data-num="10" style="bottom: 30px; left: 30px;">10</span>
+                        <div style="margin-top: 24px; padding: 16px; background: #f1f5f9; border-radius: 8px; font-size: 13px; color: #64748b;">
+                            <strong style="color: #1e293b;">발신번호 등록 안내</strong>
+                            <ul style="margin: 8px 0 0 16px; line-height: 1.8;">
+                                <li>휴대폰 번호: 본인 인증으로 즉시 등록</li>
+                                <li>유선 전화: 통신서비스 이용증명원 제출 필요 (심사 1~2일)</li>
+                                <li>대표 번호: 사업자등록증 + 통신서비스 이용증명원 필요</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 컴포넌트 명세</h2>
+                <p>마이페이지 화면 구성 요소</p>
+            </div>
+            <div class="panel-content">
+                
+                <div class="spec-section">
+                    <div class="spec-section-title">페이지 정보</div>
+                    <div style="padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px;">
+                        <strong>파일 목록:</strong>
+                        <ul style="margin: 8px 0 0 16px;">
+                            <li>mypage-profile.html - 내 정보 수정</li>
+                            <li>mypage-password.html - 비밀번호 변경</li>
+                            <li>mypage-caller-number.html - 발신번호 관리</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">내 정보 수정</div>
+                    <div class="spec-item" data-spec="1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>활성메뉴</th><td>마이페이지</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>mypage-profile.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">기본 정보 폼</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>읽기전용</th><td>아이디, 회원유형</td></tr><tr><th>수정가능</th><td>연락처, 이메일</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">마케팅 수신 설정</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>옵션</th><td>SMS, 이메일 체크박스</td></tr></table></div></div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">비밀번호 변경</div>
+                    <div class="spec-item" data-spec="5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">비밀번호 변경 페이지</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>mypage-password.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">비밀번호 폼</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>현재 비밀번호, 새 비밀번호, 확인</td></tr><tr><th>검증</th><td>현재 비밀번호 일치, 새 비밀번호 규칙</td></tr></table></div></div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">발신번호 관리</div>
+                    <div class="spec-item" data-spec="7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">발신번호 페이지</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>mypage-caller-number.html</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">발신번호 등록</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>방법</th><td>휴대폰 인증, 서류 인증</td></tr><tr><th>서류</th><td>통신서비스 이용증명원 등</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">발신번호 목록</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>발신번호, 인증방법, 등록일, 상태, 관리</td></tr><tr><th>상태</th><td>승인, 심사중, 반려</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="10"><div class="spec-item-header"><span class="spec-item-number">10</span><span class="spec-item-title">등록 안내</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>내용</th><td>번호 유형별 필요 서류 안내</td></tr></table></div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) { document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('page-' + pageId).classList.add('active'); event.target.classList.add('active'); }
+        document.querySelectorAll('.spec-item-header').forEach(header => { header.addEventListener('click', function() { this.parentElement.classList.toggle('open'); }); });
+        document.querySelectorAll('.spec-marker').forEach(marker => { marker.addEventListener('click', function() { const num = this.getAttribute('data-num'); const specItem = document.querySelector(`.spec-item[data-spec="${num}"]`); document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active')); document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active')); this.classList.add('active'); if (specItem) { specItem.classList.add('active', 'open'); specItem.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); });
+        document.querySelector('.spec-item')?.classList.add('open');
+    </script>
+</body>
+</html>

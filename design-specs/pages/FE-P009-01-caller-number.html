@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발신번호 관리 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1000px; margin: 0 auto; padding: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; }
+        .btn-actual { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-primary-actual { background: #2563eb; border: none; color: white; }
+        
+        .info-box { background: #dbeafe; border: 1px solid #93c5fd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        .info-box-text { font-size: 14px; color: #1e40af; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .table-actual { width: 100%; border-collapse: collapse; }
+        .table-actual th, .table-actual td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .table-actual th { background: #f8fafc; font-size: 12px; font-weight: 500; color: #64748b; }
+        .table-actual td { font-size: 14px; color: #1e293b; }
+        
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-badge.approved { background: #d1fae5; color: #065f46; }
+        .status-badge.pending { background: #fef3c7; color: #92400e; }
+        .status-badge.rejected { background: #fee2e2; color: #991b1b; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #64748b; margin-right: 4px; }
+        .action-btn.delete { border-color: #ef4444; color: #ef4444; }
+        
+        .default-badge { display: inline-block; padding: 2px 6px; background: #2563eb; color: white; border-radius: 4px; font-size: 10px; margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P009-01</span>
+                    <span class="page-title-header">발신번호 관리</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/mypage-caller-number', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/mypage-caller-number</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item active">마이페이지 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="page-header">
+                                    <h1 class="page-title">📞 발신번호 관리</h1>
+                                    <button class="btn-actual btn-primary-actual">+ 발신번호 등록</button>
+                                </div>
+                                
+                                <div class="info-box">
+                                    <div class="info-box-text">ℹ️ 전기통신사업법에 따라 발신번호는 본인 인증 후 등록 가능합니다.</div>
+                                </div>
+                                
+                                <div class="card">
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th>발신번호</th>
+                                                <th>유형</th>
+                                                <th>상태</th>
+                                                <th>등록일</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>010-1234-5678 <span class="default-badge">기본</span></td>
+                                                <td>휴대폰</td>
+                                                <td><span class="status-badge approved">승인</span></td>
+                                                <td>2025-01-01</td>
+                                                <td>
+                                                    <button class="action-btn">기본설정</button>
+                                                    <button class="action-btn delete">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>02-1234-5678</td>
+                                                <td>유선전화</td>
+                                                <td><span class="status-badge approved">승인</span></td>
+                                                <td>2025-01-02</td>
+                                                <td>
+                                                    <button class="action-btn">기본설정</button>
+                                                    <button class="action-btn delete">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>1544-1234</td>
+                                                <td>대표번호</td>
+                                                <td><span class="status-badge pending">심사중</span></td>
+                                                <td>2025-01-05</td>
+                                                <td>
+                                                    <button class="action-btn">기본설정</button>
+                                                    <button class="action-btn delete">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 100px; right: 100px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 150px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 280px; left: 300px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 280px; right: 100px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">mypage-caller-number.html · 발신번호 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">발신번호 등록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">새로운 발신번호를 등록합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>발신번호 등록 모달 표시</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 인증 방법</div>
+                            <div class="desc-note-text">휴대폰: ARS 인증, 유선전화: 통신사 서류 제출</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">안내 메시지</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호 등록에 대한 법적 안내입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">상태</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호의 등록 상태를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>상태</th><th>의미</th></tr>
+                            <tr><td>승인</td><td>사용 가능</td></tr>
+                            <tr><td>심사중</td><td>통신사 심사 진행중</td></tr>
+                            <tr><td>반려</td><td>등록 불가</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">관리</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호를 관리합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>기본설정</td><td>기본 발신번호로 설정</td></tr>
+                            <tr><td>삭제</td><td>발신번호 삭제</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

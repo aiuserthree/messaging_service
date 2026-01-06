@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문자발송 화면설계서 - 톡벨</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <style>
+        .page-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .page-nav-btn { padding: 10px 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .page-nav-btn:hover { border-color: #2563eb; color: #2563eb; }
+        .page-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .spec-section { display: none; }
+        .spec-section.active { display: block; }
+        .mock-tabs { display: flex; gap: 0; border-bottom: 1px solid #e2e8f0; margin-bottom: 24px; }
+        .mock-tab { padding: 14px 24px; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
+        .mock-tab:hover { color: #2563eb; }
+        .mock-tab.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 600; }
+        .mock-form-container { display: grid; grid-template-columns: 1fr 350px; gap: 24px; }
+        .mock-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .mock-form-group { margin-bottom: 20px; }
+        .mock-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; color: #1e293b; }
+        .mock-label.required::after { content: ' *'; color: #ef4444; }
+        .mock-input, .mock-select, .mock-textarea { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .mock-textarea { min-height: 120px; resize: vertical; }
+        .mock-btn-group { display: flex; gap: 8px; }
+        .mock-recipient-box { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .mock-recipient-header { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #e2e8f0; background: #fafafa; flex-wrap: wrap; gap: 8px; }
+        .mock-recipient-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .mock-recipient-table th, .mock-recipient-table td { padding: 10px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        .mock-recipient-table th { background: #f8fafc; font-weight: 600; }
+        .mock-recipient-footer { display: flex; justify-content: space-between; padding: 12px 16px; border-top: 1px solid #e2e8f0; background: #fafafa; flex-wrap: wrap; gap: 8px; }
+        .mock-preview { position: sticky; top: 100px; }
+        .mock-phone { background: #333; border-radius: 32px; padding: 20px 12px; max-width: 280px; margin: 0 auto; }
+        .mock-phone-screen { background: white; border-radius: 20px; padding: 16px; min-height: 250px; }
+        .mock-phone-header { text-align: center; padding: 8px; font-size: 12px; color: #64748b; border-bottom: 1px solid #e2e8f0; margin-bottom: 12px; }
+        .mock-message-bubble { background: #e8f4fd; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.6; }
+        .mock-cost-info { background: #f8fafc; border-radius: 12px; padding: 16px; margin-top: 16px; }
+        .mock-cost-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+        .mock-cost-row.total { border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 8px; font-weight: 600; }
+        .mock-template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .mock-template-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; }
+        .mock-template-name { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .mock-template-type { display: inline-block; padding: 4px 8px; background: #dbeafe; color: #2563eb; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .mock-template-content { font-size: 13px; color: #64748b; margin: 12px 0; line-height: 1.5; }
+        .mock-template-meta { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; }
+        .mock-template-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
+        .mock-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .mock-stat-card { background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 16px; }
+        .mock-stat-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .mock-stat-icon.blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+        .mock-stat-icon.green { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); }
+        .mock-stat-icon.orange { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+        .mock-stat-icon.red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); }
+        .mock-stat-label { font-size: 13px; color: #64748b; }
+        .mock-stat-value { font-size: 22px; font-weight: 700; color: #1e293b; }
+        .mock-filter-bar { display: flex; gap: 12px; padding: 16px; background: white; border: 1px solid #e2e8f0; border-radius: 16px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+        .mock-filter-bar .mock-input { flex: 1; min-width: 200px; }
+        .mock-filter-bar .mock-select { width: 140px; }
+        .mock-radio-group { display: flex; gap: 24px; flex-wrap: wrap; }
+        .mock-radio-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .mock-var-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .mock-var-btn { padding: 6px 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; color: #475569; cursor: pointer; }
+        .mock-ad-notice { background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #92400e; }
+        /* 모달 스타일 */
+        .mock-modal-overlay { background: rgba(0,0,0,0.5); padding: 40px; border-radius: 12px; margin-bottom: 20px; }
+        .mock-modal { background: white; border-radius: 16px; max-width: 600px; margin: 0 auto; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .mock-modal-header { padding: 20px 24px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .mock-modal-title { font-size: 18px; font-weight: 600; }
+        .mock-modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: #f1f5f9; cursor: pointer; font-size: 18px; }
+        .mock-modal-body { padding: 24px; }
+        .mock-modal-footer { padding: 16px 24px; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end; gap: 12px; }
+        .mock-modal-wide { max-width: 900px; }
+        /* 마커 위치 개선 */
+        .marker-wrap { position: relative; }
+        .spec-marker { 
+            position: absolute; 
+            z-index: 100;
+            width: 26px; height: 26px;
+            background: #ef4444; color: white;
+            border-radius: 50%; border: 2px solid white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+            box-shadow: 0 2px 8px rgba(239,68,68,0.4);
+            cursor: pointer;
+        }
+        .spec-marker:hover { transform: scale(1.15); }
+        @media (max-width: 1200px) {
+            .mock-form-container { grid-template-columns: 1fr; }
+            .mock-stat-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 문자발송 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-MSG-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v2.0</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <!-- 페이지 선택 탭 -->
+                <div class="page-nav">
+                    <button class="page-nav-btn active" onclick="showPage('general')">일반문자 발송</button>
+                    <button class="page-nav-btn" onclick="showPage('ad')">광고문자 발송</button>
+                    <button class="page-nav-btn" onclick="showPage('template')">일반문자 템플릿</button>
+                    <button class="page-nav-btn" onclick="showPage('template-ad')">광고문자 템플릿</button>
+                    <button class="page-nav-btn" onclick="showPage('modals')" style="background: #f59e0b; color: white; border-color: #f59e0b;">📋 모달 팝업</button>
+                </div>
+
+                <!-- ========== 일반문자 발송 ========== -->
+                <div class="page-content active" id="page-general">
+                    <!-- 1. GNB 헤더 -->
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="g1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <a href="#" class="mock-nav-item active">문자발송</a>
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <a href="#" class="mock-nav-item">주소록</a>
+                            <a href="#" class="mock-nav-item">결제 관리</a>
+                            <a href="#" class="mock-nav-item">마이페이지</a>
+                        </nav>
+                        <div class="mock-header-actions">
+                            <span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;"><span style="color: #64748b;">잔액</span> <strong style="color: #2563eb;">1,000,000P</strong></span>
+                            <button class="mock-btn mock-btn-primary" style="padding: 8px 16px; font-size: 13px;">충전하기</button>
+                        </div>
+                    </div>
+
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <!-- 2. 페이지 타이틀 -->
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="g2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">문자 발송</h2>
+                            <p style="font-size: 14px; color: #64748b;">SMS/LMS/MMS 메시지를 발송합니다</p>
+                        </div>
+                        
+                        <!-- 3. 서브 탭 메뉴 -->
+                        <div class="marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="g3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tabs" style="margin-bottom: 0;">
+                                <div class="mock-tab active">일반문자 발송</div>
+                                <div class="mock-tab">광고문자 발송</div>
+                                <div class="mock-tab">일반문자 템플릿</div>
+                                <div class="mock-tab">광고문자 템플릿</div>
+                            </div>
+                        </div>
+
+                        <div class="mock-form-container">
+                            <div class="mock-card">
+                                <!-- 4. 발신번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="g4" style="top: 0; right: -12px;">4</span>
+                                    <label class="mock-label required">발신번호</label>
+                                    <select class="mock-select"><option>010-1234-5678</option></select>
+                                    <div style="margin-top: 12px; text-align: right;">
+                                        <button class="mock-btn mock-btn-primary" style="padding: 10px 20px;">새 발신번호 등록하기</button>
+                                    </div>
+                                </div>
+
+                                <!-- 5. 수신번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="g5" style="top: 0; left: -12px;">5</span>
+                                    <label class="mock-label required">수신번호</label>
+                                    <div class="mock-recipient-box">
+                                        <div class="mock-recipient-header">
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-primary" style="padding: 8px 14px; font-size: 13px;">엑셀업로드</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 8px 14px; font-size: 13px;">엑셀샘플</button>
+                                            </div>
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 8px 14px; font-size: 13px;">주소록 불러오기</button>
+                                                <select class="mock-select" style="width: 100px; padding: 8px;"><option>그룹선택</option></select>
+                                                <button class="mock-btn mock-btn-primary" style="padding: 8px 14px; font-size: 13px;" onclick="goToModal('modal-addressbook')">주소록에 추가</button>
+                                            </div>
+                                        </div>
+                                        <div style="max-height: 200px; overflow-y: auto;">
+                                            <table class="mock-recipient-table">
+                                                <thead><tr><th style="width:40px;"><input type="checkbox"></th><th style="width:50px;">순번</th><th>이름</th><th>전화번호</th><th>변수1</th><th>변수2</th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><input type="checkbox"></td><td>1</td><td>홍길동</td><td>010-1234-5678</td><td></td><td></td></tr>
+                                                    <tr><td><input type="checkbox"></td><td>2</td><td>김철수</td><td>010-9876-5432</td><td></td><td></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="mock-recipient-footer">
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">행 추가</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">선택 삭제</button>
+                                            </div>
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">중복번호 삭제</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">수신거부 삭제</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 8px; font-size: 13px; color: #64748b;">총 <strong style="color: #2563eb;">2</strong>명</div>
+                                </div>
+
+                                <!-- 6. 메시지 타입 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="g6" style="top: 0; right: -12px;">6</span>
+                                    <label class="mock-label required">메시지 타입</label>
+                                    <div class="mock-radio-group">
+                                        <label class="mock-radio-item"><input type="radio" name="msgType" checked> SMS (90바이트)</label>
+                                        <label class="mock-radio-item"><input type="radio" name="msgType"> LMS (2,000바이트)</label>
+                                        <label class="mock-radio-item"><input type="radio" name="msgType"> MMS (이미지)</label>
+                                    </div>
+                                </div>
+
+                                <!-- 7. 메시지 내용 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="g7" style="top: 0; left: -12px;">7</span>
+                                    <label class="mock-label required">메시지 내용</label>
+                                    <div class="mock-var-btns">
+                                        <button class="mock-var-btn">#{이름}</button>
+                                        <button class="mock-var-btn">#{전화번호}</button>
+                                        <button class="mock-var-btn">#{변수1}</button>
+                                        <button class="mock-var-btn" style="background: #dbeafe; color: #2563eb;" onclick="goToModal('modal-select-template')">템플릿 선택</button>
+                                    </div>
+                                    <textarea class="mock-textarea" placeholder="메시지 내용을 입력하세요"></textarea>
+                                    <div style="text-align: right; font-size: 12px; color: #64748b; margin-top: 4px;">0 / 90 바이트</div>
+                                </div>
+
+                                <!-- 8. 발송 시간 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="g8" style="top: 0; right: -12px;">8</span>
+                                    <label class="mock-label required">발송 시간</label>
+                                    <div class="mock-radio-group">
+                                        <label class="mock-radio-item"><input type="radio" name="sendTime" checked> 즉시 발송</label>
+                                        <label class="mock-radio-item"><input type="radio" name="sendTime"> 예약 발송</label>
+                                    </div>
+                                </div>
+
+                                <!-- 9. 발송 비용 -->
+                                <div class="mock-cost-info marker-wrap">
+                                    <span class="spec-marker" data-num="g9" style="top: -12px; left: 10px;">9</span>
+                                    <div class="mock-cost-row"><span>수신번호 개수</span><span>2명</span></div>
+                                    <div class="mock-cost-row"><span>메시지 타입</span><span>SMS</span></div>
+                                    <div class="mock-cost-row"><span>단가</span><span>20원</span></div>
+                                    <div class="mock-cost-row total"><span>예상 발송 포인트</span><span style="color: #2563eb; font-size: 18px;">40P</span></div>
+                                </div>
+
+                                <!-- 10. 액션 버튼 -->
+                                <div class="marker-wrap" style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <span class="spec-marker" data-num="g10" style="top: 50%; left: -12px; transform: translateY(-50%);">10</span>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-test')">테스트 발송</button>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-save-template')">템플릿으로 저장</button>
+                                    <button class="mock-btn mock-btn-primary" style="margin-left: auto; padding: 14px 32px;" onclick="goToModal('modal-send')">발송하기</button>
+                                </div>
+                            </div>
+
+                            <!-- 11. 미리보기 -->
+                            <div class="mock-preview marker-wrap">
+                                <span class="spec-marker" data-num="g11" style="top: -12px; right: 10px;">11</span>
+                                <div class="mock-card">
+                                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">메시지 미리보기</h3>
+                                    <div class="mock-phone">
+                                        <div class="mock-phone-screen">
+                                            <div class="mock-phone-header">010-1234-5678</div>
+                                            <div class="mock-message-bubble">메시지 내용이 여기에 표시됩니다.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 광고문자 발송 ========== -->
+                <div class="page-content" id="page-ad">
+                    <!-- 1. GNB 헤더 -->
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="a1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <a href="#" class="mock-nav-item active">문자발송</a>
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <a href="#" class="mock-nav-item">주소록</a>
+                            <a href="#" class="mock-nav-item">결제 관리</a>
+                            <a href="#" class="mock-nav-item">마이페이지</a>
+                        </nav>
+                        <div class="mock-header-actions">
+                            <span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;"><span style="color: #64748b;">잔액</span> <strong style="color: #2563eb;">1,000,000P</strong></span>
+                            <button class="mock-btn mock-btn-primary" style="padding: 8px 16px; font-size: 13px;">충전하기</button>
+                        </div>
+                    </div>
+
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <!-- 2. 페이지 타이틀 -->
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="a2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">문자 발송</h2>
+                            <p style="font-size: 14px; color: #64748b;">SMS/LMS/MMS 메시지를 발송합니다</p>
+                        </div>
+                        
+                        <!-- 3. 서브 탭 메뉴 -->
+                        <div class="marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="a3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tabs" style="margin-bottom: 0;">
+                                <div class="mock-tab">일반문자 발송</div>
+                                <div class="mock-tab active">광고문자 발송</div>
+                                <div class="mock-tab">일반문자 템플릿</div>
+                                <div class="mock-tab">광고문자 템플릿</div>
+                            </div>
+                        </div>
+
+                        <div class="mock-form-container">
+                            <div class="mock-card">
+                                <!-- 4. 광고문자 안내 -->
+                                <div class="mock-ad-notice marker-wrap">
+                                    <span class="spec-marker" data-num="a4" style="top: -12px; right: 10px;">4</span>
+                                    <strong>📢 광고문자 필수 안내</strong>
+                                    <ul style="margin-top: 8px; padding-left: 20px; font-size: 12px;">
+                                        <li>(광고) 문구가 자동으로 추가됩니다</li>
+                                        <li>080 수신거부 번호가 필수입니다</li>
+                                        <li>야간(21시~08시) 발송 제한</li>
+                                    </ul>
+                                </div>
+
+                                <!-- 5. 발신번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="a5" style="top: 0; left: -12px;">5</span>
+                                    <label class="mock-label required">발신번호</label>
+                                    <select class="mock-select"><option>010-1234-5678</option></select>
+                                </div>
+
+                                <!-- 6. 080 수신거부 번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="a6" style="top: 0; right: -12px;">6</span>
+                                    <label class="mock-label required">080 수신거부 번호</label>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-weight: 600;">080-</span>
+                                        <select class="mock-select" style="flex: 1;"><option>번호 선택</option><option>123-4567</option></select>
+                                    </div>
+                                </div>
+
+                                <!-- 7. 수신번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="a7" style="top: 0; left: -12px;">7</span>
+                                    <label class="mock-label required">수신번호</label>
+                                    <div class="mock-recipient-box">
+                                        <div class="mock-recipient-header">
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-primary" style="padding: 8px 14px; font-size: 13px;">엑셀업로드</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 8px 14px; font-size: 13px;">엑셀샘플</button>
+                                            </div>
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 8px 14px; font-size: 13px;">주소록 불러오기</button>
+                                                <button class="mock-btn mock-btn-primary" style="padding: 8px 14px; font-size: 13px;" onclick="goToModal('modal-addressbook')">주소록에 추가</button>
+                                            </div>
+                                        </div>
+                                        <div style="max-height: 200px; overflow-y: auto;">
+                                            <table class="mock-recipient-table">
+                                                <thead><tr><th style="width:40px;"><input type="checkbox"></th><th style="width:50px;">순번</th><th>이름</th><th>전화번호</th><th>변수1</th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><input type="checkbox"></td><td>1</td><td>홍길동</td><td>010-1234-5678</td><td></td></tr>
+                                                    <tr><td><input type="checkbox"></td><td>2</td><td>김철수</td><td>010-9876-5432</td><td></td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="mock-recipient-footer">
+                                            <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">행 추가</button>
+                                            <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">중복번호 삭제</button>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 8px; font-size: 13px; color: #64748b;">총 <strong style="color: #2563eb;">2</strong>명</div>
+                                </div>
+
+                                <!-- 8. 메시지 타입 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="a8" style="top: 0; right: -12px;">8</span>
+                                    <label class="mock-label required">메시지 타입</label>
+                                    <div class="mock-radio-group">
+                                        <label class="mock-radio-item"><input type="radio" name="adMsgType" checked> SMS (90바이트)</label>
+                                        <label class="mock-radio-item"><input type="radio" name="adMsgType"> LMS (2,000바이트)</label>
+                                        <label class="mock-radio-item"><input type="radio" name="adMsgType"> MMS (이미지)</label>
+                                    </div>
+                                </div>
+
+                                <!-- 9. 메시지 내용 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="a9" style="top: 0; left: -12px;">9</span>
+                                    <label class="mock-label required">메시지 내용</label>
+                                    <div class="mock-var-btns">
+                                        <button class="mock-var-btn">#{이름}</button>
+                                        <button class="mock-var-btn">#{전화번호}</button>
+                                        <button class="mock-var-btn">#{변수1}</button>
+                                        <button class="mock-var-btn" style="background: #dbeafe; color: #2563eb;" onclick="goToModal('modal-select-template')">템플릿 선택</button>
+                                    </div>
+                                    <textarea class="mock-textarea" placeholder="메시지 내용을 입력하세요"></textarea>
+                                    <div style="font-size: 12px; color: #64748b; margin-top: 4px;">(광고) 문구와 수신거부 안내는 자동 추가됩니다</div>
+                                </div>
+
+                                <!-- 10. 발송 시간 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="a10" style="top: 0; right: -12px;">10</span>
+                                    <label class="mock-label required">발송 시간</label>
+                                    <div class="mock-radio-group">
+                                        <label class="mock-radio-item"><input type="radio" name="adSendTime" checked> 즉시 발송</label>
+                                        <label class="mock-radio-item"><input type="radio" name="adSendTime"> 예약 발송</label>
+                                    </div>
+                                    <div style="margin-top: 8px; padding: 8px 12px; background: #fef3c7; border-radius: 6px; font-size: 12px; color: #92400e;">⚠️ 야간 21시~08시 광고문자 발송이 제한됩니다</div>
+                                </div>
+
+                                <!-- 11. 발송 비용 -->
+                                <div class="mock-cost-info marker-wrap">
+                                    <span class="spec-marker" data-num="a11" style="top: -12px; left: 10px;">11</span>
+                                    <div class="mock-cost-row"><span>수신번호 개수</span><span>2명</span></div>
+                                    <div class="mock-cost-row"><span>메시지 타입</span><span>SMS (광고)</span></div>
+                                    <div class="mock-cost-row"><span>단가</span><span>20원</span></div>
+                                    <div class="mock-cost-row total"><span>예상 발송 포인트</span><span style="color: #2563eb; font-size: 18px;">40P</span></div>
+                                </div>
+
+                                <!-- 12. 액션 버튼 -->
+                                <div class="marker-wrap" style="display: flex; gap: 12px; margin-top: 24px;">
+                                    <span class="spec-marker" data-num="a12" style="top: 50%; left: -12px; transform: translateY(-50%);">12</span>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-test')">테스트 발송</button>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-save-template')">템플릿으로 저장</button>
+                                    <button class="mock-btn mock-btn-primary" style="margin-left: auto; padding: 14px 32px;" onclick="goToModal('modal-send')">발송하기</button>
+                                </div>
+                            </div>
+
+                            <!-- 13. 미리보기 -->
+                            <div class="mock-preview marker-wrap">
+                                <span class="spec-marker" data-num="a13" style="top: -12px; right: 10px;">13</span>
+                                <div class="mock-card">
+                                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">메시지 미리보기</h3>
+                                    <div class="mock-phone">
+                                        <div class="mock-phone-screen">
+                                            <div class="mock-phone-header">010-1234-5678</div>
+                                            <div class="mock-message-bubble">
+                                                <span style="color: #dc2626; font-weight: 600;">(광고)</span> 메시지 내용이 여기에 표시됩니다.
+                                                <div style="margin-top: 12px; font-size: 12px; color: #64748b; border-top: 1px dashed #d1d5db; padding-top: 8px;">무료수신거부 080-123-4567</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 일반문자 템플릿 ========== -->
+                <div class="page-content" id="page-template">
+                    <!-- 1. GNB 헤더 -->
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="t1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <a href="#" class="mock-nav-item active">문자발송</a>
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <a href="#" class="mock-nav-item">주소록</a>
+                            <a href="#" class="mock-nav-item">결제 관리</a>
+                            <a href="#" class="mock-nav-item">마이페이지</a>
+                        </nav>
+                        <div class="mock-header-actions">
+                            <span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;"><span style="color: #64748b;">잔액</span> <strong style="color: #2563eb;">1,000,000P</strong></span>
+                            <button class="mock-btn mock-btn-primary" style="padding: 8px 16px; font-size: 13px;">충전하기</button>
+                        </div>
+                    </div>
+
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <!-- 2. 페이지 타이틀 -->
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="t2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">일반문자 템플릿 관리</h2>
+                            <p style="font-size: 14px; color: #64748b;">자주 사용하는 템플릿을 관리합니다</p>
+                        </div>
+                        
+                        <!-- 3. 서브 탭 메뉴 -->
+                        <div class="marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="t3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tabs" style="margin-bottom: 0;">
+                                <div class="mock-tab">일반문자 발송</div>
+                                <div class="mock-tab">광고문자 발송</div>
+                                <div class="mock-tab active">일반문자 템플릿</div>
+                                <div class="mock-tab">광고문자 템플릿</div>
+                            </div>
+                        </div>
+
+                        <!-- 4. 통계 카드 -->
+                        <div class="mock-stat-grid marker-wrap">
+                            <span class="spec-marker" data-num="t4" style="top: -12px; left: 10px;">4</span>
+                            <div class="mock-stat-card"><div class="mock-stat-icon blue">📄</div><div><div class="mock-stat-label">전체</div><div class="mock-stat-value">24개</div></div></div>
+                            <div class="mock-stat-card"><div class="mock-stat-icon green">✉️</div><div><div class="mock-stat-label">SMS</div><div class="mock-stat-value">12개</div></div></div>
+                            <div class="mock-stat-card"><div class="mock-stat-icon orange">📋</div><div><div class="mock-stat-label">LMS</div><div class="mock-stat-value">8개</div></div></div>
+                            <div class="mock-stat-card"><div class="mock-stat-icon red">🖼️</div><div><div class="mock-stat-label">MMS</div><div class="mock-stat-value">4개</div></div></div>
+                        </div>
+
+                        <!-- 5. 검색 필터 -->
+                        <div class="mock-filter-bar marker-wrap">
+                            <span class="spec-marker" data-num="t5" style="top: -12px; right: 10px;">5</span>
+                            <input type="text" class="mock-input" placeholder="템플릿명 또는 내용으로 검색">
+                            <select class="mock-select"><option>전체 타입</option><option>SMS</option><option>LMS</option><option>MMS</option></select>
+                            <button class="mock-btn mock-btn-primary">검색</button>
+                            <button class="mock-btn mock-btn-outline">초기화</button>
+                        </div>
+
+                        <!-- 6. 템플릿 관리 영역 -->
+                        <div class="mock-card marker-wrap">
+                            <span class="spec-marker" data-num="t6" style="top: -12px; left: 10px;">6</span>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                <button class="mock-btn mock-btn-primary" onclick="goToModal('modal-new-template')">새 템플릿 등록</button>
+                                <div class="mock-btn-group">
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-delete')">일괄 삭제</button>
+                                    <button class="mock-btn mock-btn-outline">내보내기</button>
+                                </div>
+                            </div>
+
+                            <!-- 7. 템플릿 카드 목록 -->
+                            <div class="mock-template-grid marker-wrap">
+                                <span class="spec-marker" data-num="t7" style="top: -12px; right: 10px;">7</span>
+                                <div class="mock-template-card">
+                                    <div style="display: flex; justify-content: space-between;"><div class="mock-template-name">주문 확인</div><span class="mock-template-type">SMS</span></div>
+                                    <div class="mock-template-content">주문이 접수되었습니다. 주문번호: #{주문번호}</div>
+                                    <div class="mock-template-meta"><span>등록일: 2024-01-15</span><span>사용: 45회</span></div>
+                                    <div class="mock-template-actions">
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">미리보기</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-new-template')">수정</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">복사</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-delete')">삭제</button>
+                                    </div>
+                                </div>
+                                <div class="mock-template-card">
+                                    <div style="display: flex; justify-content: space-between;"><div class="mock-template-name">배송 안내</div><span class="mock-template-type">LMS</span></div>
+                                    <div class="mock-template-content">배송이 시작되었습니다. 운송장: #{운송장번호}</div>
+                                    <div class="mock-template-meta"><span>등록일: 2024-01-14</span><span>사용: 32회</span></div>
+                                    <div class="mock-template-actions">
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">미리보기</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-new-template')">수정</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">복사</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-delete')">삭제</button>
+                                    </div>
+                                </div>
+                                <div class="mock-template-card">
+                                    <div style="display: flex; justify-content: space-between;"><div class="mock-template-name">예약 완료</div><span class="mock-template-type">SMS</span></div>
+                                    <div class="mock-template-content">예약이 완료되었습니다. 예약번호: #{예약번호}</div>
+                                    <div class="mock-template-meta"><span>등록일: 2024-01-13</span><span>사용: 28회</span></div>
+                                    <div class="mock-template-actions">
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">미리보기</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-new-template')">수정</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">복사</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-delete')">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 8. 페이지네이션 -->
+                            <div class="marker-wrap" style="display: flex; justify-content: center; gap: 4px; margin-top: 24px;">
+                                <span class="spec-marker" data-num="t8" style="top: 50%; right: -30px; transform: translateY(-50%);">8</span>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">«</button>
+                                <button class="mock-btn mock-btn-primary" style="padding: 8px 12px;">1</button>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">2</button>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">3</button>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">»</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 광고문자 템플릿 ========== -->
+                <div class="page-content" id="page-template-ad">
+                    <!-- 1. GNB 헤더 -->
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="ta1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <a href="#" class="mock-nav-item active">문자발송</a>
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <a href="#" class="mock-nav-item">주소록</a>
+                            <a href="#" class="mock-nav-item">결제 관리</a>
+                            <a href="#" class="mock-nav-item">마이페이지</a>
+                        </nav>
+                        <div class="mock-header-actions">
+                            <span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;"><span style="color: #64748b;">잔액</span> <strong style="color: #2563eb;">1,000,000P</strong></span>
+                            <button class="mock-btn mock-btn-primary" style="padding: 8px 16px; font-size: 13px;">충전하기</button>
+                        </div>
+                    </div>
+
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <!-- 2. 페이지 타이틀 -->
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="ta2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">광고문자 템플릿 관리</h2>
+                            <p style="font-size: 14px; color: #64748b;">자주 사용하는 광고문자 템플릿을 관리합니다</p>
+                        </div>
+                        
+                        <!-- 3. 서브 탭 메뉴 -->
+                        <div class="marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="ta3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tabs" style="margin-bottom: 0;">
+                                <div class="mock-tab">일반문자 발송</div>
+                                <div class="mock-tab">광고문자 발송</div>
+                                <div class="mock-tab">일반문자 템플릿</div>
+                                <div class="mock-tab active">광고문자 템플릿</div>
+                            </div>
+                        </div>
+
+                        <!-- 4. 광고문자 안내 -->
+                        <div class="mock-ad-notice marker-wrap">
+                            <span class="spec-marker" data-num="ta4" style="top: -12px; right: 10px;">4</span>
+                            <strong>📢 광고문자 템플릿 안내</strong>
+                            <p style="margin-top: 4px; font-size: 12px;">(광고) 문구와 수신거부 안내가 자동으로 추가됩니다.</p>
+                        </div>
+
+                        <!-- 5. 통계 카드 -->
+                        <div class="mock-stat-grid marker-wrap">
+                            <span class="spec-marker" data-num="ta5" style="top: -12px; left: 10px;">5</span>
+                            <div class="mock-stat-card"><div class="mock-stat-icon blue">📄</div><div><div class="mock-stat-label">전체</div><div class="mock-stat-value">18개</div></div></div>
+                            <div class="mock-stat-card"><div class="mock-stat-icon green">✉️</div><div><div class="mock-stat-label">SMS</div><div class="mock-stat-value">10개</div></div></div>
+                            <div class="mock-stat-card"><div class="mock-stat-icon orange">📋</div><div><div class="mock-stat-label">LMS</div><div class="mock-stat-value">5개</div></div></div>
+                            <div class="mock-stat-card"><div class="mock-stat-icon red">🖼️</div><div><div class="mock-stat-label">MMS</div><div class="mock-stat-value">3개</div></div></div>
+                        </div>
+
+                        <!-- 6. 검색 필터 -->
+                        <div class="mock-filter-bar marker-wrap">
+                            <span class="spec-marker" data-num="ta6" style="top: -12px; right: 10px;">6</span>
+                            <input type="text" class="mock-input" placeholder="템플릿명 또는 내용으로 검색">
+                            <select class="mock-select"><option>전체 타입</option><option>SMS</option><option>LMS</option><option>MMS</option></select>
+                            <button class="mock-btn mock-btn-primary">검색</button>
+                        </div>
+
+                        <!-- 7. 템플릿 관리 영역 -->
+                        <div class="mock-card marker-wrap">
+                            <span class="spec-marker" data-num="ta7" style="top: -12px; left: 10px;">7</span>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                <button class="mock-btn mock-btn-primary" onclick="goToModal('modal-new-template')">새 템플릿 등록</button>
+                                <div class="mock-btn-group">
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-delete')">일괄 삭제</button>
+                                    <button class="mock-btn mock-btn-outline">내보내기</button>
+                                </div>
+                            </div>
+
+                            <!-- 8. 템플릿 카드 목록 -->
+                            <div class="mock-template-grid marker-wrap">
+                                <span class="spec-marker" data-num="ta8" style="top: -12px; right: 10px;">8</span>
+                                <div class="mock-template-card">
+                                    <div style="display: flex; justify-content: space-between;"><div class="mock-template-name">할인 이벤트</div><span class="mock-template-type">SMS</span></div>
+                                    <div class="mock-template-content"><span style="color: #dc2626;">(광고)</span> 특별 할인 이벤트!<br><span style="font-size: 11px; color: #94a3b8;">무료수신거부 080-XXX-XXXX</span></div>
+                                    <div class="mock-template-meta"><span>등록일: 2024-01-15</span><span>사용: 45회</span></div>
+                                    <div class="mock-template-actions">
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">미리보기</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-new-template')">수정</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">복사</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-delete')">삭제</button>
+                                    </div>
+                                </div>
+                                <div class="mock-template-card">
+                                    <div style="display: flex; justify-content: space-between;"><div class="mock-template-name">신규 상품 안내</div><span class="mock-template-type">LMS</span></div>
+                                    <div class="mock-template-content"><span style="color: #dc2626;">(광고)</span> 신규 상품이 출시되었습니다!<br><span style="font-size: 11px; color: #94a3b8;">무료수신거부 080-XXX-XXXX</span></div>
+                                    <div class="mock-template-meta"><span>등록일: 2024-01-14</span><span>사용: 28회</span></div>
+                                    <div class="mock-template-actions">
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">미리보기</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-new-template')">수정</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">복사</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-delete')">삭제</button>
+                                    </div>
+                                </div>
+                                <div class="mock-template-card">
+                                    <div style="display: flex; justify-content: space-between;"><div class="mock-template-name">시즌 프로모션</div><span class="mock-template-type">MMS</span></div>
+                                    <div class="mock-template-content"><span style="color: #dc2626;">(광고)</span> 시즌 프로모션 최대 50%!<br><span style="font-size: 11px; color: #94a3b8;">무료수신거부 080-XXX-XXXX</span></div>
+                                    <div class="mock-template-meta"><span>등록일: 2024-01-13</span><span>사용: 15회</span></div>
+                                    <div class="mock-template-actions">
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">미리보기</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-new-template')">수정</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;">복사</button>
+                                        <button class="mock-btn mock-btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="goToModal('modal-delete')">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 9. 페이지네이션 -->
+                            <div class="marker-wrap" style="display: flex; justify-content: center; gap: 4px; margin-top: 24px;">
+                                <span class="spec-marker" data-num="ta9" style="top: 50%; right: -30px; transform: translateY(-50%);">9</span>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">«</button>
+                                <button class="mock-btn mock-btn-primary" style="padding: 8px 12px;">1</button>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">2</button>
+                                <button class="mock-btn mock-btn-outline" style="padding: 8px 12px;">»</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 모달 팝업 ========== -->
+                <div class="page-content" id="page-modals">
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">📋 모달 팝업 화면</h2>
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px;">각 기능에서 사용되는 모달 팝업 UI</p>
+
+                        <!-- 발송 확인 모달 -->
+                        <div class="mock-modal-overlay" id="modal-send" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m1" style="top: 10px; left: 10px;">1</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">발송 확인</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;"><span style="color: #64748b;">발신번호</span><span>010-1234-5678</span></div>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;"><span style="color: #64748b;">수신번호 개수</span><span>100명</span></div>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;"><span style="color: #64748b;">메시지 타입</span><span>SMS</span></div>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;"><span style="color: #64748b;">발송 시간</span><span>즉시 발송</span></div>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; font-weight: 600;"><span>예상 발송 포인트</span><span style="color: #2563eb; font-size: 18px;">2,000P</span></div>
+                                    <div style="background: #fef3c7; padding: 12px; border-radius: 8px; margin-top: 16px; font-size: 13px; color: #92400e;">⚠️ 발송 후에는 취소할 수 없습니다. 수신번호를 다시 한번 확인해주세요.</div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">발송하기</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 테스트 발송 모달 -->
+                        <div class="mock-modal-overlay" id="modal-test" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m2" style="top: 10px; left: 10px;">2</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">테스트 발송</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">테스트 수신번호</label>
+                                        <input type="text" class="mock-input" placeholder="010-0000-0000" value="010-1234-5678">
+                                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">테스트 메시지가 이 번호로 발송됩니다</div>
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">테스트 발송</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿 저장 모달 -->
+                        <div class="mock-modal-overlay" id="modal-save-template" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m3" style="top: 10px; left: 10px;">3</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">템플릿으로 저장</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">템플릿명</label>
+                                        <input type="text" class="mock-input" placeholder="템플릿명을 입력하세요">
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">저장</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿 선택 모달 -->
+                        <div class="mock-modal-overlay" id="modal-select-template" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m4" style="top: 10px; left: 10px;">4</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">템플릿 선택</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <input type="text" class="mock-input" placeholder="템플릿명 또는 내용으로 검색">
+                                    </div>
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr style="background: #f8fafc;">
+                                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">템플릿명</th>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">타입</th>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">내용</th>
+                                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td style="padding: 12px; border-bottom: 1px solid #f1f5f9;">주문 확인</td><td style="padding: 12px; border-bottom: 1px solid #f1f5f9;"><span class="mock-template-type">SMS</span></td><td style="padding: 12px; border-bottom: 1px solid #f1f5f9; color: #64748b;">주문이 접수되었습니다...</td><td style="padding: 12px; border-bottom: 1px solid #f1f5f9;"><button class="mock-btn mock-btn-primary" style="padding: 6px 12px; font-size: 12px;">선택</button></td></tr>
+                                            <tr><td style="padding: 12px; border-bottom: 1px solid #f1f5f9;">배송 안내</td><td style="padding: 12px; border-bottom: 1px solid #f1f5f9;"><span class="mock-template-type">LMS</span></td><td style="padding: 12px; border-bottom: 1px solid #f1f5f9; color: #64748b;">배송이 시작되었습니다...</td><td style="padding: 12px; border-bottom: 1px solid #f1f5f9;"><button class="mock-btn mock-btn-primary" style="padding: 6px 12px; font-size: 12px;">선택</button></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 새 템플릿 등록 모달 -->
+                        <div class="mock-modal-overlay" id="modal-new-template" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m5" style="top: 10px; left: 10px;">5</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">템플릿 등록</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 24px;">
+                                        <div>
+                                            <div class="mock-form-group">
+                                                <label class="mock-label required">템플릿명</label>
+                                                <input type="text" class="mock-input" placeholder="템플릿명을 입력하세요">
+                                            </div>
+                                            <div class="mock-form-group">
+                                                <label class="mock-label required">메시지 타입</label>
+                                                <div class="mock-radio-group">
+                                                    <label class="mock-radio-item"><input type="radio" checked> SMS</label>
+                                                    <label class="mock-radio-item"><input type="radio"> LMS</label>
+                                                    <label class="mock-radio-item"><input type="radio"> MMS</label>
+                                                </div>
+                                            </div>
+                                            <div class="mock-form-group">
+                                                <label class="mock-label required">메시지 내용</label>
+                                                <div class="mock-var-btns">
+                                                    <button class="mock-var-btn">#{이름}</button>
+                                                    <button class="mock-var-btn">#{전화번호}</button>
+                                                </div>
+                                                <textarea class="mock-textarea" placeholder="메시지 내용을 입력하세요"></textarea>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="mock-card" style="padding: 16px;">
+                                                <h4 style="font-size: 14px; margin-bottom: 12px;">미리보기</h4>
+                                                <div class="mock-phone" style="transform: scale(0.85); transform-origin: top center;">
+                                                    <div class="mock-phone-screen">
+                                                        <div class="mock-phone-header">010-1234-5678</div>
+                                                        <div class="mock-message-bubble">메시지 내용</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">저장</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 삭제 확인 모달 -->
+                        <div class="mock-modal-overlay" id="modal-delete" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m6" style="top: 10px; left: 10px;">6</span>
+                            <div class="mock-modal" style="max-width: 400px;">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">템플릿 삭제</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <p>선택한 템플릿을 삭제하시겠습니까?</p>
+                                    <div style="background: #fee2e2; padding: 12px; border-radius: 8px; margin-top: 16px; font-size: 13px; color: #dc2626;">⚠️ 삭제된 템플릿은 복구할 수 없습니다.</div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn" style="background: #dc2626; color: white;">삭제</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 주소록에 추가 모달 -->
+                        <div class="mock-modal-overlay" id="modal-addressbook" style="position: relative; transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m7" style="top: 10px; left: 10px;">7</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">주소록에 추가</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <label class="mock-label">추가 방식 선택</label>
+                                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                                            <label class="mock-radio-item"><input type="radio" name="addType" checked> 기존 그룹에 추가</label>
+                                            <label class="mock-radio-item"><input type="radio" name="addType"> 새 그룹 생성</label>
+                                        </div>
+                                    </div>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">그룹 선택</label>
+                                        <select class="mock-select"><option>그룹을 선택하세요</option><option>VIP 고객</option><option>일반 고객</option></select>
+                                    </div>
+                                    <div style="padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px;">
+                                        추가할 데이터: <strong>50</strong>개
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">추가</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 기능 명세</h2>
+                <p>번호를 클릭하면 상세 설명이 표시됩니다</p>
+            </div>
+            <div class="panel-content" id="specContent">
+                <!-- 일반문자 발송 디스크립션 -->
+                <div class="spec-section active" id="spec-general">
+                    <div class="spec-section-title">일반문자 발송 화면</div>
+                    <div class="spec-item open" data-num="g1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보, 충전버튼</td></tr><tr><th>기능</th><td>메뉴 hover시 드롭다운 서브메뉴</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>문자 발송</td></tr><tr><th>설명</th><td>SMS/LMS/MMS 메시지를 발송합니다</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>탭 구성</th><td>일반문자 발송, 광고문자 발송, 일반문자 템플릿, 광고문자 템플릿</td></tr><tr><th>동작</th><td>클릭 시 해당 페이지로 이동</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">발신번호 선택</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 셀렉트박스</td></tr><tr><th>데이터</th><td>등록된 발신번호 목록 (API)</td></tr><tr><th>기능</th><td>발신번호 미등록시 알림, "새 발신번호 등록" 버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">수신번호 입력</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>엑셀업로드, 주소록 불러오기, 데이터 테이블</td></tr><tr><th>컬럼</th><td>체크박스, 순번, 이름, 전화번호, 변수1~3</td></tr><tr><th>기능</th><td>행 추가/삭제, 중복번호 삭제, 수신거부 삭제, 주소록에 추가</td></tr><tr><th>제한</th><td>최대 50,000건</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">메시지 타입</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 라디오버튼</td></tr><tr><th>옵션</th><td>SMS(90byte), LMS(2,000byte), MMS(이미지)</td></tr><tr><th>동작</th><td>LMS/MMS시 제목필드 표시, MMS시 이미지첨부 표시</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">메시지 내용</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 텍스트영역</td></tr><tr><th>변수버튼</th><td>#{이름}, #{전화번호}, #{변수1~3}, 템플릿 선택</td></tr><tr><th>기능</th><td>변수 삽입, 실시간 바이트 계산, 템플릿 선택 모달</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">발송 시간</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 라디오버튼</td></tr><tr><th>옵션</th><td>즉시 발송 / 예약 발송</td></tr><tr><th>예약발송</th><td>날짜/시간 선택 (datetime-local)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">발송 비용 정보</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시항목</th><td>수신번호 개수, 메시지 타입, 단가, 예상 포인트, 잔여 포인트</td></tr><tr><th>계산</th><td>실시간 자동 계산 (수신자 수 × 단가)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g10"><div class="spec-item-header"><span class="spec-item-number">10</span><span class="spec-item-title">액션 버튼</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>테스트발송</th><td>테스트 번호 입력 모달 → 1건 발송</td></tr><tr><th>템플릿저장</th><td>템플릿명 입력 모달 → 저장</td></tr><tr><th>발송하기</th><td>발송 확인 모달 → API 호출</td></tr></table></div></div>
+                    <div class="spec-item" data-num="g11"><div class="spec-item-header"><span class="spec-item-number">11</span><span class="spec-item-title">미리보기</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>스마트폰 형태 UI</td></tr><tr><th>표시</th><td>발신번호, 메시지 내용, 이미지(MMS)</td></tr><tr><th>동작</th><td>실시간 미리보기 갱신, position: sticky</td></tr></table></div></div>
+                </div>
+
+                <!-- 광고문자 발송 디스크립션 -->
+                <div class="spec-section" id="spec-ad">
+                    <div class="spec-section-title">광고문자 발송 화면</div>
+                    <div class="spec-item open" data-num="a1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보, 충전버튼</td></tr><tr><th>기능</th><td>메뉴 hover시 드롭다운 서브메뉴</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>문자 발송</td></tr><tr><th>설명</th><td>SMS/LMS/MMS 메시지를 발송합니다</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>탭 구성</th><td>일반문자 발송, 광고문자 발송, 일반문자 템플릿, 광고문자 템플릿</td></tr><tr><th>동작</th><td>클릭 시 해당 페이지로 이동</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">광고문자 필수 안내</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>경고 배너 (노란색)</td></tr><tr><th>내용</th><td>(광고) 자동추가, 080 필수, 야간발송 제한</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">발신번호 선택</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 셀렉트박스</td></tr><tr><th>데이터</th><td>등록된 발신번호 목록 (API)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">080 수신거부 번호</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 셀렉트박스</td></tr><tr><th>데이터</th><td>등록된 080 번호 목록</td></tr><tr><th>설명</th><td>광고문자는 080 수신거부 번호 필수</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">수신번호 입력</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>엑셀업로드, 주소록 불러오기, 데이터 테이블</td></tr><tr><th>컬럼</th><td>체크박스, 순번, 이름, 전화번호, 변수</td></tr><tr><th>기능</th><td>행 추가/삭제, 중복번호 삭제, 주소록에 추가</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">메시지 타입</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 라디오버튼</td></tr><tr><th>옵션</th><td>SMS(90byte), LMS(2,000byte), MMS(이미지)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">메시지 내용</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>자동추가</th><td>(광고) 문구 + 수신거부 안내</td></tr><tr><th>위치</th><td>메시지 앞에 (광고), 끝에 무료수신거부</td></tr><tr><th>변수</th><td>#{이름}, #{전화번호}, #{변수1} 삽입 가능</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a10"><div class="spec-item-header"><span class="spec-item-number">10</span><span class="spec-item-title">발송 시간</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 라디오버튼</td></tr><tr><th>옵션</th><td>즉시 발송 / 예약 발송</td></tr><tr><th>제한</th><td>야간(21시~08시) 발송 제한 안내</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a11"><div class="spec-item-header"><span class="spec-item-number">11</span><span class="spec-item-title">발송 비용 정보</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시항목</th><td>수신번호 개수, 메시지 타입(광고), 단가, 예상 포인트</td></tr><tr><th>계산</th><td>실시간 자동 계산</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a12"><div class="spec-item-header"><span class="spec-item-number">12</span><span class="spec-item-title">액션 버튼</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>테스트발송</th><td>테스트 번호 입력 모달 → 1건 발송</td></tr><tr><th>템플릿저장</th><td>템플릿명 입력 모달 → 저장</td></tr><tr><th>발송하기</th><td>발송 확인 모달 → API 호출</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a13"><div class="spec-item-header"><span class="spec-item-number">13</span><span class="spec-item-title">미리보기</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시</th><td>(광고) 문구 빨간색으로 강조</td></tr><tr><th>하단</th><td>무료수신거부 080-XXX-XXXX 표시</td></tr><tr><th>동작</th><td>실시간 미리보기 갱신</td></tr></table></div></div>
+                </div>
+
+                <!-- 일반문자 템플릿 디스크립션 -->
+                <div class="spec-section" id="spec-template">
+                    <div class="spec-section-title">일반문자 템플릿 관리</div>
+                    <div class="spec-item open" data-num="t1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보, 충전버튼</td></tr><tr><th>기능</th><td>메뉴 hover시 드롭다운 서브메뉴</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>일반문자 템플릿 관리</td></tr><tr><th>설명</th><td>자주 사용하는 템플릿을 관리합니다</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>탭 구성</th><td>일반문자 발송, 광고문자 발송, 일반문자 템플릿, 광고문자 템플릿</td></tr><tr><th>동작</th><td>클릭 시 해당 페이지로 이동</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">통계 카드</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>전체, SMS, LMS, MMS 개수</td></tr><tr><th>데이터</th><td>API에서 실시간 조회</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">검색 필터</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>검색</th><td>템플릿명 또는 내용으로 검색</td></tr><tr><th>필터</th><td>전체/SMS/LMS/MMS 타입별 필터</td></tr><tr><th>버튼</th><td>검색, 초기화</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">템플릿 관리 영역</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>새 템플릿</th><td>클릭 시 템플릿 등록 모달</td></tr><tr><th>일괄삭제</th><td>선택된 템플릿 일괄 삭제</td></tr><tr><th>내보내기</th><td>템플릿 목록 엑셀 다운로드</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">템플릿 카드 목록</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>레이아웃</th><td>그리드 레이아웃 (자동 반응형)</td></tr><tr><th>표시정보</th><td>템플릿명, 타입(SMS/LMS/MMS), 내용, 등록일, 사용횟수</td></tr><tr><th>버튼</th><td>미리보기, 수정, 복사, 삭제</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">페이지네이션</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>이전/다음, 페이지 번호</td></tr><tr><th>기본</th><td>페이지당 12개 표시</td></tr></table></div></div>
+                </div>
+
+                <!-- 광고문자 템플릿 디스크립션 -->
+                <div class="spec-section" id="spec-template-ad">
+                    <div class="spec-section-title">광고문자 템플릿 관리</div>
+                    <div class="spec-item open" data-num="ta1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보, 충전버튼</td></tr><tr><th>기능</th><td>메뉴 hover시 드롭다운 서브메뉴</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>광고문자 템플릿 관리</td></tr><tr><th>설명</th><td>자주 사용하는 광고문자 템플릿을 관리합니다</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>탭 구성</th><td>일반문자 발송, 광고문자 발송, 일반문자 템플릿, 광고문자 템플릿</td></tr><tr><th>동작</th><td>클릭 시 해당 페이지로 이동</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">광고문자 안내</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>경고 배너 (노란색)</td></tr><tr><th>내용</th><td>(광고) 문구와 수신거부 안내 자동 추가</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">통계 카드</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>전체, SMS, LMS, MMS 개수</td></tr><tr><th>데이터</th><td>API에서 실시간 조회</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">검색 필터</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>검색</th><td>템플릿명 또는 내용으로 검색</td></tr><tr><th>필터</th><td>전체/SMS/LMS/MMS 타입별 필터</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">템플릿 관리 영역</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>새 템플릿</th><td>클릭 시 광고 템플릿 등록 모달</td></tr><tr><th>일괄삭제</th><td>선택된 템플릿 일괄 삭제</td></tr><tr><th>내보내기</th><td>템플릿 목록 엑셀 다운로드</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">템플릿 카드 목록</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시</th><td>(광고) 문구 + 수신거부 안내 포함</td></tr><tr><th>표시정보</th><td>템플릿명, 타입, 내용, 등록일, 사용횟수</td></tr><tr><th>버튼</th><td>미리보기, 수정, 복사, 삭제</td></tr></table></div></div>
+                    <div class="spec-item" data-num="ta9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">페이지네이션</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>이전/다음, 페이지 번호</td></tr><tr><th>기본</th><td>페이지당 12개 표시</td></tr></table></div></div>
+                </div>
+
+                <!-- 모달 팝업 디스크립션 -->
+                <div class="spec-section" id="spec-modals">
+                    <div class="spec-section-title">모달 팝업</div>
+                    <div class="spec-item open" data-num="m1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">발송 확인 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"발송하기" 버튼 클릭</td></tr><tr><th>표시정보</th><td>발신번호, 수신자수, 메시지타입, 발송시간, 예상비용</td></tr><tr><th>경고</th><td>"발송 후 취소 불가" 안내</td></tr><tr><th>버튼</th><td>취소, 발송하기</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">테스트 발송 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"테스트 발송" 버튼 클릭</td></tr><tr><th>입력</th><td>테스트 수신번호 (필수)</td></tr><tr><th>기능</th><td>입력한 번호로 1건 발송</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">템플릿 저장 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"템플릿으로 저장" 버튼 클릭</td></tr><tr><th>입력</th><td>템플릿명 (필수)</td></tr><tr><th>기능</th><td>현재 메시지를 템플릿으로 저장</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">템플릿 선택 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"템플릿 선택" 버튼 클릭</td></tr><tr><th>구성</th><td>검색, 템플릿 목록 테이블</td></tr><tr><th>컬럼</th><td>템플릿명, 타입, 내용, 관리(선택)</td></tr><tr><th>기능</th><td>선택 시 메시지 내용에 적용</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">템플릿 등록 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"새 템플릿 등록" 버튼 클릭</td></tr><tr><th>입력</th><td>템플릿명, 메시지타입, 메시지내용</td></tr><tr><th>미리보기</th><td>우측에 실시간 미리보기</td></tr><tr><th>변수</th><td>#{이름}, #{전화번호} 등 변수 삽입 가능</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">삭제 확인 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"삭제" 버튼 클릭</td></tr><tr><th>경고</th><td>"삭제된 템플릿은 복구 불가" 안내</td></tr><tr><th>버튼</th><td>취소, 삭제 (빨간색)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">주소록에 추가 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>트리거</th><td>"주소록에 추가" 버튼 클릭</td></tr><tr><th>옵션</th><td>기존 그룹에 추가 / 새 그룹 생성</td></tr><tr><th>입력</th><td>그룹 선택 또는 새 그룹명 입력</td></tr><tr><th>표시</th><td>추가할 데이터 개수</td></tr></table></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId, scrollToModal) {
+            // 모든 페이지 콘텐츠 숨기기
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.remove('active'));
+            
+            // 선택된 페이지 표시
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            // 탭 버튼 활성화
+            document.querySelectorAll('.page-nav-btn').forEach(btn => {
+                if (btn.textContent.includes(getPageName(pageId))) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // 해당 페이지의 디스크립션 섹션 표시
+            document.querySelectorAll('.spec-section').forEach(s => s.classList.remove('active'));
+            const specMap = {
+                'general': 'spec-general',
+                'ad': 'spec-ad',
+                'template': 'spec-template',
+                'template-ad': 'spec-template-ad',
+                'modals': 'spec-modals'
+            };
+            document.getElementById(specMap[pageId])?.classList.add('active');
+            
+            // 특정 모달로 스크롤
+            if (scrollToModal) {
+                setTimeout(() => {
+                    const modal = document.getElementById(scrollToModal);
+                    if (modal) {
+                        modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        modal.style.animation = 'pulse 0.5s ease 2';
+                    }
+                }, 100);
+            }
+        }
+        
+        function getPageName(pageId) {
+            const names = {
+                'general': '일반문자 발송',
+                'ad': '광고문자 발송',
+                'template': '일반문자 템플릿',
+                'template-ad': '광고문자 템플릿',
+                'modals': '모달'
+            };
+            return names[pageId] || '';
+        }
+
+        // 모달 팝업으로 이동하는 함수
+        function goToModal(modalId) {
+            showPage('modals');
+            setTimeout(() => {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // 하이라이트 효과
+                    modal.style.boxShadow = '0 0 0 4px #2563eb, 0 0 20px rgba(37, 99, 235, 0.5)';
+                    setTimeout(() => {
+                        modal.style.boxShadow = '';
+                    }, 2000);
+                }
+            }, 100);
+        }
+
+        // 스펙 아이템 토글
+        document.querySelectorAll('.spec-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.closest('.spec-item');
+                item.classList.toggle('open');
+            });
+        });
+
+        // 마커 클릭 시 해당 스펙 아이템 열기
+        document.querySelectorAll('.spec-marker').forEach(marker => {
+            marker.addEventListener('click', function() {
+                const num = this.getAttribute('data-num');
+                const specItem = document.querySelector(`.spec-item[data-num="${num}"]`);
+                if (specItem) {
+                    document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                    specItem.classList.add('open', 'active');
+                    specItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

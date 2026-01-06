@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page {
+            background: #f8fafc;
+            min-height: 800px;
+            display: flex;
+            flex-direction: column;
+        }
+        .actual-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .actual-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .actual-nav {
+            display: flex;
+            gap: 24px;
+        }
+        .actual-nav-item {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .actual-header-btn {
+            display: flex;
+            gap: 8px;
+        }
+        .actual-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .actual-btn-outline {
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+        .actual-btn-primary {
+            background: #2563eb;
+            border: none;
+            color: white;
+        }
+        .actual-main {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+        .signup-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+        }
+        .signup-header-text {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .signup-logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+        .signup-title-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .form-group-actual {
+            margin-bottom: 16px;
+        }
+        .form-label-actual {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        .form-label-actual .required {
+            color: #ef4444;
+        }
+        .form-input-actual {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+        }
+        .form-row {
+            display: flex;
+            gap: 8px;
+        }
+        .form-row .form-input-actual {
+            flex: 1;
+        }
+        .btn-check {
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #64748b;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .terms-section {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        .terms-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+        .checkbox-group-actual {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .checkbox-group-actual input {
+            width: 16px;
+            height: 16px;
+        }
+        .checkbox-group-actual label {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .checkbox-group-actual.all {
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 12px;
+        }
+        .checkbox-group-actual.all label {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .btn-group-signup {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn-cancel {
+            flex: 1;
+            padding: 14px 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+        }
+        .btn-signup-submit {
+            flex: 1;
+            padding: 14px 20px;
+            background: #2563eb;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P002-02</span>
+                    <span class="page-title-header">회원가입</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/signup', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/signup</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav">
+                                    <span class="actual-nav-item">서비스 소개</span>
+                                    <span class="actual-nav-item">요금 안내</span>
+                                </div>
+                                <div class="actual-header-btn">
+                                    <button class="actual-btn actual-btn-outline">로그인</button>
+                                    <button class="actual-btn actual-btn-primary">무료 시작</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 회원가입 메인 -->
+                            <div class="actual-main">
+                                <div class="signup-box">
+                                    <div class="signup-header-text">
+                                        <div class="signup-logo-text">Tokbell</div>
+                                        <div class="signup-title-text">회원가입</div>
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">아이디 <span class="required">*</span></label>
+                                        <div class="form-row">
+                                            <input type="text" class="form-input-actual" placeholder="아이디를 입력하세요">
+                                            <button class="btn-check">중복확인</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">이메일 <span class="required">*</span></label>
+                                        <input type="email" class="form-input-actual" placeholder="이메일을 입력하세요">
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">비밀번호 <span class="required">*</span></label>
+                                        <input type="password" class="form-input-actual" placeholder="8자 이상, 영문+숫자+특수문자">
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">비밀번호 확인 <span class="required">*</span></label>
+                                        <input type="password" class="form-input-actual" placeholder="비밀번호를 다시 입력하세요">
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">담당자명 <span class="required">*</span></label>
+                                        <input type="text" class="form-input-actual" placeholder="담당자명을 입력하세요">
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">연락처 <span class="required">*</span></label>
+                                        <input type="tel" class="form-input-actual" placeholder="연락처를 입력하세요">
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">회사명</label>
+                                        <input type="text" class="form-input-actual" placeholder="회사명을 입력하세요 (선택)">
+                                    </div>
+                                    
+                                    <div class="terms-section">
+                                        <div class="checkbox-group-actual all">
+                                            <input type="checkbox" id="agreeAll">
+                                            <label for="agreeAll">전체 동의</label>
+                                        </div>
+                                        <div class="checkbox-group-actual">
+                                            <input type="checkbox" id="terms1">
+                                            <label for="terms1">이용약관 동의 (필수)</label>
+                                        </div>
+                                        <div class="checkbox-group-actual">
+                                            <input type="checkbox" id="terms2">
+                                            <label for="terms2">개인정보 처리방침 동의 (필수)</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="btn-group-signup">
+                                        <button class="btn-cancel">취소</button>
+                                        <button class="btn-signup-submit">회원가입</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 160px; right: 250px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 290px; right: 250px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 410px; right: 250px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 510px; right: 250px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 620px; right: 250px;">5</div>
+                            <div class="marker" data-id="6" style="position: absolute; top: 740px; right: 250px;">6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">signup.html · 회원가입 페이지</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">아이디 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">아이디를 입력하고 중복확인을 수행합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>속성</th><th>값</th></tr>
+                            <tr><td>필드명</td><td>userId</td></tr>
+                            <tr><td>필수</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>검증</td><td>4-20자, 영문/숫자만</td></tr>
+                            <tr><td>중복확인</td><td>API 호출로 중복 체크</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">이메일 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">이메일 주소를 입력합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>속성</th><th>값</th></tr>
+                            <tr><td>필드명</td><td>email</td></tr>
+                            <tr><td>타입</td><td>email</td></tr>
+                            <tr><td>필수</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>검증</td><td>이메일 형식</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">비밀번호 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">비밀번호와 확인을 입력합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>검증 규칙</th></tr>
+                            <tr><td>비밀번호</td><td>8자 이상, 영문+숫자+특수문자</td></tr>
+                            <tr><td>비밀번호 확인</td><td>비밀번호와 일치해야 함</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">담당자 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">담당자명과 연락처를 입력합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>타입</th><th>필수</th></tr>
+                            <tr><td>담당자명</td><td>text</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>연락처</td><td>tel</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>회사명</td><td>text</td><td><span class="desc-badge optional">선택</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">약관 동의</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">이용약관 및 개인정보 처리방침 동의가 필요합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>필수여부</th></tr>
+                            <tr><td>전체 동의</td><td>선택 (하위 항목 일괄 체크)</td></tr>
+                            <tr><td>이용약관</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>개인정보 처리방침</td><td><span class="desc-badge required">필수</span></td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">가입 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회원가입을 완료하거나 취소합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>취소</td><td>login.html로 이동</td></tr>
+                            <tr><td>회원가입</td><td>가입 처리 후 로그인 페이지 이동</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 가입 완료</div>
+                            <div class="desc-note-text">가입 성공 시 alert로 안내 후 login.html로 이동합니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

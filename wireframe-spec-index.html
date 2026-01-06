@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>톡벨 화면설계서 인덱스</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; background: #f1f5f9; color: #1e293b; }
+        .header { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; padding: 48px; text-align: center; }
+        .header h1 { font-size: 36px; margin-bottom: 12px; }
+        .header p { font-size: 16px; opacity: 0.9; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 20px; background: #2563eb; border-radius: 2px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+        .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); border-color: #2563eb; }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #1e293b; }
+        .card-desc { font-size: 13px; color: #64748b; line-height: 1.5; }
+        .card-badge { display: inline-block; padding: 4px 8px; background: #dbeafe; color: #2563eb; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 12px; }
+        .card-badge.complete { background: #dcfce7; color: #16a34a; }
+        .card-badge.pending { background: #fef3c7; color: #d97706; }
+        .stats { display: flex; gap: 24px; justify-content: center; margin-top: 24px; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 32px; font-weight: 700; color: white; }
+        .stat-label { font-size: 13px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📋 톡벨 화면설계서</h1>
+        <p>메시징 서비스 전체 화면 설계 문서</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value">40+</div>
+                <div class="stat-label">전체 페이지</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">10</div>
+                <div class="stat-label">메뉴 그룹</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">v1.0</div>
+                <div class="stat-label">문서 버전</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- 메인 -->
+        <div class="section">
+            <div class="section-title">메인 화면</div>
+            <div class="card-grid">
+                <a href="wireframe-spec.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">🏠 메인 홈페이지</div>
+                    <div class="card-desc">index.html - 서비스 소개, 가격 안내, FAQ 등 랜딩 페이지</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 인증 -->
+        <div class="section">
+            <div class="section-title">인증 (Auth)</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-login.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">🔐 로그인</div>
+                    <div class="card-desc">login.html - 아이디/비밀번호 로그인, 아이디 저장</div>
+                </a>
+                <a href="wireframe-spec-signup.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">📝 회원가입</div>
+                    <div class="card-desc">signup.html - 4단계 회원가입 (약관→유형→인증→정보)</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 문자발송 -->
+        <div class="section">
+            <div class="section-title">문자발송</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-message.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">✉️ 문자발송 (4개)</div>
+                    <div class="card-desc">일반문자 발송, 광고문자 발송, 일반문자 템플릿, 광고문자 템플릿</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 선거문자 -->
+        <div class="section">
+            <div class="section-title">선거문자</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-election.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">🗳️ 선거문자 (4개)</div>
+                    <div class="card-desc">선거문자 발송, 선거문자 주소록, 수신거부관리, 선거문자 템플릿</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 카카오톡 발송 -->
+        <div class="section">
+            <div class="section-title">카카오톡 발송</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-kakao.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">💬 카카오톡 발송 (10개)</div>
+                    <div class="card-desc">알림톡, 브랜드 메시지, 발신 프로필, 템플릿 관리</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 발송 관리 -->
+        <div class="section">
+            <div class="section-title">발송 관리</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-send.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">📊 발송 관리 (2개)</div>
+                    <div class="card-desc">발송결과, 예약내역</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 주소록 -->
+        <div class="section">
+            <div class="section-title">주소록</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-addressbook.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">📒 주소록 (2개)</div>
+                    <div class="card-desc">주소록 관리, 수신거부관리</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 결제 관리 -->
+        <div class="section">
+            <div class="section-title">결제 관리</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-payment.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">💳 결제 관리 (4개)</div>
+                    <div class="card-desc">충전하기, 충전 내역, 세금계산서 발행, 예치금 배분</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 마이페이지 -->
+        <div class="section">
+            <div class="section-title">마이페이지</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-mypage.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">👤 마이페이지 (3개)</div>
+                    <div class="card-desc">내 정보 수정, 비밀번호 변경, 발신번호 관리</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 고객센터 -->
+        <div class="section">
+            <div class="section-title">고객센터</div>
+            <div class="card-grid">
+                <a href="wireframe-spec-support.html" class="card">
+                    <span class="card-badge complete">완료</span>
+                    <div class="card-title">🎧 고객센터 (6개)</div>
+                    <div class="card-desc">공지사항, 이벤트, FAQ, 1:1 문의, 상세 페이지</div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

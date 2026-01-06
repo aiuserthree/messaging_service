@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일반문자 발송 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page {
+            background: #f8fafc;
+            min-height: 800px;
+        }
+        .actual-header-logged {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        .header-right-logged { display: flex; align-items: center; gap: 16px; }
+        .balance-box { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #f1f5f9; border-radius: 8px; }
+        .balance-label { font-size: 12px; color: #64748b; }
+        .balance-value { font-weight: 600; color: #2563eb; }
+        
+        .page-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title::before {
+            content: '▼';
+            font-size: 10px;
+            color: #64748b;
+        }
+        .form-row { margin-bottom: 16px; }
+        .form-label-actual { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #1e293b; }
+        .form-label-actual .required { color: #ef4444; }
+        .form-input-actual, .form-select-actual, .form-textarea-actual {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .form-textarea-actual { min-height: 150px; resize: vertical; }
+        .form-help { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .tab-group { display: flex; gap: 8px; margin-bottom: 16px; }
+        .tab-item { padding: 8px 16px; border-radius: 8px; font-size: 13px; background: #f1f5f9; color: #64748b; cursor: pointer; }
+        .tab-item.active { background: #2563eb; color: white; }
+        .radio-group { display: flex; gap: 16px; margin-bottom: 16px; }
+        .radio-item { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #1e293b; }
+        .radio-item input { width: 16px; height: 16px; }
+        .btn-group { display: flex; gap: 8px; margin-top: 16px; }
+        .btn-actual { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-outline-actual { background: white; border: 1px solid #e2e8f0; color: #64748b; }
+        .btn-primary-actual { background: #2563eb; border: none; color: white; }
+        
+        .phone-preview {
+            background: #1e293b;
+            border-radius: 32px;
+            padding: 12px;
+            width: 100%;
+            max-width: 260px;
+            margin: 0 auto;
+        }
+        .phone-screen {
+            background: white;
+            border-radius: 24px;
+            min-height: 400px;
+            overflow: hidden;
+        }
+        .phone-header { background: #2563eb; padding: 12px; text-align: center; color: white; font-size: 12px; }
+        .phone-content { padding: 16px; }
+        .phone-message {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 13px;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        .byte-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+        }
+        .preview-section { position: sticky; top: 100px; }
+        .send-info {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .send-info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .send-info-label { color: #64748b; }
+        .send-info-value { font-weight: 600; color: #1e293b; }
+        .send-info-value.blue { color: #2563eb; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P003-01</span>
+                    <span class="page-title-header">일반문자 발송</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/message-send-general', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/message-send-general</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item active">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item">템플릿 관리 ▾</div>
+                                    <div class="nav-menu-item">주소록 ▾</div>
+                                    <div class="nav-menu-item">발송 결과 ▾</div>
+                                    <div class="nav-menu-item">요금/결제 ▾</div>
+                                </div>
+                                <div class="header-right-logged">
+                                    <div class="balance-box">
+                                        <span class="balance-label">잔액</span>
+                                        <span class="balance-value">50,000원</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="main-form">
+                                    <h1 class="page-title">📱 일반문자 발송</h1>
+                                    
+                                    <!-- 발신번호 -->
+                                    <div class="card">
+                                        <div class="card-title">발신번호 설정</div>
+                                        <div class="form-row">
+                                            <label class="form-label-actual">발신번호 <span class="required">*</span></label>
+                                            <select class="form-select-actual">
+                                                <option>발신번호를 선택하세요</option>
+                                                <option>010-1234-5678</option>
+                                                <option>02-1234-5678</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 메시지 유형 -->
+                                    <div class="card">
+                                        <div class="card-title">메시지 유형</div>
+                                        <div class="tab-group">
+                                            <div class="tab-item active">SMS (단문)</div>
+                                            <div class="tab-item">LMS (장문)</div>
+                                            <div class="tab-item">MMS (이미지)</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 메시지 내용 -->
+                                    <div class="card">
+                                        <div class="card-title">메시지 내용</div>
+                                        <div class="form-row">
+                                            <label class="form-label-actual">메시지 내용 <span class="required">*</span></label>
+                                            <textarea class="form-textarea-actual" placeholder="메시지 내용을 입력하세요">[톡벨] 테스트 메시지입니다.</textarea>
+                                            <div class="form-help">SMS: 90byte / LMS: 2,000byte / MMS: 2,000byte + 이미지</div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button class="btn-actual btn-outline-actual">템플릿 불러오기</button>
+                                            <button class="btn-actual btn-outline-actual">변수 삽입</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 수신번호 -->
+                                    <div class="card">
+                                        <div class="card-title">수신번호 설정</div>
+                                        <div class="tab-group">
+                                            <div class="tab-item active">직접 입력</div>
+                                            <div class="tab-item">주소록</div>
+                                            <div class="tab-item">엑셀 업로드</div>
+                                        </div>
+                                        <div class="form-row">
+                                            <textarea class="form-textarea-actual" placeholder="수신번호를 입력하세요 (엔터로 구분)">01012345678
+01098765432</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 발송 옵션 -->
+                                    <div class="card">
+                                        <div class="card-title">발송 옵션</div>
+                                        <div class="radio-group">
+                                            <label class="radio-item">
+                                                <input type="radio" name="sendType" checked> 즉시 발송
+                                            </label>
+                                            <label class="radio-item">
+                                                <input type="radio" name="sendType"> 예약 발송
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 발송 버튼 -->
+                                    <div class="btn-group" style="justify-content: flex-end;">
+                                        <button class="btn-actual btn-outline-actual">테스트 발송</button>
+                                        <button class="btn-actual btn-primary-actual">발송하기</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 미리보기 -->
+                                <div class="preview-section">
+                                    <div class="card">
+                                        <div class="card-title">미리보기</div>
+                                        <div class="phone-preview">
+                                            <div class="phone-screen">
+                                                <div class="phone-header">메시지</div>
+                                                <div class="phone-content">
+                                                    <div class="phone-message">[톡벨] 테스트 메시지입니다.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="byte-counter">32 / 90 byte (SMS)</div>
+                                    </div>
+                                    
+                                    <div class="send-info">
+                                        <div class="send-info-row">
+                                            <span class="send-info-label">발송 건수</span>
+                                            <span class="send-info-value">2건</span>
+                                        </div>
+                                        <div class="send-info-row">
+                                            <span class="send-info-label">예상 비용</span>
+                                            <span class="send-info-value blue">19.8원</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 20px; left: 300px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 140px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 220px; left: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 320px; left: 50px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 540px; left: 50px;">5</div>
+                            <div class="marker" data-id="6" style="position: absolute; top: 680px; left: 50px;">6</div>
+                            <div class="marker" data-id="7" style="position: absolute; top: 200px; right: 50px;">7</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">message-send-general.html · 일반문자 발송</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">GNB (로그인 후)</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">문자 발송 메뉴가 활성화된 상태의 GNB입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">발신번호 설정</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호를 선택합니다. 사전에 등록된 발신번호만 선택 가능합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>발신번호</td><td>등록된 발신번호 목록에서 선택</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 주의</div>
+                            <div class="desc-note-text">발신번호 미등록 시 mypage-caller-number.html에서 등록 필요</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">메시지 유형 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송할 메시지 유형을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>유형</th><th>용량</th><th>단가</th></tr>
+                            <tr><td>SMS (단문)</td><td>90byte</td><td>9.9원</td></tr>
+                            <tr><td>LMS (장문)</td><td>2,000byte</td><td>28원</td></tr>
+                            <tr><td>MMS (이미지)</td><td>2,000byte + 이미지</td><td>110원</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">메시지 내용 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송할 메시지 내용을 입력합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>기능</th><th>설명</th></tr>
+                            <tr><td>템플릿 불러오기</td><td>저장된 템플릿 선택 모달</td></tr>
+                            <tr><td>변수 삽입</td><td>#{이름}, #{전화번호} 등 변수 삽입</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">수신번호 설정</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">수신번호를 입력하거나 불러옵니다.</div>
+                        <table class="desc-table">
+                            <tr><th>방법</th><th>설명</th></tr>
+                            <tr><td>직접 입력</td><td>텍스트 영역에 엔터로 구분하여 입력</td></tr>
+                            <tr><td>주소록</td><td>저장된 주소록에서 선택</td></tr>
+                            <tr><td>엑셀 업로드</td><td>엑셀 파일 업로드 (양식 다운로드 제공)</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">발송 옵션 & 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발송 시점을 선택하고 발송합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>옵션</th><th>설명</th></tr>
+                            <tr><td>즉시 발송</td><td>버튼 클릭 즉시 발송</td></tr>
+                            <tr><td>예약 발송</td><td>날짜/시간 선택 후 예약</td></tr>
+                            <tr><td>테스트 발송</td><td>본인 번호로 테스트 발송</td></tr>
+                            <tr><td>발송하기</td><td>최종 발송 확인 모달 표시</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="7">
+                    <div class="desc-item-header">
+                        <div class="desc-number">7</div>
+                        <div class="desc-item-title">미리보기 패널</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">메시지 미리보기와 발송 정보를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>미리보기</td><td>휴대폰 화면 형태로 메시지 미리보기</td></tr>
+                            <tr><td>byte 카운터</td><td>현재 입력된 byte 수 / 최대 byte</td></tr>
+                            <tr><td>발송 건수</td><td>입력된 수신번호 수</td></tr>
+                            <tr><td>예상 비용</td><td>발송 건수 × 단가</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

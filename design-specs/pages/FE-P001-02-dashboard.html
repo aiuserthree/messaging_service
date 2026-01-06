@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page {
+            background: #f8fafc;
+            min-height: 800px;
+        }
+        .actual-header-logged {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .actual-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .actual-nav-logged {
+            display: flex;
+            gap: 4px;
+        }
+        .nav-menu-item {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #64748b;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-menu-item:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .nav-menu-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+        }
+        .header-right-logged {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .balance-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .balance-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .balance-value {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .dashboard-content {
+            padding: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 24px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card-actual {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .stat-value.blue { color: #2563eb; }
+        .stat-value.green { color: #10b981; }
+        .stat-value.orange { color: #f59e0b; }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        .chart-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+        .chart-placeholder {
+            height: 200px;
+            background: linear-gradient(to top, #e0f2fe, transparent);
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+        }
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, #2563eb, #60a5fa);
+            margin: 0 4px;
+            border-radius: 4px 4px 0 0;
+        }
+        .quick-actions {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .quick-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+        .quick-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+        }
+        .quick-btn-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        .quick-btn-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .recent-table {
+            margin-top: 24px;
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .table-actual {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .table-actual th, .table-actual td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .table-actual th {
+            background: #f8fafc;
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+        }
+        .table-actual td {
+            font-size: 14px;
+            color: #1e293b;
+        }
+        .status-complete {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P001-02</span>
+                    <span class="page-title-header">대시보드 (메인)</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/main', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/main</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 로그인 후 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item active">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item">템플릿 관리 ▾</div>
+                                    <div class="nav-menu-item">주소록 ▾</div>
+                                    <div class="nav-menu-item">발송 결과 ▾</div>
+                                    <div class="nav-menu-item">요금/결제 ▾</div>
+                                    <div class="nav-menu-item">마이페이지 ▾</div>
+                                    <div class="nav-menu-item">고객지원 ▾</div>
+                                </div>
+                                <div class="header-right-logged">
+                                    <div class="balance-box">
+                                        <span class="balance-label">잔액</span>
+                                        <span class="balance-value">50,000원</span>
+                                    </div>
+                                    <div class="user-menu">👤 홍길동님</div>
+                                </div>
+                            </div>
+                            
+                            <!-- 대시보드 컨텐츠 -->
+                            <div class="dashboard-content">
+                                <h1 class="dashboard-title">대시보드</h1>
+                                
+                                <!-- 통계 카드 -->
+                                <div class="stats-grid">
+                                    <div class="stat-card-actual">
+                                        <div class="stat-label">오늘 발송</div>
+                                        <div class="stat-value">1,234</div>
+                                    </div>
+                                    <div class="stat-card-actual">
+                                        <div class="stat-label">성공률</div>
+                                        <div class="stat-value green">98.5%</div>
+                                    </div>
+                                    <div class="stat-card-actual">
+                                        <div class="stat-label">예약 대기</div>
+                                        <div class="stat-value orange">56</div>
+                                    </div>
+                                    <div class="stat-card-actual">
+                                        <div class="stat-label">잔여 포인트</div>
+                                        <div class="stat-value blue">50,000원</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 차트 & 빠른 실행 -->
+                                <div class="content-grid">
+                                    <div class="chart-card">
+                                        <div class="chart-title">최근 7일 발송 현황</div>
+                                        <div class="chart-placeholder">
+                                            <div class="chart-bar" style="height: 60%;"></div>
+                                            <div class="chart-bar" style="height: 80%;"></div>
+                                            <div class="chart-bar" style="height: 45%;"></div>
+                                            <div class="chart-bar" style="height: 90%;"></div>
+                                            <div class="chart-bar" style="height: 70%;"></div>
+                                            <div class="chart-bar" style="height: 55%;"></div>
+                                            <div class="chart-bar" style="height: 85%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="quick-actions">
+                                        <div class="quick-title">빠른 발송</div>
+                                        <div class="quick-btn">
+                                            <div class="quick-btn-title">📱 문자 발송</div>
+                                            <div class="quick-btn-desc">SMS, LMS, MMS 발송</div>
+                                        </div>
+                                        <div class="quick-btn">
+                                            <div class="quick-btn-title">💬 알림톡 발송</div>
+                                            <div class="quick-btn-desc">카카오 알림톡 발송</div>
+                                        </div>
+                                        <div class="quick-btn">
+                                            <div class="quick-btn-title">📢 브랜드톡 발송</div>
+                                            <div class="quick-btn-desc">카카오 브랜드톡 발송</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 최근 발송 내역 -->
+                                <div class="recent-table">
+                                    <div class="chart-title">최근 발송 내역</div>
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th>발송일시</th>
+                                                <th>유형</th>
+                                                <th>내용</th>
+                                                <th>건수</th>
+                                                <th>상태</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2025-01-06 14:30</td>
+                                                <td>SMS</td>
+                                                <td>[톡벨] 회원가입을 축하합니다...</td>
+                                                <td>150</td>
+                                                <td><span class="status-complete">완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-06 13:15</td>
+                                                <td>알림톡</td>
+                                                <td>주문이 완료되었습니다...</td>
+                                                <td>89</td>
+                                                <td><span class="status-complete">완료</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-06 11:00</td>
+                                                <td>LMS</td>
+                                                <td>이번 주 특별 프로모션...</td>
+                                                <td>500</td>
+                                                <td><span class="status-complete">완료</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 20px; left: 400px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 20px; right: 180px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 130px; right: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 300px; left: 50px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 300px; right: 50px;">5</div>
+                            <div class="marker" data-id="6" style="position: absolute; top: 550px; right: 50px;">6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">main.html · 대시보드 (로그인 후 메인)</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">GNB (로그인 후 헤더)</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">로그인 후 메인 네비게이션 메뉴입니다. 드롭다운 메뉴 지원.</div>
+                        <table class="desc-table">
+                            <tr><th>메뉴</th><th>하위 메뉴</th></tr>
+                            <tr><td>문자 발송</td><td>일반문자, 광고문자, 선거문자</td></tr>
+                            <tr><td>카카오톡 발송</td><td>프로필관리, 알림톡, 브랜드톡</td></tr>
+                            <tr><td>템플릿 관리</td><td>문자 템플릿, 알림톡 템플릿, 브랜드톡 템플릿</td></tr>
+                            <tr><td>주소록</td><td>주소록 관리, 수신거부 관리</td></tr>
+                            <tr><td>발송 결과</td><td>발송 결과, 예약 발송</td></tr>
+                            <tr><td>요금/결제</td><td>포인트 충전, 결제 내역, 세금계산서</td></tr>
+                            <tr><td>마이페이지</td><td>내 정보, 발신번호 관리, 비밀번호 변경</td></tr>
+                            <tr><td>고객지원</td><td>FAQ, 공지사항, 이벤트, 1:1 문의</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">잔액 정보 & 사용자 메뉴</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">현재 보유 포인트와 사용자 정보를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>잔액</td><td>현재 보유 포인트 (hover시 발송가능 건수 표시)</td></tr>
+                            <tr><td>사용자명</td><td>로그인된 사용자 이름</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 잔액 툴팁</div>
+                            <div class="desc-note-text">잔액 hover 시 SMS/LMS/MMS/알림톡/브랜드톡 각 발송 가능 건수 툴팁 표시</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">통계 카드</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">주요 발송 통계를 카드 형태로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>오늘 발송</td><td>당일 발송된 총 건수</td></tr>
+                            <tr><td>성공률</td><td>최근 발송 성공 비율</td></tr>
+                            <tr><td>예약 대기</td><td>예약 발송 대기 건수</td></tr>
+                            <tr><td>잔여 포인트</td><td>현재 보유 포인트</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">발송 현황 차트</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">최근 7일간의 발송 현황을 막대 차트로 시각화합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">빠른 발송</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">각 발송 유형별 빠른 접근 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>이동 경로</th></tr>
+                            <tr><td>문자 발송</td><td>message-send-general.html</td></tr>
+                            <tr><td>알림톡 발송</td><td>kakao-send-alimtalk.html</td></tr>
+                            <tr><td>브랜드톡 발송</td><td>kakao-send-brandtalk.html</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">최근 발송 내역</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">최근 발송 내역을 테이블로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>발송일시</td><td>메시지 발송 시각</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS/알림톡/브랜드톡</td></tr>
+                            <tr><td>내용</td><td>발송 내용 요약 (50자)</td></tr>
+                            <tr><td>건수</td><td>총 발송 건수</td></tr>
+                            <tr><td>상태</td><td>완료/예약/실패</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

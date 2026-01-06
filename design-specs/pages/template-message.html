@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../template-message.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,113 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/template-message.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/template-message</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../template-message.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item active">템플릿 관리 ▼</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 1: 헤더 & 등록 버튼 -->
+                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <h2 style="font-size: 20px; font-weight: 600; color: #333;">문자 템플릿</h2>
+                                    <button class="mock-btn mock-btn-primary">+ 템플릿 등록</button>
+                                </div>
+                                
+                                <!-- 마커 2: 탭 메뉴 -->
+                                <div class="marker" data-id="2" style="top: 160px; left: 200px;">2</div>
+                                <div class="tab-group" style="margin-bottom: 16px;">
+                                    <div class="tab-item active">일반 문자</div>
+                                    <div class="tab-item">광고 문자</div>
+                                    <div class="tab-item">선거 문자</div>
+                                </div>
+                                
+                                <!-- 마커 3: 검색 -->
+                                <div class="marker" data-id="3" style="top: 210px; right: 20px;">3</div>
+                                <div class="form-section" style="padding: 16px; margin-bottom: 16px;">
+                                    <div style="display: flex; gap: 12px; align-items: center;">
+                                        <input type="text" class="form-input" placeholder="템플릿명 검색" style="width: 300px;">
+                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 4: 템플릿 목록 -->
+                                <div class="marker" data-id="4" style="top: 300px; right: 20px;">4</div>
+                                <div class="form-section" style="padding: 0;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">No</th>
+                                                <th>템플릿명</th>
+                                                <th>유형</th>
+                                                <th>내용 미리보기</th>
+                                                <th>등록일</th>
+                                                <th style="width: 120px;">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>회원가입 환영</td>
+                                                <td><span class="status-badge gray">SMS</span></td>
+                                                <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">[톡벨] 회원가입을 환영합니다. 다양한 혜택을 누려보세요!</td>
+                                                <td>2024-01-10</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #ef4444;">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>주문 접수 안내</td>
+                                                <td><span class="status-badge gray">LMS</span></td>
+                                                <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">[톡벨] #{고객명}님, 주문이 접수되었습니다. 주문번호: #{주문번호}</td>
+                                                <td>2024-01-08</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #ef4444;">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>배송 완료 안내</td>
+                                                <td><span class="status-badge gray">SMS</span></td>
+                                                <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">[톡벨] 배송이 완료되었습니다. 이용해주셔서 감사합니다.</td>
+                                                <td>2024-01-05</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #ef4444;">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- 마커 5: 페이지네이션 -->
+                                <div class="marker" data-id="5" style="top: 520px; right: 400px;">5</div>
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,16 +146,17 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">template-message.html · 문자 템플릿 페이지</div>
+                <div class="desc-subtitle">template-message.html · 문자 템플릿</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">템플릿 등록</div>
+                        <div class="desc-item-title">템플릿 등록 버튼</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
@@ -77,6 +171,34 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
+                        <div class="desc-item-title">탭 메뉴</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">문자 유형별로 템플릿을 필터링합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>탭</th><th>설명</th></tr>
+                            <tr><td>일반 문자</td><td>일반 발송용 템플릿</td></tr>
+                            <tr><td>광고 문자</td><td>광고성 메시지 템플릿</td></tr>
+                            <tr><td>선거 문자</td><td>선거 관련 템플릿</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">검색</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿명으로 검색합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
                         <div class="desc-item-title">템플릿 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -86,32 +208,20 @@
                             <tr><th>컬럼</th><th>설명</th></tr>
                             <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
                             <tr><td>유형</td><td>SMS/LMS/MMS</td></tr>
-                            <tr><td>내용</td><td>템플릿 내용 미리보기</td></tr>
-                            <tr><td>등록일</td><td>등록 날짜</td></tr>
+                            <tr><td>내용 미리보기</td><td>템플릿 내용 요약</td></tr>
                             <tr><td>관리</td><td>수정/삭제 버튼</td></tr>
                         </table>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="3">
+                <div class="desc-item" data-id="5">
                     <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">템플릿 등록/수정 모달</div>
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">페이지네이션</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">템플릿 등록 폼입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>필드</th><th>설명</th></tr>
-                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
-                            <tr><td>유형</td><td>SMS/LMS/MMS 선택</td></tr>
-                            <tr><td>내용</td><td>메시지 내용</td></tr>
-                            <tr><td>이미지</td><td>MMS 첨부 이미지</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 변수 사용</div>
-                            <div class="desc-note-text">#{이름}, #{금액} 등 변수를 사용하면 발송 시 자동 치환됩니다.</div>
-                        </div>
+                        <div class="desc-text">템플릿 목록 페이지 이동입니다.</div>
                     </div>
                 </div>
             </div>
@@ -119,16 +229,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

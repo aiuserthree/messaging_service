@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주소록 관리 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; }
+        .btn-group-header { display: flex; gap: 8px; }
+        .btn-actual { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-outline-actual { background: white; border: 1px solid #e2e8f0; color: #64748b; }
+        .btn-primary-actual { background: #2563eb; border: none; color: white; }
+        
+        .search-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+        .search-input { flex: 1; padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .search-btn { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .table-actual { width: 100%; border-collapse: collapse; }
+        .table-actual th, .table-actual td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .table-actual th { background: #f8fafc; font-size: 12px; font-weight: 500; color: #64748b; }
+        .table-actual td { font-size: 14px; color: #1e293b; }
+        .table-actual input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+        
+        .group-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; background: #e0f2fe; color: #0369a1; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #64748b; margin-right: 4px; }
+        
+        .pagination { display: flex; justify-content: center; gap: 4px; padding: 20px; }
+        .page-btn { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; cursor: pointer; font-size: 13px; color: #64748b; }
+        .page-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        
+        .toolbar { display: flex; gap: 8px; padding: 16px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .toolbar-btn { padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #64748b; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P006-01</span>
+                    <span class="page-title-header">주소록 관리</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/addressbook', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/addressbook</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item">템플릿 관리 ▾</div>
+                                    <div class="nav-menu-item active">주소록 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="page-header">
+                                    <h1 class="page-title">📒 주소록 관리</h1>
+                                    <div class="btn-group-header">
+                                        <button class="btn-actual btn-outline-actual">엑셀 업로드</button>
+                                        <button class="btn-actual btn-outline-actual">엑셀 다운로드</button>
+                                        <button class="btn-actual btn-primary-actual">+ 연락처 추가</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="search-bar">
+                                    <select style="padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                        <option>전체 그룹</option>
+                                        <option>VIP 고객</option>
+                                        <option>일반 고객</option>
+                                    </select>
+                                    <input type="text" class="search-input" placeholder="이름 또는 전화번호로 검색">
+                                    <button class="search-btn">검색</button>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="toolbar">
+                                        <button class="toolbar-btn">선택 삭제</button>
+                                        <button class="toolbar-btn">그룹 이동</button>
+                                        <button class="toolbar-btn">선택 발송</button>
+                                    </div>
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th><input type="checkbox"></th>
+                                                <th>이름</th>
+                                                <th>전화번호</th>
+                                                <th>그룹</th>
+                                                <th>메모</th>
+                                                <th>등록일</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>홍길동</td>
+                                                <td>010-1234-5678</td>
+                                                <td><span class="group-badge">VIP 고객</span></td>
+                                                <td>우수 고객</td>
+                                                <td>2025-01-01</td>
+                                                <td>
+                                                    <button class="action-btn">수정</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>김철수</td>
+                                                <td>010-2345-6789</td>
+                                                <td><span class="group-badge">일반 고객</span></td>
+                                                <td></td>
+                                                <td>2025-01-02</td>
+                                                <td>
+                                                    <button class="action-btn">수정</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="checkbox"></td>
+                                                <td>이영희</td>
+                                                <td>010-3456-7890</td>
+                                                <td><span class="group-badge">VIP 고객</span></td>
+                                                <td>정기 구매 고객</td>
+                                                <td>2025-01-03</td>
+                                                <td>
+                                                    <button class="action-btn">수정</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        <button class="page-btn">&lt;</button>
+                                        <button class="page-btn active">1</button>
+                                        <button class="page-btn">2</button>
+                                        <button class="page-btn">3</button>
+                                        <button class="page-btn">&gt;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 100px; right: 100px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 150px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 220px; left: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 300px; left: 50px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 300px; right: 100px;">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">addressbook.html · 주소록 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">주소록 관리 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">주소록을 관리하는 버튼들입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>엑셀 업로드</td><td>엑셀 파일로 연락처 일괄 등록</td></tr>
+                            <tr><td>엑셀 다운로드</td><td>현재 주소록을 엑셀로 다운로드</td></tr>
+                            <tr><td>연락처 추가</td><td>개별 연락처 등록 모달</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">검색 & 필터</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">그룹별 필터링 및 검색 기능입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필터</th><th>설명</th></tr>
+                            <tr><td>그룹</td><td>그룹별 필터링</td></tr>
+                            <tr><td>검색어</td><td>이름 또는 전화번호 검색</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">일괄 작업 툴바</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선택된 연락처에 대한 일괄 작업을 수행합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>선택 삭제</td><td>선택된 연락처 삭제</td></tr>
+                            <tr><td>그룹 이동</td><td>선택된 연락처 그룹 변경</td></tr>
+                            <tr><td>선택 발송</td><td>선택된 연락처로 발송</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">연락처 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록된 연락처 목록을 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>이름</td><td>연락처 이름</td></tr>
+                            <tr><td>전화번호</td><td>휴대폰 번호</td></tr>
+                            <tr><td>그룹</td><td>소속 그룹</td></tr>
+                            <tr><td>메모</td><td>추가 메모</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">개별 관리</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">개별 연락처를 수정하거나 삭제합니다.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

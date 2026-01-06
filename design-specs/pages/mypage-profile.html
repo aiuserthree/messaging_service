@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>프로필 관리 - 톡벨 화면설계서</title>
+    <title>내 정보 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -13,12 +13,11 @@
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
                     <span class="page-id-badge">FE-P009-02</span>
-                    <span class="page-title-header">프로필 관리</span>
+                    <span class="page-title-header">내 정보</span>
                 </div>
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../mypage-profile.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -26,25 +25,80 @@
     <div class="main-container">
         <div class="mockup-panel">
             <div class="mockup-canvas">
-                <div class="mockup-frame wide">
+                <div class="mockup-frame medium">
                     <div class="browser-chrome">
                         <div class="browser-dots">
                             <div class="browser-dot red"></div>
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/mypage-profile.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/mypage-profile</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../mypage-profile.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span>홍길동님 ▼</span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 150px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 400px; right: 20px;">2</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 24px;">내 정보</h2>
+                                
+                                <!-- 마커 1: 기본 정보 -->
+                                <div class="marker" data-id="1" style="top: 130px; right: 20px;">1</div>
+                                <div class="form-section">
+                                    <div class="form-section-title">기본 정보</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                        <div class="form-row">
+                                            <label class="form-label">아이디</label>
+                                            <input type="text" class="form-input" value="tokbell_user" disabled style="background: #f0f0f0;">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">이메일</label>
+                                            <input type="email" class="form-input" value="user@tokbell.co.kr">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">담당자명</label>
+                                            <input type="text" class="form-input" value="홍길동">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">연락처</label>
+                                            <input type="tel" class="form-input" value="010-1234-5678">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 2: 회사 정보 -->
+                                <div class="marker" data-id="2" style="top: 330px; right: 20px;">2</div>
+                                <div class="form-section">
+                                    <div class="form-section-title">회사 정보</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                        <div class="form-row">
+                                            <label class="form-label">회사명</label>
+                                            <input type="text" class="form-input" value="(주)톡벨">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">사업자등록번호</label>
+                                            <input type="text" class="form-input" value="123-45-67890">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 3: 저장 버튼 -->
+                                <div class="marker" data-id="3" style="top: 480px; right: 20px;">3</div>
+                                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">저장</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,27 +106,27 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">mypage-profile.html · 프로필 관리 페이지</div>
+                <div class="desc-subtitle">mypage-profile.html · 내 정보</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">회원 정보</div>
+                        <div class="desc-item-title">기본 정보</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">등록된 회원 정보를 표시합니다.</div>
+                        <div class="desc-text">계정의 기본 정보를 표시/수정합니다.</div>
                         <table class="desc-table">
-                            <tr><th>항목</th><th>수정 가능</th></tr>
-                            <tr><td>아이디</td><td>불가</td></tr>
-                            <tr><td>이름</td><td>가능</td></tr>
-                            <tr><td>이메일</td><td>가능</td></tr>
-                            <tr><td>연락처</td><td>가능</td></tr>
-                            <tr><td>마케팅 수신</td><td>가능</td></tr>
+                            <tr><th>필드</th><th>수정가능</th><th>설명</th></tr>
+                            <tr><td>아이디</td><td>N</td><td>변경 불가</td></tr>
+                            <tr><td>이메일</td><td>Y</td><td>이메일 주소</td></tr>
+                            <tr><td>담당자명</td><td>Y</td><td>담당자 이름</td></tr>
+                            <tr><td>연락처</td><td>Y</td><td>휴대폰 번호</td></tr>
                         </table>
                     </div>
                 </div>
@@ -80,14 +134,31 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">정보 수정</div>
+                        <div class="desc-item-title">회사 정보</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">회원 정보를 수정합니다.</div>
+                        <div class="desc-text">회사 관련 정보를 입력합니다.</div>
                         <table class="desc-table">
-                            <tr><th>동작</th><th>설명</th></tr>
-                            <tr><td>저장</td><td>변경 사항 저장</td></tr>
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>회사명</td><td>사업자명</td></tr>
+                            <tr><td>사업자등록번호</td><td>세금계산서 발행용</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">저장 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">변경된 정보를 저장합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>취소</td><td>변경 취소, 이전 값 복원</td></tr>
+                            <tr><td>저장</td><td>변경사항 저장</td></tr>
                         </table>
                     </div>
                 </div>
@@ -96,16 +167,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

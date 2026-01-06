@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 상세 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 900px; margin: 0 auto; padding: 24px; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .notice-header { padding: 24px; border-bottom: 1px solid #e2e8f0; }
+        .notice-title-detail { font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 12px; }
+        .notice-meta { display: flex; gap: 16px; font-size: 13px; color: #64748b; }
+        .notice-content-actual { padding: 24px; font-size: 15px; color: #1e293b; line-height: 1.8; }
+        
+        .btn-list { display: block; width: 100%; max-width: 200px; margin: 24px auto 0; padding: 12px 24px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #64748b; cursor: pointer; text-align: center; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P010-02</span>
+                    <span class="page-title-header">공지사항 상세</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/support-notice-detail?id=683', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/support-notice-detail?id=683</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">고객지원 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="card">
+                                    <div class="notice-header">
+                                        <h1 class="notice-title-detail">[서비스] 2025년 1월 정기점검 안내</h1>
+                                        <div class="notice-meta">
+                                            <span>📅 2025-01-05</span>
+                                            <span>👁️ 조회 128</span>
+                                        </div>
+                                    </div>
+                                    <div class="notice-content-actual">
+                                        <p>안녕하세요, 톡벨입니다.</p>
+                                        <br>
+                                        <p>서비스 안정화를 위한 정기점검이 아래와 같이 진행될 예정입니다.</p>
+                                        <br>
+                                        <p><strong>■ 점검 일시</strong></p>
+                                        <p>2025년 1월 10일(금) 03:00 ~ 05:00 (2시간)</p>
+                                        <br>
+                                        <p><strong>■ 점검 내용</strong></p>
+                                        <p>- 서버 인프라 업그레이드</p>
+                                        <p>- 보안 패치 적용</p>
+                                        <p>- 데이터베이스 최적화</p>
+                                        <br>
+                                        <p><strong>■ 영향 범위</strong></p>
+                                        <p>- 점검 시간 동안 메시지 발송이 일시 중단됩니다.</p>
+                                        <p>- 예약 발송은 점검 종료 후 순차적으로 발송됩니다.</p>
+                                        <br>
+                                        <p>불편을 드려 죄송합니다.</p>
+                                        <p>감사합니다.</p>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn-list">목록으로</button>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 140px; right: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 220px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 520px; left: 400px;">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">support-notice-detail.html · 공지사항 상세</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">공지사항 헤더</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">공지사항 제목과 메타 정보를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>제목</td><td>공지사항 제목</td></tr>
+                            <tr><td>등록일</td><td>작성 날짜</td></tr>
+                            <tr><td>조회수</td><td>조회 횟수</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">공지 내용</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">공지사항의 상세 내용입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">목록 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">공지사항 목록 페이지로 이동합니다.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

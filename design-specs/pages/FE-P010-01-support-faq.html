@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 900px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .search-bar { display: flex; gap: 8px; margin-bottom: 24px; }
+        .search-input { flex: 1; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .search-btn { padding: 12px 24px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        
+        .category-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+        .category-tab { padding: 10px 20px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white; cursor: pointer; }
+        .category-tab.active { background: #2563eb; color: white; border-color: #2563eb; }
+        
+        .faq-list { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .faq-item-actual { border-bottom: 1px solid #e2e8f0; }
+        .faq-item-actual:last-child { border-bottom: none; }
+        .faq-question-actual { padding: 20px; font-size: 15px; font-weight: 500; color: #1e293b; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-answer-actual { padding: 0 20px 20px; font-size: 14px; color: #64748b; line-height: 1.8; display: none; }
+        .faq-item-actual.open .faq-answer-actual { display: block; }
+        .faq-toggle { font-size: 14px; color: #64748b; transition: transform 0.2s; }
+        .faq-item-actual.open .faq-toggle { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P010-01</span>
+                    <span class="page-title-header">FAQ</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/support-faq', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/support-faq</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item active">고객지원 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">❓ FAQ</h1>
+                                
+                                <div class="search-bar">
+                                    <input type="text" class="search-input" placeholder="궁금한 내용을 검색하세요">
+                                    <button class="search-btn">검색</button>
+                                </div>
+                                
+                                <div class="category-tabs">
+                                    <div class="category-tab active">전체</div>
+                                    <div class="category-tab">가입/로그인</div>
+                                    <div class="category-tab">발송</div>
+                                    <div class="category-tab">결제</div>
+                                    <div class="category-tab">기타</div>
+                                </div>
+                                
+                                <div class="faq-list">
+                                    <div class="faq-item-actual open">
+                                        <div class="faq-question-actual">
+                                            <span>Q. 발신번호는 어떻게 등록하나요?</span>
+                                            <span class="faq-toggle">▼</span>
+                                        </div>
+                                        <div class="faq-answer-actual">
+                                            A. 마이페이지 > 발신번호 관리에서 등록할 수 있습니다.<br><br>
+                                            휴대폰 번호는 ARS 인증으로, 유선전화는 통신사 서류 제출을 통해 인증됩니다.
+                                            전기통신사업법에 따라 본인 인증된 번호만 발신번호로 사용 가능합니다.
+                                        </div>
+                                    </div>
+                                    <div class="faq-item-actual">
+                                        <div class="faq-question-actual">
+                                            <span>Q. 포인트 유효기간이 있나요?</span>
+                                            <span class="faq-toggle">▼</span>
+                                        </div>
+                                        <div class="faq-answer-actual">
+                                            A. 충전된 포인트는 마지막 사용일로부터 1년간 유효합니다.
+                                        </div>
+                                    </div>
+                                    <div class="faq-item-actual">
+                                        <div class="faq-question-actual">
+                                            <span>Q. 알림톡 템플릿 심사는 얼마나 걸리나요?</span>
+                                            <span class="faq-toggle">▼</span>
+                                        </div>
+                                        <div class="faq-answer-actual">
+                                            A. 카카오 템플릿 심사는 평균 1-3 영업일 소요됩니다.
+                                        </div>
+                                    </div>
+                                    <div class="faq-item-actual">
+                                        <div class="faq-question-actual">
+                                            <span>Q. 환불은 어떻게 받나요?</span>
+                                            <span class="faq-toggle">▼</span>
+                                        </div>
+                                        <div class="faq-answer-actual">
+                                            A. 고객지원 > 1:1 문의로 환불 신청해 주세요.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 130px; left: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 200px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 270px; left: 50px;">3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">support-faq.html · 자주 묻는 질문</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">검색</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">FAQ 내용을 검색합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">카테고리 탭</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">FAQ를 카테고리별로 필터링합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>카테고리</th><th>내용</th></tr>
+                            <tr><td>전체</td><td>모든 FAQ</td></tr>
+                            <tr><td>가입/로그인</td><td>회원가입, 로그인 관련</td></tr>
+                            <tr><td>발송</td><td>문자/알림톡 발송 관련</td></tr>
+                            <tr><td>결제</td><td>포인트 충전, 환불 관련</td></tr>
+                            <tr><td>기타</td><td>기타 문의</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">FAQ 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">아코디언 형태의 FAQ 목록입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>질문 클릭</td><td>답변 펼침/접힘</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

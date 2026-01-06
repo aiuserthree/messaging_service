@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>발송결과 - 톡벨 화면설계서</title>
+    <title>발송 결과 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -13,12 +13,11 @@
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
                     <span class="page-id-badge">FE-P007-01</span>
-                    <span class="page-title-header">발송결과</span>
+                    <span class="page-title-header">발송 결과</span>
                 </div>
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../send-result.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,20 +32,181 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/send-result.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/send-result</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 800px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../send-result.html" style="height: 800px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">템플릿 관리</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item active">발송 결과 ▼</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 250px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 450px; right: 20px;">3</div>
-                                <div class="marker" data-id="4" style="top: 600px; right: 20px;">4</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 24px;">발송 결과</h2>
+                                
+                                <!-- 마커 1: 검색 필터 -->
+                                <div class="marker" data-id="1" style="top: 130px; right: 20px;">1</div>
+                                <div class="form-section" style="padding: 16px; margin-bottom: 16px;">
+                                    <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+                                        <div>
+                                            <label class="form-label">기간</label>
+                                            <div style="display: flex; gap: 8px; align-items: center;">
+                                                <input type="date" class="form-input" style="width: 150px;" value="2024-01-01">
+                                                <span>~</span>
+                                                <input type="date" class="form-input" style="width: 150px;" value="2024-01-15">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">메시지 유형</label>
+                                            <select class="form-select" style="width: 120px;">
+                                                <option>전체</option>
+                                                <option>SMS</option>
+                                                <option>LMS</option>
+                                                <option>MMS</option>
+                                                <option>알림톡</option>
+                                                <option>브랜드톡</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">상태</label>
+                                            <select class="form-select" style="width: 100px;">
+                                                <option>전체</option>
+                                                <option>성공</option>
+                                                <option>실패</option>
+                                            </select>
+                                        </div>
+                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                        <button class="mock-btn mock-btn-outline mock-btn-sm">📄 엑셀 다운로드</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 2: 통계 요약 -->
+                                <div class="marker" data-id="2" style="top: 230px; right: 20px;">2</div>
+                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+                                    <div class="stat-card">
+                                        <div class="stat-card-value">5,678</div>
+                                        <div class="stat-card-label">총 발송 건수</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-value" style="color: #10b981;">5,523</div>
+                                        <div class="stat-card-label">성공</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-value" style="color: #ef4444;">155</div>
+                                        <div class="stat-card-label">실패</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-card-value" style="color: #4361ee;">97.3%</div>
+                                        <div class="stat-card-label">성공률</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 3: 발송 목록 -->
+                                <div class="marker" data-id="3" style="top: 360px; right: 20px;">3</div>
+                                <div class="form-section" style="padding: 0;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">No</th>
+                                                <th>발송일시</th>
+                                                <th>유형</th>
+                                                <th>내용</th>
+                                                <th>총 건수</th>
+                                                <th>성공</th>
+                                                <th>실패</th>
+                                                <th>비용</th>
+                                                <th style="width: 80px;">상세</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- 마커 4: 테이블 행 (아코디언) -->
+                                            <div class="marker" data-id="4" style="top: 440px; left: 550px;">4</div>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>2024-01-15 14:30</td>
+                                                <td><span class="status-badge gray">SMS</span></td>
+                                                <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">[톡벨] 신규 회원 안내 메시지입니다...</td>
+                                                <td>150</td>
+                                                <td style="cursor: pointer;"><span style="color: #10b981; text-decoration: underline;">148</span></td>
+                                                <td style="cursor: pointer;"><span style="color: #ef4444; text-decoration: underline;">2</span></td>
+                                                <td>1,485원</td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
+                                            </tr>
+                                            <tr style="background: #f8f9fa;">
+                                                <td colspan="9" style="padding: 0;">
+                                                    <div style="padding: 16px; background: #f0f9ff; border-left: 3px solid #4361ee;">
+                                                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">▼ 실패 상세 (2건)</div>
+                                                        <table class="mock-table" style="font-size: 12px; background: white;">
+                                                            <tr>
+                                                                <th>수신번호</th>
+                                                                <th>실패 사유</th>
+                                                                <th>발송 시각</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>010-1234-5678</td>
+                                                                <td>수신 거부</td>
+                                                                <td>14:30:05</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>010-9876-5432</td>
+                                                                <td>번호 오류</td>
+                                                                <td>14:30:08</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>2024-01-15 11:00</td>
+                                                <td><span class="status-badge" style="background: #fee500; color: #3c1e1e;">알림톡</span></td>
+                                                <td>[주문 확인] 주문이 접수되었습니다...</td>
+                                                <td>89</td>
+                                                <td><span style="color: #10b981;">89</span></td>
+                                                <td><span style="color: #999;">0</span></td>
+                                                <td>667원</td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>2024-01-14 16:00</td>
+                                                <td><span class="status-badge gray">LMS</span></td>
+                                                <td>[프로모션] 특별 할인 이벤트 안내...</td>
+                                                <td>500</td>
+                                                <td><span style="color: #10b981;">487</span></td>
+                                                <td><span style="color: #ef4444;">13</span></td>
+                                                <td>14,000원</td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- 마커 5: 페이지네이션 -->
+                                <div class="marker" data-id="5" style="top: 650px; right: 400px;">5</div>
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">3</div>
+                                    <div class="pagination-item">...</div>
+                                    <div class="pagination-item">50</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,10 +214,11 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">send-result.html · 발송결과 페이지</div>
+                <div class="desc-subtitle">send-result.html · 발송 결과</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
@@ -67,12 +228,12 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">발송 결과를 조회하기 위한 필터입니다.</div>
+                        <div class="desc-text">기간, 메시지 유형, 상태로 발송 결과를 필터링합니다.</div>
                         <table class="desc-table">
-                            <tr><th>필터</th><th>옵션</th></tr>
-                            <tr><td>기간</td><td>오늘, 1주일, 1개월, 직접입력</td></tr>
-                            <tr><td>메시지유형</td><td>전체, SMS, LMS, MMS, 알림톡, 브랜드톡</td></tr>
-                            <tr><td>상태</td><td>전체, 성공, 실패, 대기</td></tr>
+                            <tr><th>필터</th><th>설명</th></tr>
+                            <tr><td>기간</td><td>조회할 날짜 범위</td></tr>
+                            <tr><td>메시지 유형</td><td>SMS/LMS/MMS/알림톡/브랜드톡</td></tr>
+                            <tr><td>상태</td><td>성공/실패</td></tr>
                         </table>
                     </div>
                 </div>
@@ -80,44 +241,35 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">발송결과 목록</div>
+                        <div class="desc-item-title">통계 요약</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">발송된 메시지 결과를 테이블로 표시합니다.</div>
+                        <div class="desc-text">조회 기간의 발송 통계를 요약 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>발송일시</td><td>메시지 발송 시간</td></tr>
-                            <tr><td>메시지유형</td><td>SMS/LMS/MMS/알림톡 등</td></tr>
-                            <tr><td>발송수</td><td>총 발송 건수</td></tr>
-                            <tr><td>성공</td><td>성공 건수 (클릭 시 아코디언 펼침)</td></tr>
-                            <tr><td>실패</td><td>실패 건수 (클릭 시 아코디언 펼침)</td></tr>
-                            <tr><td>상세</td><td>상세 보기 버튼 (클릭 시 모달 팝업)</td></tr>
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>총 발송 건수</td><td>전체 발송 건수</td></tr>
+                            <tr><td>성공</td><td>발송 성공 건수</td></tr>
+                            <tr><td>실패</td><td>발송 실패 건수</td></tr>
+                            <tr><td>성공률</td><td>성공 / 전체 × 100</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 인터랙션</div>
-                            <div class="desc-note-text">
-                                • 성공/실패 건수(숫자) 클릭 → 해당 행 아래로 아코디언 펼침<br>
-                                • 상세 버튼 클릭 → 발송 상세 모달 팝업
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">아코디언 상세 목록</div>
+                        <div class="desc-item-title">발송 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">성공/실패 건수 클릭 시 펼쳐지는 상세 목록입니다.</div>
+                        <div class="desc-text">발송 건별 결과를 테이블로 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>수신번호</td><td>수신자 전화번호</td></tr>
-                            <tr><td>발송시간</td><td>개별 발송 시간</td></tr>
-                            <tr><td>결과</td><td>성공/실패 상태</td></tr>
-                            <tr><td>사유</td><td>실패 시 실패 사유</td></tr>
+                            <tr><td>발송일시</td><td>메시지 발송 시각</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS/알림톡/브랜드톡</td></tr>
+                            <tr><td>내용</td><td>발송 메시지 요약</td></tr>
+                            <tr><td>성공/실패</td><td>각 건수 (클릭 시 아코디언)</td></tr>
                         </table>
                     </div>
                 </div>
@@ -125,16 +277,35 @@
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
-                        <div class="desc-item-title">발송 상세 모달</div>
+                        <div class="desc-item-title">성공/실패 건수 클릭</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">상세 버튼 클릭 시 표시되는 모달입니다.</div>
+                        <div class="desc-text">성공 또는 실패 건수 클릭 시 아코디언으로 상세 내역이 펼쳐집니다.</div>
                         <table class="desc-table">
-                            <tr><th>정보</th><th>설명</th></tr>
-                            <tr><td>발송 정보</td><td>발송일시, 유형, 발신번호</td></tr>
-                            <tr><td>메시지 내용</td><td>발송된 메시지 전문</td></tr>
-                            <tr><td>발송 결과</td><td>성공/실패 통계</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>성공 클릭</td><td>성공 건 상세 목록 (아코디언)</td></tr>
+                            <tr><td>실패 클릭</td><td>실패 건 + 실패 사유 (아코디언)</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 참고</div>
+                            <div class="desc-note-text">아코디언은 해당 행 아래로 펼쳐지며, 다시 클릭하면 접힙니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">상세 버튼 / 페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">상세 버튼 클릭 시 발송 상세 정보 모달이 표시됩니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>상세 버튼</td><td>발송 상세 모달 팝업</td></tr>
+                            <tr><td>페이지네이션</td><td>목록 페이지 이동</td></tr>
                         </table>
                     </div>
                 </div>
@@ -143,16 +314,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

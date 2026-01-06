@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>선거문자 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <style>
+        .page-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .page-nav-btn { padding: 10px 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .page-nav-btn:hover { border-color: #2563eb; color: #2563eb; }
+        .page-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .spec-section { display: none; }
+        .spec-section.active { display: block; }
+        .marker-wrap { position: relative; }
+        .mock-form-container { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+        .mock-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .mock-form-group { margin-bottom: 20px; }
+        .mock-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
+        .mock-label.required::after { content: ' *'; color: #ef4444; }
+        .mock-input, .mock-select, .mock-textarea { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+        .mock-textarea { min-height: 120px; resize: vertical; }
+        .mock-radio-group { display: flex; gap: 16px; flex-wrap: wrap; }
+        .mock-radio-item { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+        .mock-btn { padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; }
+        .mock-btn-primary { background: #2563eb; color: white; }
+        .mock-btn-outline { background: white; border: 1px solid #e2e8f0; color: #1e293b; }
+        .mock-btn-danger { background: #dc2626; color: white; }
+        .mock-btn-group { display: flex; gap: 8px; }
+        .mock-var-btns { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .mock-var-btn { padding: 6px 12px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; cursor: pointer; }
+        .mock-warning { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+        .mock-warning-title { font-weight: 600; color: #b45309; margin-bottom: 12px; font-size: 16px; }
+        .mock-warning ul { font-size: 13px; color: #92400e; margin: 0; padding-left: 20px; line-height: 1.8; }
+        .mock-error { background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; margin-top: 8px; font-size: 13px; color: #dc2626; }
+        .mock-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 2px solid #e2e8f0; }
+        .mock-tab { padding: 14px 24px; cursor: pointer; font-weight: 500; color: #64748b; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+        .mock-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
+        .mock-cost-info { background: #f8fafc; border-radius: 8px; padding: 16px; margin-top: 20px; }
+        .mock-cost-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+        .mock-cost-row.total { border-top: 1px solid #e2e8f0; margin-top: 8px; padding-top: 12px; font-weight: 600; }
+        .mock-phone { width: 220px; height: 400px; background: #1e293b; border-radius: 32px; padding: 16px; margin: 0 auto; }
+        .mock-phone-screen { background: white; border-radius: 20px; height: 100%; padding: 16px; overflow: hidden; }
+        .mock-phone-header { font-size: 12px; color: #64748b; text-align: center; padding-bottom: 12px; border-bottom: 1px solid #f1f5f9; margin-bottom: 12px; }
+        .mock-message-bubble { background: #f1f5f9; border-radius: 12px; padding: 12px; font-size: 13px; line-height: 1.5; }
+        .mock-recipient-box { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .mock-recipient-header { display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .mock-recipient-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .mock-recipient-table th, .mock-recipient-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+        .mock-recipient-table th { background: #f8fafc; font-weight: 500; }
+        .mock-modal-overlay { background: #f1f5f9; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 2px dashed #cbd5e1; }
+        .mock-modal { background: white; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-width: 600px; margin: 0 auto; overflow: hidden; }
+        .mock-modal-wide { max-width: 800px; }
+        .mock-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid #f1f5f9; }
+        .mock-modal-title { font-size: 18px; font-weight: 600; }
+        .mock-modal-close { width: 32px; height: 32px; border-radius: 8px; border: none; background: #f1f5f9; font-size: 18px; cursor: pointer; }
+        .mock-modal-body { padding: 24px; max-height: 400px; overflow-y: auto; }
+        .mock-modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid #f1f5f9; background: #f8fafc; }
+        .mock-file-upload { border: 2px dashed #e2e8f0; border-radius: 8px; padding: 24px; text-align: center; cursor: pointer; }
+        .mock-file-upload:hover { border-color: #2563eb; background: rgba(37,99,235,0.02); }
+    </style>
+</head>
+<body>
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 선거문자 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-ELEC-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v2.0</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <!-- 페이지 선택 탭 -->
+                <div class="page-nav">
+                    <button class="page-nav-btn active" onclick="showPage('send')">선거문자 발송</button>
+                    <button class="page-nav-btn" onclick="showPage('addressbook')">선거문자 주소록</button>
+                    <button class="page-nav-btn" onclick="showPage('reject')">수신거부관리</button>
+                    <button class="page-nav-btn" onclick="showPage('template')">선거문자 템플릿</button>
+                    <button class="page-nav-btn" onclick="showPage('modals')">모달 팝업</button>
+                </div>
+
+                <!-- ========== 선거문자 발송 ========== -->
+                <div class="page-content active" id="page-send">
+                    <!-- 1. GNB 헤더 -->
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="e1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <a href="#" class="mock-nav-item">문자발송</a>
+                            <a href="#" class="mock-nav-item active">선거문자</a>
+                            <a href="#" class="mock-nav-item">카카오톡 발송</a>
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <a href="#" class="mock-nav-item">주소록</a>
+                        </nav>
+                        <div class="mock-header-actions">
+                            <span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;"><span style="color: #64748b;">잔액</span> <strong style="color: #2563eb;">1,000,000P</strong></span>
+                            <button class="mock-btn mock-btn-primary" style="padding: 8px 16px; font-size: 13px;">충전하기</button>
+                        </div>
+                    </div>
+
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <!-- 2. 페이지 타이틀 -->
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="e2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">선거문자</h2>
+                            <p style="font-size: 14px; color: #64748b;">공직선거법에 따른 선거운동 문자메시지를 발송합니다</p>
+                        </div>
+                        
+                        <!-- 3. 서브 탭 메뉴 -->
+                        <div class="marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="e3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tabs" style="margin-bottom: 0;">
+                                <div class="mock-tab active">선거문자 발송</div>
+                                <div class="mock-tab">선거문자 주소록</div>
+                                <div class="mock-tab">수신거부관리</div>
+                                <div class="mock-tab">선거문자 템플릿</div>
+                            </div>
+                        </div>
+
+                        <!-- 4. 공직선거법 안내 -->
+                        <div class="mock-warning marker-wrap">
+                            <span class="spec-marker" data-num="e4" style="top: -12px; right: 10px;">4</span>
+                            <div class="mock-warning-title">⚠️ 공직선거법 준수 안내</div>
+                            <ul>
+                                <li>공직선거법 제82조의4(전화·문자메시지 등을 이용한 선거운동) 준수 필수</li>
+                                <li>허위사실 공표 금지 (제250조) - 3년 이하 징역 또는 600만원 이하 벌금</li>
+                                <li>후보자 비방 금지 (제251조) - 3년 이하 징역 또는 600만원 이하 벌금</li>
+                                <li>발송 가능 시간: 오전 7시 ~ 오후 11시 (선거운동 기간 내)</li>
+                                <li>투표일 당일 발송 불가</li>
+                            </ul>
+                        </div>
+
+                        <div class="mock-form-container">
+                            <div class="mock-card">
+                                <!-- 5. 발신번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e5" style="top: 0; left: -12px;">5</span>
+                                    <label class="mock-label required">발신번호</label>
+                                    <select class="mock-select"><option>010-1234-5678</option></select>
+                                </div>
+
+                                <!-- 6. 수신번호 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e6" style="top: 0; right: -12px;">6</span>
+                                    <label class="mock-label required">수신번호</label>
+                                    <div class="mock-recipient-box">
+                                        <div class="mock-recipient-header">
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-primary" style="padding: 8px 14px; font-size: 13px;" onclick="goToModal('modal-recipient')">엑셀업로드</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 8px 14px; font-size: 13px;">엑셀샘플 다운로드</button>
+                                            </div>
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 8px 14px; font-size: 13px;">주소록 불러오기</button>
+                                                <button class="mock-btn mock-btn-primary" style="padding: 8px 14px; font-size: 13px;" onclick="goToModal('modal-addressbook')">주소록에 추가</button>
+                                            </div>
+                                        </div>
+                                        <div style="max-height: 150px; overflow-y: auto;">
+                                            <table class="mock-recipient-table">
+                                                <thead><tr><th style="width:40px;"><input type="checkbox"></th><th style="width:50px;">순번</th><th>이름</th><th>전화번호</th></tr></thead>
+                                                <tbody>
+                                                    <tr><td><input type="checkbox"></td><td>1</td><td>홍길동</td><td>010-1234-5678</td></tr>
+                                                    <tr><td><input type="checkbox"></td><td>2</td><td>김철수</td><td>010-9876-5432</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; padding: 12px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 13px;">
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">행 추가</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">선택 행 삭제</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">전체삭제</button>
+                                            </div>
+                                            <div class="mock-btn-group">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">중복번호 삭제</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 12px; font-size: 12px;">수신거부번호 삭제</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 8px; font-size: 13px; color: #64748b;">총 <strong style="color: #2563eb;">2</strong>명</div>
+                                </div>
+
+                                <!-- 7. 메시지 타입 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e7" style="top: 0; left: -12px;">7</span>
+                                    <label class="mock-label required">메시지 타입</label>
+                                    <div class="mock-radio-group">
+                                        <label class="mock-radio-item"><input type="radio" name="msgType" checked> SMS (90바이트 이하)</label>
+                                        <label class="mock-radio-item"><input type="radio" name="msgType"> LMS (2,000바이트 이하)</label>
+                                        <label class="mock-radio-item"><input type="radio" name="msgType"> MMS (이미지 포함)</label>
+                                    </div>
+                                </div>
+
+                                <!-- 8. 선거운동정보 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e8" style="top: 0; right: -12px;">8</span>
+                                    <label class="mock-label required">선거운동정보</label>
+                                    <input type="text" class="mock-input" placeholder="(선거운동정보) 옆에 표시될 내용을 입력하세요">
+                                    <div style="text-align: right; font-size: 12px; color: #64748b; margin-top: 4px;">0 / 40 바이트</div>
+                                </div>
+
+                                <!-- 9. 제목 (LMS/MMS용) -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e9" style="top: 0; left: -12px;">9</span>
+                                    <label class="mock-label">제목</label>
+                                    <input type="text" class="mock-input" placeholder="제목을 입력하세요 (LMS/MMS)">
+                                </div>
+
+                                <!-- 10. 메시지 내용 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e10" style="top: 0; right: -12px;">10</span>
+                                    <label class="mock-label required">메시지 내용</label>
+                                    <div class="mock-var-btns">
+                                        <button class="mock-var-btn">#{이름}</button>
+                                        <button class="mock-var-btn">#{전화번호}</button>
+                                        <button class="mock-var-btn" style="background: #dbeafe; color: #2563eb;" onclick="goToModal('modal-template')">템플릿 선택</button>
+                                    </div>
+                                    <textarea class="mock-textarea" placeholder="메시지 내용을 입력하세요"></textarea>
+                                    <div style="text-align: right; font-size: 12px; color: #64748b; margin-top: 4px;">0 / 90 바이트</div>
+                                </div>
+
+                                <!-- 11. 금지어 검출 경고 -->
+                                <div class="mock-error marker-wrap">
+                                    <span class="spec-marker" data-num="e11" style="top: -12px; left: 10px;">11</span>
+                                    <strong>⚠️ 금지어가 검출되었습니다</strong>
+                                </div>
+
+                                <!-- 12. 이미지 첨부 (MMS) -->
+                                <div class="mock-form-group marker-wrap" style="margin-top: 20px;">
+                                    <span class="spec-marker" data-num="e12" style="top: 0; right: -12px;">12</span>
+                                    <label class="mock-label">이미지 첨부</label>
+                                    <button class="mock-btn mock-btn-outline">이미지 추가</button>
+                                    <div style="font-size: 12px; color: #64748b; margin-top: 4px;">JPG, PNG, GIF (최대 300KB, 최대 3개)</div>
+                                </div>
+
+                                <!-- 13. 발송 시간 -->
+                                <div class="mock-form-group marker-wrap">
+                                    <span class="spec-marker" data-num="e13" style="top: 0; left: -12px;">13</span>
+                                    <label class="mock-label required">발송 시간</label>
+                                    <div class="mock-radio-group">
+                                        <label class="mock-radio-item"><input type="radio" name="sendTime" checked> 즉시 발송</label>
+                                        <label class="mock-radio-item"><input type="radio" name="sendTime"> 예약 발송</label>
+                                    </div>
+                                </div>
+
+                                <!-- 14. 발송 비용 -->
+                                <div class="mock-cost-info marker-wrap">
+                                    <span class="spec-marker" data-num="e14" style="top: -12px; left: 10px;">14</span>
+                                    <div class="mock-cost-row"><span>수신번호 개수</span><span>2명</span></div>
+                                    <div class="mock-cost-row"><span>메시지 타입</span><span>SMS</span></div>
+                                    <div class="mock-cost-row"><span>단가</span><span>20원</span></div>
+                                    <div class="mock-cost-row"><span>예상 발송 마일리지</span><span>0</span></div>
+                                    <div class="mock-cost-row"><span>예상 발송 포인트</span><span>40</span></div>
+                                    <div class="mock-cost-row total"><span>발송 후 예상 잔여 포인트</span><span style="color: #2563eb; font-size: 18px;">999,960P</span></div>
+                                </div>
+
+                                <!-- 15. 액션 버튼 -->
+                                <div class="marker-wrap" style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+                                    <span class="spec-marker" data-num="e15" style="top: 50%; left: -12px; transform: translateY(-50%);">15</span>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-test')">테스트 발송</button>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-save-template')">템플릿으로 저장</button>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-manual')">발송하기(20건 수동)</button>
+                                    <button class="mock-btn mock-btn-primary" style="margin-left: auto; padding: 14px 32px;" onclick="goToModal('modal-send')">발송하기</button>
+                                </div>
+                            </div>
+
+                            <!-- 16. 미리보기 -->
+                            <div class="mock-preview marker-wrap">
+                                <span class="spec-marker" data-num="e16" style="top: -12px; right: 10px;">16</span>
+                                <div class="mock-card">
+                                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">메시지 미리보기</h3>
+                                    <div class="mock-phone">
+                                        <div class="mock-phone-screen">
+                                            <div class="mock-phone-header">010-1234-5678</div>
+                                            <div class="mock-message-bubble">
+                                                <span style="color: #2563eb; font-weight: 600;">(선거운동정보)</span><br>
+                                                메시지 내용을 입력하세요
+                                                <div style="margin-top: 12px; font-size: 11px; color: #64748b; border-top: 1px dashed #d1d5db; padding-top: 8px;">
+                                                    불법수집정보 신고 : 1390<br>
+                                                    개인정보침해 신고 : 118<br>
+                                                    무료거부 0801234567
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 선거문자 주소록 ========== -->
+                <div class="page-content" id="page-addressbook">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="a1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item active">선거문자</a></nav>
+                        <div class="mock-header-actions"><span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;">잔액 <strong style="color: #2563eb;">1,000,000P</strong></span></div>
+                    </div>
+                    <div style="padding: 24px; background: #f8fafc; min-height: 600px;">
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="a2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">선거문자</h2>
+                            <p style="font-size: 14px; color: #64748b;">공직선거법에 따른 선거운동 문자메시지를 발송합니다</p>
+                        </div>
+                        <div class="mock-tabs marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="a3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tab">선거문자 발송</div>
+                            <div class="mock-tab active">선거문자 주소록</div>
+                            <div class="mock-tab">수신거부관리</div>
+                            <div class="mock-tab">선거문자 템플릿</div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="marker-wrap" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span class="spec-marker" data-num="a4" style="top: 50%; left: -12px; transform: translateY(-50%);">4</span>
+                                <div class="mock-btn-group">
+                                    <button class="mock-btn mock-btn-primary" onclick="goToModal('modal-folder-add')">폴더 추가</button>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-group-add')">그룹 추가</button>
+                                    <button class="mock-btn mock-btn-outline" onclick="goToModal('modal-contact-add')">연락처 추가</button>
+                                </div>
+                                <div class="mock-btn-group">
+                                    <input type="text" class="mock-input" style="width: 200px;" placeholder="검색어 입력">
+                                    <button class="mock-btn mock-btn-primary">검색</button>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 250px 1fr; gap: 20px;">
+                                <div class="marker-wrap" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px;">
+                                    <span class="spec-marker" data-num="a5" style="top: -12px; left: 10px;">5</span>
+                                    <div style="font-weight: 600; margin-bottom: 12px;">📁 폴더/그룹</div>
+                                    <div style="padding: 8px; background: #dbeafe; border-radius: 6px; margin-bottom: 4px; cursor: pointer;">전체 (150)</div>
+                                    <div style="padding: 8px 8px 8px 24px; border-radius: 6px; margin-bottom: 4px; cursor: pointer;">📁 선거구A (50)</div>
+                                    <div style="padding: 8px 8px 8px 40px; border-radius: 6px; margin-bottom: 4px; cursor: pointer; color: #64748b;">ㄴ 지지자 (30)</div>
+                                    <div style="padding: 8px 8px 8px 40px; border-radius: 6px; margin-bottom: 4px; cursor: pointer; color: #64748b;">ㄴ 일반 (20)</div>
+                                    <div style="padding: 8px 8px 8px 24px; border-radius: 6px; cursor: pointer;">📁 선거구B (100)</div>
+                                </div>
+                                <div class="marker-wrap">
+                                    <span class="spec-marker" data-num="a6" style="top: -12px; right: 10px;">6</span>
+                                    <table class="mock-recipient-table" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                        <thead><tr><th style="width:40px;"><input type="checkbox"></th><th>이름</th><th>전화번호</th><th>그룹</th><th>등록일</th><th>관리</th></tr></thead>
+                                        <tbody>
+                                            <tr><td><input type="checkbox"></td><td>홍길동</td><td>010-1234-5678</td><td>지지자</td><td>2024-01-15</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">수정</button> <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button></td></tr>
+                                            <tr><td><input type="checkbox"></td><td>김철수</td><td>010-9876-5432</td><td>일반</td><td>2024-01-14</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">수정</button> <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button></td></tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="marker-wrap" style="display: flex; justify-content: space-between; margin-top: 16px;">
+                                        <span class="spec-marker" data-num="a7" style="top: 50%; left: -12px; transform: translateY(-50%);">7</span>
+                                        <div class="mock-btn-group">
+                                            <button class="mock-btn mock-btn-outline">선택 삭제</button>
+                                            <button class="mock-btn mock-btn-outline">엑셀 다운로드</button>
+                                        </div>
+                                        <div style="display: flex; gap: 4px; align-items: center;">
+                                            <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">◀</button>
+                                            <span style="padding: 0 12px;">1 / 10</span>
+                                            <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">▶</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 수신거부관리 ========== -->
+                <div class="page-content" id="page-reject">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="r1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item active">선거문자</a></nav>
+                        <div class="mock-header-actions"><span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;">잔액 <strong style="color: #2563eb;">1,000,000P</strong></span></div>
+                    </div>
+                    <div style="padding: 24px; background: #f8fafc; min-height: 600px;">
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="r2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">선거문자</h2>
+                            <p style="font-size: 14px; color: #64748b;">공직선거법에 따른 선거운동 문자메시지를 발송합니다</p>
+                        </div>
+                        <div class="mock-tabs marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="r3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tab">선거문자 발송</div>
+                            <div class="mock-tab">선거문자 주소록</div>
+                            <div class="mock-tab active">수신거부관리</div>
+                            <div class="mock-tab">선거문자 템플릿</div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="marker-wrap" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span class="spec-marker" data-num="r4" style="top: 50%; left: -12px; transform: translateY(-50%);">4</span>
+                                <div class="mock-btn-group">
+                                    <button class="mock-btn mock-btn-primary" onclick="goToModal('modal-reject-add')">수신거부 추가</button>
+                                    <button class="mock-btn mock-btn-outline">엑셀 업로드</button>
+                                    <button class="mock-btn mock-btn-outline">엑셀 다운로드</button>
+                                </div>
+                                <div class="mock-btn-group">
+                                    <input type="text" class="mock-input" style="width: 200px;" placeholder="전화번호 검색">
+                                    <button class="mock-btn mock-btn-primary">검색</button>
+                                </div>
+                            </div>
+                            <div class="marker-wrap" style="background: #fef3c7; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                                <span class="spec-marker" data-num="r5" style="top: -12px; left: 10px;">5</span>
+                                <div style="font-size: 14px; color: #92400e;">
+                                    <strong>📋 수신거부 안내</strong><br>
+                                    • 수신거부 요청한 번호로는 문자가 발송되지 않습니다.<br>
+                                    • 080 무료거부 서비스를 통해 등록된 번호가 자동 연동됩니다.
+                                </div>
+                            </div>
+                            <table class="mock-recipient-table marker-wrap" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <span class="spec-marker" data-num="r6" style="top: -12px; right: 10px;">6</span>
+                                <thead><tr><th style="width:40px;"><input type="checkbox"></th><th>전화번호</th><th>등록일</th><th>등록경로</th><th>관리</th></tr></thead>
+                                <tbody>
+                                    <tr><td><input type="checkbox"></td><td>010-1111-2222</td><td>2024-01-15</td><td>080 무료거부</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button></td></tr>
+                                    <tr><td><input type="checkbox"></td><td>010-3333-4444</td><td>2024-01-14</td><td>수동 등록</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button></td></tr>
+                                </tbody>
+                            </table>
+                            <div class="marker-wrap" style="display: flex; justify-content: space-between; margin-top: 16px;">
+                                <span class="spec-marker" data-num="r7" style="top: 50%; left: -12px; transform: translateY(-50%);">7</span>
+                                <button class="mock-btn mock-btn-danger">선택 삭제</button>
+                                <div style="display: flex; gap: 4px; align-items: center;">
+                                    <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">◀</button>
+                                    <span style="padding: 0 12px;">1 / 5</span>
+                                    <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">▶</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 선거문자 템플릿 ========== -->
+                <div class="page-content" id="page-template">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="t1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item active">선거문자</a></nav>
+                        <div class="mock-header-actions"><span style="padding: 8px 16px; background: #f8fafc; border-radius: 8px; font-size: 13px;">잔액 <strong style="color: #2563eb;">1,000,000P</strong></span></div>
+                    </div>
+                    <div style="padding: 24px; background: #f8fafc; min-height: 600px;">
+                        <div class="marker-wrap" style="margin-bottom: 20px;">
+                            <span class="spec-marker" data-num="t2" style="top: 0; left: -12px;">2</span>
+                            <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">선거문자</h2>
+                            <p style="font-size: 14px; color: #64748b;">공직선거법에 따른 선거운동 문자메시지를 발송합니다</p>
+                        </div>
+                        <div class="mock-tabs marker-wrap" style="margin-bottom: 24px;">
+                            <span class="spec-marker" data-num="t3" style="top: 50%; right: -12px; transform: translateY(-50%);">3</span>
+                            <div class="mock-tab">선거문자 발송</div>
+                            <div class="mock-tab">선거문자 주소록</div>
+                            <div class="mock-tab">수신거부관리</div>
+                            <div class="mock-tab active">선거문자 템플릿</div>
+                        </div>
+                        <div class="mock-card">
+                            <div class="marker-wrap" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span class="spec-marker" data-num="t4" style="top: 50%; left: -12px; transform: translateY(-50%);">4</span>
+                                <button class="mock-btn mock-btn-primary" onclick="goToModal('modal-template-add')">새 템플릿 등록</button>
+                                <div class="mock-btn-group">
+                                    <select class="mock-select" style="width: 120px;">
+                                        <option>전체 타입</option>
+                                        <option>SMS</option>
+                                        <option>LMS</option>
+                                        <option>MMS</option>
+                                    </select>
+                                    <input type="text" class="mock-input" style="width: 200px;" placeholder="템플릿명 검색">
+                                    <button class="mock-btn mock-btn-primary">검색</button>
+                                </div>
+                            </div>
+                            <table class="mock-recipient-table marker-wrap" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <span class="spec-marker" data-num="t5" style="top: -12px; right: 10px;">5</span>
+                                <thead><tr><th style="width:40px;"><input type="checkbox"></th><th>템플릿명</th><th>타입</th><th>내용 미리보기</th><th>등록일</th><th>관리</th></tr></thead>
+                                <tbody>
+                                    <tr><td><input type="checkbox"></td><td>선거 안내</td><td><span style="background: #dbeafe; padding: 2px 8px; border-radius: 4px; font-size: 12px;">SMS</span></td><td style="color: #64748b; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">안녕하세요, 선거 안내 문자입니다...</td><td>2024-01-15</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;" onclick="goToModal('modal-template-edit')">수정</button> <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button> <button class="mock-btn mock-btn-primary" style="padding: 4px 8px; font-size: 12px;">사용</button></td></tr>
+                                    <tr><td><input type="checkbox"></td><td>후보자 소개</td><td><span style="background: #d1fae5; padding: 2px 8px; border-radius: 4px; font-size: 12px;">LMS</span></td><td style="color: #64748b; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">후보자 소개 메시지입니다. 저는...</td><td>2024-01-14</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;" onclick="goToModal('modal-template-edit')">수정</button> <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button> <button class="mock-btn mock-btn-primary" style="padding: 4px 8px; font-size: 12px;">사용</button></td></tr>
+                                    <tr><td><input type="checkbox"></td><td>투표 독려</td><td><span style="background: #fef3c7; padding: 2px 8px; border-radius: 4px; font-size: 12px;">MMS</span></td><td style="color: #64748b; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">투표에 참여해 주세요! 소중한...</td><td>2024-01-13</td><td><button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;" onclick="goToModal('modal-template-edit')">수정</button> <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 12px;">삭제</button> <button class="mock-btn mock-btn-primary" style="padding: 4px 8px; font-size: 12px;">사용</button></td></tr>
+                                </tbody>
+                            </table>
+                            <div class="marker-wrap" style="display: flex; justify-content: space-between; margin-top: 16px;">
+                                <span class="spec-marker" data-num="t6" style="top: 50%; left: -12px; transform: translateY(-50%);">6</span>
+                                <button class="mock-btn mock-btn-danger">선택 삭제</button>
+                                <div style="display: flex; gap: 4px; align-items: center;">
+                                    <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">◀</button>
+                                    <span style="padding: 0 12px;">1 / 3</span>
+                                    <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">▶</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== 모달 팝업 ========== -->
+                <div class="page-content" id="page-modals">
+                    <div style="padding: 24px; background: #f8fafc;">
+                        <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 8px;">📋 모달 팝업 화면</h2>
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px;">선거문자 기능에서 사용되는 모달 팝업 UI</p>
+
+                        <!-- 선거 아이디 신청 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-election-id" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m1" style="top: 10px; left: 10px;">1</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">선거 아이디 신청</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">선거 아이디 신청 후 담당자 승인 시 선거문자 최저 단가로 적용되며, 선거 전문 담당자가 별도 관리해 드립니다.</p>
+                                    
+                                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">📋 기본 정보</h4>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">후보자명</label>
+                                        <input type="text" class="mock-input" placeholder="후보자명을 입력하세요">
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                        <div class="mock-form-group">
+                                            <label class="mock-label required">소속/기관</label>
+                                            <input type="text" class="mock-input" placeholder="소속/기관을 입력하세요">
+                                        </div>
+                                        <div class="mock-form-group">
+                                            <label class="mock-label required">지역</label>
+                                            <input type="text" class="mock-input" placeholder="지역을 입력하세요">
+                                        </div>
+                                    </div>
+
+                                    <h4 style="font-size: 14px; font-weight: 600; margin: 20px 0 12px;">📎 서류 업로드</h4>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">후보자 신분증 사본</label>
+                                        <div class="mock-file-upload">파일 선택 또는 드래그</div>
+                                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">* 주민등록증, 운전면허증 등 본인 확인 가능한 신분증</div>
+                                    </div>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">(예비)후보자 등록 증명서 사본</label>
+                                        <div class="mock-file-upload">파일 선택 또는 드래그</div>
+                                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">* 선거관리위원회가 발급한 후보자 등록 증명서</div>
+                                    </div>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">발신번호 등록 증명 서류</label>
+                                        <div class="mock-file-upload">파일 선택 또는 드래그</div>
+                                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">* 후보자 본인 명의와 일치해야 함 (ex. 통신서비스이용증명원)</div>
+                                    </div>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label">선관위 문자메시지 전송 신고서 사본 (선택)</label>
+                                        <div class="mock-file-upload">파일 선택 또는 드래그</div>
+                                    </div>
+
+                                    <h4 style="font-size: 14px; font-weight: 600; margin: 20px 0 12px;">💬 발송할 문자 메시지 내용</h4>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">메시지 내용 전문</label>
+                                        <textarea class="mock-textarea" placeholder="선관위에 신고한 내용과 완전히 동일해야 합니다."></textarea>
+                                    </div>
+
+                                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                                        <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 13px;">
+                                            <input type="checkbox" style="margin-top: 3px;">
+                                            <span><strong>[필수]</strong> 제 3자 정보제공 및 이용약관 동의</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">닫기</button>
+                                    <button class="mock-btn mock-btn-primary">신청하기</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 20건 수동 발송 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-manual" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m2" style="top: 10px; left: 10px;">2</span>
+                            <div class="mock-modal" style="max-width: 1000px;">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">선거문자 20건 전송</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body" style="max-height: 600px;">
+                                    <!-- 상단 정보 -->
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; flex-wrap: wrap; gap: 8px;">
+                                        <span>마지막 발송일자 : <strong>2024-01-15 14:30:00</strong></span>
+                                        <span>요청 : <strong>100</strong> 건, 발송 : <strong>45</strong> 건, 수신거부 : <strong>2</strong> 건</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 14px; flex-wrap: wrap; gap: 8px;">
+                                        <span>현재 페이지 : <strong>1 / 5</strong></span>
+                                        <span>누적 발송 건수 : <strong style="color: #2563eb;">45 / 100</strong> 건</span>
+                                    </div>
+
+                                    <!-- 이용방법 안내 -->
+                                    <div style="background: #dbeafe; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">📋 이용방법 안내</h4>
+                                        <ol style="font-size: 13px; margin: 0; padding-left: 20px; line-height: 1.8;">
+                                            <li>오른쪽의 20개씩 나오는 수신번호 리스트를 하나씩(선택 및 마우스 드래그) 선택합니다.</li>
+                                            <li>마우스로 전송 버튼을 클릭하시거나 키보드의 스페이스바[space bar] 키를 누르면 전송됩니다.</li>
+                                            <li>선택된 수신번호를 발송 후 자동으로 다음 페이지로 이동되면 반복해서 발송하시면 됩니다.</li>
+                                            <li>발송된 수신번호는 더이상 선택할 수 없습니다.</li>
+                                        </ol>
+                                    </div>
+
+                                    <!-- 메인 영역: 컨트롤 + 수신번호 리스트 -->
+                                    <div style="display: grid; grid-template-columns: 1fr 280px; gap: 20px;">
+                                        <!-- 좌측: 페이지 컨트롤 + 전송 버튼 -->
+                                        <div>
+                                            <div style="display: flex; gap: 8px; margin-bottom: 16px; align-items: center;">
+                                                <span style="font-weight: 500;">페이지 :</span>
+                                                <input type="text" class="mock-input" style="width: 60px; padding: 6px 8px;" value="1">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 16px;">이동</button>
+                                            </div>
+                                            <div style="display: flex; gap: 4px; align-items: center; margin-bottom: 20px;">
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">◀◀</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">◀</button>
+                                                <span style="padding: 6px 16px; background: #f1f5f9; border-radius: 6px; font-weight: 500;">1 / 5</span>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">▶</button>
+                                                <button class="mock-btn mock-btn-outline" style="padding: 6px 10px;">▶▶</button>
+                                            </div>
+                                            <button class="mock-btn mock-btn-primary" style="width: 100%; padding: 24px; font-size: 18px; font-weight: 600;">📤 전송 (Space Bar)</button>
+                                            <div style="margin-top: 16px; padding: 12px; background: #fef3c7; border-radius: 8px; font-size: 13px; color: #92400e;">
+                                                ⚠️ 선거법에 따라 자동 동보통신은 총 8회로 제한됩니다.<br>
+                                                수동 발송은 제한 횟수에 포함되지 않습니다.
+                                            </div>
+                                        </div>
+
+                                        <!-- 우측: 수신번호 리스트 (20개) -->
+                                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+                                            <div style="background: #f8fafc; padding: 10px 12px; font-weight: 600; font-size: 13px; border-bottom: 1px solid #e2e8f0;">
+                                                수신번호 리스트 (1~20)
+                                            </div>
+                                            <div style="max-height: 320px; overflow-y: auto;">
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer; background: #dbeafe;"><span>1. 홍길동</span><span style="color: #64748b;">010-1234-5678</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>2. 김철수</span><span style="color: #64748b;">010-2345-6789</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>3. 이영희</span><span style="color: #64748b;">010-3456-7890</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>4. 박민수</span><span style="color: #64748b;">010-4567-8901</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>5. 정수진</span><span style="color: #64748b;">010-5678-9012</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer; opacity: 0.5; text-decoration: line-through;"><span>6. 최동훈 ✓</span><span style="color: #64748b;">010-6789-0123</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer; opacity: 0.5; text-decoration: line-through;"><span>7. 강미영 ✓</span><span style="color: #64748b;">010-7890-1234</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>8. 윤서연</span><span style="color: #64748b;">010-8901-2345</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>9. 임재현</span><span style="color: #64748b;">010-9012-3456</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>10. 한소희</span><span style="color: #64748b;">010-0123-4567</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>11. 송민호</span><span style="color: #64748b;">010-1111-2222</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>12. 오세훈</span><span style="color: #64748b;">010-2222-3333</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>13. 배수지</span><span style="color: #64748b;">010-3333-4444</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>14. 유재석</span><span style="color: #64748b;">010-4444-5555</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>15. 김태희</span><span style="color: #64748b;">010-5555-6666</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>16. 이병헌</span><span style="color: #64748b;">010-6666-7777</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>17. 전지현</span><span style="color: #64748b;">010-7777-8888</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer;"><span>18. 공유</span><span style="color: #64748b;">010-8888-9999</span></div>
+                                                <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; cursor: pointer; color: #dc2626;"><span>19. 손예진 🚫</span><span>수신거부</span></div>
+                                                <div style="padding: 8px 12px; display: flex; justify-content: space-between; cursor: pointer;"><span>20. 현빈</span><span style="color: #64748b;">010-0000-1111</span></div>
+                                            </div>
+                                            <div style="background: #f8fafc; padding: 8px 12px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0;">
+                                                ✓ 발송완료 | 🚫 수신거부 | <span style="background: #dbeafe; padding: 0 4px;">선택됨</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 테스트 발송 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-test" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m3" style="top: 10px; left: 10px;">3</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">테스트 발송</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">테스트 수신번호</label>
+                                        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                                            <input type="text" class="mock-input" placeholder="010-0000-0000">
+                                            <button class="mock-btn mock-btn-outline" style="padding: 8px;">삭제</button>
+                                        </div>
+                                        <button class="mock-btn mock-btn-outline" style="width: 100%;">+ 추가</button>
+                                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">최대 3개 번호까지 입력 가능합니다</div>
+                                    </div>
+
+                                    <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-top: 16px;">
+                                        <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 12px;">발송될 메시지 미리보기</h4>
+                                        <div style="font-size: 13px; line-height: 1.6;">
+                                            <div><strong>발신번호:</strong> -</div>
+                                            <div><strong>제목:</strong> -</div>
+                                            <div><strong>내용:</strong> 메시지 내용을 입력하세요</div>
+                                            <div><strong>이미지:</strong></div>
+                                        </div>
+                                    </div>
+
+                                    <div style="background: #fef3c7; padding: 12px; border-radius: 8px; margin-top: 16px; font-size: 13px; color: #92400e;">
+                                        ⚠️ 테스트 발송도 포인트가 차감됩니다
+                                    </div>
+
+                                    <div style="display: flex; justify-content: space-between; margin-top: 16px; font-size: 14px;">
+                                        <span>예상 차감 포인트</span><span>0원</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 14px;">
+                                        <span>현재 잔액</span><span style="color: #2563eb; font-weight: 600;">1,000,000원</span>
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">테스트 발송</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 수신번호 관리 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-recipient" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m4" style="top: 10px; left: 10px;">4</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">수신번호 관리</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+                                        <div class="mock-btn-group">
+                                            <button class="mock-btn mock-btn-primary">엑셀업로드</button>
+                                            <button class="mock-btn mock-btn-outline">엑셀샘플 다운로드</button>
+                                        </div>
+                                        <div class="mock-btn-group">
+                                            <button class="mock-btn mock-btn-outline">주소록 불러오기</button>
+                                            <select class="mock-select" style="width: auto; padding: 8px 12px;">폴더선택</select>
+                                            <select class="mock-select" style="width: auto; padding: 8px 12px;">그룹선택</select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mock-file-upload" style="margin-bottom: 16px;">
+                                        <div style="font-size: 32px; margin-bottom: 8px;">📁</div>
+                                        <div>파일을 드래그하여 놓거나 클릭하여 선택하세요</div>
+                                        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">지원 형식: .xlsx, .xls, .csv (최대 10MB, 최대 10,000건)</div>
+                                    </div>
+
+                                    <table class="mock-recipient-table">
+                                        <thead><tr><th>이름</th><th>휴대폰</th><th>변수4</th><th>변수5</th><th>변수6</th><th>변수7</th><th>변수8</th></tr></thead>
+                                        <tbody>
+                                            <tr><td colspan="7" style="text-align: center; color: #94a3b8; padding: 40px;">엑셀 파일을 업로드하세요</td></tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div style="display: flex; justify-content: space-between; margin-top: 16px;">
+                                        <div class="mock-btn-group">
+                                            <button class="mock-btn mock-btn-outline">전체선택</button>
+                                            <button class="mock-btn mock-btn-outline">복사</button>
+                                            <button class="mock-btn mock-btn-outline">전체삭제</button>
+                                            <button class="mock-btn mock-btn-outline">삭제</button>
+                                        </div>
+                                        <div class="mock-btn-group">
+                                            <button class="mock-btn mock-btn-outline">중복번호 삭제</button>
+                                            <button class="mock-btn mock-btn-outline">수신거부번호 삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">닫기</button>
+                                    <button class="mock-btn mock-btn-primary">추가</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿 선택 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-template" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m5" style="top: 10px; left: 10px;">5</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">템플릿 선택</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <thead><tr style="background: #f8fafc;"><th style="padding: 12px; text-align: left;">템플릿명</th><th style="padding: 12px; text-align: left;">타입</th><th style="padding: 12px; text-align: left;">내용</th><th style="padding: 12px; text-align: left;">등록일</th><th style="padding: 12px;">관리</th></tr></thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 12px;">선거 안내</td><td style="padding: 12px;">SMS</td><td style="padding: 12px; color: #64748b;">선거 안내 메시지입니다...</td><td style="padding: 12px;">2024-01-15</td><td style="padding: 12px;"><button class="mock-btn mock-btn-primary" style="padding: 6px 12px; font-size: 12px;">선택</button></td></tr>
+                                            <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 12px;">후보자 소개</td><td style="padding: 12px;">LMS</td><td style="padding: 12px; color: #64748b;">후보자 소개 메시지입니다...</td><td style="padding: 12px;">2024-01-14</td><td style="padding: 12px;"><button class="mock-btn mock-btn-primary" style="padding: 6px 12px; font-size: 12px;">선택</button></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 발송 확인 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-send" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m6" style="top: 10px; left: 10px;">6</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">발송 확인</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 16px;">발송 정보</h4>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;"><span style="color: #64748b;">후보자/정당</span><span>-</span></div>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;"><span style="color: #64748b;">수신번호 개수</span><span>-</span></div>
+                                    <div style="display: flex; justify-content: space-between; padding: 12px 0;"><span style="color: #64748b;">발송 시간</span><span>-</span></div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">발송하기</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿으로 저장 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-save-template" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m7" style="top: 10px; left: 10px;">7</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">템플릿으로 저장</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">템플릿명</label>
+                                        <input type="text" class="mock-input" placeholder="템플릿명을 입력하세요">
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">저장</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 주소록에 추가 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-addressbook" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m8" style="top: 10px; left: 10px;">8</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header">
+                                    <h3 class="mock-modal-title">주소록에 추가</h3>
+                                    <button class="mock-modal-close">×</button>
+                                </div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group">
+                                        <label class="mock-label">추가 방식 선택</label>
+                                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                                            <label class="mock-radio-item"><input type="radio" name="addType" checked> 기존 그룹에 추가</label>
+                                            <label class="mock-radio-item"><input type="radio" name="addType"> 새 그룹 생성</label>
+                                        </div>
+                                    </div>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label required">그룹 선택</label>
+                                        <select class="mock-select"><option>그룹을 선택하세요</option><option>VIP 고객</option><option>일반 고객</option><option>신규 고객</option></select>
+                                    </div>
+                                    <div class="mock-form-group">
+                                        <label class="mock-label">새 그룹명</label>
+                                        <input type="text" class="mock-input" placeholder="새 그룹명을 입력하세요">
+                                    </div>
+                                    <div style="padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px;">
+                                        추가할 데이터: <strong>0</strong>개
+                                    </div>
+                                </div>
+                                <div class="mock-modal-footer">
+                                    <button class="mock-btn mock-btn-outline">취소</button>
+                                    <button class="mock-btn mock-btn-primary">추가</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 폴더 추가 모달 (주소록) -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-folder-add" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m9" style="top: 10px; left: 10px;">9</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header"><h3 class="mock-modal-title">폴더 추가</h3><button class="mock-modal-close">×</button></div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group"><label class="mock-label required">폴더명</label><input type="text" class="mock-input" placeholder="폴더명을 입력하세요"></div>
+                                    <div class="mock-form-group"><label class="mock-label">설명</label><input type="text" class="mock-input" placeholder="폴더 설명 (선택)"></div>
+                                </div>
+                                <div class="mock-modal-footer"><button class="mock-btn mock-btn-outline">취소</button><button class="mock-btn mock-btn-primary">추가</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 그룹 추가 모달 (주소록) -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-group-add" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m10" style="top: 10px; left: 10px;">10</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header"><h3 class="mock-modal-title">그룹 추가</h3><button class="mock-modal-close">×</button></div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group"><label class="mock-label required">상위 폴더</label><select class="mock-select"><option>폴더를 선택하세요</option><option>선거구A</option><option>선거구B</option></select></div>
+                                    <div class="mock-form-group"><label class="mock-label required">그룹명</label><input type="text" class="mock-input" placeholder="그룹명을 입력하세요"></div>
+                                </div>
+                                <div class="mock-modal-footer"><button class="mock-btn mock-btn-outline">취소</button><button class="mock-btn mock-btn-primary">추가</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 연락처 추가 모달 (주소록) -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-contact-add" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m11" style="top: 10px; left: 10px;">11</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header"><h3 class="mock-modal-title">연락처 추가</h3><button class="mock-modal-close">×</button></div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group"><label class="mock-label required">이름</label><input type="text" class="mock-input" placeholder="이름을 입력하세요"></div>
+                                    <div class="mock-form-group"><label class="mock-label required">전화번호</label><input type="tel" class="mock-input" placeholder="010-0000-0000"></div>
+                                    <div class="mock-form-group"><label class="mock-label required">그룹</label><select class="mock-select"><option>그룹을 선택하세요</option><option>지지자</option><option>일반</option></select></div>
+                                    <div class="mock-form-group"><label class="mock-label">메모</label><textarea class="mock-textarea" style="min-height: 60px;" placeholder="메모 (선택)"></textarea></div>
+                                </div>
+                                <div class="mock-modal-footer"><button class="mock-btn mock-btn-outline">취소</button><button class="mock-btn mock-btn-primary">추가</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 수신거부 추가 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-reject-add" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m12" style="top: 10px; left: 10px;">12</span>
+                            <div class="mock-modal">
+                                <div class="mock-modal-header"><h3 class="mock-modal-title">수신거부 추가</h3><button class="mock-modal-close">×</button></div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group"><label class="mock-label required">전화번호</label><input type="tel" class="mock-input" placeholder="010-0000-0000"></div>
+                                    <p style="font-size: 13px; color: #64748b;">* 입력한 번호로는 문자가 발송되지 않습니다.</p>
+                                </div>
+                                <div class="mock-modal-footer"><button class="mock-btn mock-btn-outline">취소</button><button class="mock-btn mock-btn-primary">추가</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 새 템플릿 등록 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-template-add" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m13" style="top: 10px; left: 10px;">13</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header"><h3 class="mock-modal-title">새 템플릿 등록</h3><button class="mock-modal-close">×</button></div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group"><label class="mock-label required">템플릿명</label><input type="text" class="mock-input" placeholder="템플릿명을 입력하세요"></div>
+                                    <div class="mock-form-group"><label class="mock-label required">메시지 타입</label><div class="mock-radio-group"><label class="mock-radio-item"><input type="radio" name="tplType" checked> SMS</label><label class="mock-radio-item"><input type="radio" name="tplType"> LMS</label><label class="mock-radio-item"><input type="radio" name="tplType"> MMS</label></div></div>
+                                    <div class="mock-form-group"><label class="mock-label">선거운동정보</label><input type="text" class="mock-input" placeholder="(선거운동정보) 옆에 표시될 내용"></div>
+                                    <div class="mock-form-group"><label class="mock-label required">메시지 내용</label><textarea class="mock-textarea" placeholder="메시지 내용을 입력하세요"></textarea><div style="text-align: right; font-size: 12px; color: #64748b; margin-top: 4px;">0 / 90 바이트</div></div>
+                                </div>
+                                <div class="mock-modal-footer"><button class="mock-btn mock-btn-outline">취소</button><button class="mock-btn mock-btn-primary">등록</button></div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿 수정 모달 -->
+                        <div class="mock-modal-overlay marker-wrap" id="modal-template-edit" style="transition: box-shadow 0.3s;">
+                            <span class="spec-marker" data-num="m14" style="top: 10px; left: 10px;">14</span>
+                            <div class="mock-modal mock-modal-wide">
+                                <div class="mock-modal-header"><h3 class="mock-modal-title">템플릿 수정</h3><button class="mock-modal-close">×</button></div>
+                                <div class="mock-modal-body">
+                                    <div class="mock-form-group"><label class="mock-label required">템플릿명</label><input type="text" class="mock-input" value="선거 안내"></div>
+                                    <div class="mock-form-group"><label class="mock-label required">메시지 타입</label><div class="mock-radio-group"><label class="mock-radio-item"><input type="radio" name="tplTypeEdit" checked> SMS</label><label class="mock-radio-item"><input type="radio" name="tplTypeEdit"> LMS</label><label class="mock-radio-item"><input type="radio" name="tplTypeEdit"> MMS</label></div></div>
+                                    <div class="mock-form-group"><label class="mock-label">선거운동정보</label><input type="text" class="mock-input" value="후보자명"></div>
+                                    <div class="mock-form-group"><label class="mock-label required">메시지 내용</label><textarea class="mock-textarea">안녕하세요, 선거 안내 문자입니다.</textarea><div style="text-align: right; font-size: 12px; color: #64748b; margin-top: 4px;">35 / 90 바이트</div></div>
+                                </div>
+                                <div class="mock-modal-footer"><button class="mock-btn mock-btn-outline">취소</button><button class="mock-btn mock-btn-primary">저장</button></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 기능 명세</h2>
+                <p>번호를 클릭하면 상세 설명이 표시됩니다</p>
+            </div>
+            <div class="panel-content" id="specContent">
+                <!-- 선거문자 발송 디스크립션 -->
+                <div class="spec-section active" id="spec-send">
+                    <div class="spec-section-title">선거문자 발송 화면</div>
+                    <div class="spec-item open" data-num="e1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보, 충전버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>선거문자</td></tr><tr><th>설명</th><td>공직선거법에 따른 선거운동 문자메시지를 발송합니다</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>탭 구성</th><td>선거문자 발송, 선거문자 주소록, 수신거부관리, 선거문자 템플릿</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">공직선거법 안내</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>경고 배너 (노란색)</td></tr><tr><th>내용</th><td>제82조의4 준수, 허위사실 공표 금지, 후보자 비방 금지, 발송시간 제한, 투표일 발송 금지</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">발신번호</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 셀렉트박스</td></tr><tr><th>데이터</th><td>등록된 발신번호 목록</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">수신번호 입력</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>엑셀업로드, 엑셀샘플, 주소록 불러오기, 주소록에 추가</td></tr><tr><th>테이블</th><td>순번, 이름, 전화번호</td></tr><tr><th>기능</th><td>행 추가/삭제, 중복번호 삭제, 수신거부번호 삭제</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">메시지 타입</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 라디오버튼</td></tr><tr><th>옵션</th><td>SMS(90바이트), LMS(2,000바이트), MMS(이미지)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">선거운동정보</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 텍스트 입력</td></tr><tr><th>표시</th><td>(선거운동정보) 옆에 표시될 내용</td></tr><tr><th>제한</th><td>40바이트</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">제목</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>조건</th><td>LMS/MMS 선택 시 표시</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e10"><div class="spec-item-header"><span class="spec-item-number">10</span><span class="spec-item-title">메시지 내용</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>변수버튼</th><td>#{이름}, #{전화번호}, 템플릿 선택</td></tr><tr><th>바이트</th><td>실시간 계산 표시</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e11"><div class="spec-item-header"><span class="spec-item-number">11</span><span class="spec-item-title">금지어 검출</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>경고 메시지 (빨간색)</td></tr><tr><th>검출대상</th><td>선거법 위반 금지어</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e12"><div class="spec-item-header"><span class="spec-item-number">12</span><span class="spec-item-title">이미지 첨부</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>조건</th><td>MMS 선택 시 활성화</td></tr><tr><th>제한</th><td>JPG, PNG, GIF (최대 300KB, 최대 3개)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e13"><div class="spec-item-header"><span class="spec-item-number">13</span><span class="spec-item-title">발송 시간</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>옵션</th><td>즉시 발송 / 예약 발송</td></tr><tr><th>제한</th><td>오전 7시~오후 11시만 가능</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e14"><div class="spec-item-header"><span class="spec-item-number">14</span><span class="spec-item-title">발송 비용 정보</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시항목</th><td>수신번호 개수, 메시지 타입, 단가, 마일리지, 포인트, 잔여 포인트</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e15"><div class="spec-item-header"><span class="spec-item-number">15</span><span class="spec-item-title">액션 버튼</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>테스트발송</th><td>테스트 번호로 1건 발송</td></tr><tr><th>템플릿저장</th><td>현재 메시지를 템플릿으로 저장</td></tr><tr><th>20건 수동</th><td>수동으로 20건씩 발송 (선거법 준수)</td></tr><tr><th>발송하기</th><td>일괄 발송</td></tr></table></div></div>
+                    <div class="spec-item" data-num="e16"><div class="spec-item-header"><span class="spec-item-number">16</span><span class="spec-item-title">미리보기</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시</th><td>(선거운동정보) + 메시지 내용 + 신고안내</td></tr><tr><th>하단</th><td>불법수집정보 신고: 1390, 개인정보침해 신고: 118, 무료거부</td></tr></table></div></div>
+                </div>
+
+                <!-- 선거문자 주소록 디스크립션 -->
+                <div class="spec-section" id="spec-addressbook">
+                    <div class="spec-section-title">선거문자 주소록 화면</div>
+                    <div class="spec-item open" data-num="a1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>선거문자</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재</th><td>"선거문자 주소록" 활성화</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">액션 버튼 영역</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>폴더 추가</th><td>폴더 생성 모달 표시</td></tr><tr><th>그룹 추가</th><td>폴더 내 그룹 생성</td></tr><tr><th>연락처 추가</th><td>새 연락처 등록</td></tr><tr><th>검색</th><td>이름/번호로 검색</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">폴더/그룹 트리</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구조</th><td>트리 구조 (폴더 > 그룹)</td></tr><tr><th>표시</th><td>폴더명 (연락처 수)</td></tr><tr><th>기능</th><td>클릭 시 해당 그룹 연락처 표시</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">연락처 테이블</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>체크박스, 이름, 전화번호, 그룹, 등록일, 관리</td></tr><tr><th>관리</th><td>수정, 삭제 버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="a7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">하단 액션/페이징</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>액션</th><td>선택 삭제, 엑셀 다운로드</td></tr><tr><th>페이징</th><td>이전/다음, 현재페이지/전체</td></tr></table></div></div>
+                </div>
+
+                <!-- 수신거부관리 디스크립션 -->
+                <div class="spec-section" id="spec-reject">
+                    <div class="spec-section-title">수신거부관리 화면</div>
+                    <div class="spec-item open" data-num="r1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보</td></tr></table></div></div>
+                    <div class="spec-item" data-num="r2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>선거문자</td></tr></table></div></div>
+                    <div class="spec-item" data-num="r3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재</th><td>"수신거부관리" 활성화</td></tr></table></div></div>
+                    <div class="spec-item" data-num="r4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">액션 버튼 영역</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>수신거부 추가</th><td>수동으로 번호 등록</td></tr><tr><th>엑셀 업로드</th><td>대량 등록</td></tr><tr><th>엑셀 다운로드</th><td>목록 내보내기</td></tr><tr><th>검색</th><td>전화번호 검색</td></tr></table></div></div>
+                    <div class="spec-item" data-num="r5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">수신거부 안내</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>경고 배너 (노란색)</td></tr><tr><th>내용</th><td>수신거부 번호 발송 제한 안내, 080 무료거부 연동 안내</td></tr></table></div></div>
+                    <div class="spec-item" data-num="r6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">수신거부 테이블</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>체크박스, 전화번호, 등록일, 등록경로, 관리</td></tr><tr><th>등록경로</th><td>080 무료거부, 수동 등록</td></tr></table></div></div>
+                    <div class="spec-item" data-num="r7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">하단 액션/페이징</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>액션</th><td>선택 삭제 (빨간색)</td></tr><tr><th>페이징</th><td>이전/다음, 현재페이지/전체</td></tr></table></div></div>
+                </div>
+
+                <!-- 선거문자 템플릿 디스크립션 -->
+                <div class="spec-section" id="spec-template">
+                    <div class="spec-section-title">선거문자 템플릿 화면</div>
+                    <div class="spec-item open" data-num="t1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, 메인메뉴, 잔액정보</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>제목</th><td>선거문자</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">서브 탭 메뉴</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재</th><td>"선거문자 템플릿" 활성화</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">액션 버튼 영역</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>새 템플릿 등록</th><td>새 템플릿 생성 모달</td></tr><tr><th>필터</th><td>메시지 타입 (전체/SMS/LMS/MMS)</td></tr><tr><th>검색</th><td>템플릿명 검색</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">템플릿 테이블</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>체크박스, 템플릿명, 타입(뱃지), 내용 미리보기, 등록일, 관리</td></tr><tr><th>관리</th><td>수정, 삭제, 사용 버튼</td></tr><tr><th>사용</th><td>클릭 시 발송 화면에 적용</td></tr></table></div></div>
+                    <div class="spec-item" data-num="t6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">하단 액션/페이징</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>액션</th><td>선택 삭제 (빨간색)</td></tr><tr><th>페이징</th><td>이전/다음, 현재페이지/전체</td></tr></table></div></div>
+                </div>
+
+                <!-- 모달 팝업 디스크립션 -->
+                <div class="spec-section" id="spec-modals">
+                    <div class="spec-section-title">모달 팝업</div>
+                    <div class="spec-item open" data-num="m1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">선거 아이디 신청 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>기본정보</th><td>후보자명, 소속/기관, 지역</td></tr><tr><th>서류업로드</th><td>신분증, 후보자등록증명서, 발신번호등록서류, 선관위신고서(선택)</td></tr><tr><th>메시지내용</th><td>선관위 신고 내용과 동일해야 함</td></tr><tr><th>약관</th><td>제3자 정보제공 및 이용약관 동의</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">20건 수동 발송 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>목적</th><td>선거법 준수 (자동 동보통신 8회 제한)</td></tr><tr><th>기능</th><td>수신번호 선택 후 스페이스바/클릭으로 전송</td></tr><tr><th>표시</th><td>발송일자, 요청/발송/수신거부 건수, 누적 발송 건수</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">테스트 발송 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>테스트 수신번호 (최대 3개)</td></tr><tr><th>미리보기</th><td>발신번호, 제목, 내용, 이미지 표시</td></tr><tr><th>경고</th><td>테스트도 포인트 차감</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">수신번호 관리 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>업로드</th><td>엑셀 파일 드래그&드롭</td></tr><tr><th>지원형식</th><td>.xlsx, .xls, .csv (최대 10MB, 10,000건)</td></tr><tr><th>기능</th><td>전체선택, 복사, 삭제, 중복/수신거부 삭제</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">템플릿 선택 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>템플릿명, 타입, 내용, 등록일, 관리(선택)</td></tr><tr><th>기능</th><td>선택 시 메시지 내용에 적용</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">발송 확인 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>표시정보</th><td>후보자/정당, 수신번호 개수, 발송 시간</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">템플릿 저장 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>템플릿명</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">주소록에 추가 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>옵션</th><td>기존 그룹에 추가 / 새 그룹 생성</td></tr><tr><th>입력</th><td>그룹 선택 또는 새 그룹명</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">폴더 추가 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>폴더명 (필수), 설명 (선택)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m10"><div class="spec-item-header"><span class="spec-item-number">10</span><span class="spec-item-title">그룹 추가 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>상위 폴더 선택, 그룹명</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m11"><div class="spec-item-header"><span class="spec-item-number">11</span><span class="spec-item-title">연락처 추가 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>이름, 전화번호, 그룹, 메모(선택)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m12"><div class="spec-item-header"><span class="spec-item-number">12</span><span class="spec-item-title">수신거부 추가 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>전화번호</td></tr><tr><th>안내</th><td>입력 번호로 발송 불가</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m13"><div class="spec-item-header"><span class="spec-item-number">13</span><span class="spec-item-title">새 템플릿 등록 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>템플릿명, 메시지 타입, 선거운동정보, 메시지 내용</td></tr><tr><th>바이트</th><td>실시간 계산 표시</td></tr></table></div></div>
+                    <div class="spec-item" data-num="m14"><div class="spec-item-header"><span class="spec-item-number">14</span><span class="spec-item-title">템플릿 수정 모달</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>템플릿명, 메시지 타입, 선거운동정보, 메시지 내용</td></tr><tr><th>기능</th><td>기존 데이터 로드 후 수정</td></tr></table></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.spec-section').forEach(s => s.classList.remove('active'));
+            
+            document.getElementById('page-' + pageId).classList.add('active');
+            event.target.classList.add('active');
+            document.getElementById('spec-' + pageId)?.classList.add('active');
+        }
+
+        function goToModal(modalId) {
+            showPage('modals');
+            document.querySelectorAll('.page-nav-btn').forEach(b => {
+                if (b.textContent.includes('모달')) b.classList.add('active');
+                else b.classList.remove('active');
+            });
+            setTimeout(() => {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    modal.style.boxShadow = '0 0 0 4px #2563eb, 0 0 20px rgba(37, 99, 235, 0.5)';
+                    setTimeout(() => { modal.style.boxShadow = ''; }, 2000);
+                }
+            }, 100);
+        }
+
+        document.querySelectorAll('.spec-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.closest('.spec-item').classList.toggle('open');
+            });
+        });
+
+        document.querySelectorAll('.spec-marker').forEach(marker => {
+            marker.addEventListener('click', function() {
+                const num = this.getAttribute('data-num');
+                const specItem = document.querySelector(`.spec-item[data-num="${num}"]`);
+                if (specItem) {
+                    document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                    specItem.classList.add('open', 'active');
+                    specItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

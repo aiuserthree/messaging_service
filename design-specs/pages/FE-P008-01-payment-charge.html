@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포인트 충전 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 800px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .balance-card { background: linear-gradient(135deg, #2563eb, #7c3aed); border-radius: 16px; padding: 32px; color: white; margin-bottom: 24px; }
+        .balance-label { font-size: 14px; opacity: 0.9; margin-bottom: 8px; }
+        .balance-value { font-size: 36px; font-weight: 700; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 16px; }
+        .card-title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; }
+        
+        .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+        .amount-btn { padding: 16px; border: 2px solid #e2e8f0; border-radius: 8px; text-align: center; cursor: pointer; background: white; transition: all 0.2s; }
+        .amount-btn:hover { border-color: #2563eb; }
+        .amount-btn.selected { border-color: #2563eb; background: #eff6ff; }
+        .amount-value { font-size: 18px; font-weight: 600; color: #1e293b; }
+        .amount-bonus { font-size: 12px; color: #10b981; margin-top: 4px; }
+        
+        .custom-amount { display: flex; gap: 8px; margin-bottom: 24px; }
+        .custom-input { flex: 1; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 16px; text-align: right; }
+        .custom-unit { padding: 12px 16px; background: #f8fafc; border-radius: 8px; font-size: 16px; color: #64748b; }
+        
+        .payment-methods { margin-bottom: 24px; }
+        .payment-option { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 8px; cursor: pointer; }
+        .payment-option.selected { border-color: #2563eb; background: #eff6ff; }
+        .payment-radio { width: 20px; height: 20px; }
+        .payment-icon { font-size: 24px; }
+        .payment-label { font-size: 14px; color: #1e293b; }
+        
+        .btn-charge { width: 100%; padding: 16px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P008-01</span>
+                    <span class="page-title-header">포인트 충전</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/payment-charge', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/payment-charge</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item active">요금/결제 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">💰 포인트 충전</h1>
+                                
+                                <div class="balance-card">
+                                    <div class="balance-label">현재 보유 포인트</div>
+                                    <div class="balance-value">50,000원</div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-title">충전 금액 선택</div>
+                                    <div class="amount-grid">
+                                        <div class="amount-btn">
+                                            <div class="amount-value">10,000원</div>
+                                        </div>
+                                        <div class="amount-btn">
+                                            <div class="amount-value">30,000원</div>
+                                        </div>
+                                        <div class="amount-btn selected">
+                                            <div class="amount-value">50,000원</div>
+                                            <div class="amount-bonus">+2,500원 보너스</div>
+                                        </div>
+                                        <div class="amount-btn">
+                                            <div class="amount-value">100,000원</div>
+                                            <div class="amount-bonus">+7,000원 보너스</div>
+                                        </div>
+                                        <div class="amount-btn">
+                                            <div class="amount-value">300,000원</div>
+                                            <div class="amount-bonus">+30,000원 보너스</div>
+                                        </div>
+                                        <div class="amount-btn">
+                                            <div class="amount-value">500,000원</div>
+                                            <div class="amount-bonus">+60,000원 보너스</div>
+                                        </div>
+                                    </div>
+                                    <div class="custom-amount">
+                                        <input type="text" class="custom-input" placeholder="직접 입력">
+                                        <span class="custom-unit">원</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-title">결제 수단</div>
+                                    <div class="payment-methods">
+                                        <div class="payment-option selected">
+                                            <input type="radio" name="payment" class="payment-radio" checked>
+                                            <span class="payment-icon">💳</span>
+                                            <span class="payment-label">신용카드</span>
+                                        </div>
+                                        <div class="payment-option">
+                                            <input type="radio" name="payment" class="payment-radio">
+                                            <span class="payment-icon">🏦</span>
+                                            <span class="payment-label">실시간 계좌이체</span>
+                                        </div>
+                                        <div class="payment-option">
+                                            <input type="radio" name="payment" class="payment-radio">
+                                            <span class="payment-icon">📱</span>
+                                            <span class="payment-label">무통장 입금</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn-charge">50,000원 충전하기</button>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 130px; right: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 260px; right: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 500px; right: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 680px; right: 50px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">payment-charge.html · 포인트 충전</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">현재 잔액 표시</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">현재 보유 중인 포인트를 표시합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">충전 금액 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">충전할 금액을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>금액</th><th>보너스</th></tr>
+                            <tr><td>10,000원</td><td>-</td></tr>
+                            <tr><td>30,000원</td><td>-</td></tr>
+                            <tr><td>50,000원</td><td>+2,500원 (5%)</td></tr>
+                            <tr><td>100,000원</td><td>+7,000원 (7%)</td></tr>
+                            <tr><td>300,000원</td><td>+30,000원 (10%)</td></tr>
+                            <tr><td>500,000원</td><td>+60,000원 (12%)</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">결제 수단</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">결제 수단을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>수단</th><th>설명</th></tr>
+                            <tr><td>신용카드</td><td>PG사 결제창 연동</td></tr>
+                            <tr><td>실시간 계좌이체</td><td>은행 계좌이체</td></tr>
+                            <tr><td>무통장 입금</td><td>가상계좌 발급</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">충전 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선택된 금액과 결제 수단으로 충전을 진행합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>PG사 결제창 호출 또는 가상계좌 발급</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

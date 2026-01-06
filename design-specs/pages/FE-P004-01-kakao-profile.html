@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카카오 프로필 관리 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; }
+        .btn-actual { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-primary-actual { background: #fee500; border: none; color: #3c1e1e; font-weight: 500; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; }
+        .table-actual { width: 100%; border-collapse: collapse; }
+        .table-actual th, .table-actual td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .table-actual th { background: #f8fafc; font-size: 12px; font-weight: 500; color: #64748b; }
+        .table-actual td { font-size: 14px; color: #1e293b; }
+        
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-badge.active { background: #d1fae5; color: #065f46; }
+        .status-badge.pending { background: #fef3c7; color: #92400e; }
+        
+        .profile-cell { display: flex; align-items: center; gap: 12px; }
+        .profile-img { width: 40px; height: 40px; border-radius: 50%; background: #fee500; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .profile-name { font-weight: 500; }
+        .profile-id { font-size: 12px; color: #64748b; }
+        
+        .action-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #64748b; margin-right: 4px; }
+        .action-btn:hover { background: #f1f5f9; }
+        
+        .empty-state { text-align: center; padding: 60px 20px; color: #64748b; }
+        .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P004-01</span>
+                    <span class="page-title-header">카카오 프로필 관리</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/kakao-profile-manage', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/kakao-profile-manage</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item">템플릿 관리 ▾</div>
+                                    <div class="nav-menu-item">주소록 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="page-header">
+                                    <h1 class="page-title">💬 카카오 프로필 관리</h1>
+                                    <button class="btn-actual btn-primary-actual">+ 프로필 등록</button>
+                                </div>
+                                
+                                <div class="card">
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th>프로필</th>
+                                                <th>발신 프로필 키</th>
+                                                <th>상태</th>
+                                                <th>등록일</th>
+                                                <th>관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="profile-cell">
+                                                        <div class="profile-img">🔔</div>
+                                                        <div>
+                                                            <div class="profile-name">톡벨 공식채널</div>
+                                                            <div class="profile-id">@tokbell_official</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="font-family: monospace; font-size: 12px;">abc123xyz789...</td>
+                                                <td><span class="status-badge active">정상</span></td>
+                                                <td>2025-01-01</td>
+                                                <td>
+                                                    <button class="action-btn">상세</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="profile-cell">
+                                                        <div class="profile-img">📢</div>
+                                                        <div>
+                                                            <div class="profile-name">톡벨 이벤트</div>
+                                                            <div class="profile-id">@tokbell_event</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style="font-family: monospace; font-size: 12px;">def456uvw012...</td>
+                                                <td><span class="status-badge pending">검수중</span></td>
+                                                <td>2025-01-05</td>
+                                                <td>
+                                                    <button class="action-btn">상세</button>
+                                                    <button class="action-btn">삭제</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 100px; right: 100px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 200px; left: 100px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 200px; right: 300px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 200px; right: 100px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">kakao-profile-manage.html · 카카오 프로필 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">프로필 등록 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">새로운 카카오톡 채널 프로필을 등록합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>프로필 등록 모달 표시</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 프로필 등록</div>
+                            <div class="desc-note-text">카카오 비즈메시지 API 키와 발신 프로필 키가 필요합니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">프로필 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록된 카카오톡 채널 프로필 정보를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>프로필</td><td>채널 이미지, 이름, 검색용 ID</td></tr>
+                            <tr><td>발신 프로필 키</td><td>API에서 사용되는 고유 키</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">상태</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">프로필의 현재 상태를 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>상태</th><th>의미</th></tr>
+                            <tr><td>정상</td><td>발송 가능 상태</td></tr>
+                            <tr><td>검수중</td><td>카카오 검수 진행 중</td></tr>
+                            <tr><td>차단</td><td>발송 불가 상태</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">관리 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">프로필을 관리합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>상세</td><td>프로필 상세 정보 모달 표시</td></tr>
+                            <tr><td>삭제</td><td>프로필 삭제 (확인 후)</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

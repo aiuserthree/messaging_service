@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 화면 - 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <style>
+        .page-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .page-nav-btn { padding: 10px 20px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .page-nav-btn:hover { border-color: #2563eb; color: #2563eb; }
+        .page-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+        .spec-section { display: none; }
+        .spec-section.active { display: block; }
+        .marker-wrap { position: relative; }
+        .signup-container { background: white; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 100%; max-width: 1000px; margin: 0 auto; padding: 48px 40px; }
+        .step-indicator { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; position: relative; padding: 0 60px; }
+        .step-indicator::before { content: ''; position: absolute; top: 20px; left: 15%; right: 15%; height: 2px; background: #e2e8f0; z-index: 0; }
+        .step-item { display: flex; flex-direction: column; align-items: center; z-index: 1; }
+        .step-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin-bottom: 8px; }
+        .step-num.active { background: #2563eb; color: white; }
+        .step-num.completed { background: #10b981; color: white; }
+        .step-num.pending { background: white; border: 2px solid #e2e8f0; color: #64748b; }
+        .step-label { font-size: 12px; }
+        .step-label.active { color: #2563eb; font-weight: 600; }
+        .step-label.completed { color: #10b981; }
+        .step-label.pending { color: #64748b; }
+        .terms-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; max-height: 100px; overflow-y: auto; font-size: 13px; color: #64748b; margin-top: 8px; }
+        .member-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 32px 0; }
+        .member-type-card { border: 2px solid #e2e8f0; border-radius: 16px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .member-type-card:hover { border-color: #2563eb; }
+        .member-type-card.selected { border-color: #2563eb; background: rgba(37,99,235,0.05); }
+        .member-type-icon { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
+        .member-type-icon.blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+        .member-type-icon.green { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
+        .form-label.required::after { content: ' *'; color: #ef4444; }
+        .form-input { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .form-select { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .form-help { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .input-group { display: flex; gap: 8px; }
+        .input-group .form-input { flex: 1; }
+        .btn-group { display: flex; gap: 12px; margin-top: 32px; }
+        .btn-group button { flex: 1; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .btn-outline { background: white; border: 1px solid #e2e8f0; color: #1e293b; }
+        .btn-primary { background: #2563eb; border: none; color: white; }
+        .file-upload { border: 2px dashed #e2e8f0; border-radius: 8px; padding: 32px; text-align: center; cursor: pointer; }
+        .file-upload:hover { border-color: #2563eb; background: rgba(37,99,235,0.02); }
+    </style>
+</head>
+<body>
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 회원가입 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-AUTH-002</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v2.0</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <!-- 단계 선택 탭 -->
+                <div class="page-nav">
+                    <button class="page-nav-btn active" onclick="showStep('step1')">Step 1: 약관 동의</button>
+                    <button class="page-nav-btn" onclick="showStep('step2')">Step 2: 회원유형 선택</button>
+                    <button class="page-nav-btn" onclick="showStep('step3')">Step 3: 본인인증</button>
+                    <button class="page-nav-btn" onclick="showStep('step4-individual')">Step 4: 정보입력 (개인)</button>
+                    <button class="page-nav-btn" onclick="showStep('step4-business')">Step 4: 정보입력 (기업)</button>
+                </div>
+
+                <!-- ========== Step 1: 약관 동의 ========== -->
+                <div class="page-content active" id="page-step1">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="s1-1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <a href="#" class="mock-nav-item">문자발송</a>
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <a href="#" class="mock-nav-item">주소록</a>
+                        </nav>
+                        <div class="mock-header-actions">
+                            <button class="mock-btn mock-btn-outline">로그인</button>
+                            <button class="mock-btn mock-btn-primary">톡벨 가입하기</button>
+                        </div>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 40px 24px; min-height: 700px;">
+                        <div class="signup-container">
+                            <div class="marker-wrap" style="text-align: center; margin-bottom: 40px;">
+                                <span class="spec-marker" data-num="s1-2" style="top: 0; left: -12px;">2</span>
+                                <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">회원가입</h1>
+                                <p style="font-size: 14px; color: #64748b;">서비스 이용을 위해 회원가입을 진행해주세요</p>
+                            </div>
+
+                            <div class="step-indicator marker-wrap">
+                                <span class="spec-marker" data-num="s1-3" style="top: -12px; right: 10px;">3</span>
+                                <div class="step-item"><div class="step-num active">1</div><span class="step-label active">약관 동의</span></div>
+                                <div class="step-item"><div class="step-num pending">2</div><span class="step-label pending">회원유형 선택</span></div>
+                                <div class="step-item"><div class="step-num pending">3</div><span class="step-label pending">본인인증</span></div>
+                                <div class="step-item"><div class="step-num pending">4</div><span class="step-label pending">정보 입력</span></div>
+                            </div>
+
+                            <div class="marker-wrap" style="margin-bottom: 20px;">
+                                <span class="spec-marker" data-num="s1-4" style="top: 0; left: -12px;">4</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" style="width: 18px; height: 18px;">
+                                    <label style="font-weight: 600;">전체 동의</label>
+                                </div>
+                            </div>
+
+                            <div class="marker-wrap" style="margin-bottom: 16px;">
+                                <span class="spec-marker" data-num="s1-5" style="top: 0; right: -12px;">5</span>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <input type="checkbox" style="width: 18px; height: 18px;">
+                                    <label>이용약관 동의 <span style="color: #ef4444;">(필수)</span></label>
+                                </div>
+                                <div class="terms-box">제1장 총칙 - 제1조(목적) 이 약관은 회사가 온라인으로 제공하는 서비스의 이용과 관련하여...</div>
+                            </div>
+
+                            <div style="margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <input type="checkbox" style="width: 18px; height: 18px;">
+                                    <label>개인정보 수집 및 이용 동의 <span style="color: #ef4444;">(필수)</span></label>
+                                </div>
+                                <div class="terms-box">수집하는 개인정보 항목: 로그인ID, 비밀번호, 이동전화번호, 이메일...</div>
+                            </div>
+
+                            <div style="margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <input type="checkbox" style="width: 18px; height: 18px;">
+                                    <label>개인정보 취급 위탁 동의 <span style="color: #ef4444;">(필수)</span></label>
+                                </div>
+                                <div class="terms-box">회사는 서비스 이행을 위해 개인정보 처리업무를 외부 전문업체에 위탁하여 운영합니다...</div>
+                            </div>
+
+                            <div style="margin-bottom: 16px;">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                    <input type="checkbox" style="width: 18px; height: 18px;">
+                                    <label>불법스팸방지 안내 <span style="color: #ef4444;">(필수)</span></label>
+                                </div>
+                                <div class="terms-box">불법스팸메시지 발송 시 즉시 가입이 차단되며, 잔여 포인트는 환불되지 않습니다...</div>
+                            </div>
+
+                            <div class="marker-wrap" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
+                                <span class="spec-marker" data-num="s1-6" style="top: 10px; left: -12px;">6</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" style="width: 18px; height: 18px;">
+                                    <label>마케팅 수신 동의 <span style="color: #64748b;">(선택)</span></label>
+                                </div>
+                            </div>
+
+                            <div class="btn-group marker-wrap">
+                                <span class="spec-marker" data-num="s1-7" style="top: 50%; right: -12px; transform: translateY(-50%);">7</span>
+                                <button class="btn-outline">비동의</button>
+                                <button class="btn-primary">동의</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== Step 2: 회원유형 선택 ========== -->
+                <div class="page-content" id="page-step2">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="s2-1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item">문자발송</a></nav>
+                        <div class="mock-header-actions"><button class="mock-btn mock-btn-primary">톡벨 가입하기</button></div>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 40px 24px; min-height: 700px;">
+                        <div class="signup-container">
+                            <div style="text-align: center; margin-bottom: 40px;">
+                                <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">회원가입</h1>
+                                <p style="font-size: 14px; color: #64748b;">서비스 이용을 위해 회원가입을 진행해주세요</p>
+                            </div>
+
+                            <div class="step-indicator marker-wrap">
+                                <span class="spec-marker" data-num="s2-2" style="top: -12px; right: 10px;">2</span>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">약관 동의</span></div>
+                                <div class="step-item"><div class="step-num active">2</div><span class="step-label active">회원유형 선택</span></div>
+                                <div class="step-item"><div class="step-num pending">3</div><span class="step-label pending">본인인증</span></div>
+                                <div class="step-item"><div class="step-num pending">4</div><span class="step-label pending">정보 입력</span></div>
+                            </div>
+
+                            <div class="marker-wrap" style="text-align: center; margin-bottom: 24px;">
+                                <span class="spec-marker" data-num="s2-3" style="top: 0; left: -12px;">3</span>
+                                <p style="font-size: 16px; font-weight: 500;">가입하시는 계정의 유형을 선택해주세요.</p>
+                            </div>
+
+                            <div class="member-type-grid marker-wrap">
+                                <span class="spec-marker" data-num="s2-4" style="top: -12px; left: 10px;">4</span>
+                                <div class="member-type-card selected">
+                                    <div class="member-type-icon blue">👤</div>
+                                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">개인회원</div>
+                                    <div style="font-size: 14px; color: #64748b;">개인 고객을 위한 서비스</div>
+                                </div>
+                                <div class="member-type-card">
+                                    <div class="member-type-icon green">🏢</div>
+                                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">기업회원</div>
+                                    <div style="font-size: 14px; color: #64748b;">기업/공공기관/단체 고객을 위한 서비스</div>
+                                </div>
+                            </div>
+
+                            <div class="btn-group marker-wrap">
+                                <span class="spec-marker" data-num="s2-5" style="top: 50%; right: -12px; transform: translateY(-50%);">5</span>
+                                <button class="btn-outline">이전</button>
+                                <button class="btn-primary">다음</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== Step 3: 본인인증 ========== -->
+                <div class="page-content" id="page-step3">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="s3-1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item">문자발송</a></nav>
+                        <div class="mock-header-actions"><button class="mock-btn mock-btn-primary">톡벨 가입하기</button></div>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 40px 24px; min-height: 700px;">
+                        <div class="signup-container">
+                            <div style="text-align: center; margin-bottom: 40px;">
+                                <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">회원가입</h1>
+                                <p style="font-size: 14px; color: #64748b;">서비스 이용을 위해 회원가입을 진행해주세요</p>
+                            </div>
+
+                            <div class="step-indicator marker-wrap">
+                                <span class="spec-marker" data-num="s3-2" style="top: -12px; right: 10px;">2</span>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">약관 동의</span></div>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">회원유형 선택</span></div>
+                                <div class="step-item"><div class="step-num active">3</div><span class="step-label active">본인인증</span></div>
+                                <div class="step-item"><div class="step-num pending">4</div><span class="step-label pending">정보 입력</span></div>
+                            </div>
+
+                            <div class="marker-wrap" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
+                                <span class="spec-marker" data-num="s3-3" style="top: -12px; left: 10px;">3</span>
+                                <div style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">휴대폰 본인인증</div>
+                                
+                                <div class="form-group marker-wrap">
+                                    <span class="spec-marker" data-num="s3-4" style="top: 0; right: -12px;">4</span>
+                                    <label class="form-label required">휴대폰 번호</label>
+                                    <div class="input-group">
+                                        <input type="tel" class="form-input" placeholder="010-1234-5678">
+                                        <button class="btn-primary" style="white-space: nowrap; padding: 10px 16px;">인증번호 발송</button>
+                                    </div>
+                                    <div class="form-help">* 본인 명의 휴대폰만 인증 가능</div>
+                                </div>
+
+                                <div class="form-group marker-wrap">
+                                    <span class="spec-marker" data-num="s3-5" style="top: 0; left: -12px;">5</span>
+                                    <label class="form-label required">인증번호</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-input" placeholder="인증번호 6자리 입력">
+                                        <button class="btn-outline" style="white-space: nowrap; padding: 10px 16px;">인증 확인</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn-group marker-wrap">
+                                <span class="spec-marker" data-num="s3-6" style="top: 50%; right: -12px; transform: translateY(-50%);">6</span>
+                                <button class="btn-outline">이전</button>
+                                <button class="btn-primary">다음</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== Step 4: 정보입력 (개인) ========== -->
+                <div class="page-content" id="page-step4-individual">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="s4i-1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item">문자발송</a></nav>
+                        <div class="mock-header-actions"><button class="mock-btn mock-btn-primary">톡벨 가입하기</button></div>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 40px 24px; min-height: 800px;">
+                        <div class="signup-container">
+                            <div style="text-align: center; margin-bottom: 40px;">
+                                <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">회원가입</h1>
+                                <p style="font-size: 14px; color: #64748b;">서비스 이용을 위해 회원가입을 진행해주세요</p>
+                            </div>
+
+                            <div class="step-indicator marker-wrap">
+                                <span class="spec-marker" data-num="s4i-2" style="top: -12px; right: 10px;">2</span>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">약관 동의</span></div>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">회원유형 선택</span></div>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">본인인증</span></div>
+                                <div class="step-item"><div class="step-num active">4</div><span class="step-label active">정보 입력</span></div>
+                            </div>
+
+                            <p style="font-size: 12px; color: #64748b; margin-bottom: 24px;">* 표시는 필수 입력 항목입니다.</p>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-3" style="top: 0; right: -12px;">3</span>
+                                <label class="form-label required">아이디</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-input" placeholder="8자~12자 영문, 숫자 조합">
+                                    <button class="btn-outline" style="white-space: nowrap; padding: 10px 16px;">중복확인</button>
+                                </div>
+                                <div class="form-help">* 8자~12자 영문, 숫자, 영문+숫자 조합만 사용</div>
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-4" style="top: 0; left: -12px;">4</span>
+                                <label class="form-label required">비밀번호</label>
+                                <input type="password" class="form-input" placeholder="8자~16자 영문, 숫자, 특수문자 혼합">
+                                <div class="form-help">* 8자~16자 영문, 숫자, 특수문자(~!@#$%^&*?) 혼합 사용</div>
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-5" style="top: 0; right: -12px;">5</span>
+                                <label class="form-label required">비밀번호 확인</label>
+                                <input type="password" class="form-input" placeholder="상단에 입력한 비밀번호와 동일하게 입력">
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-6" style="top: 0; left: -12px;">6</span>
+                                <label class="form-label">연락처</label>
+                                <input type="tel" class="form-input" placeholder="010-1234-5678">
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-7" style="top: 0; right: -12px;">7</span>
+                                <label class="form-label required">이메일</label>
+                                <input type="email" class="form-input" placeholder="example@email.com">
+                                <div class="form-help">* 본인 확인 및 임시 비밀번호 수신 시 필요</div>
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-8" style="top: 0; left: -12px;">8</span>
+                                <label class="form-label">마케팅 수신여부</label>
+                                <div style="display: flex; gap: 24px; margin-top: 8px;">
+                                    <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox"> SMS</label>
+                                    <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox"> E-mail</label>
+                                </div>
+                                <div class="form-help">* 공지사항은 수신여부와 관계없이 전송됩니다.</div>
+                            </div>
+
+                            <div class="btn-group marker-wrap">
+                                <span class="spec-marker" data-num="s4i-9" style="top: 50%; right: -12px; transform: translateY(-50%);">9</span>
+                                <button class="btn-outline">이전단계</button>
+                                <button class="btn-primary">가입</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== Step 4: 정보입력 (기업) ========== -->
+                <div class="page-content" id="page-step4-business">
+                    <div class="mock-header marker-wrap">
+                        <span class="spec-marker" data-num="s4b-1" style="top: 50%; left: 8px; transform: translateY(-50%);">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav"><a href="#" class="mock-nav-item">문자발송</a></nav>
+                        <div class="mock-header-actions"><button class="mock-btn mock-btn-primary">톡벨 가입하기</button></div>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 40px 24px; min-height: 1000px;">
+                        <div class="signup-container">
+                            <div style="text-align: center; margin-bottom: 40px;">
+                                <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">회원가입</h1>
+                                <p style="font-size: 14px; color: #64748b;">서비스 이용을 위해 회원가입을 진행해주세요</p>
+                            </div>
+
+                            <div class="step-indicator marker-wrap">
+                                <span class="spec-marker" data-num="s4b-2" style="top: -12px; right: 10px;">2</span>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">약관 동의</span></div>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">회원유형 선택</span></div>
+                                <div class="step-item"><div class="step-num completed">✓</div><span class="step-label completed">본인인증</span></div>
+                                <div class="step-item"><div class="step-num active">4</div><span class="step-label active">정보 입력</span></div>
+                            </div>
+
+                            <p style="font-size: 12px; color: #64748b; margin-bottom: 24px;">* 표시는 필수 입력 항목입니다.</p>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4b-3" style="top: 0; right: -12px;">3</span>
+                                <label class="form-label required">아이디</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-input" placeholder="8자~12자 영문, 숫자 조합">
+                                    <button class="btn-outline" style="white-space: nowrap; padding: 10px 16px;">중복확인</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4b-4" style="top: 0; left: -12px;">4</span>
+                                <label class="form-label required">비밀번호</label>
+                                <input type="password" class="form-input" placeholder="8자~16자 영문, 숫자, 특수문자 혼합">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required">비밀번호 확인</label>
+                                <input type="password" class="form-input" placeholder="상단에 입력한 비밀번호와 동일하게 입력">
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4b-5" style="top: 0; right: -12px;">5</span>
+                                <label class="form-label required">기업유형</label>
+                                <select class="form-select">
+                                    <option>선택하세요</option>
+                                    <option>법인사업자</option>
+                                    <option>개인사업자</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4b-6" style="top: 0; left: -12px;">6</span>
+                                <label class="form-label required">담당자</label>
+                                <select class="form-select">
+                                    <option>선택하세요</option>
+                                    <option>대표자</option>
+                                    <option>직원</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group marker-wrap">
+                                <span class="spec-marker" data-num="s4b-7" style="top: 0; right: -12px;">7</span>
+                                <label class="form-label required">사업자등록증</label>
+                                <div class="file-upload">
+                                    <div style="font-size: 32px; margin-bottom: 8px;">📄</div>
+                                    <div>파일을 드래그하거나 클릭하여 업로드</div>
+                                    <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">PDF, JPG, PNG 파일만 업로드 가능 (최대 10MB)</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group marker-wrap" style="background: #fef3c7; padding: 16px; border-radius: 8px;">
+                                <span class="spec-marker" data-num="s4b-8" style="top: -12px; left: 10px;">8</span>
+                                <div style="font-size: 14px; color: #92400e;">
+                                    <strong>📋 담당자가 '직원'인 경우</strong><br>
+                                    재직증명서 제출이 필요합니다.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required">이메일</label>
+                                <input type="email" class="form-input" placeholder="example@company.com">
+                            </div>
+
+                            <div class="btn-group marker-wrap">
+                                <span class="spec-marker" data-num="s4b-9" style="top: 50%; right: -12px; transform: translateY(-50%);">9</span>
+                                <button class="btn-outline">이전단계</button>
+                                <button class="btn-primary">가입</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 기능 명세</h2>
+                <p>번호를 클릭하면 상세 설명이 표시됩니다</p>
+            </div>
+            <div class="panel-content" id="specContent">
+                
+                <!-- Step 1 디스크립션 -->
+                <div class="spec-section active" id="spec-step1">
+                    <div class="spec-section-title">Step 1: 약관 동의</div>
+                    <div class="spec-item open" data-num="s1-1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, GNB, 로그인/가입 버튼</td></tr><tr><th>상태</th><td>비로그인 상태</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s1-2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 타이틀</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>타이틀</th><td>"회원가입"</td></tr><tr><th>설명</th><td>"서비스 이용을 위해 회원가입을 진행해주세요"</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s1-3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">Step Indicator</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>단계</th><td>1.약관동의 → 2.회원유형선택 → 3.본인인증 → 4.정보입력</td></tr><tr><th>상태</th><td>active(파랑), completed(녹색 체크), pending(회색)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s1-4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">전체 동의</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>기능</th><td>체크 시 모든 약관 동의, 해제 시 전체 해제</td></tr><tr><th>함수</th><td>toggleAllAgreements()</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s1-5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">필수 약관</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>이용약관(필수), 개인정보수집(필수), 취급위탁(필수), 불법스팸(필수)</td></tr><tr><th>약관내용</th><td>스크롤 가능한 영역에 표시</td></tr><tr><th>검증</th><td>모든 필수 약관 체크 시 "동의" 버튼 활성화</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s1-6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">선택 약관</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>항목</th><td>마케팅 수신 동의 (선택)</td></tr><tr><th>설명</th><td>동의하지 않아도 서비스 이용 가능</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s1-7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">버튼 그룹</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>비동의</th><td>클릭 시 로그인 페이지로 이동</td></tr><tr><th>동의</th><td>필수약관 체크 시 활성화, Step 2로 이동</td></tr></table></div></div>
+                </div>
+
+                <!-- Step 2 디스크립션 -->
+                <div class="spec-section" id="spec-step2">
+                    <div class="spec-section-title">Step 2: 회원유형 선택</div>
+                    <div class="spec-item open" data-num="s2-1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, GNB, 가입 버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s2-2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">Step Indicator</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재단계</th><td>Step 2 활성화</td></tr><tr><th>이전단계</th><td>Step 1 완료(녹색 체크)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s2-3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">안내 문구</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>내용</th><td>"가입하시는 계정의 유형을 선택해주세요."</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s2-4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">회원유형 카드</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>개인회원</th><td>개인 고객용, 아이콘(파랑), 간소화된 가입</td></tr><tr><th>기업회원</th><td>기업/공공기관용, 아이콘(녹색), 사업자등록증 필요</td></tr><tr><th>선택</th><td>클릭 시 selected 상태, 테두리 파랑</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s2-5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">버튼 그룹</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>이전</th><td>Step 1로 이동</td></tr><tr><th>다음</th><td>회원유형 선택 시 활성화, Step 3으로 이동</td></tr></table></div></div>
+                </div>
+
+                <!-- Step 3 디스크립션 -->
+                <div class="spec-section" id="spec-step3">
+                    <div class="spec-section-title">Step 3: 본인인증</div>
+                    <div class="spec-item open" data-num="s3-1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, GNB, 가입 버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s3-2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">Step Indicator</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재단계</th><td>Step 3 활성화</td></tr><tr><th>이전단계</th><td>Step 1,2 완료(녹색 체크)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s3-3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">본인인증 영역</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>타이틀</th><td>"휴대폰 본인인증"</td></tr><tr><th>방식</th><td>휴대폰 인증번호 방식</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s3-4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">휴대폰 번호</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>010-0000-0000 형식 (자동 하이픈)</td></tr><tr><th>버튼</th><td>"인증번호 발송" → API 호출</td></tr><tr><th>제한</th><td>본인 명의 휴대폰만 가능</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s3-5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">인증번호 입력</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>입력</th><td>6자리 숫자</td></tr><tr><th>버튼</th><td>"인증 확인" → 검증</td></tr><tr><th>시간제한</th><td>3분 (타이머 표시)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s3-6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">버튼 그룹</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>이전</th><td>Step 2로 이동</td></tr><tr><th>다음</th><td>인증 완료 시 활성화, Step 4로 이동</td></tr></table></div></div>
+                </div>
+
+                <!-- Step 4 개인 디스크립션 -->
+                <div class="spec-section" id="spec-step4-individual">
+                    <div class="spec-section-title">Step 4: 정보입력 (개인회원)</div>
+                    <div class="spec-item open" data-num="s4i-1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, GNB, 가입 버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">Step Indicator</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재단계</th><td>Step 4 활성화</td></tr><tr><th>이전단계</th><td>Step 1,2,3 완료(녹색 체크)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">아이디</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 텍스트 + 중복확인 버튼</td></tr><tr><th>규칙</th><td>8~12자, 영문/숫자/영문+숫자</td></tr><tr><th>검증</th><td>중복확인 API 호출</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">비밀번호</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 비밀번호 입력</td></tr><tr><th>규칙</th><td>8~16자, 영문+숫자+특수문자 혼합</td></tr><tr><th>금지</th><td>연속 동일문자 3회, 이전 비밀번호 사용</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">비밀번호 확인</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 비밀번호 재입력</td></tr><tr><th>검증</th><td>비밀번호와 일치 여부 실시간 체크</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">연락처</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>선택 입력</td></tr><tr><th>형식</th><td>010-0000-0000 (자동 하이픈)</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">이메일</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 이메일 입력</td></tr><tr><th>용도</th><td>본인확인, 임시 비밀번호 수신</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">마케팅 수신</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td>선택 체크박스</td></tr><tr><th>항목</th><td>SMS, E-mail</td></tr><tr><th>참고</th><td>공지사항은 수신여부와 관계없이 전송</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4i-9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">버튼 그룹</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>이전단계</th><td>Step 3으로 이동</td></tr><tr><th>가입</th><td>필수항목 검증 → API 호출 → 가입완료 페이지</td></tr></table></div></div>
+                </div>
+
+                <!-- Step 4 기업 디스크립션 -->
+                <div class="spec-section" id="spec-step4-business">
+                    <div class="spec-section-title">Step 4: 정보입력 (기업회원)</div>
+                    <div class="spec-item open" data-num="s4b-1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>구성</th><td>로고, GNB, 가입 버튼</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">Step Indicator</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>현재단계</th><td>Step 4 활성화</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">아이디</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 텍스트 + 중복확인</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">비밀번호</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 비밀번호 + 확인</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">기업유형</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 셀렉트박스</td></tr><tr><th>옵션</th><td>법인사업자, 개인사업자</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">담당자</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 셀렉트박스</td></tr><tr><th>옵션</th><td>대표자, 직원</td></tr><tr><th>조건</th><td>"직원" 선택 시 재직증명서 필드 표시</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">사업자등록증</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>유형</th><td><span class="spec-tag required">필수</span> 파일 업로드</td></tr><tr><th>허용</th><td>PDF, JPG, PNG (최대 10MB)</td></tr><tr><th>기능</th><td>드래그&드롭 또는 클릭</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">재직증명서 안내</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>조건</th><td>담당자가 "직원"인 경우 표시</td></tr><tr><th>내용</th><td>재직증명서 제출 필요 안내</td></tr></table></div></div>
+                    <div class="spec-item" data-num="s4b-9"><div class="spec-item-header"><span class="spec-item-number">9</span><span class="spec-item-title">버튼 그룹</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>이전단계</th><td>Step 3으로 이동</td></tr><tr><th>가입</th><td>필수항목 검증 → API 호출 → 승인 대기 안내</td></tr></table></div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showStep(stepId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.spec-section').forEach(s => s.classList.remove('active'));
+            
+            document.getElementById('page-' + stepId).classList.add('active');
+            event.target.classList.add('active');
+            document.getElementById('spec-' + stepId)?.classList.add('active');
+        }
+
+        document.querySelectorAll('.spec-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.closest('.spec-item').classList.toggle('open');
+            });
+        });
+
+        document.querySelectorAll('.spec-marker').forEach(marker => {
+            marker.addEventListener('click', function() {
+                const num = this.getAttribute('data-num');
+                const specItem = document.querySelector(`.spec-item[data-num="${num}"]`);
+                if (specItem) {
+                    document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                    specItem.classList.add('open', 'active');
+                    specItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">3</span>
+                            <span class="spec-item-title">진행 단계 표시 (Step Indicator)</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Step Indicator</td></tr>
+                                <tr><th>단계</th><td>
+                                    <ul class="spec-list">
+                                        <li><strong>Step 1:</strong> 약관 동의</li>
+                                        <li><strong>Step 2:</strong> 회원유형 선택</li>
+                                        <li><strong>Step 3:</strong> 본인인증</li>
+                                        <li><strong>Step 4:</strong> 정보 입력</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>상태</th><td>
+                                    <ul class="spec-list">
+                                        <li><strong>active:</strong> 현재 단계 (Primary 색상)</li>
+                                        <li><strong>completed:</strong> 완료 단계 (Success 색상)</li>
+                                        <li><strong>pending:</strong> 대기 단계 (회색 테두리)</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>함수</th><td>
+                                    <code>nextStep(step)</code><br>
+                                    <code>prevStep(step)</code>
+                                </td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">Step 1: 약관 동의</div>
+                    
+                    <div class="spec-item" data-spec="4">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">4</span>
+                            <span class="spec-item-title">전체 동의 체크박스</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Checkbox (Master)</td></tr>
+                                <tr><th>기능</th><td>
+                                    <ul class="spec-list">
+                                        <li>체크 시 모든 약관 동의 체크</li>
+                                        <li>해제 시 모든 약관 동의 해제</li>
+                                        <li>개별 약관 변경 시 상태 동기화</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>함수</th><td><code>toggleAllAgreements()</code></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="5">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">5</span>
+                            <span class="spec-item-title">필수 약관 동의</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>필수항목</th><td>
+                                    <ul class="spec-list">
+                                        <li><span class="spec-tag required">필수</span> 이용약관 동의</li>
+                                        <li><span class="spec-tag required">필수</span> 개인정보 수집 및 이용 동의</li>
+                                        <li><span class="spec-tag required">필수</span> 개인정보 취급 위탁 동의</li>
+                                        <li><span class="spec-tag required">필수</span> 불법스팸방지안내</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>약관영역</th><td>스크롤 가능한 텍스트 박스 (max-height: 200px)</td></tr>
+                                <tr><th>검증</th><td>모든 필수 약관 동의 시 "동의" 버튼 활성화</td></tr>
+                                <tr><th>함수</th><td><code>checkRequiredAgreements()</code></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="6">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">6</span>
+                            <span class="spec-item-title">선택 약관 (마케팅 수신)</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>컴포넌트</th><td>Checkbox (Optional)</td></tr>
+                                <tr><th>내용</th><td>마케팅 정보 수신 동의 (SMS, 이메일, 알림톡)</td></tr>
+                                <tr><th>특징</th><td>동의하지 않아도 가입 가능</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="7">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">7</span>
+                            <span class="spec-item-title">버튼 그룹</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>비동의</th><td>
+                                    <ul class="spec-list">
+                                        <li>스타일: Outline</li>
+                                        <li>동작: 확인 메시지 후 index.html 이동</li>
+                                        <li>함수: <code>goToLogin()</code></li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>동의</th><td>
+                                    <ul class="spec-list">
+                                        <li>스타일: Primary</li>
+                                        <li>상태: 필수 약관 미동의 시 disabled</li>
+                                        <li>동작: Step 2로 이동</li>
+                                        <li>함수: <code>nextStep(2)</code></li>
+                                    </ul>
+                                </td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">Step 2: 회원유형 선택</div>
+                    
+                    <div class="spec-item" data-spec="8">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">8</span>
+                            <span class="spec-item-title">회원유형 카드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>레이아웃</th><td>2열 그리드</td></tr>
+                                <tr><th>개인회원</th><td>
+                                    <ul class="spec-list">
+                                        <li>아이콘: 사람 아이콘 (Blue)</li>
+                                        <li>설명: "개인 고객을 위한 서비스"</li>
+                                        <li>값: 'individual'</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>기업회원</th><td>
+                                    <ul class="spec-list">
+                                        <li>아이콘: 빌딩 아이콘 (Green)</li>
+                                        <li>설명: "기업/공공기관/단체 고객을 위한 서비스"</li>
+                                        <li>값: 'business'</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>상호작용</th><td>클릭 시 selected 클래스 적용, 배경색 변경</td></tr>
+                                <tr><th>함수</th><td><code>selectMemberType(type)</code></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">Step 3: 본인인증</div>
+                    
+                    <div class="spec-item" data-spec="9">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">9</span>
+                            <span class="spec-item-title">휴대폰 본인인증</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>휴대폰번호</th><td>
+                                    <ul class="spec-list">
+                                        <li>입력: 010-XXXX-XXXX 형식</li>
+                                        <li>포맷: <code>formatPhoneNumber()</code> 자동 적용</li>
+                                        <li>버튼: "인증번호 발송"</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>인증번호</th><td>
+                                    <ul class="spec-list">
+                                        <li>입력: 6자리 숫자</li>
+                                        <li>버튼: "인증 확인"</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>함수</th><td>
+                                    <code>sendVerificationCode()</code><br>
+                                    <code>verifyCode()</code>
+                                </td></tr>
+                                <tr><th>상태</th><td>인증 완료 시 완료 메시지 표시, 다음 버튼 활성화</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">Step 4: 정보 입력</div>
+                    
+                    <div class="spec-item" data-spec="10">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">10</span>
+                            <span class="spec-item-title">개인회원 정보 입력</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>필수입력</th><td>
+                                    <ul class="spec-list">
+                                        <li>아이디 (8~12자, 중복확인 필요)</li>
+                                        <li>비밀번호 (8~16자, 영문+숫자+특수문자)</li>
+                                        <li>비밀번호 확인</li>
+                                        <li>이메일</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>선택입력</th><td>연락처, 마케팅 수신 동의 (SMS/Email)</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="11">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">11</span>
+                            <span class="spec-item-title">기업회원 정보 입력</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>필수입력</th><td>
+                                    <ul class="spec-list">
+                                        <li>아이디/비밀번호</li>
+                                        <li>기업유형 (법인/개인사업자)</li>
+                                        <li>담당자 (대표자/직원)</li>
+                                        <li>사업자등록증 (파일 업로드)</li>
+                                        <li>기업명, 사업자번호, 대표자명</li>
+                                        <li>주소 (다음 주소 API)</li>
+                                        <li>연락처</li>
+                                    </ul>
+                                </td></tr>
+                                <tr><th>조건부필수</th><td>담당자가 "직원"인 경우 재직증명서 업로드 필수</td></tr>
+                                <tr><th>파일업로드</th><td>드래그앤드롭 지원, PDF/JPG/PNG (최대 10MB)</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="spec-item" data-spec="12">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">12</span>
+                            <span class="spec-item-title">가입 완료</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr><th>함수</th><td><code>submitSignup(type)</code></td></tr>
+                                <tr><th>검증</th><td>모든 필수 항목 입력 확인, 비밀번호 일치 확인</td></tr>
+                                <tr><th>완료</th><td>성공 알림 후 index.html로 이동</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.spec-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+
+        document.querySelectorAll('.spec-marker').forEach(marker => {
+            marker.addEventListener('click', function() {
+                const num = this.getAttribute('data-num');
+                const specItem = document.querySelector(`.spec-item[data-spec="${num}"]`);
+                document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                if (specItem) {
+                    specItem.classList.add('active', 'open');
+                    specItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+
+        document.querySelector('.spec-item')?.classList.add('open');
+    </script>
+</body>
+</html>

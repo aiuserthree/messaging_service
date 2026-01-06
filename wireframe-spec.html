@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>톡벨 메인화면 - 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 인덱스 바로가기 버튼 -->
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <!-- 문서 헤더 -->
+    <header class="spec-header">
+        <h1>📋 톡벨 메인화면 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v1.0</span>
+            <span>👤 작성자: UX팀</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <!-- 화면 영역 -->
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <!-- ==================== 헤더 영역 ==================== -->
+                <div class="mock-header" id="comp-header">
+                    <!-- 마커 1: 로고 -->
+                    <span class="spec-marker" data-num="1" style="top: -10px; left: 10px;">1</span>
+                    <div class="mock-logo">
+                        <span>Tokbell</span>
+                    </div>
+                    
+                    <!-- 마커 2: 메인 네비게이션 -->
+                    <span class="spec-marker" data-num="2" style="top: -10px; left: 50%; transform: translateX(-50%);">2</span>
+                    <nav class="mock-nav">
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">문자발송</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">선거문자</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">카카오톡 발송</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">발송 관리</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">주소록</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">결제 관리</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">마이페이지</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                        <div class="mock-nav-item-dropdown">
+                            <a href="#" class="mock-nav-item">고객센터</a>
+                            <div class="mock-dropdown-indicator">▼</div>
+                        </div>
+                    </nav>
+                    
+                    <!-- 마커 3: 헤더 액션 버튼 -->
+                    <span class="spec-marker" data-num="3" style="top: -10px; right: 10px;">3</span>
+                    <div class="mock-header-actions">
+                        <button class="mock-btn mock-btn-outline">로그인</button>
+                        <button class="mock-btn mock-btn-primary">톡벨 가입하기</button>
+                    </div>
+                </div>
+
+                <!-- ==================== 히어로 섹션 ==================== -->
+                <div class="mock-hero" id="comp-hero">
+                    <!-- 마커 4: 히어로 타이틀 -->
+                    <span class="spec-marker" data-num="4" style="top: 20px; left: 20px;">4</span>
+                    <h1 class="mock-hero-title">예산에 맞게, 목적에 맞게.<br>부담없이 경험해보세요</h1>
+                    
+                    <!-- 마커 5: 히어로 서브타이틀 -->
+                    <span class="spec-marker" data-num="5" style="top: 100px; right: 20px;">5</span>
+                    <p class="mock-hero-subtitle">기업규모에 맞는 단가로 모든 마케팅 메시지를 사용할 수 있어요</p>
+                    
+                    <!-- 마커 6: CTA 버튼 -->
+                    <span class="spec-marker" data-num="6" style="bottom: 20px; left: 50%; transform: translateX(-50%);">6</span>
+                    <a href="#" class="mock-hero-cta">견적 문의하기</a>
+                </div>
+
+                <!-- ==================== 가격 카드 섹션 ==================== -->
+                <div class="mock-pricing" id="comp-pricing">
+                    <!-- 마커 7: 가격 탭 -->
+                    <span class="spec-marker" data-num="7" style="top: 20px; left: 50%; transform: translateX(-50%);">7</span>
+                    <div class="mock-pricing-tabs">
+                        <button class="mock-pricing-tab active">문자</button>
+                        <button class="mock-pricing-tab">카카오</button>
+                        <button class="mock-pricing-tab">선거문자</button>
+                    </div>
+
+                    <!-- 마커 8: 가격 카드 그리드 -->
+                    <span class="spec-marker" data-num="8" style="top: 80px; left: 20px;">8</span>
+                    <div class="mock-pricing-cards">
+                        <!-- SMS 카드 -->
+                        <div class="mock-pricing-card">
+                            <!-- 마커 9: 개별 가격 카드 -->
+                            <span class="spec-marker" data-num="9" style="top: -10px; right: -10px;">9</span>
+                            <div class="mock-pricing-type">단문 문자 (SMS)</div>
+                            <span class="mock-pricing-badge">34% 할인가</span>
+                            <div>
+                                <span class="mock-pricing-amount">7.4</span>
+                                <span class="mock-pricing-unit">원 / 건</span>
+                            </div>
+                            <div class="mock-pricing-per">사업자 1회 충전 시</div>
+                            <span class="mock-pricing-byte">90byte</span>
+                            <div class="mock-pricing-features">
+                                <div class="mock-pricing-feature">건당 단가 기준 대비 20% 이상 낮은 시작해요.</div>
+                                <div class="mock-pricing-feature">단 한 건도 놓치지 않도록 최선을 다합니다.</div>
+                            </div>
+                            <div class="mock-pricing-note">이 가격은 순수 발송 비용입니다. 서비스 이용료는 무료입니다.</div>
+                        </div>
+
+                        <!-- LMS 카드 -->
+                        <div class="mock-pricing-card">
+                            <div class="mock-pricing-type">장문 문자 (LMS)</div>
+                            <span class="mock-pricing-badge">30% 할인가</span>
+                            <div>
+                                <span class="mock-pricing-amount">24.5</span>
+                                <span class="mock-pricing-unit">원 / 건</span>
+                            </div>
+                            <div class="mock-pricing-per">사업자 82.5원 할인</div>
+                            <span class="mock-pricing-byte">2,000 byte</span>
+                            <div class="mock-pricing-features">
+                                <div class="mock-pricing-feature">건당 30% 할인으로 더욱 합리적인 가격으로 시작해요.</div>
+                                <div class="mock-pricing-feature">더 많은 내용을 전달하고 싶다면 LMS를 추천드립니다.</div>
+                            </div>
+                            <div class="mock-pricing-note">이 가격은 순수 발송 비용입니다.</div>
+                        </div>
+
+                        <!-- MMS 카드 -->
+                        <div class="mock-pricing-card">
+                            <div class="mock-pricing-type">그림 문자 (MMS)</div>
+                            <span class="mock-pricing-badge">34% 할인가</span>
+                            <div>
+                                <span class="mock-pricing-amount">59.2</span>
+                                <span class="mock-pricing-unit">원 / 건</span>
+                            </div>
+                            <div class="mock-pricing-per">사업자 기준 할인</div>
+                            <span class="mock-pricing-byte">2,000 byte</span>
+                            <div class="mock-pricing-features">
+                                <div class="mock-pricing-feature">건당 34% 할인으로 가장 합리적인 가격으로 시작해요.</div>
+                                <div class="mock-pricing-feature">쿠폰이나 20% 이상의 광고 할인 가격이 적용됩니다.</div>
+                            </div>
+                            <div class="mock-pricing-note">1회 1건 발송 시 수행 비용이 추가됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== 배너 & 공지사항 섹션 ==================== -->
+                <div class="mock-banner-notice" id="comp-banner-notice">
+                    <!-- 마커 10: 롤링 배너 -->
+                    <span class="spec-marker" data-num="10" style="top: 10px; left: 10px;">10</span>
+                    <div class="mock-banner">
+                        <div class="mock-banner-content">
+                            <p>사용법이 더 궁금하다면?</p>
+                            <h3>지금 사용자 가이드를 확인해보세요</h3>
+                            <a href="#">가이드 바로가기 ></a>
+                        </div>
+                        <div class="mock-banner-icon">📖💡</div>
+                        <button class="mock-banner-nav prev">‹</button>
+                        <button class="mock-banner-nav next">›</button>
+                    </div>
+
+                    <!-- 마커 11: 공지사항 카드 -->
+                    <span class="spec-marker" data-num="11" style="top: 10px; right: 10px;">11</span>
+                    <div class="mock-notice">
+                        <div class="mock-notice-header">
+                            <h3 class="mock-notice-title">공지사항</h3>
+                            <a href="#" class="mock-notice-more">더보기 ></a>
+                        </div>
+                        <ul class="mock-notice-list">
+                            <li class="mock-notice-item">
+                                <span class="mock-notice-item-title">2025년 신년 이벤트 안내</span>
+                                <span class="mock-notice-item-date">2025-01-15</span>
+                            </li>
+                            <li class="mock-notice-item">
+                                <span class="mock-notice-item-title">시스템 점검 안내 (1월 20일)</span>
+                                <span class="mock-notice-item-date">2025-01-10</span>
+                            </li>
+                            <li class="mock-notice-item">
+                                <span class="mock-notice-item-title">새로운 기능 업데이트 안내</span>
+                                <span class="mock-notice-item-date">2025-01-05</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ==================== 서비스 카탈로그 섹션 ==================== -->
+                <div class="mock-service" id="comp-service">
+                    <!-- 마커 12: 섹션 타이틀 -->
+                    <span class="spec-marker" data-num="12" style="top: 20px; left: 20px;">12</span>
+                    <h2 class="mock-service-title">커뮤니케이션에 필요한 모든 서비스를<br>톡벨에서 한번에</h2>
+
+                    <!-- 마커 13: 서비스 카드 그리드 -->
+                    <span class="spec-marker" data-num="13" style="top: 100px; right: 20px;">13</span>
+                    <div class="mock-service-cards">
+                        <div class="mock-service-card">
+                            <!-- 마커 14: 개별 서비스 카드 -->
+                            <span class="spec-marker" data-num="14" style="top: -10px; left: -10px;">14</span>
+                            <div class="mock-service-icon orange">🗳️</div>
+                            <span class="mock-service-badge">Hot</span>
+                            <h4>공직선거 문자</h4>
+                            <p>공직선거법을 준수한 선거 문자 발송 서비스로 후보자 홍보와 선거 운동을 효과적으로 지원하는 상품</p>
+                            <a href="#" class="mock-service-link">자세히 보기 →</a>
+                        </div>
+                        <div class="mock-service-card">
+                            <div class="mock-service-icon yellow">💬</div>
+                            <span class="mock-service-badge">New</span>
+                            <h4>카카오 브랜드 메시지</h4>
+                            <p>카카오톡 채널로 고객사 마케팅 수신 동의 회원과 채널 친구 모두에게 광고성 메시지를 발송하는 상품</p>
+                            <a href="#" class="mock-service-link">자세히 보기 →</a>
+                        </div>
+                        <div class="mock-service-card">
+                            <div class="mock-service-icon yellow">💬</div>
+                            <h4>카카오 알림톡</h4>
+                            <p>주문, 결제, 배송 등 정보성 메시지를 스팸 걱정 없이 문자보다 더 저렴하게 보낼 수 있는 상품</p>
+                            <a href="#" class="mock-service-link">자세히 보기 →</a>
+                        </div>
+                        <div class="mock-service-card">
+                            <div class="mock-service-icon gray">✉️</div>
+                            <h4>문자 메시지</h4>
+                            <p>SMS, LMS, LMS 짧은 문자부터 문자까지 원하는 형태의 문자를 자유롭게 이용할 수 있는 상품</p>
+                            <a href="#" class="mock-service-link">자세히 보기 →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== 브랜드 메시지 섹션 ==================== -->
+                <div class="mock-brand" id="comp-brand">
+                    <!-- 마커 15: 브랜드 배지 -->
+                    <span class="spec-marker" data-num="15" style="top: 20px; left: 20px;">15</span>
+                    <span class="mock-brand-badge">브랜드 메시지</span>
+                    
+                    <!-- 마커 16: 섹션 헤딩 -->
+                    <span class="spec-marker" data-num="16" style="top: 50px; right: 20px;">16</span>
+                    <h2>세분화된 타겟팅으로<br>고객에게 딱 맞는 메시지를 발송해요</h2>
+                    <p>브랜드 메시지를 톡벨에서 가장 먼저 이용해 보세요!</p>
+
+                    <!-- 마커 17: 브랜드 콘텐츠 카드 -->
+                    <span class="spec-marker" data-num="17" style="top: 180px; left: 50%; transform: translateX(-50%);">17</span>
+                    <div class="mock-brand-card">
+                        <div class="mock-brand-text">
+                            <h3>카카오 브랜드 메시지로<br><span>채널 친구가 아닌 고객</span>까지!</h3>
+                            <p>채널 친구와 마케팅 수신 동의 고객에게 브랜드 메시지를 보낼 수 있어요</p>
+                        </div>
+                        <div class="mock-brand-visual">
+                            <span class="mock-brand-upgrade">친구톡 Upgrade</span>
+                            <div class="mock-brand-icons">
+                                <div class="mock-brand-icon-item">
+                                    <div class="mock-brand-circle blue">✓</div>
+                                    <span>동의함!</span>
+                                    <strong>브랜드 마케팅<br>수신 동의자</strong>
+                                </div>
+                                <div class="mock-brand-icon-item">
+                                    <div class="mock-brand-circle yellow">💬</div>
+                                    <strong>카카오톡<br>채널 친구</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== FAQ 섹션 ==================== -->
+                <div class="mock-faq" id="comp-faq">
+                    <!-- 마커 18: FAQ 헤더 -->
+                    <span class="spec-marker" data-num="18" style="top: 20px; left: 20px;">18</span>
+                    <div class="mock-faq-header">
+                        <h2>자주 묻는 질문(FAQ)</h2>
+                        <a href="#" class="mock-faq-link">전체 FAQ 보기 →</a>
+                    </div>
+
+                    <!-- 마커 19: FAQ 리스트 -->
+                    <span class="spec-marker" data-num="19" style="top: 80px; right: 20px;">19</span>
+                    <div class="mock-faq-list">
+                        <div class="mock-faq-item">
+                            <div class="mock-faq-question">
+                                <span>Q. 가입 프로모션 혜택이 궁금해요!</span>
+                                <span class="mock-faq-toggle">+</span>
+                            </div>
+                        </div>
+                        <div class="mock-faq-item">
+                            <div class="mock-faq-question">
+                                <span>Q. 문자 전체 건당서를 미리 받아볼 수 있나요?</span>
+                                <span class="mock-faq-toggle">+</span>
+                            </div>
+                        </div>
+                        <div class="mock-faq-item">
+                            <div class="mock-faq-question">
+                                <span>Q. 대량 발송을 하고 싶은데 별도 상담도 가능한가요?</span>
+                                <span class="mock-faq-toggle">+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 마커 20: FAQ 도움말 영역 -->
+                    <span class="spec-marker" data-num="20" style="bottom: 30px; left: 50%; transform: translateX(-50%);">20</span>
+                    <div class="mock-faq-help">
+                        <p>원하는 답변이 없나요?<br>고객센터에서 빠르게 답변받으실수있어요.</p>
+                        <a href="#">1:1 고객센터</a>
+                    </div>
+                </div>
+
+                <!-- ==================== CTA 섹션 ==================== -->
+                <div class="mock-cta" id="comp-cta">
+                    <!-- 마커 21: CTA 배지 -->
+                    <span class="spec-marker" data-num="21" style="top: 20px; left: 20px;">21</span>
+                    <span class="mock-cta-badge">더 많이 발송하세요!</span>
+                    
+                    <!-- 마커 22: CTA 타이틀 -->
+                    <span class="spec-marker" data-num="22" style="top: 50px; right: 20px;">22</span>
+                    <h2>대량발송 고객이라면<br>견적 상담 받아보세요</h2>
+                    <p>기업 규모에 맞는 맞춤 견적을 제공해드립니다</p>
+                    
+                    <!-- 마커 23: CTA 버튼 그룹 -->
+                    <span class="spec-marker" data-num="23" style="bottom: 20px; left: 50%; transform: translateX(-50%);">23</span>
+                    <div class="mock-cta-buttons">
+                        <a href="#" class="mock-cta-btn outline">서비스 소개서 받기</a>
+                        <a href="#" class="mock-cta-btn primary">상담 신청서 작성하기</a>
+                    </div>
+                </div>
+
+                <!-- ==================== 푸터 섹션 ==================== -->
+                <div class="mock-footer" id="comp-footer">
+                    <!-- 마커 24: 푸터 전체 -->
+                    <span class="spec-marker" data-num="24" style="top: 20px; left: 20px;">24</span>
+                    <div class="mock-footer-content">
+                        <div>
+                            <div class="mock-footer-logo">톡벨</div>
+                            <p class="mock-footer-desc">톡벨은 기업과 고객을 연결하는<br>스마트 메시징 서비스입니다.</p>
+                        </div>
+                        <div>
+                            <h4 class="mock-footer-title">서비스</h4>
+                            <ul class="mock-footer-links">
+                                <li><a href="#">문자 발송</a></li>
+                                <li><a href="#">카카오 발송</a></li>
+                                <li><a href="#">발송 결과</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="mock-footer-title">고객지원</h4>
+                            <ul class="mock-footer-links">
+                                <li><a href="#">공지사항</a></li>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">1:1 문의</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="mock-footer-title">회사정보</h4>
+                            <ul class="mock-footer-links">
+                                <li><a href="#">회사소개</a></li>
+                                <li><a href="#">이용약관</a></li>
+                                <li><a href="#">개인정보처리방침</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mock-footer-bottom">
+                        <span>© 2025 톡벨. All rights reserved.</span>
+                        <span>고객센터: 1588-0000 | 평일 09:00 - 18:00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 컴포넌트 명세</h2>
+                <p>화면의 번호를 클릭하면 상세 정보가 표시됩니다</p>
+            </div>
+            <div class="panel-content">
+                
+                <!-- 헤더 영역 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">헤더 영역</div>
+                    
+                    <!-- 1. 로고 -->
+                    <div class="spec-item" data-spec="1">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">1</span>
+                            <span class="spec-item-title">로고 (Logo)</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Header Logo</td>
+                                </tr>
+                                <tr>
+                                    <th>위치</th>
+                                    <td>헤더 좌측</td>
+                                </tr>
+                                <tr>
+                                    <th>로고텍스트</th>
+                                    <td><strong>Tokbell</strong> (텍스트 로고)</td>
+                                </tr>
+                                <tr>
+                                    <th>기능</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>클릭 시 메인 홈페이지(index.html)로 이동</li>
+                                            <li>서비스 브랜드 아이덴티티 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>폰트 크기: 22px</li>
+                                            <li>폰트 굵기: Bold (700)</li>
+                                            <li>색상: #2563eb (Primary Blue)</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상호작용</th>
+                                    <td>
+                                        <span class="spec-tag">Click</span>
+                                        <span class="spec-tag">Hover</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>이동경로</th>
+                                    <td>index.html (메인 홈)</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 2. 메인 네비게이션 -->
+                    <div class="spec-item" data-spec="2">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">2</span>
+                            <span class="spec-item-title">메인 네비게이션 (GNB)</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Global Navigation Bar</td>
+                                </tr>
+                                <tr>
+                                    <th>위치</th>
+                                    <td>헤더 중앙</td>
+                                </tr>
+                                <tr>
+                                    <th>메뉴항목</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>문자발송</strong>
+                                                <br>└ 일반문자 발송, 광고문자 발송, 일반문자 템플릿, 광고문자 템플릿
+                                            </li>
+                                            <li><strong>선거문자</strong>
+                                                <br>└ 선거문자 발송, 선거문자 주소록, 수신거부관리, 선거문자 템플릿
+                                            </li>
+                                            <li><strong>카카오톡 발송</strong>
+                                                <br>└ 알림톡 발송, 브랜드 메시지 발송, 카카오톡 발신 프로필, 알림톡 템플릿, 브랜드 메시지 템플릿
+                                            </li>
+                                            <li><strong>발송 관리</strong>
+                                                <br>└ 발송결과, 예약내역
+                                            </li>
+                                            <li><strong>주소록</strong>
+                                                <br>└ 주소록 관리, 수신거부관리
+                                            </li>
+                                            <li><strong>결제 관리</strong>
+                                                <br>└ 충전하기, 충전 내역, 세금계산서 발행
+                                            </li>
+                                            <li><strong>마이페이지</strong>
+                                                <br>└ 내 정보 수정, 비밀번호 변경, 발신번호 관리
+                                            </li>
+                                            <li><strong>고객센터</strong>
+                                                <br>└ 공지사항, 이벤트, FAQ, 1:1 문의
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상호작용</th>
+                                    <td>
+                                        <span class="spec-tag">Hover</span>
+                                        <span class="spec-tag">Click</span>
+                                        <span class="spec-tag">Dropdown</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>동작방식</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>마우스 호버 시 드롭다운 메뉴 표시</li>
+                                            <li>Depth 1 메뉴 클릭 시 첫 번째 Depth 2 페이지로 이동</li>
+                                            <li>드롭다운 외부 클릭 시 메뉴 닫힘</li>
+                                            <li>현재 페이지 메뉴 활성화 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>함수</th>
+                                    <td>
+                                        <code>initDropdownMenus()</code><br>
+                                        <code>checkLoginAndNavigate(url, event)</code>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 3. 헤더 액션 버튼 -->
+                    <div class="spec-item" data-spec="3">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">3</span>
+                            <span class="spec-item-title">헤더 액션 버튼</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Header Action Buttons</td>
+                                </tr>
+                                <tr>
+                                    <th>위치</th>
+                                    <td>헤더 우측</td>
+                                </tr>
+                                <tr>
+                                    <th>버튼구성</th>
+                                    <td>
+                                        <strong>[비로그인 상태]</strong>
+                                        <ul class="spec-list">
+                                            <li><strong>로그인</strong> (Outline 스타일) → login.html</li>
+                                            <li><strong>톡벨 가입하기</strong> (Primary 스타일) → signup.html</li>
+                                        </ul>
+                                        <br>
+                                        <strong>[로그인 상태]</strong>
+                                        <ul class="spec-list">
+                                            <li><strong>잔액 정보</strong> - 포인트/마일리지 툴팁 표시</li>
+                                            <li><strong>충전하기</strong> (Primary 스타일) → payment-charge.html</li>
+                                            <li><strong>로그아웃</strong> (Outline 스타일) - handleLogout() 함수 호출</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상태관리</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>localStorage의 'isLoggedIn' 값으로 로그인 상태 확인</li>
+                                            <li>메인 페이지(index.html)에서만 비로그인 상태 UI 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>잔액툴팁</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>포인트 잔액 (원 단위)</li>
+                                            <li>마일리지 잔액 (문자발송 시 사용, 환불불가)</li>
+                                            <li>호버 시 상세 내역 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>함수</th>
+                                    <td><code>handleLogout()</code></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 히어로 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">히어로 섹션</div>
+
+                    <!-- 4. 히어로 타이틀 -->
+                    <div class="spec-item" data-spec="4">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">4</span>
+                            <span class="spec-item-title">히어로 타이틀</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Hero Title (H1)</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>"예산에 맞게, 목적에 맞게.<br>부담없이 경험해보세요"</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>폰트 크기: 42px</li>
+                                            <li>폰트 굵기: Bold (700)</li>
+                                            <li>색상: #1e293b</li>
+                                            <li>줄간격: 1.3</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>목적</th>
+                                    <td>서비스의 핵심 가치 제안을 전달하여 사용자의 관심 유도</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 5. 히어로 서브타이틀 -->
+                    <div class="spec-item" data-spec="5">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">5</span>
+                            <span class="spec-item-title">히어로 서브타이틀</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Hero Subtitle (P)</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>"기업규모에 맞는 단가로 모든 마케팅 메시지를 사용할 수 있어요"</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>폰트 크기: 16px</li>
+                                            <li>색상: #64748b</li>
+                                            <li>줄간격: 1.6</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>목적</th>
+                                    <td>메인 타이틀을 보조하여 서비스 특징 상세 설명</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 6. CTA 버튼 -->
+                    <div class="spec-item" data-spec="6">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">6</span>
+                            <span class="spec-item-title">견적 문의 CTA 버튼</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Primary CTA Button</td>
+                                </tr>
+                                <tr>
+                                    <th>레이블</th>
+                                    <td>"견적 문의하기"</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>배경: 그라디언트 (#2563eb → #1d4ed8)</li>
+                                            <li>텍스트: 흰색</li>
+                                            <li>패딩: 16px 32px</li>
+                                            <li>Border-radius: 30px (Pill 형태)</li>
+                                            <li>그림자: 0 4px 14px rgba(37, 99, 235, 0.35)</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상호작용</th>
+                                    <td>
+                                        <span class="spec-tag">Hover</span>
+                                        <span class="spec-tag">Click</span>
+                                        <ul class="spec-list" style="margin-top: 8px;">
+                                            <li>Hover: 위로 2px 이동 + 그림자 강화</li>
+                                            <li>Click: 견적 문의 페이지로 이동</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>이동경로</th>
+                                    <td>support-inquiry.html</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 가격 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">가격 안내 섹션</div>
+
+                    <!-- 7. 가격 탭 -->
+                    <div class="spec-item" data-spec="7">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">7</span>
+                            <span class="spec-item-title">가격 카테고리 탭</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Tab Navigation</td>
+                                </tr>
+                                <tr>
+                                    <th>탭 항목</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>문자</strong> - SMS, LMS, MMS 가격 표시</li>
+                                            <li><strong>카카오</strong> - 알림톡, 친구톡 가격 표시</li>
+                                            <li><strong>선거문자</strong> - 선거용 문자 가격 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>기능</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>탭 클릭 시 해당 카테고리 가격 카드 표시</li>
+                                            <li>활성 탭은 Primary 색상 배경</li>
+                                            <li>비활성 탭은 회색 배경</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>함수</th>
+                                    <td><code>switchPricingTab(tab)</code></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 8. 가격 카드 그리드 -->
+                    <div class="spec-item" data-spec="8">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">8</span>
+                            <span class="spec-item-title">가격 카드 그리드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Pricing Cards Grid</td>
+                                </tr>
+                                <tr>
+                                    <th>레이아웃</th>
+                                    <td>3열 그리드 (gap: 24px)</td>
+                                </tr>
+                                <tr>
+                                    <th>반응형</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>1024px 이하: 1열 그리드</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>데이터</th>
+                                    <td>
+                                        <span class="spec-tag api">API 연동</span>
+                                        가격 정보 동적 로딩 (가격 변동 가능)
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 9. 개별 가격 카드 -->
+                    <div class="spec-item" data-spec="9">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">9</span>
+                            <span class="spec-item-title">개별 가격 카드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Pricing Card</td>
+                                </tr>
+                                <tr>
+                                    <th>구성요소</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>메시지 유형</strong> - SMS, LMS, MMS 등</li>
+                                            <li><strong>할인 배지</strong> - "34% 할인가" 등</li>
+                                            <li><strong>가격</strong> - 건당 가격 (원)</li>
+                                            <li><strong>바이트 정보</strong> - 90byte, 2000byte 등</li>
+                                            <li><strong>특징 리스트</strong> - 서비스 특징 나열</li>
+                                            <li><strong>안내 문구</strong> - 추가 비용 안내</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상호작용</th>
+                                    <td>
+                                        <span class="spec-tag">Hover</span>
+                                        <ul class="spec-list" style="margin-top: 8px;">
+                                            <li>Hover: 위로 4px 이동 + 그림자 강화</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>배경: 흰색</li>
+                                            <li>테두리: 1px solid #e2e8f0</li>
+                                            <li>Border-radius: 20px</li>
+                                            <li>패딩: 32px</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 배너 & 공지 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">배너 & 공지사항 섹션</div>
+
+                    <!-- 10. 롤링 배너 -->
+                    <div class="spec-item" data-spec="10">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">10</span>
+                            <span class="spec-item-title">마케팅 롤링 배너</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Carousel Banner</td>
+                                </tr>
+                                <tr>
+                                    <th>기능</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>5초 간격 자동 슬라이드</li>
+                                            <li>좌/우 네비게이션 버튼</li>
+                                            <li>마우스 오버 시 자동 롤링 정지</li>
+                                            <li>마우스 아웃 시 자동 롤링 재시작</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>배너 콘텐츠</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>배너 1:</strong> 사용자 가이드 안내</li>
+                                            <li><strong>배너 2:</strong> 포인트 이벤트 안내</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>함수</th>
+                                    <td>
+                                        <code>changeBanner(direction)</code><br>
+                                        <code>startAutoRotate()</code><br>
+                                        <code>stopAutoRotate()</code>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 11. 공지사항 카드 -->
+                    <div class="spec-item" data-spec="11">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">11</span>
+                            <span class="spec-item-title">공지사항 카드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Notice Card</td>
+                                </tr>
+                                <tr>
+                                    <th>구성요소</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>제목</strong> - "공지사항"</li>
+                                            <li><strong>더보기 링크</strong> - 전체 목록 페이지 이동</li>
+                                            <li><strong>공지 리스트</strong> - 최신 3개 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>데이터</th>
+                                    <td>
+                                        <span class="spec-tag api">API 연동</span>
+                                        공지사항 목록 동적 로딩
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>이동경로</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>더보기: support-notice.html</li>
+                                            <li>개별 공지: support-notice-detail.html?id={id}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 서비스 카탈로그 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">서비스 카탈로그 섹션</div>
+
+                    <!-- 12. 섹션 타이틀 -->
+                    <div class="spec-item" data-spec="12">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">12</span>
+                            <span class="spec-item-title">서비스 섹션 타이틀</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Section Title (H2)</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>"커뮤니케이션에 필요한 모든 서비스를<br>톡벨에서 한번에"</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>폰트 크기: 36px</li>
+                                            <li>폰트 굵기: Bold (700)</li>
+                                            <li>정렬: 중앙 정렬</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 13. 서비스 카드 그리드 -->
+                    <div class="spec-item" data-spec="13">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">13</span>
+                            <span class="spec-item-title">서비스 카드 그리드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Service Cards Grid</td>
+                                </tr>
+                                <tr>
+                                    <th>레이아웃</th>
+                                    <td>4열 그리드 (gap: 24px)</td>
+                                </tr>
+                                <tr>
+                                    <th>반응형</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>1024px 이하: 2열 그리드</li>
+                                            <li>768px 이하: 1열 그리드</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 14. 개별 서비스 카드 -->
+                    <div class="spec-item" data-spec="14">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">14</span>
+                            <span class="spec-item-title">개별 서비스 카드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Service Card</td>
+                                </tr>
+                                <tr>
+                                    <th>구성요소</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>아이콘</strong> - 서비스별 고유 아이콘</li>
+                                            <li><strong>배지</strong> - Hot, New 등 (선택)</li>
+                                            <li><strong>서비스명</strong> - 카드 제목</li>
+                                            <li><strong>설명</strong> - 서비스 간략 설명</li>
+                                            <li><strong>링크 버튼</strong> - 상세 페이지 이동</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>서비스목록</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>공직선거 문자</strong> → message-send-election.html</li>
+                                            <li><strong>카카오 브랜드 메시지</strong> → kakao-send-brandtalk.html</li>
+                                            <li><strong>카카오 알림톡</strong> → kakao-send-alimtalk.html</li>
+                                            <li><strong>문자 메시지</strong> → message-send-general.html</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>상호작용</th>
+                                    <td>
+                                        <span class="spec-tag">Hover</span>
+                                        <span class="spec-tag">Click</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 브랜드 메시지 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">브랜드 메시지 섹션</div>
+
+                    <!-- 15. 브랜드 배지 -->
+                    <div class="spec-item" data-spec="15">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">15</span>
+                            <span class="spec-item-title">브랜드 배지</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Badge / Label</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>"브랜드 메시지"</td>
+                                </tr>
+                                <tr>
+                                    <th>목적</th>
+                                    <td>섹션 카테고리 식별 및 시각적 강조</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 16. 섹션 헤딩 -->
+                    <div class="spec-item" data-spec="16">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">16</span>
+                            <span class="spec-item-title">브랜드 섹션 헤딩</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Section Heading</td>
+                                </tr>
+                                <tr>
+                                    <th>구성</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>메인 타이틀:</strong> "세분화된 타겟팅으로 고객에게 딱 맞는 메시지를 발송해요"</li>
+                                            <li><strong>서브 타이틀:</strong> "브랜드 메시지를 톡벨에서 가장 먼저 이용해 보세요!"</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 17. 브랜드 콘텐츠 카드 -->
+                    <div class="spec-item" data-spec="17">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">17</span>
+                            <span class="spec-item-title">브랜드 콘텐츠 카드</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Feature Card</td>
+                                </tr>
+                                <tr>
+                                    <th>구성요소</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>텍스트 영역:</strong> 기능 설명</li>
+                                            <li><strong>일러스트 영역:</strong> 시각적 표현</li>
+                                            <li><strong>업그레이드 배지:</strong> "친구톡 Upgrade"</li>
+                                            <li><strong>아이콘 그룹:</strong> 수신 동의자 + 채널 친구 표시</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>목적</th>
+                                    <td>카카오 브랜드 메시지의 핵심 기능과 장점을 시각적으로 전달</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>배경: 그라디언트 (#f8fafc → #eef2ff)</li>
+                                            <li>Border-radius: 32px</li>
+                                            <li>레이아웃: Flexbox (텍스트 + 일러스트)</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">FAQ 섹션</div>
+
+                    <!-- 18. FAQ 헤더 -->
+                    <div class="spec-item" data-spec="18">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">18</span>
+                            <span class="spec-item-title">FAQ 헤더</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>FAQ Header</td>
+                                </tr>
+                                <tr>
+                                    <th>구성요소</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>제목:</strong> "자주 묻는 질문(FAQ)"</li>
+                                            <li><strong>바로가기 버튼:</strong> "전체 FAQ 보기 →"</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>이동경로</th>
+                                    <td>support-faq.html</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 19. FAQ 리스트 -->
+                    <div class="spec-item" data-spec="19">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">19</span>
+                            <span class="spec-item-title">FAQ 아코디언 리스트</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Accordion List</td>
+                                </tr>
+                                <tr>
+                                    <th>기능</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>질문 클릭 시 답변 펼치기/접기</li>
+                                            <li>토글 아이콘 회전 애니메이션</li>
+                                            <li>한 번에 하나만 열리도록 설정 가능</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>표시항목</th>
+                                    <td>메인 페이지에는 대표 FAQ 3개만 표시</td>
+                                </tr>
+                                <tr>
+                                    <th>함수</th>
+                                    <td><code>toggleFaq(element)</code></td>
+                                </tr>
+                                <tr>
+                                    <th>데이터</th>
+                                    <td>
+                                        <span class="spec-tag api">API 연동</span>
+                                        FAQ 목록 동적 로딩
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 20. FAQ 도움말 영역 -->
+                    <div class="spec-item" data-spec="20">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">20</span>
+                            <span class="spec-item-title">FAQ 도움말 영역</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Help Section</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>"원하는 답변이 없나요?"</li>
+                                            <li>"고객센터에서 빠르게 답변받으실 수 있어요."</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>CTA 버튼</th>
+                                    <td>"1:1 고객센터" → support-inquiry.html</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>중앙 정렬, 상단 구분선</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">CTA (Call-to-Action) 섹션</div>
+
+                    <!-- 21. CTA 배지 -->
+                    <div class="spec-item" data-spec="21">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">21</span>
+                            <span class="spec-item-title">CTA 배지</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>CTA Badge</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>"더 많이 발송하세요!"</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>반투명 흰색 배경, 흰색 텍스트</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 22. CTA 타이틀 -->
+                    <div class="spec-item" data-spec="22">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">22</span>
+                            <span class="spec-item-title">CTA 타이틀</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>CTA Heading</td>
+                                </tr>
+                                <tr>
+                                    <th>콘텐츠</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>메인:</strong> "대량발송 고객이라면 견적 상담 받아보세요"</li>
+                                            <li><strong>서브:</strong> "기업 규모에 맞는 맞춤 견적을 제공해드립니다"</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>목적</th>
+                                    <td>대량 발송 고객 유치를 위한 상담 유도</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 23. CTA 버튼 그룹 -->
+                    <div class="spec-item" data-spec="23">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">23</span>
+                            <span class="spec-item-title">CTA 버튼 그룹</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>CTA Button Group</td>
+                                </tr>
+                                <tr>
+                                    <th>버튼구성</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>서비스 소개서 받기</strong> (Outline 스타일)
+                                                <br>- 클릭 시 PDF 다운로드
+                                                <br>- 토스트 메시지 표시
+                                            </li>
+                                            <li><strong>상담 신청서 작성하기</strong> (Primary 스타일)
+                                                <br>- 클릭 시 상담 신청 모달 오픈
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>함수</th>
+                                    <td>
+                                        <code>downloadServiceGuide(event)</code><br>
+                                        <code>openModal('consultationModal')</code>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 푸터 섹션 -->
+                <div class="spec-section">
+                    <div class="spec-section-title">푸터 섹션</div>
+
+                    <!-- 24. 푸터 -->
+                    <div class="spec-item" data-spec="24">
+                        <div class="spec-item-header">
+                            <span class="spec-item-number">24</span>
+                            <span class="spec-item-title">푸터 (Footer)</span>
+                            <span class="spec-item-toggle">▼</span>
+                        </div>
+                        <div class="spec-item-body">
+                            <table class="spec-table">
+                                <tr>
+                                    <th>컴포넌트</th>
+                                    <td>Global Footer</td>
+                                </tr>
+                                <tr>
+                                    <th>구성요소</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li><strong>회사 정보:</strong> 로고, 소개 문구</li>
+                                            <li><strong>서비스 링크:</strong> 문자 발송, 카카오 발송, 발송 결과</li>
+                                            <li><strong>고객지원 링크:</strong> 공지사항, FAQ, 1:1 문의</li>
+                                            <li><strong>회사정보 링크:</strong> 회사소개, 이용약관, 개인정보처리방침</li>
+                                            <li><strong>하단 정보:</strong> 저작권, 고객센터 연락처</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>레이아웃</th>
+                                    <td>4열 그리드 (반응형 대응)</td>
+                                </tr>
+                                <tr>
+                                    <th>스타일</th>
+                                    <td>
+                                        <ul class="spec-list">
+                                            <li>배경: #1e293b (다크)</li>
+                                            <li>텍스트: #94a3b8 (연한 회색)</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 스펙 아이템 토글
+        document.querySelectorAll('.spec-item-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.parentElement;
+                const wasOpen = item.classList.contains('open');
+                
+                // 모든 아이템 닫기 (선택적)
+                // document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('open'));
+                
+                // 클릭한 아이템 토글
+                if (!wasOpen) {
+                    item.classList.add('open');
+                } else {
+                    item.classList.remove('open');
+                }
+            });
+        });
+
+        // 마커와 스펙 아이템 연동
+        document.querySelectorAll('.spec-marker').forEach(marker => {
+            marker.addEventListener('click', function() {
+                const num = this.getAttribute('data-num');
+                const specItem = document.querySelector(`.spec-item[data-spec="${num}"]`);
+                
+                // 모든 마커 비활성화
+                document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                
+                // 클릭한 마커 활성화
+                this.classList.add('active');
+                
+                if (specItem) {
+                    specItem.classList.add('active');
+                    specItem.classList.add('open');
+                    
+                    // 스크롤 이동
+                    specItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        });
+
+        // 스펙 아이템 클릭 시 해당 마커 활성화
+        document.querySelectorAll('.spec-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const num = this.getAttribute('data-spec');
+                const marker = document.querySelector(`.spec-marker[data-num="${num}"]`);
+                
+                // 모든 마커 비활성화
+                document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active'));
+                
+                // 클릭한 아이템과 마커 활성화
+                this.classList.add('active');
+                if (marker) {
+                    marker.classList.add('active');
+                }
+            });
+        });
+
+        // 첫 번째 아이템 기본 열기
+        document.querySelector('.spec-item')?.classList.add('open');
+    </script>
+</body>
+</html>

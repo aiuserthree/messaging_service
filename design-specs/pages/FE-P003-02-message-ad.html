@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>광고문자 발송 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 800px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        .header-right-logged { display: flex; align-items: center; gap: 16px; }
+        .balance-box { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #f1f5f9; border-radius: 8px; }
+        .balance-label { font-size: 12px; color: #64748b; }
+        .balance-value { font-weight: 600; color: #2563eb; }
+        
+        .page-content { max-width: 1400px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 16px; }
+        .card-title { font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .card-title::before { content: '▼'; font-size: 10px; color: #64748b; }
+        .form-row { margin-bottom: 16px; }
+        .form-label-actual { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #1e293b; }
+        .form-label-actual .required { color: #ef4444; }
+        .form-input-actual, .form-select-actual, .form-textarea-actual { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .form-textarea-actual { min-height: 150px; resize: vertical; }
+        .form-help { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .tab-group { display: flex; gap: 8px; margin-bottom: 16px; }
+        .tab-item { padding: 8px 16px; border-radius: 8px; font-size: 13px; background: #f1f5f9; color: #64748b; cursor: pointer; }
+        .tab-item.active { background: #2563eb; color: white; }
+        .btn-group { display: flex; gap: 8px; margin-top: 16px; }
+        .btn-actual { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .btn-outline-actual { background: white; border: 1px solid #e2e8f0; color: #64748b; }
+        .btn-primary-actual { background: #2563eb; border: none; color: white; }
+        
+        .ad-notice { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .ad-notice-title { font-weight: 600; color: #92400e; margin-bottom: 8px; }
+        .ad-notice-text { font-size: 13px; color: #92400e; line-height: 1.6; }
+        
+        .phone-preview { background: #1e293b; border-radius: 32px; padding: 12px; width: 100%; max-width: 260px; margin: 0 auto; }
+        .phone-screen { background: white; border-radius: 24px; min-height: 400px; overflow: hidden; }
+        .phone-header { background: #f59e0b; padding: 12px; text-align: center; color: white; font-size: 12px; }
+        .phone-content { padding: 16px; }
+        .phone-message { background: #f1f5f9; border-radius: 12px; padding: 12px; font-size: 13px; color: #1e293b; line-height: 1.6; }
+        .byte-counter { text-align: right; font-size: 12px; color: #64748b; margin-top: 8px; }
+        .preview-section { position: sticky; top: 100px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P003-02</span>
+                    <span class="page-title-header">광고문자 발송</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/message-send-ad', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/message-send-ad</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 헤더 -->
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item active">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item">템플릿 관리 ▾</div>
+                                    <div class="nav-menu-item">주소록 ▾</div>
+                                </div>
+                                <div class="header-right-logged">
+                                    <div class="balance-box">
+                                        <span class="balance-label">잔액</span>
+                                        <span class="balance-value">50,000원</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <div class="main-form">
+                                    <h1 class="page-title">📢 광고문자 발송</h1>
+                                    
+                                    <!-- 광고문자 안내 -->
+                                    <div class="ad-notice">
+                                        <div class="ad-notice-title">⚠️ 광고문자 발송 안내</div>
+                                        <div class="ad-notice-text">
+                                            • 메시지 앞에 "(광고)" 문구가 자동 삽입됩니다.<br>
+                                            • 무료 수신거부 번호가 포함되어야 합니다.<br>
+                                            • 야간 발송(21시~08시)은 제한됩니다.<br>
+                                            • 수신 동의를 받은 고객에게만 발송해야 합니다.
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 발신번호 -->
+                                    <div class="card">
+                                        <div class="card-title">발신번호 설정</div>
+                                        <div class="form-row">
+                                            <label class="form-label-actual">발신번호 <span class="required">*</span></label>
+                                            <select class="form-select-actual">
+                                                <option>발신번호를 선택하세요</option>
+                                                <option>010-1234-5678</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 메시지 유형 -->
+                                    <div class="card">
+                                        <div class="card-title">메시지 유형</div>
+                                        <div class="tab-group">
+                                            <div class="tab-item active">SMS (단문)</div>
+                                            <div class="tab-item">LMS (장문)</div>
+                                            <div class="tab-item">MMS (이미지)</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 메시지 내용 -->
+                                    <div class="card">
+                                        <div class="card-title">메시지 내용</div>
+                                        <div class="form-row">
+                                            <label class="form-label-actual">메시지 내용 <span class="required">*</span></label>
+                                            <textarea class="form-textarea-actual" placeholder="광고 메시지 내용을 입력하세요">(광고) [톡벨] 신규 가입 고객 50% 할인!
+무료수신거부 080-XXX-XXXX</textarea>
+                                            <div class="form-help">광고문자는 "(광고)" 문구와 무료 수신거부 번호가 필수입니다.</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 수신번호 -->
+                                    <div class="card">
+                                        <div class="card-title">수신번호 설정</div>
+                                        <div class="tab-group">
+                                            <div class="tab-item active">직접 입력</div>
+                                            <div class="tab-item">광고 주소록</div>
+                                            <div class="tab-item">엑셀 업로드</div>
+                                        </div>
+                                        <div class="form-row">
+                                            <textarea class="form-textarea-actual" placeholder="수신번호를 입력하세요 (엔터로 구분)">01012345678</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 발송 버튼 -->
+                                    <div class="btn-group" style="justify-content: flex-end;">
+                                        <button class="btn-actual btn-outline-actual">테스트 발송</button>
+                                        <button class="btn-actual btn-primary-actual">발송하기</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 미리보기 -->
+                                <div class="preview-section">
+                                    <div class="card">
+                                        <div class="card-title">미리보기</div>
+                                        <div class="phone-preview">
+                                            <div class="phone-screen">
+                                                <div class="phone-header">광고 메시지</div>
+                                                <div class="phone-content">
+                                                    <div class="phone-message">(광고) [톡벨] 신규 가입 고객 50% 할인!
+무료수신거부 080-XXX-XXXX</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="byte-counter">58 / 90 byte (SMS)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 100px; left: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 250px; left: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 400px; left: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 600px; left: 50px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 200px; right: 50px;">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">message-send-ad.html · 광고문자 발송</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">광고문자 발송 안내</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">광고성 메시지 발송 시 준수해야 할 법적 요건을 안내합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>내용</th></tr>
+                            <tr><td>(광고) 문구</td><td>메시지 앞에 자동 삽입</td></tr>
+                            <tr><td>수신거부 번호</td><td>무료 080 번호 필수</td></tr>
+                            <tr><td>발송 시간</td><td>08시~21시 (야간 제한)</td></tr>
+                            <tr><td>수신 동의</td><td>사전 동의 받은 고객만</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">발신번호 & 메시지 유형</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">일반문자와 동일하게 발신번호와 메시지 유형을 선택합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">메시지 내용</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">광고 메시지를 입력합니다.</div>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 필수 요소</div>
+                            <div class="desc-note-text">(광고) 문구와 무료 수신거부 번호가 없으면 발송이 제한됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">수신번호 설정</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">광고 수신 동의를 받은 고객의 번호를 입력합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>방법</th><th>설명</th></tr>
+                            <tr><td>직접 입력</td><td>수동 입력</td></tr>
+                            <tr><td>광고 주소록</td><td>광고 수신 동의 주소록</td></tr>
+                            <tr><td>엑셀 업로드</td><td>파일 업로드</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">미리보기</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">광고 메시지가 어떻게 보이는지 미리 확인합니다.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

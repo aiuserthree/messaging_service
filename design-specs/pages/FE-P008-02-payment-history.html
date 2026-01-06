@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제 내역 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .filter-bar { display: flex; gap: 8px; margin-bottom: 16px; }
+        .filter-item { padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white; }
+        .search-btn { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px; cursor: pointer; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .table-actual { width: 100%; border-collapse: collapse; }
+        .table-actual th, .table-actual td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .table-actual th { background: #f8fafc; font-size: 12px; font-weight: 500; color: #64748b; }
+        .table-actual td { font-size: 14px; color: #1e293b; }
+        
+        .type-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .type-badge.charge { background: #dcfce7; color: #166534; }
+        .type-badge.use { background: #fee2e2; color: #991b1b; }
+        .type-badge.bonus { background: #dbeafe; color: #1d4ed8; }
+        
+        .amount-plus { color: #10b981; font-weight: 600; }
+        .amount-minus { color: #ef4444; font-weight: 600; }
+        
+        .pagination { display: flex; justify-content: center; gap: 4px; padding: 20px; }
+        .page-btn { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; cursor: pointer; font-size: 13px; color: #64748b; }
+        .page-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P008-02</span>
+                    <span class="page-title-header">결제 내역</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/payment-history', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/payment-history</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item">카카오톡 발송 ▾</div>
+                                    <div class="nav-menu-item active">요금/결제 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">📋 결제 내역</h1>
+                                
+                                <div class="filter-bar">
+                                    <input type="date" class="filter-item" value="2025-01-01">
+                                    <span style="line-height: 42px;">~</span>
+                                    <input type="date" class="filter-item" value="2025-01-06">
+                                    <select class="filter-item">
+                                        <option>전체 유형</option>
+                                        <option>충전</option>
+                                        <option>사용</option>
+                                        <option>보너스</option>
+                                    </select>
+                                    <button class="search-btn">검색</button>
+                                </div>
+                                
+                                <div class="card">
+                                    <table class="table-actual">
+                                        <thead>
+                                            <tr>
+                                                <th>일시</th>
+                                                <th>유형</th>
+                                                <th>내용</th>
+                                                <th>금액</th>
+                                                <th>잔액</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>2025-01-06 14:30</td>
+                                                <td><span class="type-badge use">사용</span></td>
+                                                <td>SMS 발송 (150건)</td>
+                                                <td class="amount-minus">-1,485원</td>
+                                                <td>50,000원</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-05 10:00</td>
+                                                <td><span class="type-badge charge">충전</span></td>
+                                                <td>포인트 충전 (신용카드)</td>
+                                                <td class="amount-plus">+50,000원</td>
+                                                <td>51,485원</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-05 10:00</td>
+                                                <td><span class="type-badge bonus">보너스</span></td>
+                                                <td>충전 보너스 (5%)</td>
+                                                <td class="amount-plus">+2,500원</td>
+                                                <td>1,485원</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2025-01-04 16:20</td>
+                                                <td><span class="type-badge use">사용</span></td>
+                                                <td>알림톡 발송 (200건)</td>
+                                                <td class="amount-minus">-1,500원</td>
+                                                <td>-1,015원</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="pagination">
+                                        <button class="page-btn">&lt;</button>
+                                        <button class="page-btn active">1</button>
+                                        <button class="page-btn">2</button>
+                                        <button class="page-btn">3</button>
+                                        <button class="page-btn">&gt;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 130px; left: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 210px; left: 50px;">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">payment-history.html · 결제 내역 조회</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">검색 필터</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">결제/사용 내역을 검색합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필터</th><th>설명</th></tr>
+                            <tr><td>기간</td><td>조회 기간</td></tr>
+                            <tr><td>유형</td><td>충전/사용/보너스</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">내역 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">포인트 충전/사용 내역을 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>일시</td><td>거래 발생 시각</td></tr>
+                            <tr><td>유형</td><td>충전/사용/보너스</td></tr>
+                            <tr><td>내용</td><td>거래 상세 내용</td></tr>
+                            <tr><td>금액</td><td>+충전 / -사용 금액</td></tr>
+                            <tr><td>잔액</td><td>거래 후 잔액</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

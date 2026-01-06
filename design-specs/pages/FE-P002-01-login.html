@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        /* 실제 페이지 스타일 재현 */
+        .actual-page {
+            background: #f8fafc;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        .actual-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .actual-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .actual-nav {
+            display: flex;
+            gap: 24px;
+        }
+        .actual-nav-item {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .actual-header-btn {
+            display: flex;
+            gap: 8px;
+        }
+        .actual-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .actual-btn-outline {
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+        .actual-btn-primary {
+            background: #2563eb;
+            border: none;
+            color: white;
+        }
+        .actual-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+            padding: 48px 40px;
+        }
+        .login-header-text {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .login-logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+        .login-title-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .login-subtitle-text {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .form-group-actual {
+            margin-bottom: 20px;
+        }
+        .form-label-actual {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        .form-input-actual {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #1e293b;
+        }
+        .checkbox-group-actual {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .checkbox-group-actual input {
+            width: 16px;
+            height: 16px;
+        }
+        .checkbox-group-actual label {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        .btn-signup {
+            width: 100%;
+            padding: 12px 20px;
+            background: white;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .login-footer-actual {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .login-footer-actual a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P002-01</span>
+                    <span class="page-title-header">로그인</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/login', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame narrow">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/login</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <!-- 실제 헤더 -->
+                            <div class="actual-header">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav">
+                                    <span class="actual-nav-item">서비스 소개</span>
+                                    <span class="actual-nav-item">요금 안내</span>
+                                </div>
+                                <div class="actual-header-btn">
+                                    <button class="actual-btn actual-btn-outline">로그인</button>
+                                    <button class="actual-btn actual-btn-primary">무료 시작</button>
+                                </div>
+                            </div>
+                            
+                            <!-- 로그인 메인 -->
+                            <div class="actual-main">
+                                <div class="login-box">
+                                    <div class="login-header-text">
+                                        <div class="login-logo-text">Tokbell</div>
+                                        <div class="login-title-text">로그인</div>
+                                        <div class="login-subtitle-text">아이디와 비밀번호를 입력해주세요.</div>
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">아이디</label>
+                                        <input type="text" class="form-input-actual" placeholder="아이디를 입력하세요">
+                                    </div>
+                                    
+                                    <div class="form-group-actual">
+                                        <label class="form-label-actual">비밀번호</label>
+                                        <input type="password" class="form-input-actual" placeholder="비밀번호를 입력하세요">
+                                    </div>
+                                    
+                                    <div class="checkbox-group-actual">
+                                        <input type="checkbox" id="rememberId">
+                                        <label for="rememberId">아이디 저장</label>
+                                    </div>
+                                    
+                                    <button class="btn-login">로그인</button>
+                                    <button class="btn-signup">회원가입</button>
+                                    
+                                    <div class="login-footer-actual">
+                                        <a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Marker Overlay -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 20px; left: 20px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 200px; right: 130px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 340px; right: 130px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 420px; right: 130px;">4</div>
+                            <div class="marker" data-id="5" style="position: absolute; top: 540px; right: 130px;">5</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">login.html · 사용자 로그인 페이지</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">GNB (비로그인 헤더)</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">비로그인 상태의 글로벌 네비게이션 바입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>Tokbell 로고</td><td>index.html 홈으로 이동</td></tr>
+                            <tr><td>서비스 소개</td><td>랜딩 페이지 서비스 섹션으로 스크롤</td></tr>
+                            <tr><td>요금 안내</td><td>랜딩 페이지 요금 섹션으로 스크롤</td></tr>
+                            <tr><td>로그인 버튼</td><td>현재 페이지 (login.html)</td></tr>
+                            <tr><td>무료 시작 버튼</td><td>signup.html로 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">로그인 폼 - 아이디 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">아이디를 입력하는 필드입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>속성</th><th>값</th></tr>
+                            <tr><td>필드명</td><td>userId</td></tr>
+                            <tr><td>타입</td><td>text</td></tr>
+                            <tr><td>필수</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>Placeholder</td><td>아이디를 입력하세요</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">로그인 폼 - 비밀번호 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">비밀번호를 입력하는 필드입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>속성</th><th>값</th></tr>
+                            <tr><td>필드명</td><td>password</td></tr>
+                            <tr><td>타입</td><td>password</td></tr>
+                            <tr><td>필수</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>autocomplete</td><td>current-password</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">아이디 저장 & 로그인 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">아이디 저장 체크박스와 로그인 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>기능</th><th>설명</th></tr>
+                            <tr><td>아이디 저장</td><td>체크 시 localStorage에 savedUserId 저장</td></tr>
+                            <tr><td>로그인 버튼</td><td>클릭 시 로그인 처리</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 로그인 성공 처리</div>
+                            <div class="desc-note-text">로그인 성공 시 localStorage에 isLoggedIn = 'true' 저장 후 main.html로 이동</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">회원가입 & 계정 찾기</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회원가입 버튼과 아이디/비밀번호 찾기 링크입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼/링크</th><th>동작</th></tr>
+                            <tr><td>회원가입</td><td>signup.html로 이동</td></tr>
+                            <tr><td>아이디 찾기</td><td>준비 중 alert 표시</td></tr>
+                            <tr><td>비밀번호 찾기</td><td>준비 중 alert 표시</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

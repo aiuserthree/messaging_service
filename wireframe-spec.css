@@ -1,0 +1,1208 @@
+/* 화면설계서 공통 스타일 */
+
+/* 인덱스 바로가기 버튼 */
+.index-home-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.index-home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.5);
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+}
+
+.index-home-btn::before {
+    content: '🏠';
+    font-size: 16px;
+}
+
+:root {
+    --spec-primary: #2563eb;
+    --spec-secondary: #64748b;
+    --spec-border: #e2e8f0;
+    --spec-bg-light: #f8fafc;
+    --spec-text-dark: #1e293b;
+    --spec-text-light: #64748b;
+    --spec-highlight: #fef3c7;
+    --spec-number-bg: #ef4444;
+    --spec-number-text: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #f1f5f9;
+    color: var(--spec-text-dark);
+    line-height: 1.6;
+}
+
+/* 헤더 */
+.spec-header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: white;
+    padding: 40px 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.spec-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.spec-header-meta {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* 메인 컨테이너 */
+.spec-container {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 0;
+    min-height: calc(100vh - 120px);
+}
+
+/* 화면 영역 */
+.spec-screen {
+    background: #ffffff;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.screen-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* 번호 마커 스타일 */
+.spec-marker {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: var(--spec-number-bg);
+    color: var(--spec-number-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 50;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    border: 2px solid #ffffff;
+}
+
+.spec-marker:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
+}
+
+.spec-marker.active {
+    background: #1e40af;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.5);
+}
+
+/* 화면 컴포넌트에 하이라이트 */
+.highlight-component {
+    outline: 3px solid var(--spec-number-bg);
+    outline-offset: 4px;
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* 디스크립션 패널 */
+.spec-panel {
+    background: var(--spec-bg-light);
+    border-left: 1px solid var(--spec-border);
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    position: sticky;
+    top: 120px;
+}
+
+.panel-header {
+    padding: 24px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--spec-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.panel-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--spec-text-dark);
+    margin-bottom: 4px;
+}
+
+.panel-header p {
+    font-size: 13px;
+    color: var(--spec-text-light);
+}
+
+.panel-content {
+    padding: 16px;
+}
+
+/* 스펙 아이템 */
+.spec-item {
+    background: #ffffff;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid var(--spec-border);
+    transition: all 0.2s ease;
+}
+
+.spec-item:hover {
+    border-color: var(--spec-primary);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.spec-item.active {
+    border-color: var(--spec-number-bg);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2);
+}
+
+.spec-item-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.spec-item-number {
+    width: 32px;
+    height: 32px;
+    background: var(--spec-number-bg);
+    color: var(--spec-number-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.spec-item.active .spec-item-number {
+    background: #1e40af;
+}
+
+.spec-item-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--spec-text-dark);
+}
+
+.spec-item-toggle {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--spec-text-light);
+    transition: transform 0.2s;
+}
+
+.spec-item.open .spec-item-toggle {
+    transform: rotate(180deg);
+}
+
+.spec-item-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--spec-border);
+    background: var(--spec-bg-light);
+}
+
+.spec-item.open .spec-item-body {
+    display: block;
+}
+
+/* 스펙 상세 테이블 */
+.spec-table {
+    width: 100%;
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.spec-table tr {
+    border-bottom: 1px solid var(--spec-border);
+}
+
+.spec-table tr:last-child {
+    border-bottom: none;
+}
+
+.spec-table th {
+    width: 80px;
+    padding: 10px 0;
+    text-align: left;
+    color: var(--spec-text-light);
+    font-weight: 500;
+    vertical-align: top;
+}
+
+.spec-table td {
+    padding: 10px 0;
+    color: var(--spec-text-dark);
+}
+
+/* 태그 */
+.spec-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #dbeafe;
+    color: #1e40af;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.spec-tag.required {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.spec-tag.optional {
+    background: #e0e7ff;
+    color: #4f46e5;
+}
+
+.spec-tag.api {
+    background: #d1fae5;
+    color: #059669;
+}
+
+/* 리스트 스타일 */
+.spec-list {
+    list-style: none;
+    margin-top: 8px;
+}
+
+.spec-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--spec-text-dark);
+}
+
+.spec-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--spec-primary);
+}
+
+/* 섹션 구분 */
+.spec-section {
+    margin-bottom: 24px;
+}
+
+.spec-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--spec-text-dark);
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.spec-section-title::before {
+    content: '';
+    width: 4px;
+    height: 16px;
+    background: var(--spec-primary);
+    border-radius: 2px;
+}
+
+/* ==========================================
+   실제 화면 컴포넌트 스타일 (원본 유지)
+   ========================================== */
+
+/* 헤더 영역 */
+.mock-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.mock-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.mock-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.mock-nav-item-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+}
+
+.mock-nav-item {
+    font-size: 14px;
+    color: #64748b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    position: relative;
+    padding: 8px 12px;
+}
+
+.mock-nav-item:hover {
+    color: #2563eb;
+}
+
+.mock-nav-item.active {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.mock-dropdown-indicator {
+    font-size: 8px;
+    color: #94a3b8;
+    margin-left: -8px;
+    margin-right: 4px;
+}
+
+.mock-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mock-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.mock-btn-outline {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+}
+
+.mock-btn-outline:hover {
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.mock-btn-primary {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+}
+
+.mock-btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* 히어로 섹션 */
+.mock-hero {
+    background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+}
+
+.mock-hero-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.mock-hero-subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 28px;
+}
+
+.mock-hero-cta {
+    display: inline-block;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+/* 가격 섹션 */
+.mock-pricing {
+    padding: 50px 24px;
+    background: #ffffff;
+    position: relative;
+}
+
+.mock-pricing-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 32px;
+}
+
+.mock-pricing-tab {
+    padding: 10px 28px;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.mock-pricing-tab.active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+}
+
+.mock-pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.mock-pricing-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+}
+
+.mock-pricing-type {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.mock-pricing-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 4px 10px;
+    background: #fef3c7;
+    color: #b45309;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.mock-pricing-amount {
+    font-size: 40px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.mock-pricing-unit {
+    font-size: 16px;
+    color: #64748b;
+}
+
+.mock-pricing-per {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.mock-pricing-byte {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #f1f5f9;
+    border-radius: 16px;
+    font-size: 12px;
+    color: #475569;
+    margin: 12px 0;
+}
+
+.mock-pricing-features {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 16px;
+    margin-top: 8px;
+}
+
+.mock-pricing-feature {
+    font-size: 12px;
+    color: #475569;
+    margin-bottom: 8px;
+    padding-left: 14px;
+    position: relative;
+}
+
+.mock-pricing-feature::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #2563eb;
+}
+
+.mock-pricing-note {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #64748b;
+}
+
+/* 배너 & 공지사항 */
+.mock-banner-notice {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 32px 24px;
+    background: #ffffff;
+    position: relative;
+}
+
+.mock-banner {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.mock-banner-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.mock-banner-content p {
+    font-size: 14px;
+    color: #1e293b;
+    opacity: 0.8;
+}
+
+.mock-banner-content a {
+    font-size: 13px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.mock-banner-icon {
+    font-size: 60px;
+}
+
+.mock-banner-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #374151;
+}
+
+.mock-banner-nav.prev { left: 12px; }
+.mock-banner-nav.next { right: 12px; }
+
+.mock-notice {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+}
+
+.mock-notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.mock-notice-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.mock-notice-more {
+    font-size: 12px;
+    color: #64748b;
+    text-decoration: none;
+}
+
+.mock-notice-list {
+    list-style: none;
+}
+
+.mock-notice-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mock-notice-item:last-child {
+    border-bottom: none;
+}
+
+.mock-notice-item-title {
+    font-size: 13px;
+    color: #1e293b;
+}
+
+.mock-notice-item-date {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+/* 서비스 카탈로그 */
+.mock-service {
+    padding: 60px 24px;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    position: relative;
+}
+
+.mock-service-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    text-align: center;
+    margin-bottom: 36px;
+    line-height: 1.4;
+}
+
+.mock-service-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.mock-service-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.mock-service-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 14px;
+}
+
+.mock-service-icon.orange { background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%); }
+.mock-service-icon.yellow { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); }
+.mock-service-icon.gray { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); }
+
+.mock-service-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 3px 8px;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: white;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.mock-service-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+}
+
+.mock-service-card p {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.mock-service-link {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    text-decoration: none;
+}
+
+/* 브랜드 메시지 */
+.mock-brand {
+    padding: 60px 24px;
+    background: #ffffff;
+    position: relative;
+}
+
+.mock-brand-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 16px;
+}
+
+.mock-brand h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.mock-brand > p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 36px;
+}
+
+.mock-brand-card {
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    max-width: 1000px;
+}
+
+.mock-brand-text h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.mock-brand-text h3 span {
+    color: #2563eb;
+}
+
+.mock-brand-text p {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.mock-brand-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.mock-brand-upgrade {
+    padding: 8px 20px;
+    background: #1e293b;
+    color: white;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.mock-brand-icons {
+    display: flex;
+    gap: 32px;
+}
+
+.mock-brand-icon-item {
+    text-align: center;
+}
+
+.mock-brand-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mock-brand-circle.blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.mock-brand-circle.yellow {
+    background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
+}
+
+.mock-brand-icon-item span {
+    display: block;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.mock-brand-icon-item strong {
+    display: block;
+    font-size: 12px;
+    color: #1e293b;
+    margin-top: 2px;
+}
+
+/* FAQ 섹션 */
+.mock-faq {
+    padding: 60px 24px;
+    background: #f8fafc;
+    position: relative;
+}
+
+.mock-faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mock-faq h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.mock-faq-link {
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #2563eb;
+    color: #2563eb;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.mock-faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.mock-faq-item {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.mock-faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+}
+
+.mock-faq-question span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.mock-faq-toggle {
+    width: 24px;
+    height: 24px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.mock-faq-help {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.mock-faq-help p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 16px;
+}
+
+.mock-faq-help a {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: white;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* CTA 섹션 */
+.mock-cta {
+    padding: 60px 24px;
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    text-align: center;
+    position: relative;
+}
+
+.mock-cta-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    font-size: 12px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.mock-cta h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.mock-cta > p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 28px;
+}
+
+.mock-cta-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.mock-cta-btn {
+    padding: 14px 28px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.mock-cta-btn.outline {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+}
+
+.mock-cta-btn.primary {
+    background: white;
+    color: #2563eb;
+}
+
+/* 푸터 */
+.mock-footer {
+    background: #1e293b;
+    color: #94a3b8;
+    padding: 40px 24px;
+    position: relative;
+}
+
+.mock-footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+.mock-footer-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+}
+
+.mock-footer-desc {
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.mock-footer-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.mock-footer-links {
+    list-style: none;
+}
+
+.mock-footer-links li {
+    margin-bottom: 10px;
+}
+
+.mock-footer-links a {
+    font-size: 13px;
+    color: #94a3b8;
+    text-decoration: none;
+}
+
+.mock-footer-bottom {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid #334155;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 반응형 */
+@media (max-width: 1400px) {
+    .spec-container {
+        grid-template-columns: 1fr 380px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .spec-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .spec-panel {
+        position: relative;
+        top: 0;
+        height: auto;
+        border-left: none;
+        border-top: 1px solid var(--spec-border);
+    }
+    
+    .mock-pricing-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .mock-banner-notice {
+        grid-template-columns: 1fr;
+    }
+    
+    .mock-service-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .mock-brand-card {
+        flex-direction: column;
+    }
+    
+    .mock-footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .spec-header {
+        padding: 24px;
+    }
+    
+    .spec-header h1 {
+        font-size: 22px;
+    }
+    
+    .spec-header-meta {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .mock-service-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .mock-footer-content {
+        grid-template-columns: 1fr;
+    }
+}

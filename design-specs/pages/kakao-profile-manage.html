@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>발신프로필 관리 - 톡벨 화면설계서</title>
+    <title>카카오 프로필 관리 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -13,12 +13,11 @@
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
                     <span class="page-id-badge">FE-P004-01</span>
-                    <span class="page-title-header">발신프로필 관리</span>
+                    <span class="page-title-header">카카오 프로필 관리</span>
                 </div>
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../kakao-profile-manage.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,121 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/kakao-profile-manage.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/kakao-profile-manage</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../kakao-profile-manage.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item active">카카오톡 발송 ▼</span>
+                                    <span class="screen-nav-item">템플릿 관리</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span style="background: #e8f4fd; padding: 6px 12px; border-radius: 6px; font-size: 12px;">
+                                        잔액: <strong style="color: #4361ee;">125,000P</strong>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 300px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 500px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 마커 1: 페이지 타이틀 & 등록 버튼 -->
+                                <div class="marker" data-id="1" style="top: 100px; right: 20px;">1</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                                    <h2 style="font-size: 20px; font-weight: 600; color: #333;">카카오 프로필 관리</h2>
+                                    <button class="mock-btn mock-btn-primary">+ 프로필 등록</button>
+                                </div>
+                                
+                                <!-- 마커 2: 프로필 목록 -->
+                                <div class="marker" data-id="2" style="top: 160px; right: 20px;">2</div>
+                                <div class="form-section">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">No</th>
+                                                <th>프로필명</th>
+                                                <th>발신 프로필 키</th>
+                                                <th>상태</th>
+                                                <th>등록일</th>
+                                                <th style="width: 120px;">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- 마커 3: 프로필 행 -->
+                                            <div class="marker" data-id="3" style="top: 240px; right: 130px;">3</div>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                                        <div style="width: 32px; height: 32px; background: #fee500; border-radius: 8px; display: flex; align-items: center; justify-content: center;">💛</div>
+                                                        <span>톡벨 공식채널</span>
+                                                    </div>
+                                                </td>
+                                                <td style="font-family: monospace; font-size: 12px;">@tokbell_official</td>
+                                                <td><span class="status-badge success">승인완료</span></td>
+                                                <td>2024-01-10</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                                        <div style="width: 32px; height: 32px; background: #fee500; border-radius: 8px; display: flex; align-items: center; justify-content: center;">💛</div>
+                                                        <span>고객센터</span>
+                                                    </div>
+                                                </td>
+                                                <td style="font-family: monospace; font-size: 12px;">@tokbell_cs</td>
+                                                <td><span class="status-badge warning">심사중</span></td>
+                                                <td>2024-01-12</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>
+                                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                                        <div style="width: 32px; height: 32px; background: #fee500; border-radius: 8px; display: flex; align-items: center; justify-content: center;">💛</div>
+                                                        <span>마케팅채널</span>
+                                                    </div>
+                                                </td>
+                                                <td style="font-family: monospace; font-size: 12px;">@tokbell_mkt</td>
+                                                <td><span class="status-badge danger">반려</span></td>
+                                                <td>2024-01-08</td>
+                                                <td>
+                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- 마커 4: 안내 사항 -->
+                                <div class="marker" data-id="4" style="top: 450px; right: 20px;">4</div>
+                                <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; margin-top: 24px;">
+                                    <div style="font-weight: 600; color: #0369a1; margin-bottom: 12px;">💡 카카오 프로필 등록 안내</div>
+                                    <ul style="font-size: 13px; color: #0369a1; margin: 0; padding-left: 20px; line-height: 1.8;">
+                                        <li>카카오톡 채널(플러스친구)을 먼저 개설해야 합니다.</li>
+                                        <li>프로필 등록 후 카카오 심사를 거쳐 승인됩니다. (영업일 기준 1-3일)</li>
+                                        <li>승인된 프로필만 알림톡/브랜드톡 발송이 가능합니다.</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- 마커 5: 페이지네이션 -->
+                                <div class="marker" data-id="5" style="top: 580px; right: 400px;">5</div>
+                                <div class="pagination">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">3</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,10 +154,11 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">kakao-profile-manage.html · 발신프로필 관리 페이지</div>
+                <div class="desc-subtitle">kakao-profile-manage.html · 카카오 프로필 관리</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
@@ -66,15 +168,11 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">새로운 발신프로필을 등록합니다.</div>
+                        <div class="desc-text">새로운 카카오 프로필을 등록합니다.</div>
                         <table class="desc-table">
                             <tr><th>동작</th><th>설명</th></tr>
                             <tr><td>클릭</td><td>프로필 등록 모달 표시</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 참고</div>
-                            <div class="desc-note-text">카카오 비즈니스 채널에서 발신프로필 키를 발급받아야 합니다.</div>
-                        </div>
                     </div>
                 </div>
 
@@ -85,14 +183,13 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">등록된 발신프로필 목록을 표시합니다.</div>
+                        <div class="desc-text">등록된 카카오 프로필 목록을 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>프로필명</td><td>카카오 채널명</td></tr>
-                            <tr><td>프로필키</td><td>발신프로필 고유 키</td></tr>
-                            <tr><td>상태</td><td>활성/비활성</td></tr>
-                            <tr><td>등록일</td><td>프로필 등록일</td></tr>
-                            <tr><td>관리</td><td>수정/삭제 버튼</td></tr>
+                            <tr><td>프로필명</td><td>카카오 채널 이름</td></tr>
+                            <tr><td>발신 프로필 키</td><td>카카오 발신 프로필 ID</td></tr>
+                            <tr><td>상태</td><td>승인완료/심사중/반려</td></tr>
+                            <tr><td>등록일</td><td>프로필 등록 날짜</td></tr>
                         </table>
                     </div>
                 </div>
@@ -100,17 +197,41 @@
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">프로필 등록 모달</div>
+                        <div class="desc-item-title">상세 버튼</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">발신프로필 등록 폼입니다.</div>
+                        <div class="desc-text">프로필 상세 정보를 확인합니다.</div>
                         <table class="desc-table">
-                            <tr><th>필드</th><th>설명</th></tr>
-                            <tr><td>프로필명</td><td>표시될 프로필 이름</td></tr>
-                            <tr><td>프로필키</td><td>카카오에서 발급받은 키</td></tr>
-                            <tr><td>카테고리</td><td>업종 카테고리</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>프로필 상세 모달 표시</td></tr>
                         </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 참고</div>
+                            <div class="desc-note-text">반려된 프로필은 상세에서 반려 사유를 확인할 수 있습니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">안내 사항</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">카카오 프로필 등록에 대한 안내 메시지입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">프로필 목록 페이지 네비게이션입니다.</div>
                     </div>
                 </div>
             </div>
@@ -118,16 +239,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

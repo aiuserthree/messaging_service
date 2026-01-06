@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>세금계산서 발행 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+        .actual-page { background: #f8fafc; min-height: 700px; }
+        .actual-header-logged { background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+        .actual-logo { font-size: 24px; font-weight: 700; color: #2563eb; }
+        .actual-nav-logged { display: flex; gap: 4px; }
+        .nav-menu-item { padding: 8px 16px; font-size: 14px; color: #64748b; border-radius: 8px; }
+        .nav-menu-item.active { background: rgba(37, 99, 235, 0.1); color: #2563eb; }
+        
+        .page-content { max-width: 800px; margin: 0 auto; padding: 24px; }
+        .page-title { font-size: 24px; font-weight: 600; color: #1e293b; margin-bottom: 24px; }
+        
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 24px; margin-bottom: 16px; }
+        .card-title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 20px; }
+        
+        .form-row { margin-bottom: 16px; }
+        .form-label-actual { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #1e293b; }
+        .form-label-actual .required { color: #ef4444; }
+        .form-input-actual, .form-select-actual { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white; }
+        .form-input-actual:disabled { background: #f8fafc; color: #64748b; }
+        
+        .form-row-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        
+        .info-box { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+        .info-box-text { font-size: 14px; color: #166534; }
+        
+        .summary-box { background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .summary-row:last-child { margin-bottom: 0; border-top: 1px solid #e2e8f0; padding-top: 8px; font-weight: 600; }
+        .summary-label { color: #64748b; }
+        .summary-value { color: #1e293b; }
+        .summary-value.blue { color: #2563eb; }
+        
+        .btn-submit { width: 100%; padding: 14px 24px; background: #2563eb; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P008-03</span>
+                    <span class="page-title-header">세금계산서 발행</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" onclick="window.open('https://spec-pearl-mu.vercel.app/payment-tax', '_blank')">🔗 실제 페이지</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://spec-pearl-mu.vercel.app/payment-tax</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="actual-page" style="position: relative;">
+                            <div class="actual-header-logged">
+                                <div class="actual-logo">Tokbell</div>
+                                <div class="actual-nav-logged">
+                                    <div class="nav-menu-item">홈</div>
+                                    <div class="nav-menu-item">문자 발송 ▾</div>
+                                    <div class="nav-menu-item active">요금/결제 ▾</div>
+                                </div>
+                            </div>
+                            
+                            <div class="page-content">
+                                <h1 class="page-title">🧾 세금계산서 발행</h1>
+                                
+                                <div class="info-box">
+                                    <div class="info-box-text">✅ 사업자 정보가 등록되어 있어야 세금계산서를 발행할 수 있습니다.</div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-title">사업자 정보</div>
+                                    <div class="form-row-inline">
+                                        <div class="form-row">
+                                            <label class="form-label-actual">상호명 <span class="required">*</span></label>
+                                            <input type="text" class="form-input-actual" value="(주)테스트회사">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label-actual">사업자등록번호 <span class="required">*</span></label>
+                                            <input type="text" class="form-input-actual" value="123-45-67890">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">대표자명 <span class="required">*</span></label>
+                                        <input type="text" class="form-input-actual" value="홍길동">
+                                    </div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">사업장 주소 <span class="required">*</span></label>
+                                        <input type="text" class="form-input-actual" value="서울특별시 강남구 테헤란로 123">
+                                    </div>
+                                    <div class="form-row">
+                                        <label class="form-label-actual">세금계산서 수신 이메일 <span class="required">*</span></label>
+                                        <input type="email" class="form-input-actual" value="tax@example.com">
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-title">발행 대상 선택</div>
+                                    <div class="form-row-inline">
+                                        <div class="form-row">
+                                            <label class="form-label-actual">기간</label>
+                                            <select class="form-select-actual">
+                                                <option>2025년 1월</option>
+                                                <option>2024년 12월</option>
+                                                <option>2024년 11월</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="summary-box">
+                                        <div class="summary-row">
+                                            <span class="summary-label">결제 금액</span>
+                                            <span class="summary-value">50,000원</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span class="summary-label">공급가액</span>
+                                            <span class="summary-value">45,455원</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span class="summary-label">세액</span>
+                                            <span class="summary-value">4,545원</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span class="summary-label">발행 금액</span>
+                                            <span class="summary-value blue">50,000원</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn-submit">세금계산서 발행 신청</button>
+                            </div>
+                            
+                            <!-- Markers -->
+                            <div class="marker" data-id="1" style="position: absolute; top: 130px; right: 50px;">1</div>
+                            <div class="marker" data-id="2" style="position: absolute; top: 200px; right: 50px;">2</div>
+                            <div class="marker" data-id="3" style="position: absolute; top: 500px; right: 50px;">3</div>
+                            <div class="marker" data-id="4" style="position: absolute; top: 700px; right: 50px;">4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">payment-tax.html · 세금계산서 발행</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">안내 메시지</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">세금계산서 발행을 위한 사전 조건 안내입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">사업자 정보</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">세금계산서에 기재될 사업자 정보입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>상호명</td><td>사업자등록증 상 상호</td></tr>
+                            <tr><td>사업자등록번호</td><td>10자리 사업자번호</td></tr>
+                            <tr><td>대표자명</td><td>대표자 이름</td></tr>
+                            <tr><td>사업장 주소</td><td>사업장 소재지</td></tr>
+                            <tr><td>수신 이메일</td><td>전자세금계산서 수신 이메일</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">발행 대상 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">세금계산서를 발행할 기간을 선택하고 금액을 확인합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>결제 금액</td><td>해당 기간 총 결제액</td></tr>
+                            <tr><td>공급가액</td><td>VAT 제외 금액</td></tr>
+                            <tr><td>세액</td><td>VAT (10%)</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">발행 신청</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">세금계산서 발행을 신청합니다.</div>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 발행 안내</div>
+                            <div class="desc-note-text">신청 후 1-2 영업일 내 입력한 이메일로 전자세금계산서가 발송됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

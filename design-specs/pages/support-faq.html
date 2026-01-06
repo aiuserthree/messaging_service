@@ -18,7 +18,6 @@
             </div>
             <div class="header-right">
                 <button class="btn btn-secondary" onclick="window.open('../../support-faq.html', '_blank')">🔗 실제 페이지</button>
-                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,19 +32,121 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/support-faq.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/support-faq</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="iframe-container" style="height: 700px;">
-                            <iframe id="pageIframe" class="page-iframe" src="../../support-faq.html" style="height: 700px;" onload="hideLoading()"></iframe>
-                            <div class="iframe-loading" id="iframeLoading">
-                                <div class="iframe-loading-spinner"></div>
-                                <div>로딩 중...</div>
+                        <div class="screen-mock">
+                            <!-- Header -->
+                            <div class="screen-header">
+                                <div class="screen-logo">Tokbell</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">대시보드</span>
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">고객지원 ▼</span>
+                                </div>
+                                <div class="screen-user">
+                                    <span>홍길동님</span>
+                                </div>
                             </div>
-                            <div class="marker-overlay" id="markerOverlay">
-                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
-                                <div class="marker" data-id="2" style="top: 200px; right: 20px;">2</div>
-                                <div class="marker" data-id="3" style="top: 400px; right: 20px;">3</div>
+                            
+                            <!-- Body -->
+                            <div class="screen-body" style="padding: 24px;">
+                                <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 24px;">자주 묻는 질문 (FAQ)</h2>
+                                
+                                <!-- 마커 1: 카테고리 탭 -->
+                                <div class="marker" data-id="1" style="top: 130px; right: 20px;">1</div>
+                                <div class="tab-group" style="margin-bottom: 24px;">
+                                    <div class="tab-item active">전체</div>
+                                    <div class="tab-item">회원</div>
+                                    <div class="tab-item">발송</div>
+                                    <div class="tab-item">결제</div>
+                                    <div class="tab-item">기술</div>
+                                </div>
+                                
+                                <!-- 마커 2: 검색 -->
+                                <div class="marker" data-id="2" style="top: 190px; right: 20px;">2</div>
+                                <div class="form-section" style="padding: 16px; margin-bottom: 24px;">
+                                    <div style="display: flex; gap: 12px;">
+                                        <input type="text" class="form-input" placeholder="질문을 검색하세요" style="flex: 1;">
+                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 3: FAQ 목록 -->
+                                <div class="marker" data-id="3" style="top: 280px; right: 20px;">3</div>
+                                <div class="form-section" style="padding: 0;">
+                                    <!-- FAQ 아이템 1 (열린 상태) -->
+                                    <div class="faq-item open">
+                                        <div class="faq-question">
+                                            <span><strong>Q.</strong> 문자 발송 단가는 어떻게 되나요?</span>
+                                            <span>▲</span>
+                                        </div>
+                                        <div class="faq-answer" style="display: block;">
+                                            <strong>A.</strong> 톡벨의 문자 발송 단가는 다음과 같습니다.<br><br>
+                                            • SMS: 9.9원/건<br>
+                                            • LMS: 28원/건<br>
+                                            • MMS: 110원/건<br>
+                                            • 알림톡: 7.5원/건<br>
+                                            • 브랜드톡: 15원/건<br><br>
+                                            대량 발송 시 별도 할인이 적용될 수 있습니다.
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- FAQ 아이템 2 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span><strong>Q.</strong> 발신번호 등록은 어떻게 하나요?</span>
+                                            <span>▼</span>
+                                        </div>
+                                        <div class="faq-answer">
+                                            발신번호 등록 방법 안내...
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- FAQ 아이템 3 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span><strong>Q.</strong> 알림톡 템플릿 승인 기간은 얼마나 걸리나요?</span>
+                                            <span>▼</span>
+                                        </div>
+                                        <div class="faq-answer">
+                                            알림톡 템플릿 승인 안내...
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- FAQ 아이템 4 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span><strong>Q.</strong> 세금계산서 발행이 가능한가요?</span>
+                                            <span>▼</span>
+                                        </div>
+                                        <div class="faq-answer">
+                                            세금계산서 발행 안내...
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- FAQ 아이템 5 -->
+                                    <div class="faq-item">
+                                        <div class="faq-question">
+                                            <span><strong>Q.</strong> 광고 문자 발송 시 주의사항은 무엇인가요?</span>
+                                            <span>▼</span>
+                                        </div>
+                                        <div class="faq-answer">
+                                            광고 문자 주의사항 안내...
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- 마커 4: 페이지네이션 -->
+                                <div class="marker" data-id="4" style="top: 620px; right: 400px;">4</div>
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">3</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,23 +154,28 @@
             </div>
         </div>
 
+        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">support-faq.html · FAQ 페이지</div>
+                <div class="desc-subtitle">support-faq.html · FAQ</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">검색 영역</div>
+                        <div class="desc-item-title">카테고리 탭</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">FAQ를 검색합니다.</div>
+                        <div class="desc-text">FAQ 카테고리별로 필터링합니다.</div>
                         <table class="desc-table">
-                            <tr><th>기능</th><th>설명</th></tr>
-                            <tr><td>키워드 검색</td><td>질문/답변 내 키워드 검색</td></tr>
+                            <tr><th>카테고리</th><th>내용</th></tr>
+                            <tr><td>전체</td><td>모든 FAQ</td></tr>
+                            <tr><td>회원</td><td>회원가입, 계정 관련</td></tr>
+                            <tr><td>발송</td><td>메시지 발송 관련</td></tr>
+                            <tr><td>결제</td><td>요금, 결제 관련</td></tr>
+                            <tr><td>기술</td><td>API, 연동 관련</td></tr>
                         </table>
                     </div>
                 </div>
@@ -77,19 +183,11 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">카테고리 탭</div>
+                        <div class="desc-item-title">검색</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">FAQ 카테고리를 선택합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>카테고리</th><th>설명</th></tr>
-                            <tr><td>전체</td><td>모든 FAQ</td></tr>
-                            <tr><td>가입/결제</td><td>가입 및 결제 관련</td></tr>
-                            <tr><td>문자발송</td><td>문자 발송 관련</td></tr>
-                            <tr><td>카카오톡</td><td>알림톡/브랜드톡 관련</td></tr>
-                            <tr><td>기타</td><td>기타 문의</td></tr>
-                        </table>
+                        <div class="desc-text">키워드로 FAQ를 검색합니다.</div>
                     </div>
                 </div>
 
@@ -100,11 +198,22 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">FAQ 질문과 답변을 아코디언 형태로 표시합니다.</div>
+                        <div class="desc-text">아코디언 형태로 FAQ 목록을 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>동작</th><th>설명</th></tr>
-                            <tr><td>질문 클릭</td><td>답변 펼침/접힘</td></tr>
+                            <tr><td>질문 클릭</td><td>답변 펼치기/접기</td></tr>
                         </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">페이지네이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">FAQ 목록 페이지 이동입니다.</div>
                     </div>
                 </div>
             </div>
@@ -112,16 +221,5 @@
     </div>
 
     <script src="../assets/common.js"></script>
-    <script>
-        function hideLoading() {
-            document.getElementById('iframeLoading').style.display = 'none';
-        }
-        
-        function reloadIframe() {
-            const iframe = document.getElementById('pageIframe');
-            document.getElementById('iframeLoading').style.display = 'block';
-            iframe.src = iframe.src;
-        }
-    </script>
 </body>
 </html>

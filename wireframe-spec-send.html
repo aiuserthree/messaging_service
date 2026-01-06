@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>발송 관리 화면 - 화면설계서</title>
+    <link rel="stylesheet" href="wireframe-spec.css">
+    <style>
+        .page-nav { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .page-nav-btn { padding: 8px 16px; border: 1px solid #e2e8f0; border-radius: 6px; background: white; cursor: pointer; font-size: 13px; }
+        .page-nav-btn.active { background: #2563eb; color: white; border-color: #2563eb; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <!-- 인덱스 바로가기 버튼 -->
+    <a href="wireframe-spec-index.html" class="index-home-btn">화면설계 목록</a>
+
+    <header class="spec-header">
+        <h1>📋 발송 관리 화면설계서</h1>
+        <div class="spec-header-meta">
+            <span>📄 문서번호: FE-SPEC-SEND-001</span>
+            <span>📅 작성일: 2025-01-06</span>
+            <span>✏️ 버전: v1.0</span>
+            <span>📁 2개 파일</span>
+        </div>
+    </header>
+
+    <div class="spec-container">
+        <div class="spec-screen">
+            <div class="screen-wrapper">
+                
+                <div class="page-nav">
+                    <button class="page-nav-btn active" onclick="showPage('result')">발송 결과</button>
+                    <button class="page-nav-btn" onclick="showPage('reservation')">예약 내역</button>
+                </div>
+
+                <!-- 발송 결과 화면 -->
+                <div class="page-content active" id="page-result">
+                    <div class="mock-header">
+                        <span class="spec-marker" data-num="1" style="top: -10px; left: 10px;">1</span>
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <div class="mock-nav-item-dropdown"><a href="#" class="mock-nav-item active">발송 관리</a><div class="mock-dropdown-indicator">▼</div></div>
+                        </nav>
+                    </div>
+
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 600px;">
+                        <span class="spec-marker" data-num="2" style="top: 10px; left: 30px;">2</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">발송 결과</h2>
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px;">발송된 메시지 결과를 확인합니다</p>
+
+                        <!-- 통계 카드 -->
+                        <span class="spec-marker" data-num="3" style="top: 100px; right: 30px;">3</span>
+                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 24px;">
+                            <div style="background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: #2563eb;">1,234</div>
+                                <div style="font-size: 13px; color: #64748b;">전체 발송</div>
+                            </div>
+                            <div style="background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">1,200</div>
+                                <div style="font-size: 13px; color: #64748b;">성공</div>
+                            </div>
+                            <div style="background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: #ef4444;">34</div>
+                                <div style="font-size: 13px; color: #64748b;">실패</div>
+                            </div>
+                            <div style="background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">97.2%</div>
+                                <div style="font-size: 13px; color: #64748b;">성공률</div>
+                            </div>
+                            <div style="background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: #8b5cf6;">8,900원</div>
+                                <div style="font-size: 13px; color: #64748b;">사용 금액</div>
+                            </div>
+                        </div>
+
+                        <!-- 검색 필터 -->
+                        <span class="spec-marker" data-num="4" style="top: 220px; left: 30px;">4</span>
+                        <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                                <select style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; min-width: 120px;">
+                                    <option>메시지 유형</option>
+                                    <option>SMS</option>
+                                    <option>LMS</option>
+                                    <option>MMS</option>
+                                    <option>알림톡</option>
+                                </select>
+                                <select style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; min-width: 120px;">
+                                    <option>발송 상태</option>
+                                    <option>성공</option>
+                                    <option>실패</option>
+                                    <option>대기</option>
+                                </select>
+                                <input type="date" style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <span>~</span>
+                                <input type="date" style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <input type="text" placeholder="수신번호 검색" style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; min-width: 200px;">
+                                <button style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 8px;">검색</button>
+                            </div>
+                        </div>
+
+                        <!-- 결과 테이블 -->
+                        <span class="spec-marker" data-num="5" style="top: 340px; right: 30px;">5</span>
+                        <div style="background: white; border-radius: 12px; overflow: hidden;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #e2e8f0;">
+                                <span style="font-weight: 600;">발송 내역 (총 1,234건)</span>
+                                <button style="padding: 8px 16px; background: white; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px;">📥 엑셀 다운로드</button>
+                            </div>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">발송일시</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">메시지 유형</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">수신번호</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">내용</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">상태</th>
+                                        <th style="padding: 12px; text-align: right; border-bottom: 1px solid #e2e8f0;">비용</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">2025-01-06 14:30</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><span style="padding: 4px 8px; background: #dbeafe; color: #2563eb; border-radius: 4px; font-size: 12px;">SMS</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">010-1234-5678</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">안녕하세요. 배송 안내드립니다...</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;"><span style="padding: 4px 8px; background: #dcfce7; color: #16a34a; border-radius: 4px; font-size: 12px;">성공</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right;">7.4원</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">2025-01-06 14:25</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><span style="padding: 4px 8px; background: #fae100; color: #3c1e1e; border-radius: 4px; font-size: 12px;">알림톡</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">010-9876-5432</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">[배송안내] 고객님, 주문하신...</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;"><span style="padding: 4px 8px; background: #fee2e2; color: #dc2626; border-radius: 4px; font-size: 12px;">실패</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: right;">0원</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- 페이지네이션 -->
+                            <span class="spec-marker" data-num="6" style="bottom: 20px; left: 50%; transform: translateX(-50%);">6</span>
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 8px; padding: 20px;">
+                                <button style="padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px;">‹</button>
+                                <button style="padding: 8px 12px; background: #2563eb; color: white; border: none; border-radius: 6px;">1</button>
+                                <button style="padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px;">2</button>
+                                <button style="padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px;">3</button>
+                                <button style="padding: 8px 12px; background: white; border: 1px solid #e2e8f0; border-radius: 6px;">›</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 예약 내역 화면 -->
+                <div class="page-content" id="page-reservation">
+                    <div class="mock-header">
+                        <div class="mock-logo"><span>Tokbell</span></div>
+                        <nav class="mock-nav">
+                            <div class="mock-nav-item-dropdown"><a href="#" class="mock-nav-item active">발송 관리</a><div class="mock-dropdown-indicator">▼</div></div>
+                        </nav>
+                    </div>
+                    <div style="padding: 32px 24px; background: #f8fafc; min-height: 400px;">
+                        <span class="spec-marker" data-num="7" style="top: 10px; left: 30px;">7</span>
+                        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">예약 내역</h2>
+                        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px;">예약된 발송 내역을 관리합니다</p>
+
+                        <!-- 예약 테이블 -->
+                        <span class="spec-marker" data-num="8" style="top: 100px; right: 30px;">8</span>
+                        <div style="background: white; border-radius: 12px; overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #f8fafc;">
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;"><input type="checkbox"></th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">예약일시</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">메시지 유형</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">수신자 수</th>
+                                        <th style="padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0;">내용 미리보기</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">상태</th>
+                                        <th style="padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0;">관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><input type="checkbox"></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">2025-01-07 09:00</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><span style="padding: 4px 8px; background: #dbeafe; color: #2563eb; border-radius: 4px; font-size: 12px;">SMS</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">150명</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;">새해 인사 메시지...</td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;"><span style="padding: 4px 8px; background: #fef3c7; color: #d97706; border-radius: 4px; font-size: 12px;">대기중</span></td>
+                                        <td style="padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center;">
+                                            <button style="padding: 4px 8px; background: white; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 12px; margin-right: 4px;">수정</button>
+                                            <button style="padding: 4px 8px; background: white; border: 1px solid #ef4444; color: #ef4444; border-radius: 4px; font-size: 12px;">취소</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 디스크립션 패널 -->
+        <div class="spec-panel">
+            <div class="panel-header">
+                <h2>📝 컴포넌트 명세</h2>
+                <p>발송 관리 화면 구성 요소</p>
+            </div>
+            <div class="panel-content">
+                
+                <div class="spec-section">
+                    <div class="spec-section-title">페이지 정보</div>
+                    <div style="padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px;">
+                        <strong>파일 목록:</strong>
+                        <ul style="margin: 8px 0 0 16px;">
+                            <li>send-result.html - 발송 결과</li>
+                            <li>send-reservation.html - 예약 내역</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">발송 결과</div>
+                    
+                    <div class="spec-item" data-spec="1"><div class="spec-item-header"><span class="spec-item-number">1</span><span class="spec-item-title">GNB 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>활성메뉴</th><td>발송 관리</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="2"><div class="spec-item-header"><span class="spec-item-number">2</span><span class="spec-item-title">페이지 헤더</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>send-result.html</td></tr><tr><th>타이틀</th><td>"발송 결과"</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="3"><div class="spec-item-header"><span class="spec-item-number">3</span><span class="spec-item-title">발송 통계 카드</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>항목</th><td>전체 발송, 성공, 실패, 성공률, 사용 금액</td></tr><tr><th>실시간</th><td>선택 기간에 따라 자동 업데이트</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="4"><div class="spec-item-header"><span class="spec-item-number">4</span><span class="spec-item-title">검색 필터</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>필터항목</th><td>메시지 유형, 발송 상태, 기간, 수신번호</td></tr><tr><th>기본값</th><td>오늘 날짜, 전체 유형</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="5"><div class="spec-item-header"><span class="spec-item-number">5</span><span class="spec-item-title">결과 테이블</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>발송일시, 메시지 유형, 수신번호, 내용, 상태, 비용</td></tr><tr><th>엑셀</th><td>전체 내역 다운로드 지원</td></tr><tr><th>상세보기</th><td>행 클릭 시 발송 상세 모달</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="6"><div class="spec-item-header"><span class="spec-item-number">6</span><span class="spec-item-title">페이지네이션</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>단위</th><td>20건 / 50건 / 100건 선택 가능</td></tr></table></div></div>
+                </div>
+
+                <div class="spec-section">
+                    <div class="spec-section-title">예약 내역</div>
+                    
+                    <div class="spec-item" data-spec="7"><div class="spec-item-header"><span class="spec-item-number">7</span><span class="spec-item-title">예약 내역 페이지</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>파일</th><td>send-reservation.html</td></tr><tr><th>기능</th><td>예약된 발송 관리, 수정, 취소</td></tr></table></div></div>
+                    <div class="spec-item" data-spec="8"><div class="spec-item-header"><span class="spec-item-number">8</span><span class="spec-item-title">예약 테이블</span><span class="spec-item-toggle">▼</span></div><div class="spec-item-body"><table class="spec-table"><tr><th>컬럼</th><td>선택, 예약일시, 메시지 유형, 수신자 수, 내용, 상태, 관리</td></tr><tr><th>상태</th><td>대기중, 발송완료, 취소됨</td></tr><tr><th>관리</th><td>수정 (예약 시간 전), 취소</td></tr></table></div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) { document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('page-' + pageId).classList.add('active'); event.target.classList.add('active'); }
+        document.querySelectorAll('.spec-item-header').forEach(header => { header.addEventListener('click', function() { this.parentElement.classList.toggle('open'); }); });
+        document.querySelectorAll('.spec-marker').forEach(marker => { marker.addEventListener('click', function() { const num = this.getAttribute('data-num'); const specItem = document.querySelector(`.spec-item[data-spec="${num}"]`); document.querySelectorAll('.spec-marker').forEach(m => m.classList.remove('active')); document.querySelectorAll('.spec-item').forEach(i => i.classList.remove('active')); this.classList.add('active'); if (specItem) { specItem.classList.add('active', 'open'); specItem.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }); });
+        document.querySelector('.spec-item')?.classList.add('open');
+    </script>
+</body>
+</html>
