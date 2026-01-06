@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAY-03 세금계산서 발행 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">PAY-03</span>
+                    <span class="page-title-header">세금계산서 발행</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/payment-tax.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자발송</span>
+                                    <span class="screen-nav-item">선거문자</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">발송 관리</span>
+                                    <span class="screen-nav-item active">결제 관리</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <!-- Sub Navigation -->
+                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
+                                <div style="display: flex; gap: 32px; position: relative;">
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">충전하기</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">충전 내역</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">세금계산서 발행</a>
+                                    <div class="marker" data-id="1" style="top: 8px; right: -20px;">1</div>
+                                </div>
+                            </div>
+
+                            <div class="screen-body" style="padding: 24px;">
+                                <!-- 사업자 정보 카드 -->
+                                <div style="background: white; border-radius: 12px; padding: 24px; border: 1px solid #eee; margin-bottom: 24px; position: relative;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                        <h3 style="font-size: 16px; font-weight: 600;">사업자 정보</h3>
+                                        <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                                        <div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">사업자등록번호</div>
+                                            <div style="font-size: 14px; font-weight: 500;">123-45-67890</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">상호명</div>
+                                            <div style="font-size: 14px; font-weight: 500;">(주)테스트회사</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">대표자명</div>
+                                            <div style="font-size: 14px; font-weight: 500;">홍길동</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">담당자 이메일</div>
+                                            <div style="font-size: 14px; font-weight: 500;">tax@test.com</div>
+                                        </div>
+                                    </div>
+                                    <div class="marker" data-id="2" style="top: 16px; right: 16px;">2</div>
+                                </div>
+
+                                <!-- 발행 신청 -->
+                                <div style="background: white; border-radius: 12px; padding: 24px; border: 1px solid #eee; margin-bottom: 24px; position: relative;">
+                                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">세금계산서 발행 신청</h3>
+                                    <div style="display: flex; gap: 16px; align-items: flex-end;">
+                                        <div style="flex: 1;">
+                                            <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">발행 기간</label>
+                                            <div style="display: flex; gap: 8px; align-items: center;">
+                                                <input type="date" class="form-input" style="flex: 1;">
+                                                <span style="color: #999;">~</span>
+                                                <input type="date" class="form-input" style="flex: 1;">
+                                            </div>
+                                        </div>
+                                        <button class="mock-btn mock-btn-primary">발행 신청</button>
+                                    </div>
+                                    <div class="marker" data-id="3" style="top: 16px; right: 16px;">3</div>
+                                </div>
+
+                                <!-- 발행 내역 -->
+                                <div style="background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; position: relative;">
+                                    <div style="padding: 20px 24px; border-bottom: 1px solid #eee;">
+                                        <h3 style="font-size: 16px; font-weight: 600;">발행 내역</h3>
+                                    </div>
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                        <thead>
+                                            <tr style="background: #f8f9fa;">
+                                                <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">발행일</th>
+                                                <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">발행 기간</th>
+                                                <th style="padding: 14px 16px; text-align: right; font-weight: 600; border-bottom: 1px solid #eee;">공급가액</th>
+                                                <th style="padding: 14px 16px; text-align: right; font-weight: 600; border-bottom: 1px solid #eee;">세액</th>
+                                                <th style="padding: 14px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eee;">상태</th>
+                                                <th style="padding: 14px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eee;">다운로드</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                                <td style="padding: 14px 16px;">2025-01-15</td>
+                                                <td style="padding: 14px 16px; color: #666;">2025.01.01 ~ 2025.01.15</td>
+                                                <td style="padding: 14px 16px; text-align: right; font-weight: 500;">500,000원</td>
+                                                <td style="padding: 14px 16px; text-align: right; color: #666;">50,000원</td>
+                                                <td style="padding: 14px 16px; text-align: center;">
+                                                    <span style="background: #e8f5e9; color: #388e3c; padding: 4px 8px; border-radius: 4px; font-size: 12px;">발행완료</span>
+                                                </td>
+                                                <td style="padding: 14px 16px; text-align: center;">
+                                                    <button class="mock-btn mock-btn-outline mock-btn-xs">📥 PDF</button>
+                                                </td>
+                                            </tr>
+                                            <tr style="border-bottom: 1px solid #f0f0f0;">
+                                                <td style="padding: 14px 16px;">2025-01-02</td>
+                                                <td style="padding: 14px 16px; color: #666;">2024.12.01 ~ 2024.12.31</td>
+                                                <td style="padding: 14px 16px; text-align: right; font-weight: 500;">300,000원</td>
+                                                <td style="padding: 14px 16px; text-align: right; color: #666;">30,000원</td>
+                                                <td style="padding: 14px 16px; text-align: center;">
+                                                    <span style="background: #e8f5e9; color: #388e3c; padding: 4px 8px; border-radius: 4px; font-size: 12px;">발행완료</span>
+                                                </td>
+                                                <td style="padding: 14px 16px; text-align: center;">
+                                                    <button class="mock-btn mock-btn-outline mock-btn-xs">📥 PDF</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="marker" data-id="4" style="top: 16px; right: 16px;">4</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="description-panel">
+            <div class="description-header">
+                <h2>화면 설명</h2>
+                <span class="page-type-badge">메인</span>
+            </div>
+
+            <div class="description-content">
+                <div class="desc-item" data-id="1">
+                    <div class="desc-number">1</div>
+                    <div class="desc-text">
+                        <strong>서브 네비게이션</strong>
+                        <p>결제 관리 섹션의 하위 메뉴입니다.</p>
+                        <ul>
+                            <li>충전하기</li>
+                            <li>충전 내역</li>
+                            <li>세금계산서 발행 (현재)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-number">2</div>
+                    <div class="desc-text">
+                        <strong>사업자 정보</strong>
+                        <p>세금계산서 발행에 사용될 사업자 정보입니다.</p>
+                        <ul>
+                            <li>사업자등록번호, 상호명, 대표자명 표시</li>
+                            <li>담당자 이메일: 세금계산서 수신 이메일</li>
+                            <li>수정 버튼: 사업자 정보 변경 모달</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-number">3</div>
+                    <div class="desc-text">
+                        <strong>세금계산서 발행 신청</strong>
+                        <p>원하는 기간의 세금계산서를 신청합니다.</p>
+                        <ul>
+                            <li>발행 기간 선택 (시작일 ~ 종료일)</li>
+                            <li>발행 신청 버튼 클릭 시 신청 완료</li>
+                            <li>신청 후 1~2영업일 내 발행</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-number">4</div>
+                    <div class="desc-text">
+                        <strong>발행 내역</strong>
+                        <p>기존 발행된 세금계산서 목록입니다.</p>
+                        <ul>
+                            <li>발행일, 발행 기간, 공급가액, 세액</li>
+                            <li>상태: 신청중/발행완료</li>
+                            <li>PDF 다운로드 버튼</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

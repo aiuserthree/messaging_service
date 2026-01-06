@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELEC-02 선거문자 주소록 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">ELEC-02</span>
+                    <span class="page-title-header">선거문자 주소록</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/election-addressbook.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자발송</span>
+                                    <span class="screen-nav-item active">선거문자</span>
+                                    <span class="screen-nav-item">카카오톡 발송</span>
+                                    <span class="screen-nav-item">발송 관리</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <!-- Sub Navigation -->
+                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
+                                <div style="display: flex; gap: 32px; position: relative;">
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 발송</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">선거문자 주소록</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">수신거부 관리</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 템플릿</a>
+                                    <div class="marker" data-id="1" style="top: 8px; right: -20px;">1</div>
+                                </div>
+                            </div>
+
+                            <div class="screen-body" style="display: flex; gap: 0; padding: 0;">
+                                <!-- 좌측 그룹 목록 -->
+                                <div style="width: 260px; background: white; border-right: 1px solid #eee; padding: 16px; position: relative;">
+                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 16px;">선거구 그룹</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <div style="padding: 12px; border-radius: 8px; background: #4361ee; color: white; font-size: 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                            <span>🗳️ 전체</span>
+                                            <span>5,000</span>
+                                        </div>
+                                        <div style="padding: 12px; border-radius: 8px; font-size: 13px; color: #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                            <span>🗳️ A선거구</span>
+                                            <span style="color: #999;">2,000</span>
+                                        </div>
+                                        <div style="padding: 12px; border-radius: 8px; font-size: 13px; color: #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                            <span>🗳️ B선거구</span>
+                                            <span style="color: #999;">1,500</span>
+                                        </div>
+                                        <div style="padding: 12px; border-radius: 8px; font-size: 13px; color: #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                                            <span>🗳️ C선거구</span>
+                                            <span style="color: #999;">1,500</span>
+                                        </div>
+                                    </div>
+                                    <button style="width: 100%; margin-top: 16px; padding: 12px; background: #f5f5f5; border: 1px dashed #ddd; border-radius: 8px; font-size: 13px; color: #666; cursor: pointer;">
+                                        + 선거구 그룹 추가
+                                    </button>
+                                    <div class="marker" data-id="2" style="top: 16px; right: 16px;">2</div>
+                                </div>
+
+                                <!-- 우측 주소록 목록 -->
+                                <div style="flex: 1; padding: 24px;">
+                                    <!-- 선거 정보 배너 -->
+                                    <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; position: relative;">
+                                        <span style="font-size: 24px;">⚠️</span>
+                                        <div>
+                                            <div style="font-weight: 600; color: #e65100; font-size: 14px;">선거문자 주소록 안내</div>
+                                            <div style="font-size: 12px; color: #bf360c;">공직선거법에 따라 선거일 180일 전부터 발송 가능합니다.</div>
+                                        </div>
+                                        <div class="marker" data-id="3" style="top: 8px; right: 8px;">3</div>
+                                    </div>
+
+                                    <!-- 검색 및 액션 -->
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative;">
+                                        <div style="display: flex; gap: 8px;">
+                                            <input type="text" class="form-input" placeholder="이름 또는 전화번호 검색" style="width: 250px;">
+                                            <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                        </div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button class="mock-btn mock-btn-outline mock-btn-sm">📥 엑셀 업로드</button>
+                                            <button class="mock-btn mock-btn-outline mock-btn-sm">📤 엑셀 다운로드</button>
+                                            <button class="mock-btn mock-btn-primary mock-btn-sm">+ 유권자 추가</button>
+                                        </div>
+                                        <div class="marker" data-id="4" style="top: -8px; right: 0;">4</div>
+                                    </div>
+
+                                    <!-- 테이블 -->
+                                    <div style="background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; position: relative;">
+                                        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                            <thead>
+                                                <tr style="background: #f8f9fa;">
+                                                    <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee; width: 40px;">
+                                                        <input type="checkbox">
+                                                    </th>
+                                                    <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">이름</th>
+                                                    <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">전화번호</th>
+                                                    <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">선거구</th>
+                                                    <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">등록일</th>
+                                                    <th style="padding: 14px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eee; width: 100px;">관리</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="border-bottom: 1px solid #f0f0f0;">
+                                                    <td style="padding: 14px 16px;"><input type="checkbox"></td>
+                                                    <td style="padding: 14px 16px; font-weight: 500;">김선거</td>
+                                                    <td style="padding: 14px 16px; color: #666;">010-1234-5678</td>
+                                                    <td style="padding: 14px 16px;"><span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 12px;">A선거구</span></td>
+                                                    <td style="padding: 14px 16px; color: #999;">2025-01-01</td>
+                                                    <td style="padding: 14px 16px; text-align: center;">
+                                                        <button class="mock-btn mock-btn-outline mock-btn-xs">수정</button>
+                                                        <button class="mock-btn mock-btn-danger mock-btn-xs" style="margin-left: 4px;">삭제</button>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom: 1px solid #f0f0f0;">
+                                                    <td style="padding: 14px 16px;"><input type="checkbox"></td>
+                                                    <td style="padding: 14px 16px; font-weight: 500;">이투표</td>
+                                                    <td style="padding: 14px 16px; color: #666;">010-2345-6789</td>
+                                                    <td style="padding: 14px 16px;"><span style="background: #e8f5e9; color: #388e3c; padding: 4px 8px; border-radius: 4px; font-size: 12px;">B선거구</span></td>
+                                                    <td style="padding: 14px 16px; color: #999;">2025-01-02</td>
+                                                    <td style="padding: 14px 16px; text-align: center;">
+                                                        <button class="mock-btn mock-btn-outline mock-btn-xs">수정</button>
+                                                        <button class="mock-btn mock-btn-danger mock-btn-xs" style="margin-left: 4px;">삭제</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="marker" data-id="5" style="top: 8px; right: 8px;">5</div>
+                                    </div>
+
+                                    <!-- 페이지네이션 -->
+                                    <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px; position: relative;">
+                                        <button class="mock-btn mock-btn-outline mock-btn-sm">이전</button>
+                                        <span style="padding: 8px 12px; background: #4361ee; color: white; border-radius: 6px; font-size: 13px;">1</span>
+                                        <span style="padding: 8px 12px; color: #666; font-size: 13px; cursor: pointer;">2</span>
+                                        <span style="padding: 8px 12px; color: #666; font-size: 13px; cursor: pointer;">3</span>
+                                        <button class="mock-btn mock-btn-outline mock-btn-sm">다음</button>
+                                        <div class="marker" data-id="6" style="top: 0; right: -20px;">6</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="description-panel">
+            <div class="description-header">
+                <h2>화면 설명</h2>
+                <span class="page-type-badge">메인</span>
+            </div>
+
+            <div class="description-content">
+                <div class="desc-item" data-id="1">
+                    <div class="desc-number">1</div>
+                    <div class="desc-text">
+                        <strong>서브 네비게이션</strong>
+                        <p>선거문자 섹션의 하위 메뉴입니다.</p>
+                        <ul>
+                            <li>선거문자 발송</li>
+                            <li>선거문자 주소록 (현재)</li>
+                            <li>수신거부 관리</li>
+                            <li>선거문자 템플릿</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-number">2</div>
+                    <div class="desc-text">
+                        <strong>선거구 그룹 목록</strong>
+                        <p>선거구별 유권자 그룹 관리입니다.</p>
+                        <ul>
+                            <li>선거구별 그룹 생성 가능</li>
+                            <li>그룹별 유권자 수 표시</li>
+                            <li>그룹 선택 시 해당 유권자 목록 표시</li>
+                            <li>"+ 선거구 그룹 추가" 클릭 시 그룹 생성 모달</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-number">3</div>
+                    <div class="desc-text">
+                        <strong>선거문자 안내 배너</strong>
+                        <p>공직선거법 관련 안내사항을 표시합니다.</p>
+                        <ul>
+                            <li>선거일 180일 전부터 발송 가능 안내</li>
+                            <li>선거법 준수 관련 주의사항</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-number">4</div>
+                    <div class="desc-text">
+                        <strong>검색 및 액션 버튼</strong>
+                        <p>유권자 검색 및 관리 기능입니다.</p>
+                        <ul>
+                            <li>이름/전화번호 검색</li>
+                            <li>엑셀 업로드: 대량 유권자 등록</li>
+                            <li>엑셀 다운로드: 유권자 목록 내보내기</li>
+                            <li>유권자 추가: 개별 유권자 등록 모달</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-number">5</div>
+                    <div class="desc-text">
+                        <strong>유권자 목록 테이블</strong>
+                        <p>선거문자 수신 대상 유권자 목록입니다.</p>
+                        <ul>
+                            <li>체크박스: 일괄 선택/해제</li>
+                            <li>이름, 전화번호, 선거구, 등록일 표시</li>
+                            <li>수정/삭제 버튼으로 개별 관리</li>
+                            <li>선거구별 색상 구분</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-number">6</div>
+                    <div class="desc-text">
+                        <strong>페이지네이션</strong>
+                        <p>대량의 유권자 목록 페이지 이동입니다.</p>
+                        <ul>
+                            <li>이전/다음 버튼</li>
+                            <li>페이지 번호 직접 선택</li>
+                            <li>현재 페이지 하이라이트</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

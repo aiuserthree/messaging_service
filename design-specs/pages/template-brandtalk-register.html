@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAKAO-05-R 브랜드톡 템플릿 등록 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge modal">KAKAO-05-R</span>
+                    <span class="page-title-header">브랜드톡 템플릿 등록</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/template-brandtalk.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock" style="position: relative;">
+                            <!-- 모달 오버레이 -->
+                            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: flex-start; justify-content: center; padding-top: 40px; z-index: 100;">
+                                <div style="background: white; border-radius: 16px; width: 800px; max-height: 90%; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative;">
+                                    <!-- 모달 헤더 -->
+                                    <div style="padding: 20px 24px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: relative;">
+                                        <h3 style="font-size: 18px; font-weight: 600;">브랜드메시지 템플릿 등록</h3>
+                                        <button style="background: none; border: none; font-size: 24px; cursor: pointer; color: #999;">×</button>
+                                        <div class="marker" data-id="1" style="top: 8px; right: 50px;">1</div>
+                                    </div>
+
+                                    <!-- 모달 바디 -->
+                                    <div style="padding: 24px; display: flex; gap: 24px;">
+                                        <!-- 좌측: 입력 폼 -->
+                                        <div style="flex: 1; position: relative;">
+                                            <div style="margin-bottom: 20px;">
+                                                <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">발신프로필 <span style="color: #ef4444;">*</span></label>
+                                                <select class="form-input" style="width: 100%;">
+                                                    <option>톡벨 비즈채널</option>
+                                                </select>
+                                            </div>
+
+                                            <div style="margin-bottom: 20px;">
+                                                <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">템플릿명 <span style="color: #ef4444;">*</span></label>
+                                                <input type="text" class="form-input" placeholder="템플릿명을 입력하세요">
+                                            </div>
+
+                                            <div style="margin-bottom: 20px; position: relative;">
+                                                <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">템플릿 유형 <span style="color: #ef4444;">*</span></label>
+                                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                                    <label style="display: flex; flex-direction: column; align-items: center; padding: 16px 12px; border: 2px solid #4361ee; border-radius: 8px; cursor: pointer; background: #f0f4ff;">
+                                                        <span style="font-size: 24px; margin-bottom: 8px;">📝</span>
+                                                        <span style="font-size: 12px; font-weight: 500;">텍스트</span>
+                                                    </label>
+                                                    <label style="display: flex; flex-direction: column; align-items: center; padding: 16px 12px; border: 1px solid #eee; border-radius: 8px; cursor: pointer;">
+                                                        <span style="font-size: 24px; margin-bottom: 8px;">🖼️</span>
+                                                        <span style="font-size: 12px; font-weight: 500;">이미지</span>
+                                                    </label>
+                                                    <label style="display: flex; flex-direction: column; align-items: center; padding: 16px 12px; border: 1px solid #eee; border-radius: 8px; cursor: pointer;">
+                                                        <span style="font-size: 24px; margin-bottom: 8px;">📊</span>
+                                                        <span style="font-size: 12px; font-weight: 500;">와이드</span>
+                                                    </label>
+                                                </div>
+                                                <div class="marker" data-id="2" style="top: 0; right: -20px;">2</div>
+                                            </div>
+
+                                            <div style="margin-bottom: 20px; position: relative;">
+                                                <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">메시지 내용 <span style="color: #ef4444;">*</span></label>
+                                                <textarea class="form-input" rows="5" placeholder="브랜드 메시지 내용을 입력하세요" style="resize: vertical;"></textarea>
+                                                <div style="font-size: 11px; color: #999; margin-top: 4px; text-align: right;">0 / 400자</div>
+                                                <div class="marker" data-id="3" style="top: 0; right: -20px;">3</div>
+                                            </div>
+
+                                            <div style="margin-bottom: 20px;">
+                                                <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">(광고) 문구</label>
+                                                <div style="padding: 12px 16px; background: #fff3e0; border-radius: 8px; font-size: 13px; color: #e65100;">
+                                                    ⚠️ 브랜드메시지는 광고성 메시지이므로 "(광고)" 문구가 자동으로 포함됩니다.
+                                                </div>
+                                            </div>
+
+                                            <div style="margin-bottom: 20px; position: relative;">
+                                                <label style="font-size: 13px; color: #666; display: block; margin-bottom: 8px;">버튼 설정</label>
+                                                <div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+                                                    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                                                        <select class="form-input" style="width: 120px;">
+                                                            <option>웹링크</option>
+                                                            <option>앱링크</option>
+                                                        </select>
+                                                        <input type="text" class="form-input" placeholder="버튼명" style="flex: 1;">
+                                                    </div>
+                                                    <input type="text" class="form-input" placeholder="링크 URL">
+                                                </div>
+                                                <div class="marker" data-id="4" style="top: 0; right: -20px;">4</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 우측: 미리보기 -->
+                                        <div style="width: 220px; position: relative;">
+                                            <div style="font-size: 13px; color: #666; margin-bottom: 12px; font-weight: 500;">미리보기</div>
+                                            <div style="background: #FEE500; border-radius: 16px; padding: 16px; min-height: 340px;">
+                                                <div style="background: white; border-radius: 12px; overflow: hidden;">
+                                                    <div style="padding: 16px; font-size: 12px; line-height: 1.6;">
+                                                        <div style="font-weight: 600; margin-bottom: 4px; color: #333;">톡벨 비즈채널</div>
+                                                        <div style="font-size: 11px; color: #999; margin-bottom: 12px;">(광고)</div>
+                                                        <div style="color: #666;">
+                                                            메시지 내용이<br>
+                                                            여기에 표시됩니다.
+                                                        </div>
+                                                    </div>
+                                                    <div style="padding: 0 16px 16px;">
+                                                        <button style="width: 100%; padding: 10px; background: #FEE500; border: none; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer;">버튼</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="marker" data-id="5" style="top: 0; right: -20px;">5</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 모달 푸터 -->
+                                    <div style="padding: 16px 24px; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px; position: relative;">
+                                        <button class="mock-btn mock-btn-outline">취소</button>
+                                        <button class="mock-btn mock-btn-primary">저장</button>
+                                        <div class="marker" data-id="6" style="top: 8px; right: 80px;">6</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="description-panel">
+            <div class="description-header">
+                <h2>화면 설명</h2>
+                <span class="page-type-badge modal">모달</span>
+            </div>
+
+            <div class="description-content">
+                <div class="desc-item" data-id="1">
+                    <div class="desc-number">1</div>
+                    <div class="desc-text">
+                        <strong>모달 헤더</strong>
+                        <p>브랜드메시지 템플릿 등록 모달입니다.</p>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-number">2</div>
+                    <div class="desc-text">
+                        <strong>템플릿 유형</strong>
+                        <p>브랜드메시지 형태를 선택합니다.</p>
+                        <ul>
+                            <li>텍스트: 텍스트만 포함</li>
+                            <li>이미지: 이미지 + 텍스트</li>
+                            <li>와이드: 와이드 이미지형</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-number">3</div>
+                    <div class="desc-text">
+                        <strong>메시지 내용</strong>
+                        <p>브랜드메시지 본문을 입력합니다.</p>
+                        <ul>
+                            <li>최대 400자까지 입력 가능</li>
+                            <li>광고성 메시지이므로 "(광고)" 문구 자동 포함</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-number">4</div>
+                    <div class="desc-text">
+                        <strong>버튼 설정</strong>
+                        <p>메시지 하단 버튼을 설정합니다.</p>
+                        <ul>
+                            <li>버튼 타입: 웹링크/앱링크</li>
+                            <li>버튼명 및 링크 URL 입력</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-number">5</div>
+                    <div class="desc-text">
+                        <strong>미리보기</strong>
+                        <p>카카오톡 브랜드메시지 형태로 미리보기를 제공합니다.</p>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-number">6</div>
+                    <div class="desc-text">
+                        <strong>액션 버튼</strong>
+                        <p>템플릿 등록을 완료하거나 취소합니다.</p>
+                        <ul>
+                            <li>취소: 모달 닫기</li>
+                            <li>저장: 템플릿 저장 (검수 없이 바로 사용 가능)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>
