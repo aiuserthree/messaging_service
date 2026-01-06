@@ -4,7 +4,11 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/index.html"
+      "destination": "/wireframe-spec-index.html"
+    },
+    {
+      "source": "/wireframe",
+      "destination": "/wireframe-spec-index.html"
     }
   ]
 }
