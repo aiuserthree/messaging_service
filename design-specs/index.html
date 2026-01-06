@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>톡벨 화면설계서</title>
+    <link rel="stylesheet" href="assets/common.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-title {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4361ee, #7209b7, #f72585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .page-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .category-section {
+            margin-bottom: 48px;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-left: 16px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .sub-category-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin: 20px 0 12px 0;
+            padding-left: 12px;
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .page-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .page-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(67, 97, 238, 0.2);
+        }
+
+        .page-card.sub-page {
+            background: var(--bg-dark);
+            border-color: var(--border-color);
+        }
+
+        .page-card.sub-page:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 12px 40px rgba(114, 9, 183, 0.2);
+        }
+
+        .page-card.modal-page {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(67, 97, 238, 0.05) 100%);
+        }
+
+        .page-card.modal-page:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 12px 40px rgba(0, 245, 212, 0.15);
+        }
+
+        .page-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .page-card-id {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .page-card-id.sub {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+        }
+
+        .page-card-id.modal {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+        }
+
+        .page-card-icon {
+            font-size: 24px;
+        }
+
+        .page-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .page-card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .page-card-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .page-card-badge.detail {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        .page-card-badge.modal {
+            background: var(--accent-cyan);
+            color: #1a1a2e;
+        }
+
+        .page-card-badge.before {
+            background: var(--accent-pink);
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1 class="page-title">톡벨 화면설계서</h1>
+        <p class="page-subtitle">메시징 서비스 플랫폼 UI/UX 스펙 문서</p>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-item">
+            <div class="stat-value">34</div>
+            <div class="stat-label">전체 페이지</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">11</div>
+            <div class="stat-label">기능 모듈</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">완성도</div>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">📍 메인 / 인증</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P001-01-landing.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P001-01</span>
+                    <span class="page-card-icon">🏠</span>
+                </div>
+                <div class="page-card-title">랜딩 페이지</div>
+                <div class="page-card-desc">서비스 소개, 요금 안내, 비로그인 사용자 진입점</div>
+            </a>
+            <a href="pages/FE-P001-02-dashboard.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P001-02</span>
+                    <span class="page-card-icon">📊</span>
+                </div>
+                <div class="page-card-title">대시보드</div>
+                <div class="page-card-desc">로그인 후 메인 대시보드, 통계 및 퀵 메뉴</div>
+            </a>
+            <a href="pages/FE-P002-01-login.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P002-01</span>
+                    <span class="page-card-icon">🔐</span>
+                </div>
+                <div class="page-card-title">로그인</div>
+                <div class="page-card-desc">이메일/소셜 로그인, 비밀번호 찾기</div>
+            </a>
+            <a href="pages/FE-P002-02-signup.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P002-02</span>
+                    <span class="page-card-icon">📝</span>
+                </div>
+                <div class="page-card-title">회원가입</div>
+                <div class="page-card-desc">스텝 폼 (약관 → 유형 → 정보입력)</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">💬 문자 발송</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P003-01-message-general.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P003-01</span>
+                    <span class="page-card-icon">📱</span>
+                </div>
+                <div class="page-card-title">일반문자 발송</div>
+                <div class="page-card-desc">SMS/LMS/MMS 일반 문자 발송</div>
+            </a>
+            <a href="pages/FE-P003-02-message-ad.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P003-02</span>
+                    <span class="page-card-icon">📢</span>
+                </div>
+                <div class="page-card-title">광고문자 발송</div>
+                <div class="page-card-desc">(광고) 표기, 080 수신거부, 시간 제한</div>
+            </a>
+            <a href="pages/FE-P003-03-message-election.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P003-03</span>
+                    <span class="page-card-icon">🗳️</span>
+                </div>
+                <div class="page-card-title">선거문자 발송</div>
+                <div class="page-card-desc">[선거] 표기, 선거법 준수 발송</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">💛 카카오톡</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P004-01-kakao-profile.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P004-01</span>
+                    <span class="page-card-icon">👤</span>
+                </div>
+                <div class="page-card-title">발신프로필 관리</div>
+                <div class="page-card-desc">카카오 비즈니스 채널 등록/관리</div>
+            </a>
+            <a href="pages/FE-P004-02-kakao-alimtalk.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P004-02</span>
+                    <span class="page-card-icon">🔔</span>
+                </div>
+                <div class="page-card-title">알림톡 발송</div>
+                <div class="page-card-desc">템플릿 기반 알림톡 발송</div>
+            </a>
+            <a href="pages/FE-P004-03-kakao-brandtalk.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P004-03</span>
+                    <span class="page-card-icon">🏷️</span>
+                </div>
+                <div class="page-card-title">브랜드메시지 발송</div>
+                <div class="page-card-desc">광고성 카카오톡 메시지 발송</div>
+            </a>
+        </div>
+
+        <h3 class="sub-category-title">카카오톡 서브 페이지</h3>
+        <div class="page-grid">
+            <a href="pages/FE-P004-01-kakao-profile-register.html" class="page-card modal-page">
+                <div class="page-card-header">
+                    <span class="page-card-id modal">FE-P004-01-M01</span>
+                    <span class="page-card-icon">➕</span>
+                </div>
+                <div class="page-card-title">발신프로필 등록 <span class="page-card-badge modal">모달</span></div>
+                <div class="page-card-desc">발신프로필 신규 등록 모달 화면</div>
+            </a>
+            <a href="pages/FE-P004-01-kakao-profile-detail.html" class="page-card modal-page">
+                <div class="page-card-header">
+                    <span class="page-card-id modal">FE-P004-01-M02</span>
+                    <span class="page-card-icon">🔍</span>
+                </div>
+                <div class="page-card-title">발신프로필 상세 <span class="page-card-badge modal">모달</span></div>
+                <div class="page-card-desc">발신프로필 상세 정보 및 수정/삭제</div>
+            </a>
+            <a href="pages/FE-P004-02-kakao-alimtalk-before.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P004-02-00</span>
+                    <span class="page-card-icon">📋</span>
+                </div>
+                <div class="page-card-title">알림톡 발송 전 안내 <span class="page-card-badge before">상태화면</span></div>
+                <div class="page-card-desc">템플릿 미등록 시 안내 화면</div>
+            </a>
+            <a href="pages/FE-P004-03-kakao-brandtalk-before.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P004-03-00</span>
+                    <span class="page-card-icon">💬</span>
+                </div>
+                <div class="page-card-title">브랜드톡 발송 전 안내 <span class="page-card-badge before">상태화면</span></div>
+                <div class="page-card-desc">템플릿 미등록 시 안내 화면</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">📋 템플릿</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P005-01-template-message.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P005-01</span>
+                    <span class="page-card-icon">📄</span>
+                </div>
+                <div class="page-card-title">일반문자 템플릿</div>
+                <div class="page-card-desc">SMS/LMS/MMS 일반 템플릿 관리</div>
+            </a>
+            <a href="pages/FE-P005-01-template-message-ad.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P005-01-02</span>
+                    <span class="page-card-icon">📢</span>
+                </div>
+                <div class="page-card-title">광고문자 템플릿 <span class="page-card-badge detail">서브</span></div>
+                <div class="page-card-desc">(광고) 문구, 080 번호 포함 템플릿</div>
+            </a>
+            <a href="pages/FE-P005-01-template-message-election.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P005-01-03</span>
+                    <span class="page-card-icon">🗳️</span>
+                </div>
+                <div class="page-card-title">선거문자 템플릿 <span class="page-card-badge detail">서브</span></div>
+                <div class="page-card-desc">[선거] 문구, 금지어 검사 포함</div>
+            </a>
+            <a href="pages/FE-P005-02-template-alimtalk.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P005-02</span>
+                    <span class="page-card-icon">📑</span>
+                </div>
+                <div class="page-card-title">알림톡 템플릿</div>
+                <div class="page-card-desc">카카오 검수 기반 알림톡 템플릿</div>
+            </a>
+            <a href="pages/FE-P005-03-template-brandtalk.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P005-03</span>
+                    <span class="page-card-icon">🎨</span>
+                </div>
+                <div class="page-card-title">브랜드메시지 템플릿</div>
+                <div class="page-card-desc">다양한 형태의 브랜드메시지 템플릿</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">📒 주소록</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P006-01-addressbook.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P006-01</span>
+                    <span class="page-card-icon">📖</span>
+                </div>
+                <div class="page-card-title">주소록 관리</div>
+                <div class="page-card-desc">그룹별 연락처 관리, 엑셀 업로드</div>
+            </a>
+            <a href="pages/FE-P006-02-addressbook-reject.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P006-02</span>
+                    <span class="page-card-icon">🚫</span>
+                </div>
+                <div class="page-card-title">수신거부 관리</div>
+                <div class="page-card-desc">수신거부 번호 등록/해제</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">📈 발송 관리</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P007-01-send-result.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P007-01</span>
+                    <span class="page-card-icon">✅</span>
+                </div>
+                <div class="page-card-title">발송결과</div>
+                <div class="page-card-desc">발송 성공/실패 결과 조회</div>
+            </a>
+            <a href="pages/FE-P007-01-send-result-detail.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P007-01-02</span>
+                    <span class="page-card-icon">🔍</span>
+                </div>
+                <div class="page-card-title">발송결과 상세 <span class="page-card-badge detail">상세</span></div>
+                <div class="page-card-desc">개별 발송 건 상세 내역, 재발송</div>
+            </a>
+            <a href="pages/FE-P007-02-send-reservation.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P007-02</span>
+                    <span class="page-card-icon">⏰</span>
+                </div>
+                <div class="page-card-title">예약내역</div>
+                <div class="page-card-desc">예약 발송 관리, 취소</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">💳 결제</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P008-01-payment-charge.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P008-01</span>
+                    <span class="page-card-icon">💰</span>
+                </div>
+                <div class="page-card-title">충전하기</div>
+                <div class="page-card-desc">포인트 충전, 결제수단 선택</div>
+            </a>
+            <a href="pages/FE-P008-02-payment-history.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P008-02</span>
+                    <span class="page-card-icon">📜</span>
+                </div>
+                <div class="page-card-title">충전/사용 내역</div>
+                <div class="page-card-desc">충전 및 사용 내역 조회</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">👤 마이페이지</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P009-01-caller-number.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P009-01</span>
+                    <span class="page-card-icon">📞</span>
+                </div>
+                <div class="page-card-title">발신번호 관리</div>
+                <div class="page-card-desc">발신번호 등록, 심사 현황</div>
+            </a>
+            <a href="pages/FE-P009-02-profile.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P009-02</span>
+                    <span class="page-card-icon">⚙️</span>
+                </div>
+                <div class="page-card-title">내 정보 수정</div>
+                <div class="page-card-desc">회원정보 수정, 비밀번호 변경</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="category-section">
+        <h2 class="category-title">🎧 고객센터</h2>
+        <div class="page-grid">
+            <a href="pages/FE-P010-01-support-faq.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P010-01</span>
+                    <span class="page-card-icon">❓</span>
+                </div>
+                <div class="page-card-title">FAQ</div>
+                <div class="page-card-desc">자주 묻는 질문, 카테고리별 검색</div>
+            </a>
+            <a href="pages/FE-P010-02-support-notice.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P010-02</span>
+                    <span class="page-card-icon">📢</span>
+                </div>
+                <div class="page-card-title">공지사항</div>
+                <div class="page-card-desc">서비스 공지, 점검 안내</div>
+            </a>
+            <a href="pages/FE-P010-02-support-notice-detail.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P010-02-02</span>
+                    <span class="page-card-icon">📄</span>
+                </div>
+                <div class="page-card-title">공지사항 상세 <span class="page-card-badge detail">상세</span></div>
+                <div class="page-card-desc">공지 상세 내용, 첨부파일, 이전/다음</div>
+            </a>
+            <a href="pages/FE-P010-03-support-event.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P010-03</span>
+                    <span class="page-card-icon">🎉</span>
+                </div>
+                <div class="page-card-title">이벤트</div>
+                <div class="page-card-desc">진행중/종료 이벤트 목록</div>
+            </a>
+            <a href="pages/FE-P010-03-support-event-detail.html" class="page-card sub-page">
+                <div class="page-card-header">
+                    <span class="page-card-id sub">FE-P010-03-02</span>
+                    <span class="page-card-icon">🎁</span>
+                </div>
+                <div class="page-card-title">이벤트 상세 <span class="page-card-badge detail">상세</span></div>
+                <div class="page-card-desc">이벤트 상세, 참여 현황</div>
+            </a>
+            <a href="pages/FE-P010-04-support-inquiry.html" class="page-card">
+                <div class="page-card-header">
+                    <span class="page-card-id">FE-P010-04</span>
+                    <span class="page-card-icon">💬</span>
+                </div>
+                <div class="page-card-title">1:1 문의</div>
+                <div class="page-card-desc">문의 작성, 내 문의 내역</div>
+            </a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-logo">톡벨</div>
+        <p class="footer-text">Tokbell Messaging Service Platform</p>
+        <p class="footer-text" style="margin-top: 8px;">© 2026 Tokbell. All rights reserved.</p>
+        <p class="footer-text" style="margin-top: 16px; font-size: 11px; color: var(--text-muted);">
+            총 34개 페이지 | 메인 24개 + 서브 10개
+        </p>
+    </footer>
+</body>
+</html>

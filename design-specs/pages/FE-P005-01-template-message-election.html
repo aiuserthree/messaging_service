@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P005-01 선거문자 템플릿 관리 - 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <div class="design-container">
+        <!-- 헤더 -->
+        <header class="design-header">
+            <div class="header-left">
+                <h1>화면설계서</h1>
+                <span class="page-id">FE-P005-01-03</span>
+            </div>
+            <div class="header-right">
+                <span class="version">v1.0</span>
+                <span class="date">2026-01-06</span>
+            </div>
+        </header>
+
+        <!-- 페이지 정보 -->
+        <section class="page-info">
+            <h2>선거문자 템플릿 관리 페이지</h2>
+            <table class="info-table">
+                <tr>
+                    <th>페이지 ID</th>
+                    <td>FE-P005-01-03</td>
+                    <th>파일명</th>
+                    <td>template-message-election.html</td>
+                </tr>
+                <tr>
+                    <th>URL</th>
+                    <td>/template-message-election.html</td>
+                    <th>연관 모듈</th>
+                    <td>FE-M003 (TemplateManageModule)</td>
+                </tr>
+                <tr>
+                    <th>페이지 설명</th>
+                    <td colspan="3">공직선거 문자 전용 템플릿을 관리하는 페이지입니다. [선거] 문구, 080 수신거부, 금지어 검사 기능이 포함됩니다.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 메인 컨텐츠 -->
+        <div class="design-content">
+            <!-- 좌측: 화면 목업 -->
+            <div class="screen-mockup">
+                <div class="mockup-container">
+                    <!-- 사이드바 -->
+                    <div class="sidebar">
+                        <div class="logo">톡벨</div>
+                        <nav class="nav-menu">
+                            <a href="#" class="nav-item">대시보드</a>
+                            <a href="#" class="nav-item">문자 발송</a>
+                            <a href="#" class="nav-item">카카오톡</a>
+                            <a href="#" class="nav-item active">템플릿 관리</a>
+                            <a href="#" class="nav-item">주소록</a>
+                            <a href="#" class="nav-item">발송 관리</a>
+                            <a href="#" class="nav-item">결제</a>
+                            <a href="#" class="nav-item">마이페이지</a>
+                            <a href="#" class="nav-item">고객센터</a>
+                        </nav>
+                    </div>
+
+                    <!-- 메인 컨텐츠 영역 -->
+                    <div class="main-content">
+                        <!-- 페이지 헤더 -->
+                        <div class="page-header-mockup">
+                            <h2>선거문자 템플릿</h2>
+                        </div>
+
+                        <!-- 탭 메뉴 -->
+                        <div class="tab-menu" data-number="1">
+                            <a href="#" class="tab-item">일반문자</a>
+                            <a href="#" class="tab-item">광고문자</a>
+                            <a href="#" class="tab-item active">선거문자</a>
+                            <span class="tab-divider">|</span>
+                            <a href="#" class="tab-item">알림톡</a>
+                            <a href="#" class="tab-item">브랜드톡</a>
+                        </div>
+
+                        <!-- 선거문자 규정 안내 -->
+                        <div class="alert alert-warning" data-number="2">
+                            <p><strong>⚠️ 공직선거법 준수 안내</strong></p>
+                            <ul style="margin: 8px 0 0 20px; font-size: 13px;">
+                                <li>선거문자는 공직선거법에 따라 [선거] 표기가 필수입니다.</li>
+                                <li>발송 가능 시간: 07:00~23:00</li>
+                                <li>투표일에는 발송이 불가합니다.</li>
+                                <li>금지어가 포함된 메시지는 발송이 제한됩니다.</li>
+                                <li>080 수신거부 번호가 필수 포함됩니다.</li>
+                            </ul>
+                        </div>
+
+                        <!-- 검색 및 필터 영역 -->
+                        <div class="filter-section" data-number="3">
+                            <div class="filter-row">
+                                <select class="form-select">
+                                    <option>전체 카테고리</option>
+                                    <option>지방선거</option>
+                                    <option>국회의원선거</option>
+                                    <option>대통령선거</option>
+                                </select>
+                                <input type="text" class="form-input" placeholder="템플릿명 검색">
+                                <button class="btn btn-secondary">검색</button>
+                            </div>
+                            <button class="btn btn-primary" data-number="4">새 템플릿 등록</button>
+                        </div>
+
+                        <!-- 템플릿 목록 테이블 -->
+                        <div class="content-card">
+                            <table class="data-table" data-number="5">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>NO</th>
+                                        <th>템플릿명</th>
+                                        <th>후보자/정당명</th>
+                                        <th>타입</th>
+                                        <th>080 번호</th>
+                                        <th>등록일</th>
+                                        <th>관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>1</td>
+                                        <td>기호1번 홍길동</td>
+                                        <td>홍길동/한국당</td>
+                                        <td>LMS</td>
+                                        <td>080-111-2222</td>
+                                        <td>2026-01-05</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">상세</button>
+                                            <button class="btn btn-sm btn-danger-outline">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>2</td>
+                                        <td>정책 소개 문자</td>
+                                        <td>김철수/민주당</td>
+                                        <td>MMS</td>
+                                        <td>080-333-4444</td>
+                                        <td>2026-01-04</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">상세</button>
+                                            <button class="btn btn-sm btn-danger-outline">삭제</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- 하단 액션 및 페이지네이션 -->
+                            <div class="table-footer" data-number="6">
+                                <button class="btn btn-danger-outline">선택 삭제</button>
+                                <div class="pagination">
+                                    <button class="page-btn">&lt;</button>
+                                    <button class="page-btn active">1</button>
+                                    <button class="page-btn">2</button>
+                                    <button class="page-btn">&gt;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿 등록/수정 모달 -->
+                        <div class="modal-preview" data-number="7">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3>선거문자 템플릿 등록</h3>
+                                    <button class="modal-close">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>템플릿명 *</label>
+                                        <input type="text" class="form-input" placeholder="템플릿명을 입력하세요">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>카테고리</label>
+                                        <select class="form-select">
+                                            <option>카테고리 선택</option>
+                                            <option>지방선거</option>
+                                            <option>국회의원선거</option>
+                                            <option>대통령선거</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>메시지 타입 *</label>
+                                        <div class="radio-group">
+                                            <label><input type="radio" name="msgType"> SMS</label>
+                                            <label><input type="radio" name="msgType" checked> LMS</label>
+                                            <label><input type="radio" name="msgType"> MMS</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-number="8">
+                                        <label>[선거] 문구 (후보자/정당명) *</label>
+                                        <div class="inline-input">
+                                            <span class="prefix">[선거]</span>
+                                            <input type="text" class="form-input" placeholder="후보자명 또는 정당명">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-number="9">
+                                        <label>선거운동정보</label>
+                                        <input type="text" class="form-input" placeholder="선거운동정보 (최대 20자)">
+                                        <span class="char-count">0 / 20자 (40byte)</span>
+                                    </div>
+                                    <div class="form-group" data-number="10">
+                                        <label>080 수신거부 번호 *</label>
+                                        <select class="form-select">
+                                            <option>080-111-2222</option>
+                                            <option>080-333-4444</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" data-number="11">
+                                        <label>메시지 내용 *</label>
+                                        <textarea class="form-textarea" rows="6" placeholder="메시지 내용을 입력하세요"></textarea>
+                                        <div class="textarea-footer">
+                                            <span>0 / 2000 byte</span>
+                                            <button class="btn btn-sm btn-outline" data-number="12">금지어 검사</button>
+                                        </div>
+                                        <div class="variable-buttons">
+                                            <button class="btn btn-sm btn-outline">#{이름}</button>
+                                            <button class="btn btn-sm btn-outline">#{전화번호}</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 금지어 검사 결과 -->
+                                    <div class="forbidden-words-result" data-number="13">
+                                        <div class="result-success">
+                                            <span class="icon">✅</span>
+                                            <span>금지어가 발견되지 않았습니다.</span>
+                                        </div>
+                                        <!-- 금지어 발견 시 -->
+                                        <!--
+                                        <div class="result-error">
+                                            <span class="icon">❌</span>
+                                            <span>금지어가 발견되었습니다: "비방", "허위"</span>
+                                        </div>
+                                        -->
+                                    </div>
+
+                                    <div class="form-group" data-number="14">
+                                        <label>이미지 첨부 (MMS)</label>
+                                        <div class="image-upload-area">
+                                            <div class="image-slot">+ 이미지 1</div>
+                                            <div class="image-slot">+ 이미지 2</div>
+                                            <div class="image-slot">+ 이미지 3</div>
+                                        </div>
+                                        <span class="help-text">최대 3개, 각 300KB 이하, JPG/PNG/GIF</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary">취소</button>
+                                    <button class="btn btn-primary">등록</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 우측: 상세 설명 -->
+            <div class="description-panel">
+                <h3>화면 요소 설명</h3>
+                
+                <div class="desc-item" data-number="1">
+                    <h4>1. 탭 메뉴</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>문자 템플릿 탭</th>
+                            <td>일반문자 / 광고문자 / 선거문자</td>
+                        </tr>
+                        <tr>
+                            <th>현재 활성 탭</th>
+                            <td>선거문자 (강조 표시)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="2">
+                    <h4>2. 공직선거법 규정 안내</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>표시 내용</th>
+                            <td>
+                                - [선거] 표기 필수<br>
+                                - 발송 시간 07:00~23:00<br>
+                                - 투표일 발송 불가<br>
+                                - 금지어 제한<br>
+                                - 080 수신거부 필수
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>스타일</th>
+                            <td>경고성 알림 (warning alert)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="3">
+                    <h4>3. 검색 및 필터</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>카테고리 필터</th>
+                            <td>전체/지방선거/국회의원선거/대통령선거</td>
+                        </tr>
+                        <tr>
+                            <th>검색 대상</th>
+                            <td>템플릿명, 후보자/정당명</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="5">
+                    <h4>5. 템플릿 목록 테이블</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>표시 컬럼</th>
+                            <td>
+                                - NO (순번)<br>
+                                - 템플릿명<br>
+                                - 후보자/정당명<br>
+                                - 타입 (SMS/LMS/MMS)<br>
+                                - 080 번호<br>
+                                - 등록일<br>
+                                - 관리
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="8">
+                    <h4>8. [선거] 문구 입력</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>형식</th>
+                            <td>[선거] + 후보자명 또는 정당명</td>
+                        </tr>
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>필수</td>
+                        </tr>
+                        <tr>
+                            <th>입력 예시</th>
+                            <td>
+                                - [선거] 홍길동<br>
+                                - [선거] 한국당
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>최대 길이</th>
+                            <td>20자 (40byte)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="9">
+                    <h4>9. 선거운동정보</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>선택</td>
+                        </tr>
+                        <tr>
+                            <th>최대 길이</th>
+                            <td>20자 (40byte)</td>
+                        </tr>
+                        <tr>
+                            <th>입력 예시</th>
+                            <td>기호1번 홍길동 선거사무소</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="11">
+                    <h4>11. 메시지 내용</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>바이트 제한</th>
+                            <td>SMS 90byte / LMS,MMS 2000byte</td>
+                        </tr>
+                        <tr>
+                            <th>변수 버튼</th>
+                            <td>#{이름}, #{전화번호} (제한적 변수)</td>
+                        </tr>
+                        <tr>
+                            <th>금지어 검사</th>
+                            <td>저장 전 금지어 검사 필수</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="12">
+                    <h4>12. 금지어 검사 버튼</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>기능</th>
+                            <td>메시지 내 금지어 포함 여부 검사</td>
+                        </tr>
+                        <tr>
+                            <th>검사 대상</th>
+                            <td>비방, 허위사실, 흑색선전 관련 단어</td>
+                        </tr>
+                        <tr>
+                            <th>API 호출</th>
+                            <td>POST /api/v1/templates/election/check-forbidden</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="13">
+                    <h4>13. 금지어 검사 결과</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>통과</th>
+                            <td>✅ 초록색, "금지어가 발견되지 않았습니다"</td>
+                        </tr>
+                        <tr>
+                            <th>실패</th>
+                            <td>❌ 빨간색, 발견된 금지어 목록 표시</td>
+                        </tr>
+                        <tr>
+                            <th>등록 조건</th>
+                            <td>금지어 검사 통과 필수</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 미리보기 형식 -->
+                <div class="preview-format">
+                    <h4>메시지 미리보기 형식</h4>
+                    <div class="preview-box">
+                        <p><strong>[선거] 홍길동</strong></p>
+                        <p>#{이름}님, 안녕하세요.</p>
+                        <p>기호1번 홍길동입니다.</p>
+                        <p>지역 발전을 위해 노력하겠습니다.</p>
+                        <p style="margin-top: 8px; font-size: 11px; color: #888;">기호1번 홍길동 선거사무소</p>
+                        <p style="margin-top: 8px; font-size: 12px; color: #666;">무료수신거부 080-111-2222</p>
+                    </div>
+                </div>
+
+                <!-- API 명세 -->
+                <div class="api-section">
+                    <h4>API 명세</h4>
+                    <div class="api-item">
+                        <div class="api-method post">POST</div>
+                        <div class="api-endpoint">/api/v1/templates/message/election</div>
+                    </div>
+                    <pre class="code-block">
+// Request
+{
+  "templateName": "기호1번 홍길동",
+  "category": "local_election",
+  "messageType": "LMS",
+  "electionLabel": "홍길동",   // [선거] 뒤 문구
+  "electionInfo": "기호1번 홍길동 선거사무소",
+  "rejectNumber": "080-111-2222",
+  "content": "#{이름}님, 안녕하세요...",
+  "variables": ["이름", "전화번호"],
+  "images": []
+}</pre>
+
+                    <div class="api-item" style="margin-top: 16px;">
+                        <div class="api-method post">POST</div>
+                        <div class="api-endpoint">/api/v1/templates/election/check-forbidden</div>
+                    </div>
+                    <pre class="code-block">
+// Request
+{
+  "content": "메시지 내용..."
+}
+
+// Response
+{
+  "passed": true,
+  "forbiddenWords": []
+}
+// 또는
+{
+  "passed": false,
+  "forbiddenWords": ["비방", "허위"]
+}</pre>
+                </div>
+
+                <!-- 데이터 모델 -->
+                <div class="data-model">
+                    <h4>데이터 모델</h4>
+                    <pre class="code-block">
+interface ElectionMessageTemplate {
+  id: string;
+  templateName: string;
+  category: ElectionCategory;
+  messageType: 'SMS' | 'LMS' | 'MMS';
+  electionLabel: string;      // [선거] 옆 문구
+  electionInfo?: string;      // 선거운동정보
+  rejectNumber: string;       // 080 수신거부
+  content: string;
+  variables: string[];        // 제한: 이름, 전화번호만
+  images?: string[];
+  forbiddenCheckPassed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+type ElectionCategory = 
+  | 'local_election'     // 지방선거
+  | 'congress_election'  // 국회의원선거
+  | 'president_election';// 대통령선거</pre>
+                </div>
+
+                <!-- 발송 시간 제한 -->
+                <div class="business-logic">
+                    <h4>발송 시간 제한</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>발송 가능</th>
+                            <td>매일 07:00 ~ 23:00</td>
+                        </tr>
+                        <tr>
+                            <th>발송 불가</th>
+                            <td>
+                                - 23:00 ~ 07:00<br>
+                                - 투표일 전일 (선거운동 기간 외)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>선거 기간</th>
+                            <td>선거운동 기간 내만 발송 가능</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <footer class="design-footer">
+            <p>톡벨(Tokbell) 메시징 서비스 - 화면설계서</p>
+        </footer>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

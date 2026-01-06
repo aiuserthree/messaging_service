@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P008-02 충전/사용 내역 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P008-02</span>
+                    <span class="page-title-header">충전/사용 내역</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/payment-history.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡</span>
+                                    <span class="screen-nav-item">템플릿</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item">발송관리</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <div class="screen-body">
+                                <!-- 탭 -->
+                                <div class="tab-group" style="margin-bottom: 20px; position: relative;">
+                                    <div class="tab-item active">충전내역</div>
+                                    <div class="tab-item">사용내역</div>
+                                    <div class="marker" data-id="1" style="top: -10px; right: 0;">1</div>
+                                </div>
+
+                                <!-- 검색 필터 -->
+                                <div class="form-section" style="margin-bottom: 16px; position: relative;">
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <span style="font-size: 13px; color: #666;">기간</span>
+                                        <input type="date" class="form-input" style="width: 140px;">
+                                        <span>~</span>
+                                        <input type="date" class="form-input" style="width: 140px;">
+                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                    </div>
+                                    <div class="marker" data-id="2" style="top: 50%; right: 80px; transform: translateY(-50%);">2</div>
+                                </div>
+
+                                <!-- 충전내역 테이블 -->
+                                <div class="form-section" style="padding: 0; position: relative;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">NO</th>
+                                                <th>충전일시</th>
+                                                <th style="width: 120px;">결제수단</th>
+                                                <th style="width: 120px;">충전금액</th>
+                                                <th style="width: 120px;">결제금액</th>
+                                                <th style="width: 100px;">상태</th>
+                                                <th style="width: 100px;">영수증</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>2026-01-05 14:32</td>
+                                                <td>신용카드</td>
+                                                <td style="color: #4361ee; font-weight: 600;">+50,000 P</td>
+                                                <td>55,000원</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">영수증</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>2026-01-01 10:15</td>
+                                                <td>계좌이체</td>
+                                                <td style="color: #4361ee; font-weight: 600;">+100,000 P</td>
+                                                <td>110,000원</td>
+                                                <td><span class="status-badge success">완료</span></td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">영수증</button></td>
+                                            </tr>
+                                            <tr style="opacity: 0.6;">
+                                                <td>3</td>
+                                                <td>2025-12-28 16:45</td>
+                                                <td>무통장</td>
+                                                <td style="color: #999;">+30,000 P</td>
+                                                <td>33,000원</td>
+                                                <td><span class="status-badge gray">취소</span></td>
+                                                <td>-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="marker" data-id="3" style="top: 20px; right: 20px;">3</div>
+                                </div>
+
+                                <div class="pagination" style="margin-top: 16px;">
+                                    <div class="pagination-item">‹</div>
+                                    <div class="pagination-item active">1</div>
+                                    <div class="pagination-item">2</div>
+                                    <div class="pagination-item">›</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">payment-history.html · 충전/사용 내역</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">탭 네비게이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">충전내역과 사용내역을 탭으로 구분합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>탭</th><th>내용</th></tr>
+                            <tr><td>충전내역</td><td>포인트 충전 기록</td></tr>
+                            <tr><td>사용내역</td><td>메시지 발송 사용 기록</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">검색 필터</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">기간으로 내역을 필터링합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">내역 테이블</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">충전/사용 내역을 테이블로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>충전내역 컬럼</th><th>사용내역 컬럼</th></tr>
+                            <tr><td>충전일시</td><td>사용일시</td></tr>
+                            <tr><td>결제수단</td><td>메시지타입</td></tr>
+                            <tr><td>충전금액</td><td>사용금액</td></tr>
+                            <tr><td>결제금액</td><td>발송건수</td></tr>
+                            <tr><td>영수증</td><td>상세</td></tr>
+                        </table>
+                        <div class="desc-code">GET /api/v1/payment/history
+Query: { type: 'CHARGE' | 'USAGE', startDate, endDate, page, limit }
+Response: {
+  history: [{
+    id, date, type, amount,
+    paymentMethod?, messageType?,
+    status
+  }]
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

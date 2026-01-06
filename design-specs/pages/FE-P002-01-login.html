@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P002-01 로그인 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P002-01</span>
+                    <span class="page-title-header">로그인</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame narrow">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/login.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div style="min-height: 600px; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); display: flex; align-items: center; justify-content: center; padding: 40px;">
+                                <div style="background: white; border-radius: 24px; padding: 48px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); position: relative;">
+                                    <!-- Logo -->
+                                    <div style="text-align: center; margin-bottom: 32px; position: relative;">
+                                        <div style="font-size: 32px; font-weight: 700; color: #4361ee;">톡벨</div>
+                                        <div style="font-size: 14px; color: #999; margin-top: 4px;">메시징 서비스 플랫폼</div>
+                                        <div class="marker" data-id="1" style="top: 0; right: -20px;">1</div>
+                                    </div>
+
+                                    <!-- Login Form -->
+                                    <div style="position: relative;">
+                                        <div class="form-row">
+                                            <label class="form-label">이메일</label>
+                                            <input type="email" class="form-input" placeholder="example@email.com">
+                                        </div>
+                                        <div class="form-row">
+                                            <label class="form-label">비밀번호</label>
+                                            <input type="password" class="form-input" placeholder="비밀번호를 입력하세요">
+                                        </div>
+                                        <div class="marker" data-id="2" style="top: 20px; right: -40px;">2</div>
+                                    </div>
+
+                                    <!-- Options -->
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 24px; position: relative;">
+                                        <div class="checkbox-item">
+                                            <div class="checkbox-box checked">✓</div>
+                                            <span style="font-size: 13px; color: #666;">로그인 상태 유지</span>
+                                        </div>
+                                        <a href="#" style="font-size: 13px; color: #4361ee; text-decoration: none;">비밀번호 찾기</a>
+                                        <div class="marker" data-id="3" style="top: -8px; right: -40px;">3</div>
+                                    </div>
+
+                                    <!-- Login Button -->
+                                    <div style="position: relative;">
+                                        <button class="mock-btn mock-btn-primary" style="width: 100%; padding: 16px; font-size: 16px;">로그인</button>
+                                        <div class="marker" data-id="4" style="top: 50%; right: -40px; transform: translateY(-50%);">4</div>
+                                    </div>
+
+                                    <!-- Divider -->
+                                    <div style="display: flex; align-items: center; margin: 32px 0; position: relative;">
+                                        <div style="flex: 1; height: 1px; background: #eee;"></div>
+                                        <span style="padding: 0 16px; font-size: 12px; color: #999;">또는</span>
+                                        <div style="flex: 1; height: 1px; background: #eee;"></div>
+                                    </div>
+
+                                    <!-- Social Login -->
+                                    <div style="display: flex; gap: 12px; position: relative;">
+                                        <button style="flex: 1; padding: 14px; border-radius: 8px; border: 1px solid #ddd; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px;">
+                                            <span style="font-size: 18px;">🟡</span>
+                                            카카오
+                                        </button>
+                                        <button style="flex: 1; padding: 14px; border-radius: 8px; border: 1px solid #ddd; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px;">
+                                            <span style="font-size: 18px;">🟢</span>
+                                            네이버
+                                        </button>
+                                        <div class="marker" data-id="5" style="top: 50%; right: -40px; transform: translateY(-50%);">5</div>
+                                    </div>
+
+                                    <!-- Sign Up Link -->
+                                    <div style="text-align: center; margin-top: 32px; position: relative;">
+                                        <span style="font-size: 13px; color: #666;">아직 회원이 아니신가요?</span>
+                                        <a href="#" style="font-size: 13px; color: #4361ee; text-decoration: none; font-weight: 600; margin-left: 8px;">회원가입</a>
+                                        <div class="marker" data-id="6" style="top: -8px; right: -20px;">6</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">login.html · 사용자 로그인 페이지</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">로고 영역</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">서비스 로고와 슬로건을 표시합니다. 로고 클릭 시 메인 페이지로 이동합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>로고</td><td>index.html 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">로그인 입력 필드</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">이메일과 비밀번호 입력 필드입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>타입</th><th>검증</th></tr>
+                            <tr><td>이메일</td><td>email</td><td>이메일 형식</td></tr>
+                            <tr><td>비밀번호</td><td>password</td><td>최소 8자</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 검증 규칙</div>
+                            <div class="desc-note-text">
+                                • 이메일: 이메일 형식 검증<br>
+                                • 비밀번호: 최소 8자 이상<br>
+                                • 빈 값 제출 불가
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">로그인 옵션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">로그인 상태 유지와 비밀번호 찾기 링크입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>로그인 상태 유지</td><td>체크 시 refreshToken 7일 유지</td></tr>
+                            <tr><td>비밀번호 찾기</td><td>find-password.html 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">로그인 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">이메일/비밀번호 로그인을 수행합니다.</div>
+                        <div class="desc-code">POST /api/v1/auth/login
+Request: {
+  email: string,
+  password: string,
+  rememberMe: boolean
+}
+Response: {
+  accessToken: string,
+  refreshToken: string,
+  user: { id, name, email }
+}
+Errors: [
+  'INVALID_CREDENTIALS',
+  'USER_NOT_FOUND',
+  'ACCOUNT_LOCKED'
+]</div>
+                        <div class="desc-note danger">
+                            <div class="desc-note-title">⚠️ 계정 잠금</div>
+                            <div class="desc-note-text">5회 연속 로그인 실패 시 계정이 30분간 잠금됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">소셜 로그인</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">카카오, 네이버 소셜 로그인을 지원합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>제공자</th><th>동작</th></tr>
+                            <tr><td>카카오</td><td>카카오 OAuth 인증 페이지 이동</td></tr>
+                            <tr><td>네이버</td><td>네이버 OAuth 인증 페이지 이동</td></tr>
+                        </table>
+                        <div class="desc-code">// OAuth 콜백
+GET /api/v1/auth/oauth/callback?provider=kakao&code=xxx</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="6">
+                    <div class="desc-item-header">
+                        <div class="desc-number">6</div>
+                        <div class="desc-item-title">회원가입 링크</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회원가입 페이지로 이동하는 링크입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>동작</th></tr>
+                            <tr><td>회원가입</td><td>signup.html 이동</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

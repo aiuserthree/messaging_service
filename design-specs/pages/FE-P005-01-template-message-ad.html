@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P005-01 광고문자 템플릿 관리 - 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <div class="design-container">
+        <!-- 헤더 -->
+        <header class="design-header">
+            <div class="header-left">
+                <h1>화면설계서</h1>
+                <span class="page-id">FE-P005-01-02</span>
+            </div>
+            <div class="header-right">
+                <span class="version">v1.0</span>
+                <span class="date">2026-01-06</span>
+            </div>
+        </header>
+
+        <!-- 페이지 정보 -->
+        <section class="page-info">
+            <h2>광고문자 템플릿 관리 페이지</h2>
+            <table class="info-table">
+                <tr>
+                    <th>페이지 ID</th>
+                    <td>FE-P005-01-02</td>
+                    <th>파일명</th>
+                    <td>template-message-ad.html</td>
+                </tr>
+                <tr>
+                    <th>URL</th>
+                    <td>/template-message-ad.html</td>
+                    <th>연관 모듈</th>
+                    <td>FE-M003 (TemplateManageModule)</td>
+                </tr>
+                <tr>
+                    <th>페이지 설명</th>
+                    <td colspan="3">광고문자 전용 템플릿을 관리하는 페이지입니다. (광고) 문구와 080 수신거부 번호가 자동 포함됩니다.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 메인 컨텐츠 -->
+        <div class="design-content">
+            <!-- 좌측: 화면 목업 -->
+            <div class="screen-mockup">
+                <div class="mockup-container">
+                    <!-- 사이드바 -->
+                    <div class="sidebar">
+                        <div class="logo">톡벨</div>
+                        <nav class="nav-menu">
+                            <a href="#" class="nav-item">대시보드</a>
+                            <a href="#" class="nav-item">문자 발송</a>
+                            <a href="#" class="nav-item">카카오톡</a>
+                            <a href="#" class="nav-item active">템플릿 관리</a>
+                            <a href="#" class="nav-item">주소록</a>
+                            <a href="#" class="nav-item">발송 관리</a>
+                            <a href="#" class="nav-item">결제</a>
+                            <a href="#" class="nav-item">마이페이지</a>
+                            <a href="#" class="nav-item">고객센터</a>
+                        </nav>
+                    </div>
+
+                    <!-- 메인 컨텐츠 영역 -->
+                    <div class="main-content">
+                        <!-- 페이지 헤더 -->
+                        <div class="page-header-mockup">
+                            <h2>광고문자 템플릿</h2>
+                        </div>
+
+                        <!-- 탭 메뉴 -->
+                        <div class="tab-menu" data-number="1">
+                            <a href="#" class="tab-item">일반문자</a>
+                            <a href="#" class="tab-item active">광고문자</a>
+                            <a href="#" class="tab-item">선거문자</a>
+                            <span class="tab-divider">|</span>
+                            <a href="#" class="tab-item">알림톡</a>
+                            <a href="#" class="tab-item">브랜드톡</a>
+                        </div>
+
+                        <!-- 안내 영역 -->
+                        <div class="alert alert-info" data-number="2">
+                            <p><strong>⚠️ 광고문자 발송 규정</strong></p>
+                            <ul style="margin: 8px 0 0 20px; font-size: 13px;">
+                                <li>광고문자는 반드시 (광고) 표기가 포함되어야 합니다.</li>
+                                <li>무료 수신거부 번호(080)가 필수 포함됩니다.</li>
+                                <li>발송 가능 시간: 평일 08:00~21:00 (휴일 발송 불가)</li>
+                            </ul>
+                        </div>
+
+                        <!-- 검색 및 필터 영역 -->
+                        <div class="filter-section" data-number="3">
+                            <div class="filter-row">
+                                <select class="form-select">
+                                    <option>전체 카테고리</option>
+                                    <option>프로모션</option>
+                                    <option>세일/할인</option>
+                                    <option>신상품</option>
+                                    <option>이벤트</option>
+                                </select>
+                                <input type="text" class="form-input" placeholder="템플릿명 검색">
+                                <button class="btn btn-secondary">검색</button>
+                            </div>
+                            <button class="btn btn-primary" data-number="4">새 템플릿 등록</button>
+                        </div>
+
+                        <!-- 템플릿 목록 테이블 -->
+                        <div class="content-card">
+                            <table class="data-table" data-number="5">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox"></th>
+                                        <th>NO</th>
+                                        <th>템플릿명</th>
+                                        <th>카테고리</th>
+                                        <th>타입</th>
+                                        <th>080 수신거부</th>
+                                        <th>등록일</th>
+                                        <th>관리</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>1</td>
+                                        <td>신년 세일 프로모션</td>
+                                        <td>세일/할인</td>
+                                        <td>LMS</td>
+                                        <td>080-123-4567</td>
+                                        <td>2026-01-05</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">상세</button>
+                                            <button class="btn btn-sm btn-danger-outline">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>2</td>
+                                        <td>VIP 고객 특별 할인</td>
+                                        <td>프로모션</td>
+                                        <td>MMS</td>
+                                        <td>080-123-4567</td>
+                                        <td>2026-01-04</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">상세</button>
+                                            <button class="btn btn-sm btn-danger-outline">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox"></td>
+                                        <td>3</td>
+                                        <td>신상품 출시 안내</td>
+                                        <td>신상품</td>
+                                        <td>SMS</td>
+                                        <td>080-123-4567</td>
+                                        <td>2026-01-03</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline">상세</button>
+                                            <button class="btn btn-sm btn-danger-outline">삭제</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- 하단 액션 및 페이지네이션 -->
+                            <div class="table-footer" data-number="6">
+                                <button class="btn btn-danger-outline">선택 삭제</button>
+                                <div class="pagination">
+                                    <button class="page-btn">&lt;</button>
+                                    <button class="page-btn active">1</button>
+                                    <button class="page-btn">2</button>
+                                    <button class="page-btn">3</button>
+                                    <button class="page-btn">&gt;</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 템플릿 등록/수정 모달 (오버레이로 표현) -->
+                        <div class="modal-preview" data-number="7">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3>광고문자 템플릿 등록</h3>
+                                    <button class="modal-close">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>템플릿명 *</label>
+                                        <input type="text" class="form-input" placeholder="템플릿명을 입력하세요">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>카테고리</label>
+                                        <select class="form-select">
+                                            <option>카테고리 선택</option>
+                                            <option>프로모션</option>
+                                            <option>세일/할인</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>메시지 타입 *</label>
+                                        <div class="radio-group">
+                                            <label><input type="radio" name="msgType"> SMS</label>
+                                            <label><input type="radio" name="msgType" checked> LMS</label>
+                                            <label><input type="radio" name="msgType"> MMS</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-number="8">
+                                        <label>(광고) 문구 *</label>
+                                        <div class="inline-input">
+                                            <span class="prefix">(광고)</span>
+                                            <input type="text" class="form-input" placeholder="업체명/브랜드명">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-number="9">
+                                        <label>080 수신거부 번호 *</label>
+                                        <select class="form-select">
+                                            <option>080-123-4567</option>
+                                            <option>080-987-6543</option>
+                                        </select>
+                                        <span class="help-text">등록된 080 번호가 없는 경우 마이페이지에서 등록하세요.</span>
+                                    </div>
+                                    <div class="form-group" data-number="10">
+                                        <label>메시지 내용 *</label>
+                                        <textarea class="form-textarea" rows="6" placeholder="메시지 내용을 입력하세요"></textarea>
+                                        <div class="textarea-footer">
+                                            <span>0 / 2000 byte</span>
+                                        </div>
+                                        <div class="variable-buttons">
+                                            <button class="btn btn-sm btn-outline">#{이름}</button>
+                                            <button class="btn btn-sm btn-outline">#{전화번호}</button>
+                                            <button class="btn btn-sm btn-outline">#{변수1}</button>
+                                            <button class="btn btn-sm btn-outline">#{변수2}</button>
+                                            <button class="btn btn-sm btn-outline">#{변수3}</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" data-number="11">
+                                        <label>이미지 첨부 (MMS)</label>
+                                        <div class="image-upload-area">
+                                            <div class="image-slot">+ 이미지 1</div>
+                                            <div class="image-slot">+ 이미지 2</div>
+                                            <div class="image-slot">+ 이미지 3</div>
+                                        </div>
+                                        <span class="help-text">최대 3개, 각 300KB 이하, JPG/PNG/GIF</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary">취소</button>
+                                    <button class="btn btn-primary">등록</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 우측: 상세 설명 -->
+            <div class="description-panel">
+                <h3>화면 요소 설명</h3>
+                
+                <div class="desc-item" data-number="1">
+                    <h4>1. 탭 메뉴</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>문자 템플릿 탭</th>
+                            <td>일반문자 / 광고문자 / 선거문자</td>
+                        </tr>
+                        <tr>
+                            <th>카카오 템플릿 탭</th>
+                            <td>알림톡 / 브랜드톡</td>
+                        </tr>
+                        <tr>
+                            <th>현재 활성 탭</th>
+                            <td>광고문자 (강조 표시)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="2">
+                    <h4>2. 광고문자 규정 안내</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>표시 내용</th>
+                            <td>
+                                - (광고) 표기 필수<br>
+                                - 080 수신거부 번호 필수<br>
+                                - 발송 시간 제한 안내
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>스타일</th>
+                            <td>정보성 알림 (info alert)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="3">
+                    <h4>3. 검색 및 필터</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>카테고리 필터</th>
+                            <td>전체/프로모션/세일·할인/신상품/이벤트</td>
+                        </tr>
+                        <tr>
+                            <th>검색 대상</th>
+                            <td>템플릿명</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="4">
+                    <h4>4. 새 템플릿 등록 버튼</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>클릭 시</th>
+                            <td>템플릿 등록 모달 표시</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="5">
+                    <h4>5. 템플릿 목록 테이블</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>표시 컬럼</th>
+                            <td>
+                                - 체크박스 (선택)<br>
+                                - NO (순번)<br>
+                                - 템플릿명<br>
+                                - 카테고리<br>
+                                - 타입 (SMS/LMS/MMS)<br>
+                                - 080 수신거부 번호<br>
+                                - 등록일<br>
+                                - 관리 (상세/삭제)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>정렬</th>
+                            <td>등록일 최신순 기본</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="6">
+                    <h4>6. 테이블 하단 액션</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>선택 삭제</th>
+                            <td>체크된 템플릿 일괄 삭제</td>
+                        </tr>
+                        <tr>
+                            <th>페이지네이션</th>
+                            <td>페이지당 10건 표시</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="7">
+                    <h4>7. 템플릿 등록/수정 모달</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>모달 유형</th>
+                            <td>등록 / 수정 (버튼 텍스트 변경)</td>
+                        </tr>
+                        <tr>
+                            <th>수정 시</th>
+                            <td>기존 데이터 자동 채움</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="8">
+                    <h4>8. (광고) 문구 입력</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>형식</th>
+                            <td>(광고) + 사용자 입력 문구</td>
+                        </tr>
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>필수</td>
+                        </tr>
+                        <tr>
+                            <th>입력 예시</th>
+                            <td>(광고) 톡벨쇼핑</td>
+                        </tr>
+                        <tr>
+                            <th>최대 길이</th>
+                            <td>20자 (40byte)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="9">
+                    <h4>9. 080 수신거부 번호</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>형식</th>
+                            <td>Select (등록된 번호 목록)</td>
+                        </tr>
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>필수</td>
+                        </tr>
+                        <tr>
+                            <th>번호 없는 경우</th>
+                            <td>"마이페이지에서 080번호 등록" 안내</td>
+                        </tr>
+                        <tr>
+                            <th>미리보기 형식</th>
+                            <td>무료수신거부 080-XXX-XXXX</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="10">
+                    <h4>10. 메시지 내용 및 변수</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>바이트 제한</th>
+                            <td>
+                                - SMS: 90byte<br>
+                                - LMS: 2000byte<br>
+                                - MMS: 2000byte
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>변수 버튼</th>
+                            <td>#{이름}, #{전화번호}, #{변수1}, #{변수2}, #{변수3}</td>
+                        </tr>
+                        <tr>
+                            <th>변수 삽입</th>
+                            <td>클릭 시 커서 위치에 삽입</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="11">
+                    <h4>11. 이미지 첨부 (MMS)</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>표시 조건</th>
+                            <td>MMS 선택 시에만 표시</td>
+                        </tr>
+                        <tr>
+                            <th>최대 개수</th>
+                            <td>3개 (개별 슬롯)</td>
+                        </tr>
+                        <tr>
+                            <th>파일 제한</th>
+                            <td>
+                                - 크기: 각 300KB 이하<br>
+                                - 형식: JPG, PNG, GIF
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 미리보기 형식 -->
+                <div class="preview-format">
+                    <h4>메시지 미리보기 형식</h4>
+                    <div class="preview-box">
+                        <p><strong>(광고) 톡벨쇼핑</strong></p>
+                        <p>#{이름}님, 신년 특별 세일!</p>
+                        <p>최대 50% 할인 이벤트 진행중</p>
+                        <p style="margin-top: 12px; font-size: 12px; color: #666;">무료수신거부 080-123-4567</p>
+                    </div>
+                </div>
+
+                <!-- API 명세 -->
+                <div class="api-section">
+                    <h4>API 명세</h4>
+                    <div class="api-item">
+                        <div class="api-method post">POST</div>
+                        <div class="api-endpoint">/api/v1/templates/message/ad</div>
+                    </div>
+                    <pre class="code-block">
+// Request
+{
+  "templateName": "신년 세일 프로모션",
+  "category": "sale",
+  "messageType": "LMS",
+  "adLabel": "톡벨쇼핑",     // (광고) 뒤 문구
+  "rejectNumber": "080-123-4567",
+  "content": "#{이름}님, 신년 특별 세일!",
+  "variables": ["이름", "전화번호"],
+  "images": []              // MMS인 경우
+}</pre>
+                </div>
+
+                <!-- 데이터 모델 -->
+                <div class="data-model">
+                    <h4>데이터 모델</h4>
+                    <pre class="code-block">
+interface AdMessageTemplate {
+  id: string;
+  templateName: string;
+  category: string;
+  messageType: 'SMS' | 'LMS' | 'MMS';
+  adLabel: string;           // (광고) 옆 문구
+  rejectNumber: string;      // 080 수신거부 번호
+  content: string;
+  variables: string[];
+  images?: string[];         // MMS
+  createdAt: Date;
+  updatedAt: Date;
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <footer class="design-footer">
+            <p>톡벨(Tokbell) 메시징 서비스 - 화면설계서</p>
+        </footer>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

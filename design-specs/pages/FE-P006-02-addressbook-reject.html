@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P006-02 수신거부 관리 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P006-02</span>
+                    <span class="page-title-header">수신거부 관리</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/addressbook-reject.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡</span>
+                                    <span class="screen-nav-item">템플릿</span>
+                                    <span class="screen-nav-item active">주소록</span>
+                                    <span class="screen-nav-item">발송관리</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <!-- Sub Navigation -->
+                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
+                                <div style="display: flex; gap: 32px;">
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">주소록 관리</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">수신거부 관리</a>
+                                </div>
+                                <div class="marker" data-id="1" style="top: 50%; right: 24px; transform: translateY(-50%);">1</div>
+                            </div>
+
+                            <!-- Info Banner -->
+                            <div style="background: #fef2f2; padding: 16px 24px; border-bottom: 1px solid #fecaca; position: relative;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 20px;">🚫</span>
+                                    <div style="font-size: 13px; color: #991b1b;">
+                                        수신거부 목록에 등록된 번호로는 문자가 발송되지 않습니다. 발송 시 자동으로 제외됩니다.
+                                    </div>
+                                </div>
+                                <div class="marker" data-id="2" style="top: 50%; right: 24px; transform: translateY(-50%);">2</div>
+                            </div>
+
+                            <div class="screen-body">
+                                <!-- 검색 및 액션 -->
+                                <div class="form-section" style="margin-bottom: 16px; position: relative;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="display: flex; gap: 8px;">
+                                            <select class="form-select" style="width: 150px;">
+                                                <option>전체 경로</option>
+                                                <option>수동등록</option>
+                                                <option>080 수신거부</option>
+                                                <option>고객요청</option>
+                                            </select>
+                                            <input type="text" class="form-input" placeholder="전화번호 검색" style="width: 200px;">
+                                            <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                        </div>
+                                        <button class="mock-btn mock-btn-primary">+ 수신거부 등록</button>
+                                    </div>
+                                    <div class="marker" data-id="3" style="top: 50%; right: 150px; transform: translateY(-50%);">3</div>
+                                </div>
+
+                                <!-- 테이블 -->
+                                <div class="form-section" style="padding: 0; position: relative;">
+                                    <table class="mock-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40px;"><div class="checkbox-box"></div></th>
+                                                <th style="width: 60px;">NO</th>
+                                                <th>전화번호</th>
+                                                <th style="width: 150px;">등록 경로</th>
+                                                <th>메모</th>
+                                                <th style="width: 150px;">등록일</th>
+                                                <th style="width: 100px;">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><div class="checkbox-box"></div></td>
+                                                <td>1</td>
+                                                <td>010-****-1234</td>
+                                                <td><span class="status-badge info">080 수신거부</span></td>
+                                                <td style="color: #999;">자동 등록</td>
+                                                <td>2026-01-05 14:32</td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">해제</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="checkbox-box"></div></td>
+                                                <td>2</td>
+                                                <td>010-****-5678</td>
+                                                <td><span class="status-badge gray">수동등록</span></td>
+                                                <td style="color: #999;">고객 직접 요청</td>
+                                                <td>2026-01-04 10:15</td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">해제</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td><div class="checkbox-box"></div></td>
+                                                <td>3</td>
+                                                <td>010-****-9012</td>
+                                                <td><span class="status-badge warning">고객요청</span></td>
+                                                <td style="color: #999;">이메일 문의로 요청</td>
+                                                <td>2026-01-03 09:45</td>
+                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">해제</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="marker" data-id="4" style="top: 20px; right: 20px;">4</div>
+                                </div>
+
+                                <!-- 하단 액션 -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">선택 해제</button>
+                                    <div class="pagination">
+                                        <div class="pagination-item">‹</div>
+                                        <div class="pagination-item active">1</div>
+                                        <div class="pagination-item">2</div>
+                                        <div class="pagination-item">›</div>
+                                    </div>
+                                </div>
+
+                                <!-- 등록 모달 -->
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 450px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
+                                        <div style="font-size: 18px; font-weight: 600; color: #333;">수신거부 등록</div>
+                                        <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
+                                        <div class="marker" data-id="5" style="top: -8px; right: 40px;">5</div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <label class="form-label">전화번호 *</label>
+                                        <input type="tel" class="form-input" placeholder="010-0000-0000">
+                                        <div class="form-helper">숫자만 입력해도 자동 포맷됩니다.</div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <label class="form-label">등록 경로 *</label>
+                                        <select class="form-select">
+                                            <option>수동등록</option>
+                                            <option>고객요청</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <label class="form-label">메모</label>
+                                        <input type="text" class="form-input" placeholder="메모 입력 (선택)">
+                                    </div>
+
+                                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                                        <button class="mock-btn mock-btn-outline" style="flex: 1;">취소</button>
+                                        <button class="mock-btn mock-btn-primary" style="flex: 1;">등록하기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">addressbook-reject.html · 수신거부 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">서브 네비게이션</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">주소록과 수신거부 관리 탭입니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">수신거부 안내</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">수신거부 목록의 동작을 안내합니다.</div>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 자동 제외</div>
+                            <div class="desc-note-text">수신거부 목록에 등록된 번호는 문자 발송 시 자동으로 제외됩니다. 발송 결과에서 '수신거부'로 표시됩니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">검색 및 등록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록 경로별 필터와 수동 등록 기능입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>등록 경로</th><th>설명</th></tr>
+                            <tr><td>수동등록</td><td>관리자가 직접 등록</td></tr>
+                            <tr><td>080 수신거부</td><td>080 전화로 수신거부 요청</td></tr>
+                            <tr><td>고객요청</td><td>고객센터 등을 통한 요청</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">수신거부 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록된 수신거부 번호 목록입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>전화번호</td><td>마스킹 처리 표시</td></tr>
+                            <tr><td>등록 경로</td><td>어떻게 등록되었는지</td></tr>
+                            <tr><td>메모</td><td>추가 정보</td></tr>
+                            <tr><td>등록일</td><td>등록 일시</td></tr>
+                            <tr><td>해제</td><td>수신거부 해제 (삭제)</td></tr>
+                        </table>
+                        <div class="desc-code">GET /api/v1/addressbook/reject
+Response: {
+  rejectedNumbers: [{
+    id, phone, source, memo, createdAt
+  }]
+}</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">등록 모달</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">수신거부 번호를 수동으로 등록합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>필수</th><th>설명</th></tr>
+                            <tr><td>전화번호</td><td><span class="desc-badge required">필수</span></td><td>숫자만</td></tr>
+                            <tr><td>등록 경로</td><td><span class="desc-badge required">필수</span></td><td>수동등록/고객요청</td></tr>
+                            <tr><td>메모</td><td><span class="desc-badge optional">선택</span></td><td>비고</td></tr>
+                        </table>
+                        <div class="desc-code">POST /api/v1/addressbook/reject
+Request: {
+  phone: string,
+  source: 'MANUAL' | 'CUSTOMER_REQUEST',
+  memo?: string
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

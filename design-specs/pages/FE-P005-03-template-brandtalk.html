@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P005-03 브랜드메시지 템플릿 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P005-03</span>
+                    <span class="page-title-header">브랜드메시지 템플릿</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/template-brandtalk.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡</span>
+                                    <span class="screen-nav-item active">템플릿</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item">발송관리</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <!-- Sub Navigation -->
+                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px;">
+                                <div style="display: flex; gap: 32px;">
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">일반문자 템플릿</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">광고문자 템플릿</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 템플릿</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">알림톡 템플릿</a>
+                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">브랜드메시지 템플릿</a>
+                                </div>
+                            </div>
+
+                            <div class="screen-body">
+                                <!-- Search & Actions -->
+                                <div class="form-section" style="margin-bottom: 16px; position: relative;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="display: flex; gap: 8px;">
+                                            <select class="form-select" style="width: 120px;">
+                                                <option>전체 타입</option>
+                                                <option>텍스트</option>
+                                                <option>이미지</option>
+                                                <option>와이드 이미지</option>
+                                                <option>캐러셀</option>
+                                            </select>
+                                            <input type="text" class="form-input" placeholder="템플릿명 검색" style="width: 200px;">
+                                            <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                        </div>
+                                        <button class="mock-btn mock-btn-primary">+ 새 템플릿 등록</button>
+                                    </div>
+                                    <div class="marker" data-id="1" style="top: 50%; right: 150px; transform: translateY(-50%);">1</div>
+                                </div>
+
+                                <!-- Template Grid -->
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative;">
+                                    <!-- Card 1 -->
+                                    <div style="background: white; border-radius: 16px; overflow: hidden; border: 1px solid #eee;">
+                                        <div style="height: 180px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                            <div style="text-align: center;">
+                                                <div style="font-size: 14px; font-weight: 600;">신년 이벤트 안내</div>
+                                                <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">텍스트 타입</div>
+                                            </div>
+                                        </div>
+                                        <div style="padding: 16px;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                <span class="status-badge info">텍스트</span>
+                                                <span style="font-size: 12px; color: #999;">2026-01-05</span>
+                                            </div>
+                                            <div style="display: flex; gap: 8px;">
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm" style="flex: 1;">수정</button>
+                                                <button class="mock-btn mock-btn-primary mock-btn-sm" style="flex: 1;">사용</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card 2 -->
+                                    <div style="background: white; border-radius: 16px; overflow: hidden; border: 1px solid #eee;">
+                                        <div style="height: 180px; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                            <div style="text-align: center;">
+                                                <div style="font-size: 32px; margin-bottom: 8px;">🖼️</div>
+                                                <div style="font-size: 14px; font-weight: 600;">할인 쿠폰 안내</div>
+                                                <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">이미지 타입</div>
+                                            </div>
+                                        </div>
+                                        <div style="padding: 16px;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                <span class="status-badge success">이미지</span>
+                                                <span style="font-size: 12px; color: #999;">2026-01-04</span>
+                                            </div>
+                                            <div style="display: flex; gap: 8px;">
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm" style="flex: 1;">수정</button>
+                                                <button class="mock-btn mock-btn-primary mock-btn-sm" style="flex: 1;">사용</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card 3 -->
+                                    <div style="background: white; border-radius: 16px; overflow: hidden; border: 1px solid #eee;">
+                                        <div style="height: 180px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                                            <div style="text-align: center;">
+                                                <div style="font-size: 32px; margin-bottom: 8px;">🎠</div>
+                                                <div style="font-size: 14px; font-weight: 600;">신상품 소개</div>
+                                                <div style="font-size: 12px; opacity: 0.8; margin-top: 4px;">캐러셀 타입</div>
+                                            </div>
+                                        </div>
+                                        <div style="padding: 16px;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                                <span class="status-badge warning">캐러셀</span>
+                                                <span style="font-size: 12px; color: #999;">2026-01-03</span>
+                                            </div>
+                                            <div style="display: flex; gap: 8px;">
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm" style="flex: 1;">수정</button>
+                                                <button class="mock-btn mock-btn-primary mock-btn-sm" style="flex: 1;">사용</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="marker" data-id="2" style="top: -10px; right: -10px;">2</div>
+                                </div>
+
+                                <!-- Template Types Info -->
+                                <div style="margin-top: 24px; position: relative;">
+                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 16px;">템플릿 타입 안내</div>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                                        <div style="background: white; border-radius: 12px; padding: 20px;">
+                                            <div style="font-size: 24px; margin-bottom: 8px;">📝</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px;">텍스트</div>
+                                            <div style="font-size: 12px; color: #666;">텍스트만 포함된 기본 형태</div>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 20px;">
+                                            <div style="font-size: 24px; margin-bottom: 8px;">🖼️</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px;">이미지</div>
+                                            <div style="font-size: 12px; color: #666;">이미지 + 텍스트</div>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 20px;">
+                                            <div style="font-size: 24px; margin-bottom: 8px;">📐</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px;">와이드 이미지</div>
+                                            <div style="font-size: 12px; color: #666;">800x400 와이드 형태</div>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 20px;">
+                                            <div style="font-size: 24px; margin-bottom: 8px;">📋</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px;">와이드 리스트</div>
+                                            <div style="font-size: 12px; color: #666;">리스트 형태 (최대 4개)</div>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 20px;">
+                                            <div style="font-size: 24px; margin-bottom: 8px;">🎠</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px;">캐러셀 카드</div>
+                                            <div style="font-size: 12px; color: #666;">슬라이드 카드 (최대 6개)</div>
+                                        </div>
+                                        <div style="background: white; border-radius: 12px; padding: 20px;">
+                                            <div style="font-size: 24px; margin-bottom: 8px;">🛒</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px;">커머스 카드</div>
+                                            <div style="font-size: 12px; color: #666;">상품 정보 카드 형태</div>
+                                        </div>
+                                    </div>
+                                    <div class="marker" data-id="3" style="top: 0; right: -10px;">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">template-brandtalk.html · 브랜드메시지 템플릿</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">검색 및 등록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">템플릿 타입별 필터와 검색, 새 등록 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필터</th><th>옵션</th></tr>
+                            <tr><td>타입</td><td>전체, 텍스트, 이미지, 와이드, 캐러셀 등</td></tr>
+                            <tr><td>검색</td><td>템플릿명 검색</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">템플릿 카드 그리드</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록된 템플릿을 카드 형태로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>미리보기 영역</td><td>템플릿 유형별 시각적 표현</td></tr>
+                            <tr><td>타입 뱃지</td><td>텍스트/이미지/캐러셀 등</td></tr>
+                            <tr><td>등록일</td><td>템플릿 생성 날짜</td></tr>
+                            <tr><td>수정 버튼</td><td>템플릿 편집</td></tr>
+                            <tr><td>사용 버튼</td><td>발송 페이지에서 해당 템플릿 사용</td></tr>
+                        </table>
+                        <div class="desc-code">GET /api/v1/templates/brandtalk
+Response: {
+  templates: [{
+    id, name, type,
+    content, title, buttons,
+    imageUrl?, carouselItems?,
+    createdAt
+  }]
+}</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">템플릿 타입 안내</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">브랜드메시지에서 지원하는 템플릿 타입입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>타입</th><th>설명</th><th>이미지 크기</th></tr>
+                            <tr><td>텍스트</td><td>텍스트만</td><td>-</td></tr>
+                            <tr><td>이미지</td><td>이미지 + 텍스트</td><td>500x250</td></tr>
+                            <tr><td>와이드 이미지</td><td>와이드 이미지</td><td>800x400</td></tr>
+                            <tr><td>와이드 리스트</td><td>리스트 형태</td><td>800x400</td></tr>
+                            <tr><td>캐러셀 카드</td><td>슬라이드 카드</td><td>500x500</td></tr>
+                            <tr><td>커머스 카드</td><td>상품 카드</td><td>500x500</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 이미지 규격</div>
+                            <div class="desc-note-text">
+                                • 형식: JPG, PNG<br>
+                                • 최대 용량: 500KB<br>
+                                • 권장 해상도: 타입별 상이
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

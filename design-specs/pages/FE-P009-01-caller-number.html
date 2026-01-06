@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P009-01 발신번호 관리 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P009-01</span>
+                    <span class="page-title-header">발신번호 관리</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame wide">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/mypage-caller-number.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡</span>
+                                    <span class="screen-nav-item">템플릿</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item">발송관리</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <div class="screen-body" style="display: flex; gap: 0; padding: 0;">
+                                <!-- 좌측 마이페이지 메뉴 -->
+                                <div style="width: 220px; background: white; border-right: 1px solid #eee; padding: 24px 16px;">
+                                    <div style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 16px; padding: 0 8px;">마이페이지</div>
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <a href="#" style="padding: 12px 16px; border-radius: 8px; background: #4361ee; color: white; font-size: 13px; text-decoration: none;">발신번호 관리</a>
+                                        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: #666; font-size: 13px; text-decoration: none;">내 정보 수정</a>
+                                        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: #666; font-size: 13px; text-decoration: none;">충전하기</a>
+                                        <a href="#" style="padding: 12px 16px; border-radius: 8px; color: #666; font-size: 13px; text-decoration: none;">충전/사용 내역</a>
+                                    </div>
+                                </div>
+
+                                <!-- 우측 컨텐츠 -->
+                                <div style="flex: 1; padding: 24px;">
+                                    <div style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 20px; position: relative;">
+                                        발신번호 관리
+                                        <div class="marker" data-id="1" style="top: -10px; right: 0;">1</div>
+                                    </div>
+
+                                    <!-- 검색 및 등록 -->
+                                    <div class="form-section" style="margin-bottom: 16px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div style="display: flex; gap: 8px;">
+                                                <select class="form-select" style="width: 120px;">
+                                                    <option>전체 상태</option>
+                                                    <option>승인완료</option>
+                                                    <option>심사중</option>
+                                                    <option>반려</option>
+                                                </select>
+                                                <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
+                                            </div>
+                                            <button class="mock-btn mock-btn-primary">+ 발신번호 등록</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- 테이블 -->
+                                    <div class="form-section" style="padding: 0; position: relative;">
+                                        <table class="mock-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 60px;">NO</th>
+                                                    <th>발신번호</th>
+                                                    <th style="width: 100px;">번호유형</th>
+                                                    <th style="width: 100px;">명의구분</th>
+                                                    <th style="width: 100px;">상태</th>
+                                                    <th style="width: 120px;">잔여포인트</th>
+                                                    <th style="width: 100px;">등록일</th>
+                                                    <th style="width: 100px;">관리</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>010-1234-5678</td>
+                                                    <td>휴대폰</td>
+                                                    <td>본인</td>
+                                                    <td><span class="status-badge success">승인완료</span></td>
+                                                    <td style="color: #4361ee; font-weight: 600;">500,000 P</td>
+                                                    <td>2026-01-05</td>
+                                                    <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>02-1234-5678</td>
+                                                    <td>유선전화</td>
+                                                    <td>자사</td>
+                                                    <td><span class="status-badge warning">심사중</span></td>
+                                                    <td style="color: #999;">-</td>
+                                                    <td>2026-01-04</td>
+                                                    <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
+                                                </tr>
+                                                <tr style="background: #fef2f2;">
+                                                    <td>3</td>
+                                                    <td>070-1234-5678</td>
+                                                    <td>인터넷전화</td>
+                                                    <td>타사</td>
+                                                    <td><span class="status-badge danger">반려</span></td>
+                                                    <td style="color: #999;">-</td>
+                                                    <td>2026-01-03</td>
+                                                    <td><button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">반려사유</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="marker" data-id="2" style="top: 20px; right: 20px;">2</div>
+                                    </div>
+
+                                    <!-- 등록 절차 안내 -->
+                                    <div style="margin-top: 24px; position: relative;">
+                                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 16px;">발신번호 등록 절차</div>
+                                        <div style="display: flex; gap: 16px;">
+                                            <div style="flex: 1; background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                                <div style="width: 40px; height: 40px; background: #4361ee; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 600;">1</div>
+                                                <div style="font-size: 13px; font-weight: 600; color: #333;">회원 유형 선택</div>
+                                                <div style="font-size: 11px; color: #666; margin-top: 4px;">개인/기업</div>
+                                            </div>
+                                            <div style="flex: 1; background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                                <div style="width: 40px; height: 40px; background: #4361ee; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 600;">2</div>
+                                                <div style="font-size: 13px; font-weight: 600; color: #333;">기본 정보 입력</div>
+                                                <div style="font-size: 11px; color: #666; margin-top: 4px;">발신번호, 유형</div>
+                                            </div>
+                                            <div style="flex: 1; background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                                <div style="width: 40px; height: 40px; background: #4361ee; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 600;">3</div>
+                                                <div style="font-size: 13px; font-weight: 600; color: #333;">서류 업로드</div>
+                                                <div style="font-size: 11px; color: #666; margin-top: 4px;">명의구분별 서류</div>
+                                            </div>
+                                            <div style="flex: 1; background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                                <div style="width: 40px; height: 40px; background: #4361ee; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 600;">4</div>
+                                                <div style="font-size: 13px; font-weight: 600; color: #333;">연락처 입력</div>
+                                                <div style="font-size: 11px; color: #666; margin-top: 4px;">담당자 정보</div>
+                                            </div>
+                                            <div style="flex: 1; background: white; border-radius: 12px; padding: 20px; text-align: center;">
+                                                <div style="width: 40px; height: 40px; background: #4361ee; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-weight: 600;">5</div>
+                                                <div style="font-size: 13px; font-weight: 600; color: #333;">확인 및 제출</div>
+                                                <div style="font-size: 11px; color: #666; margin-top: 4px;">최종 확인</div>
+                                            </div>
+                                        </div>
+                                        <div class="marker" data-id="3" style="top: 0; right: 0;">3</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">mypage-caller-number.html · 발신번호 관리</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">마이페이지 사이드바</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">마이페이지 메뉴 네비게이션입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>메뉴</th><th>페이지</th></tr>
+                            <tr><td>발신번호 관리</td><td>mypage-caller-number.html</td></tr>
+                            <tr><td>내 정보 수정</td><td>mypage-profile.html</td></tr>
+                            <tr><td>충전하기</td><td>payment-charge.html</td></tr>
+                            <tr><td>충전/사용 내역</td><td>payment-history.html</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">발신번호 목록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록된 발신번호 목록입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>상태</th><th>색상</th><th>설명</th></tr>
+                            <tr><td>승인완료</td><td>초록</td><td>발송 사용 가능</td></tr>
+                            <tr><td>심사중</td><td>노랑</td><td>KISA 심사 진행 중</td></tr>
+                            <tr><td>반려</td><td>빨강</td><td>반려사유 확인 후 재신청</td></tr>
+                        </table>
+                        <div class="desc-code">GET /api/v1/caller-numbers
+Response: {
+  callerNumbers: [{
+    id, number, type, ownerType,
+    status, balance, createdAt
+  }]
+}</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">등록 절차 안내</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">발신번호 등록 5단계 절차를 안내합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>단계</th><th>내용</th></tr>
+                            <tr><td>STEP 1</td><td>회원 유형 선택 (개인/기업)</td></tr>
+                            <tr><td>STEP 2</td><td>발신번호, 유형 자동 인식</td></tr>
+                            <tr><td>STEP 3</td><td>명의구분별 필수 서류 업로드</td></tr>
+                            <tr><td>STEP 4</td><td>담당자 연락처 입력</td></tr>
+                            <tr><td>STEP 5</td><td>최종 확인 및 제출</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 명의구분별 필수 서류</div>
+                            <div class="desc-note-text">
+                                • 본인: 통신서비스 이용증명원<br>
+                                • 타인: 위임장, 재직증명서/신분증 추가<br>
+                                • 타사(기업): 위임업체 사업자등록증 추가
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

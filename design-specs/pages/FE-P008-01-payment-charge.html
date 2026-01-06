@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P008-01 충전하기 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P008-01</span>
+                    <span class="page-title-header">충전하기</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/payment-charge.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div class="screen-header">
+                                <div class="screen-logo">톡벨</div>
+                                <div class="screen-nav">
+                                    <span class="screen-nav-item">문자 발송</span>
+                                    <span class="screen-nav-item">카카오톡</span>
+                                    <span class="screen-nav-item">템플릿</span>
+                                    <span class="screen-nav-item">주소록</span>
+                                    <span class="screen-nav-item">발송관리</span>
+                                </div>
+                                <div class="screen-user">홍길동님</div>
+                            </div>
+
+                            <div class="screen-body">
+                                <div style="max-width: 700px; margin: 0 auto;">
+                                    <!-- 현재 잔액 -->
+                                    <div class="form-section" style="background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%); color: white; margin-bottom: 20px; position: relative;">
+                                        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 8px;">현재 보유 포인트</div>
+                                        <div style="font-size: 36px; font-weight: 700;">1,000,000 P</div>
+                                        <div class="marker" data-id="1" style="top: 16px; right: 16px; background: white; color: #4361ee;">1</div>
+                                    </div>
+
+                                    <!-- 충전 금액 선택 -->
+                                    <div class="form-section" style="position: relative;">
+                                        <div class="form-section-title">충전 포인트 선택</div>
+                                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">1만</button>
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">2만</button>
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">3만</button>
+                                            <button style="padding: 16px; border: 2px solid #4361ee; border-radius: 12px; background: #f0f4ff; font-size: 14px; cursor: pointer; color: #4361ee; font-weight: 600;">5만</button>
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">10만</button>
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">30만</button>
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">50만</button>
+                                            <button style="padding: 16px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 14px; cursor: pointer;">100만</button>
+                                        </div>
+                                        <div class="form-row" style="margin-top: 16px;">
+                                            <label class="form-label">직접 입력</label>
+                                            <input type="text" class="form-input" placeholder="충전 금액 직접 입력">
+                                            <div class="form-helper">최소 충전 금액: 10,000원</div>
+                                        </div>
+                                        <div class="marker" data-id="2" style="top: 16px; right: 16px;">2</div>
+                                    </div>
+
+                                    <!-- 결제 수단 -->
+                                    <div class="form-section" style="position: relative;">
+                                        <div class="form-section-title">결제 수단</div>
+                                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                                            <label style="display: flex; align-items: center; gap: 12px; padding: 16px; border: 2px solid #4361ee; border-radius: 12px; background: #f0f4ff; cursor: pointer;">
+                                                <div class="radio-circle active"></div>
+                                                <div>
+                                                    <div style="font-size: 14px; font-weight: 600; color: #333;">신용/체크카드</div>
+                                                    <div style="font-size: 12px; color: #666;">모든 카드사 이용 가능</div>
+                                                </div>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 12px; padding: 16px; border: 2px solid #eee; border-radius: 12px; cursor: pointer;">
+                                                <div class="radio-circle"></div>
+                                                <div>
+                                                    <div style="font-size: 14px; font-weight: 600; color: #333;">계좌이체</div>
+                                                    <div style="font-size: 12px; color: #666;">실시간 계좌이체</div>
+                                                </div>
+                                            </label>
+                                            <label style="display: flex; align-items: center; gap: 12px; padding: 16px; border: 2px solid #eee; border-radius: 12px; cursor: pointer;">
+                                                <div class="radio-circle"></div>
+                                                <div>
+                                                    <div style="font-size: 14px; font-weight: 600; color: #333;">무통장입금</div>
+                                                    <div style="font-size: 12px; color: #666;">가상계좌 발급 후 입금</div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="marker" data-id="3" style="top: 16px; right: 16px;">3</div>
+                                    </div>
+
+                                    <!-- 발신번호별 분배 -->
+                                    <div class="form-section" style="position: relative;">
+                                        <div class="form-section-title">발신번호별 포인트 분배 (선택)</div>
+                                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                                <span style="font-size: 13px; color: #333; width: 140px;">010-1234-5678</span>
+                                                <input type="text" class="form-input" placeholder="분배 금액" style="flex: 1;">
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                                <span style="font-size: 13px; color: #333; width: 140px;">02-1234-5678</span>
+                                                <input type="text" class="form-input" placeholder="분배 금액" style="flex: 1;">
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                                            <button class="mock-btn mock-btn-outline mock-btn-sm">균등 분배</button>
+                                            <span style="font-size: 13px; color: #666;">분배 합계: <strong>0</strong> / 총 충전: <strong style="color: #4361ee;">50,000</strong></span>
+                                        </div>
+                                        <div class="marker" data-id="4" style="top: 16px; right: 16px;">4</div>
+                                    </div>
+
+                                    <!-- 결제 금액 요약 -->
+                                    <div class="form-section" style="background: #f8f9fa; position: relative;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                            <span style="font-size: 14px; color: #666;">충전 포인트</span>
+                                            <span style="font-size: 14px; color: #333;">50,000 P</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                                            <span style="font-size: 14px; color: #666;">부가세 (10%)</span>
+                                            <span style="font-size: 14px; color: #333;">5,000원</span>
+                                        </div>
+                                        <div style="border-top: 1px solid #ddd; padding-top: 12px; display: flex; justify-content: space-between;">
+                                            <span style="font-size: 16px; font-weight: 600; color: #333;">결제 금액</span>
+                                            <span style="font-size: 20px; font-weight: 700; color: #4361ee;">55,000원</span>
+                                        </div>
+                                        <div class="marker" data-id="5" style="top: 16px; right: 16px;">5</div>
+                                    </div>
+
+                                    <button class="mock-btn mock-btn-primary" style="width: 100%; padding: 18px; font-size: 16px;">결제하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">payment-charge.html · 포인트 충전</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">현재 잔액 표시</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">현재 보유 중인 포인트를 표시합니다.</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">충전 금액 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">미리 정의된 금액 버튼 또는 직접 입력으로 충전 금액을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>금액</th></tr>
+                            <tr><td>1만 ~ 100만</td><td>고정 금액 선택</td></tr>
+                            <tr><td>직접 입력</td><td>원하는 금액 입력</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 최소 충전 금액</div>
+                            <div class="desc-note-text">최소 충전 금액은 10,000원입니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">결제 수단 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">결제 방법을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>수단</th><th>설명</th></tr>
+                            <tr><td>신용/체크카드</td><td>모든 카드사 이용 가능</td></tr>
+                            <tr><td>계좌이체</td><td>실시간 계좌이체</td></tr>
+                            <tr><td>무통장입금</td><td>가상계좌 발급 후 입금</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">발신번호별 분배</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">충전 포인트를 발신번호별로 분배합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>기능</th><th>설명</th></tr>
+                            <tr><td>균등 분배</td><td>등록된 발신번호에 균등 분배</td></tr>
+                            <tr><td>직접 입력</td><td>각 번호별 분배 금액 입력</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 분배 합계 검증</div>
+                            <div class="desc-note-text">분배 합계는 총 충전 금액과 일치해야 합니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">결제 금액 요약</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">최종 결제 금액을 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>계산</th></tr>
+                            <tr><td>충전 포인트</td><td>선택한 금액</td></tr>
+                            <tr><td>부가세</td><td>충전금 × 10%</td></tr>
+                            <tr><td>결제 금액</td><td>충전금 + 부가세</td></tr>
+                        </table>
+                        <div class="desc-code">POST /api/v1/payment/charge
+Request: {
+  amount: number,
+  paymentMethod: 'CARD' | 'TRANSFER' | 'VIRTUAL_ACCOUNT',
+  distribution?: { callerNumber: string, amount: number }[]
+}
+Response: {
+  paymentId: string,
+  pgUrl?: string,
+  virtualAccount?: { bank, number, holder }
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

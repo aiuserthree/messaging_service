@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P004-01 발신프로필 등록 모달 - 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <div class="design-container">
+        <!-- 헤더 -->
+        <header class="design-header">
+            <div class="header-left">
+                <h1>화면설계서</h1>
+                <span class="page-id">FE-P004-01-M01</span>
+            </div>
+            <div class="header-right">
+                <span class="version">v1.0</span>
+                <span class="date">2026-01-06</span>
+            </div>
+        </header>
+
+        <!-- 페이지 정보 -->
+        <section class="page-info">
+            <h2>발신프로필 등록 모달</h2>
+            <table class="info-table">
+                <tr>
+                    <th>페이지 ID</th>
+                    <td>FE-P004-01-M01</td>
+                    <th>컴포넌트</th>
+                    <td>ProfileRegisterModal.tsx</td>
+                </tr>
+                <tr>
+                    <th>호출 위치</th>
+                    <td>/kakao-profile-manage.html</td>
+                    <th>연관 모듈</th>
+                    <td>FE-M002 (KakaoSendModule)</td>
+                </tr>
+                <tr>
+                    <th>모달 설명</th>
+                    <td colspan="3">카카오톡 채널(발신프로필)을 새로 등록하기 위한 모달입니다.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- 메인 컨텐츠 -->
+        <div class="design-content">
+            <!-- 좌측: 화면 목업 -->
+            <div class="screen-mockup">
+                <div class="mockup-container modal-mockup">
+                    <!-- 모달 오버레이 -->
+                    <div class="modal-overlay">
+                        <div class="modal-dialog" data-number="1">
+                            <!-- 모달 헤더 -->
+                            <div class="modal-header" data-number="2">
+                                <h3>발신프로필 등록</h3>
+                                <button class="modal-close">×</button>
+                            </div>
+
+                            <!-- 모달 바디 -->
+                            <div class="modal-body">
+                                <!-- 안내 영역 -->
+                                <div class="alert alert-info" data-number="3">
+                                    <p><strong>💡 카카오톡 채널(<a href="https://center-pf.kakao.com" target="_blank">https://center-pf.kakao.com</a>)에서 비즈니스 채널로 등록된 카카오톡 채널(발신프로필)만 등록 가능합니다.</strong></p>
+                                </div>
+
+                                <!-- 폼 필드 -->
+                                <div class="form-group" data-number="4">
+                                    <label>발신프로필 *</label>
+                                    <input type="text" class="form-input" placeholder="@" value="@tokbell">
+                                    <span class="help-text">카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.</span>
+                                </div>
+
+                                <div class="form-group" data-number="5">
+                                    <label>담당자 휴대폰 번호</label>
+                                    <div class="input-with-button">
+                                        <input type="text" class="form-input" placeholder="- 없이 숫자만 입력해주세요" value="01012345678">
+                                        <button class="btn btn-outline">인증요청</button>
+                                    </div>
+                                    <span class="help-text">카카오톡 채널 관리자(마스터 또는 매니저) 휴대폰번호를 입력해주세요.</span>
+                                    <!-- 인증 완료 시 -->
+                                    <span class="verified-text">✓ 인증되었습니다</span>
+                                </div>
+
+                                <div class="form-group" data-number="6">
+                                    <label>카테고리 * (최대 3개)</label>
+                                    <div class="category-select">
+                                        <select class="form-select">
+                                            <option>1차 카테고리 선택</option>
+                                            <option selected>쇼핑몰</option>
+                                        </select>
+                                        <select class="form-select">
+                                            <option>2차 카테고리 선택</option>
+                                            <option selected>종합쇼핑몰</option>
+                                        </select>
+                                    </div>
+                                    <div class="selected-categories">
+                                        <span class="category-tag">쇼핑몰 > 종합쇼핑몰 <button>×</button></span>
+                                    </div>
+                                    <span class="help-text">카카오톡 채널 관리자센터에서 발신프로필별 최초 생성 시 선택했던 카테고리와 동일하게 선택해주세요</span>
+                                    <div class="alert alert-warning" style="margin-top: 8px; padding: 8px 12px;">
+                                        <span>⚠️ 단, 등록된 카테고리가 잘못된 경우 카테고리로 전환</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 모달 푸터 -->
+                            <div class="modal-footer" data-number="7">
+                                <button class="btn btn-secondary">취소</button>
+                                <button class="btn btn-primary">등록</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 우측: 상세 설명 -->
+            <div class="description-panel">
+                <h3>화면 요소 설명</h3>
+                
+                <div class="desc-item" data-number="1">
+                    <h4>1. 모달 컨테이너</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>모달 크기</th>
+                            <td>중간 크기 (max-width: 500px)</td>
+                        </tr>
+                        <tr>
+                            <th>배경</th>
+                            <td>반투명 오버레이 (rgba(0,0,0,0.5))</td>
+                        </tr>
+                        <tr>
+                            <th>닫기 방법</th>
+                            <td>
+                                - X 버튼 클릭<br>
+                                - 취소 버튼 클릭<br>
+                                - ESC 키 입력<br>
+                                - 오버레이 클릭 (선택적)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="2">
+                    <h4>2. 모달 헤더</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>제목</th>
+                            <td>"발신프로필 등록"</td>
+                        </tr>
+                        <tr>
+                            <th>닫기 버튼</th>
+                            <td>우측 상단 X 아이콘</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="3">
+                    <h4>3. 안내 영역</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>안내 내용</th>
+                            <td>카카오톡 비즈니스 채널만 등록 가능 안내</td>
+                        </tr>
+                        <tr>
+                            <th>링크</th>
+                            <td>https://center-pf.kakao.com (새 창)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="4">
+                    <h4>4. 발신프로필 입력</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>입력 형식</th>
+                            <td>@로 시작하는 채널 ID</td>
+                        </tr>
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>필수</td>
+                        </tr>
+                        <tr>
+                            <th>유효성 검증</th>
+                            <td>
+                                - @로 시작<br>
+                                - 영문, 숫자, 언더스코어만 허용<br>
+                                - 최소 3자 ~ 최대 50자
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>예시</th>
+                            <td>@tokbell, @my_channel_123</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="5">
+                    <h4>5. 담당자 휴대폰 번호</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>선택 (인증용)</td>
+                        </tr>
+                        <tr>
+                            <th>입력 형식</th>
+                            <td>숫자만 입력 (10~11자리)</td>
+                        </tr>
+                        <tr>
+                            <th>인증요청 버튼</th>
+                            <td>
+                                - 클릭 시 카카오 API로 인증 요청<br>
+                                - 발신프로필과 휴대폰 번호 일치 여부 확인
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>인증 결과</th>
+                            <td>
+                                - 성공: "✓ 인증되었습니다" (초록색)<br>
+                                - 실패: 에러 메시지 표시 (빨간색)
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="6">
+                    <h4>6. 카테고리 선택</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>필수 여부</th>
+                            <td>필수 (최소 1개)</td>
+                        </tr>
+                        <tr>
+                            <th>최대 선택</th>
+                            <td>3개</td>
+                        </tr>
+                        <tr>
+                            <th>선택 방식</th>
+                            <td>
+                                1. 1차 카테고리 선택<br>
+                                2. 2차 카테고리 선택<br>
+                                3. 선택된 카테고리가 태그로 추가
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>중복 검증</th>
+                            <td>동일 카테고리 중복 선택 불가</td>
+                        </tr>
+                        <tr>
+                            <th>삭제</th>
+                            <td>태그의 X 버튼 클릭</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="desc-item" data-number="7">
+                    <h4>7. 모달 푸터 버튼</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>취소</th>
+                            <td>모달 닫기, 입력 내용 초기화</td>
+                        </tr>
+                        <tr>
+                            <th>등록</th>
+                            <td>
+                                - 유효성 검증 후 API 호출<br>
+                                - 성공 시 모달 닫기 + 목록 갱신<br>
+                                - 실패 시 에러 메시지 표시
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- API 명세 -->
+                <div class="api-section">
+                    <h4>API 명세</h4>
+                    
+                    <div class="api-item">
+                        <div class="api-method post">POST</div>
+                        <div class="api-endpoint">/api/v1/kakao/profiles/verify-phone</div>
+                    </div>
+                    <pre class="code-block">
+// 휴대폰 인증 Request
+{
+  "profileId": "@tokbell",
+  "phoneNumber": "01012345678"
+}
+
+// Response
+{
+  "verified": true,
+  "message": "인증되었습니다"
+}
+// 또는
+{
+  "verified": false,
+  "message": "발신프로필과 휴대폰 번호가 일치하지 않습니다"
+}</pre>
+
+                    <div class="api-item" style="margin-top: 16px;">
+                        <div class="api-method post">POST</div>
+                        <div class="api-endpoint">/api/v1/kakao/profiles</div>
+                    </div>
+                    <pre class="code-block">
+// 발신프로필 등록 Request
+{
+  "profileId": "@tokbell",
+  "phoneNumber": "01012345678",
+  "categories": [
+    "쇼핑몰 > 종합쇼핑몰",
+    "서비스 > IT/통신"
+  ]
+}
+
+// Response
+{
+  "id": "profile-001",
+  "profileId": "@tokbell",
+  "status": "REGISTERED",
+  "message": "발신프로필이 등록되었습니다"
+}</pre>
+                </div>
+
+                <!-- 에러 케이스 -->
+                <div class="error-cases">
+                    <h4>에러 처리</h4>
+                    <table class="desc-table">
+                        <tr>
+                            <th>PROFILE_NOT_FOUND</th>
+                            <td>존재하지 않는 카카오톡 채널입니다</td>
+                        </tr>
+                        <tr>
+                            <th>PROFILE_ALREADY_REGISTERED</th>
+                            <td>이미 등록된 발신프로필입니다</td>
+                        </tr>
+                        <tr>
+                            <th>PHONE_MISMATCH</th>
+                            <td>발신프로필과 휴대폰 번호가 일치하지 않습니다</td>
+                        </tr>
+                        <tr>
+                            <th>INVALID_CATEGORY</th>
+                            <td>유효하지 않은 카테고리입니다</td>
+                        </tr>
+                        <tr>
+                            <th>NOT_BUSINESS_CHANNEL</th>
+                            <td>비즈니스 채널로 등록되지 않은 채널입니다</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- 데이터 모델 -->
+                <div class="data-model">
+                    <h4>데이터 모델</h4>
+                    <pre class="code-block">
+interface ProfileRegisterRequest {
+  profileId: string;        // @아이디 형태
+  phoneNumber?: string;     // 숫자만 (선택)
+  categories: string[];     // 최대 3개
+}
+
+interface ProfileRegisterResponse {
+  id: string;
+  profileId: string;
+  status: 'REGISTERED' | 'PENDING';
+  message: string;
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 푸터 -->
+        <footer class="design-footer">
+            <p>톡벨(Tokbell) 메시징 서비스 - 화면설계서</p>
+        </footer>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>

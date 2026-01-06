@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FE-P002-02 회원가입 - 톡벨 화면설계서</title>
+    <link rel="stylesheet" href="../assets/common.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="back-btn">← 목록으로</a>
+                <div class="page-info">
+                    <span class="page-id-badge">FE-P002-02</span>
+                    <span class="page-title-header">회원가입</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary">📋 복사</button>
+                <button class="btn btn-secondary">📥 내보내기</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="mockup-panel">
+            <div class="mockup-canvas">
+                <div class="mockup-frame medium">
+                    <div class="browser-chrome">
+                        <div class="browser-dots">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                        </div>
+                        <div class="browser-url">https://tokbell.co.kr/signup.html</div>
+                    </div>
+                    <div class="mockup-content">
+                        <div class="screen-mock">
+                            <div style="min-height: 700px; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); padding: 40px;">
+                                <!-- Header -->
+                                <div style="text-align: center; margin-bottom: 32px;">
+                                    <div style="font-size: 28px; font-weight: 700; color: #4361ee;">톡벨 회원가입</div>
+                                </div>
+
+                                <!-- Step Indicator -->
+                                <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 40px; position: relative;">
+                                    <div class="step-item completed">
+                                        <div class="step-number">✓</div>
+                                        <div class="step-label">약관동의</div>
+                                    </div>
+                                    <div class="step-line" style="background: #28ca42;"></div>
+                                    <div class="step-item active">
+                                        <div class="step-number">2</div>
+                                        <div class="step-label">회원유형</div>
+                                    </div>
+                                    <div class="step-line"></div>
+                                    <div class="step-item">
+                                        <div class="step-number">3</div>
+                                        <div class="step-label">정보입력</div>
+                                    </div>
+                                    <div class="marker" data-id="1" style="top: -10px; right: 0;">1</div>
+                                </div>
+
+                                <div style="max-width: 600px; margin: 0 auto;">
+                                    <!-- Step 1: 약관 동의 (접힘) -->
+                                    <div class="form-section" style="margin-bottom: 16px; opacity: 0.5; position: relative;">
+                                        <div style="font-size: 14px; font-weight: 600; color: #28ca42;">✓ STEP 1. 약관 동의 완료</div>
+                                        <div class="marker" data-id="2" style="top: 12px; right: 12px;">2</div>
+                                    </div>
+
+                                    <!-- Step 2: 회원 유형 선택 (활성) -->
+                                    <div class="form-section" style="border: 2px solid #4361ee; position: relative;">
+                                        <div style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 20px;">STEP 2. 회원 유형 선택</div>
+                                        
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                            <div style="border: 2px solid #4361ee; border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; background: #f0f4ff;">
+                                                <div style="font-size: 40px; margin-bottom: 12px;">👤</div>
+                                                <div style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px;">개인 회원</div>
+                                                <div style="font-size: 12px; color: #666;">개인 사용자</div>
+                                            </div>
+                                            <div style="border: 2px solid #eee; border-radius: 12px; padding: 24px; text-align: center; cursor: pointer;">
+                                                <div style="font-size: 40px; margin-bottom: 12px;">🏢</div>
+                                                <div style="font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px;">기업 회원</div>
+                                                <div style="font-size: 12px; color: #666;">사업자 회원</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="marker" data-id="3" style="top: 12px; right: 12px;">3</div>
+                                    </div>
+
+                                    <!-- Step 3: 정보 입력 (미리보기) -->
+                                    <div class="form-section" style="opacity: 0.5; position: relative;">
+                                        <div style="font-size: 16px; font-weight: 600; color: #999; margin-bottom: 20px;">STEP 3. 정보 입력</div>
+                                        
+                                        <div class="form-row">
+                                            <label class="form-label">이메일 *</label>
+                                            <div style="display: flex; gap: 8px;">
+                                                <input type="email" class="form-input" placeholder="example@email.com" disabled>
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm" disabled>중복확인</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <label class="form-label">비밀번호 *</label>
+                                            <input type="password" class="form-input" placeholder="8~20자 영문, 숫자, 특수문자" disabled>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <label class="form-label">비밀번호 확인 *</label>
+                                            <input type="password" class="form-input" placeholder="비밀번호를 다시 입력하세요" disabled>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <label class="form-label">이름 *</label>
+                                            <input type="text" class="form-input" placeholder="이름을 입력하세요" disabled>
+                                        </div>
+                                        
+                                        <div class="form-row">
+                                            <label class="form-label">휴대폰 번호 *</label>
+                                            <div style="display: flex; gap: 8px;">
+                                                <input type="tel" class="form-input" placeholder="010-0000-0000" disabled>
+                                                <button class="mock-btn mock-btn-outline mock-btn-sm" disabled>인증요청</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="marker" data-id="4" style="top: 12px; right: 12px;">4</div>
+                                    </div>
+
+                                    <!-- Navigation -->
+                                    <div style="display: flex; gap: 12px; margin-top: 24px; position: relative;">
+                                        <button class="mock-btn mock-btn-outline" style="flex: 1;">이전</button>
+                                        <button class="mock-btn mock-btn-primary" style="flex: 2;">다음 단계</button>
+                                        <div class="marker" data-id="5" style="top: 50%; right: -30px; transform: translateY(-50%);">5</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Panel -->
+        <div class="description-panel">
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">signup.html · 회원가입 (스텝 폼)</div>
+            </div>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">스텝 인디케이터</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회원가입 진행 단계를 시각적으로 표시합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>단계</th><th>내용</th></tr>
+                            <tr><td>STEP 1</td><td>약관 동의 (전체, 이용약관, 개인정보, 마케팅)</td></tr>
+                            <tr><td>STEP 2</td><td>회원 유형 선택 (개인/기업)</td></tr>
+                            <tr><td>STEP 3</td><td>정보 입력</td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 상태 표시</div>
+                            <div class="desc-note-text">
+                                • 완료: 초록색 + 체크 아이콘<br>
+                                • 현재: 파란색 활성화<br>
+                                • 대기: 회색 비활성화
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="2">
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">STEP 1: 약관 동의</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">서비스 이용에 필요한 약관 동의를 받습니다.</div>
+                        <table class="desc-table">
+                            <tr><th>항목</th><th>필수</th></tr>
+                            <tr><td>전체 동의</td><td>-</td></tr>
+                            <tr><td>이용약관 동의</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>개인정보 처리방침</td><td><span class="desc-badge required">필수</span></td></tr>
+                            <tr><td>마케팅 정보 수신</td><td><span class="desc-badge optional">선택</span></td></tr>
+                        </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 전체 동의</div>
+                            <div class="desc-note-text">체크 시 모든 항목이 체크되며, 필수 항목이 모두 체크되어야 다음 단계로 진행 가능</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="3">
+                    <div class="desc-item-header">
+                        <div class="desc-number">3</div>
+                        <div class="desc-item-title">STEP 2: 회원 유형 선택</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">개인 회원 또는 기업 회원을 선택합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>유형</th><th>특징</th></tr>
+                            <tr><td>개인 회원</td><td>개인 사용자, 기본 정보만 입력</td></tr>
+                            <tr><td>기업 회원</td><td>사업자 등록번호, 대표자 정보 추가 입력</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 유형 변경</div>
+                            <div class="desc-note-text">회원가입 완료 후 유형 변경은 고객센터를 통해서만 가능합니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="4">
+                    <div class="desc-item-header">
+                        <div class="desc-number">4</div>
+                        <div class="desc-item-title">STEP 3: 정보 입력</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">회원 정보를 입력합니다. 유형에 따라 입력 필드가 달라집니다.</div>
+                        <table class="desc-table">
+                            <tr><th>필드</th><th>필수</th><th>검증</th></tr>
+                            <tr><td>이메일</td><td><span class="desc-badge required">필수</span></td><td>이메일 형식, 중복 확인</td></tr>
+                            <tr><td>비밀번호</td><td><span class="desc-badge required">필수</span></td><td>8~20자, 영문+숫자+특수문자</td></tr>
+                            <tr><td>비밀번호 확인</td><td><span class="desc-badge required">필수</span></td><td>비밀번호와 일치</td></tr>
+                            <tr><td>이름</td><td><span class="desc-badge required">필수</span></td><td>2~20자</td></tr>
+                            <tr><td>휴대폰 번호</td><td><span class="desc-badge required">필수</span></td><td>본인인증 필수</td></tr>
+                            <tr><td>사업자등록번호</td><td><span class="desc-badge required">기업</span></td><td>10자리 숫자</td></tr>
+                        </table>
+                        <div class="desc-code">POST /api/v1/auth/check-email
+Request: { email: string }
+Response: { available: boolean }
+
+POST /api/v1/auth/send-verification
+Request: { phone: string }
+Response: { verificationId: string }</div>
+                    </div>
+                </div>
+
+                <div class="desc-item" data-id="5">
+                    <div class="desc-item-header">
+                        <div class="desc-number">5</div>
+                        <div class="desc-item-title">네비게이션 버튼</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">이전/다음 단계로 이동하는 버튼입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>버튼</th><th>동작</th></tr>
+                            <tr><td>이전</td><td>이전 단계로 이동</td></tr>
+                            <tr><td>다음 단계</td><td>현재 단계 검증 후 다음으로 이동</td></tr>
+                            <tr><td>가입완료 (STEP3)</td><td>회원가입 API 호출</td></tr>
+                        </table>
+                        <div class="desc-code">POST /api/v1/auth/signup
+Request: {
+  email: string,
+  password: string,
+  name: string,
+  phone: string,
+  memberType: 'PERSONAL' | 'BUSINESS',
+  businessNumber?: string,
+  marketingConsent: boolean
+}
+Response: {
+  userId: string,
+  message: '가입이 완료되었습니다.'
+}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut">−</button>
+        <span class="zoom-level" id="zoomLevel">100%</span>
+        <button class="zoom-btn" id="zoomIn">+</button>
+        <button class="zoom-btn" id="zoomReset">⟲</button>
+    </div>
+
+    <script src="../assets/common.js"></script>
+</body>
+</html>
