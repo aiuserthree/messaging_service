@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P010-03-02 이벤트 상세 - 톡벨 화면설계서</title>
+    <title>이벤트 상세 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
             <div class="header-left">
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
-                    <span class="page-id-badge">FE-P010-03-02</span>
-                    <span class="page-title-header">이벤트 상세 페이지</span>
+                    <span class="page-id-badge">FE-P010-03-01</span>
+                    <span class="page-title-header">이벤트 상세</span>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../support-event-detail.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,141 +33,18 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/support-event-detail.html?id=event-001</div>
+                        <div class="browser-url">https://tokbell.co.kr/support-event-detail.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <!-- Header -->
-                            <div class="screen-header" style="position: relative; padding: 16px 24px;">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                    <span class="screen-nav-item active">고객센터</span>
-                                </div>
-                                <div class="screen-user">
-                                    <span>홍길동님</span>
-                                    <span style="color: #4361ee;">500,000P</span>
-                                </div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../support-event-detail.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Body -->
-                            <div class="screen-body" style="display: flex; gap: 0;">
-                                <!-- Sidebar -->
-                                <div class="sidebar-mock" style="position: relative;">
-                                    <div class="sidebar-title">고객센터</div>
-                                    <div class="sidebar-item">
-                                        <span class="sidebar-item-icon">❓</span>
-                                        FAQ
-                                    </div>
-                                    <div class="sidebar-item">
-                                        <span class="sidebar-item-icon">📢</span>
-                                        공지사항
-                                    </div>
-                                    <div class="sidebar-item active">
-                                        <span class="sidebar-item-icon">🎉</span>
-                                        이벤트
-                                    </div>
-                                    <div class="sidebar-item">
-                                        <span class="sidebar-item-icon">💬</span>
-                                        1:1 문의
-                                    </div>
-                                </div>
-
-                                <!-- Main Content -->
-                                <div style="flex: 1; padding: 24px; position: relative;">
-                                    <!-- Breadcrumb -->
-                                    <div style="font-size: 12px; color: #999; margin-bottom: 16px; position: relative;">
-                                        고객센터 &gt; 이벤트 &gt; 상세
-                                        <div class="marker" data-id="1" style="top: -8px; right: -8px;">1</div>
-                                    </div>
-
-                                    <!-- Event Detail Card -->
-                                    <div style="background: white; border-radius: 12px; overflow: hidden; position: relative;">
-                                        <!-- Event Thumbnail -->
-                                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 200px; display: flex; align-items: center; justify-content: center; color: white; position: relative;">
-                                            <div style="text-align: center;">
-                                                <div style="font-size: 28px; font-weight: 700;">🎉 신년맞이 포인트 2배 적립 이벤트</div>
-                                            </div>
-                                            <div class="marker" data-id="2" style="top: 16px; right: 16px;">2</div>
-                                        </div>
-
-                                        <!-- Event Header Info -->
-                                        <div style="padding: 24px; border-bottom: 1px solid #eee; position: relative;">
-                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                                <span class="status-badge success">진행중</span>
-                                                <span style="color: #f72585; font-weight: 600;">D-25</span>
-                                            </div>
-                                            <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 8px;">신년맞이 포인트 2배 적립 이벤트</h2>
-                                            <div style="font-size: 13px; color: #666;">
-                                                📅 이벤트 기간: 2026.01.01 ~ 2026.01.31
-                                            </div>
-                                            <div class="marker" data-id="3" style="top: 16px; right: 16px;">3</div>
-                                        </div>
-
-                                        <!-- Event Body -->
-                                        <div style="padding: 24px; position: relative;">
-                                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">🎁 이벤트 내용</h4>
-                                            <p style="font-size: 14px; color: #666; line-height: 1.8; margin-bottom: 20px;">
-                                                이벤트 기간 동안 포인트 충전 시 <strong style="color: #4361ee;">2배 적립!</strong>
-                                            </p>
-                                            
-                                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">📋 참여 방법</h4>
-                                            <ol style="font-size: 14px; color: #666; line-height: 2; margin-left: 20px; margin-bottom: 20px;">
-                                                <li>이벤트 기간 내 포인트 충전</li>
-                                                <li>충전 금액의 100% 추가 마일리지 적립</li>
-                                                <li>적립된 마일리지는 즉시 사용 가능</li>
-                                            </ol>
-                                            
-                                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">⚠️ 유의사항</h4>
-                                            <ul style="font-size: 13px; color: #999; line-height: 2; margin-left: 20px;">
-                                                <li>1인 1회 참여 가능</li>
-                                                <li>최대 100,000 마일리지까지 적립 가능</li>
-                                                <li>적립된 마일리지 유효기간: 적립일로부터 90일</li>
-                                                <li>이벤트는 당사 사정에 따라 변경/중단될 수 있습니다</li>
-                                            </ul>
-                                            <div class="marker" data-id="4" style="top: 16px; right: 16px;">4</div>
-                                        </div>
-
-                                        <!-- Participation Status -->
-                                        <div style="padding: 24px; background: #f8f9fa; border-top: 1px solid #eee; position: relative;">
-                                            <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 16px;">나의 참여 현황</h4>
-                                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
-                                                <div style="background: white; padding: 16px; border-radius: 8px; text-align: center;">
-                                                    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">참여 상태</div>
-                                                    <div style="font-size: 14px; font-weight: 600; color: #06d6a0;">참여완료</div>
-                                                </div>
-                                                <div style="background: white; padding: 16px; border-radius: 8px; text-align: center;">
-                                                    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">충전 금액</div>
-                                                    <div style="font-size: 14px; font-weight: 600; color: #333;">100,000원</div>
-                                                </div>
-                                                <div style="background: white; padding: 16px; border-radius: 8px; text-align: center;">
-                                                    <div style="font-size: 12px; color: #999; margin-bottom: 4px;">적립 마일리지</div>
-                                                    <div style="font-size: 14px; font-weight: 600; color: #4361ee;">+100,000M</div>
-                                                </div>
-                                            </div>
-                                            <div class="marker" data-id="5" style="top: 16px; right: 16px;">5</div>
-                                        </div>
-
-                                        <!-- Action Button -->
-                                        <div style="padding: 24px; text-align: center; position: relative;">
-                                            <button class="mock-btn" style="background: #ddd; color: #999; padding: 16px 48px; border-radius: 8px; font-size: 14px; border: none; cursor: not-allowed;">
-                                                이미 참여하셨습니다
-                                            </button>
-                                            <p style="font-size: 12px; color: #999; margin-top: 8px;">참여해 주셔서 감사합니다!</p>
-                                            <div class="marker" data-id="6" style="top: 16px; right: 16px;">6</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bottom Buttons -->
-                                    <div style="margin-top: 24px; position: relative;">
-                                        <button class="mock-btn mock-btn-outline">← 목록으로</button>
-                                        <div class="marker" data-id="7" style="top: -8px; right: -8px;">7</div>
-                                    </div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 150px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 450px; right: 20px;">2</div>
                             </div>
                         </div>
                     </div>
@@ -175,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
@@ -185,15 +61,17 @@
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">브레드크럼 네비게이션</div>
+                        <div class="desc-item-title">이벤트 내용</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">현재 페이지 위치를 표시하고 상위 페이지로 이동할 수 있습니다.</div>
+                        <div class="desc-text">이벤트 상세 내용을 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>고객센터</td><td>support-faq.html 이동</td></tr>
-                            <tr><td>이벤트</td><td>support-event.html 이동</td></tr>
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>제목</td><td>이벤트 제목</td></tr>
+                            <tr><td>기간</td><td>진행 기간</td></tr>
+                            <tr><td>상태</td><td>진행중/종료</td></tr>
+                            <tr><td>상세 이미지</td><td>이벤트 상세 이미지</td></tr>
                         </table>
                     </div>
                 </div>
@@ -201,117 +79,14 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">이벤트 썸네일</div>
+                        <div class="desc-item-title">목록으로 돌아가기</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">이벤트 대표 이미지를 표시합니다.</div>
+                        <div class="desc-text">이벤트 목록으로 이동합니다.</div>
                         <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>이미지 크기</td><td>권장: 800x400px (2:1 비율)</td></tr>
-                            <tr><td>표시 형태</td><td>반응형, 최대 너비 100%</td></tr>
-                            <tr><td>fallback</td><td>이미지 로드 실패 시 그라데이션 배경</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">이벤트 헤더 정보</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">이벤트 상태, 제목, 기간 등 핵심 정보를 표시합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>요소</th><th>설명</th></tr>
-                            <tr><td>상태 배지</td><td>진행중(초록), 종료됨(회색)</td></tr>
-                            <tr><td>D-Day</td><td>종료일까지 남은 일수</td></tr>
-                            <tr><td>기간</td><td>YYYY.MM.DD ~ YYYY.MM.DD 형식</td></tr>
-                        </table>
-                        <div class="desc-code">// D-Day 계산
-const dDay = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="4">
-                    <div class="desc-item-header">
-                        <div class="desc-number">4</div>
-                        <div class="desc-item-title">이벤트 본문</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">이벤트 상세 내용, 참여 방법, 유의사항을 표시합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>컨텐츠 형식</td><td>HTML (Rich Text)</td></tr>
-                            <tr><td>지원 요소</td><td>제목, 본문, 리스트, 이미지, 표</td></tr>
-                            <tr><td>스타일</td><td>본문 14px, line-height 1.8</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
-                        <div class="desc-item-title">참여 현황</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">로그인 사용자의 이벤트 참여 상태를 표시합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>표시 조건</td><td>로그인 + 참여형 이벤트</td></tr>
-                            <tr><td>참여 상태</td><td>미참여(회색), 참여완료(초록)</td></tr>
-                            <tr><td>상세 정보</td><td>이벤트 유형별 다른 정보 표시</td></tr>
-                        </table>
-                        <div class="desc-code">GET /api/v1/support/events/:id
-Response: {
-  participationInfo: {
-    participated: true,
-    participatedAt: "2026-01-03T10:30:00Z",
-    details: { chargeAmount: 100000, bonusMileage: 100000 }
-  }
-}</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">이벤트 참여 버튼</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">이벤트 참여 또는 관련 페이지로 이동하는 버튼입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>상태</th><th>버튼 텍스트</th><th>동작</th></tr>
-                            <tr><td>참여 가능</td><td>이벤트 참여하기</td><td>이벤트 유형별 동작</td></tr>
-                            <tr><td>이미 참여</td><td>이미 참여하셨습니다</td><td>비활성</td></tr>
-                            <tr><td>종료됨</td><td>종료된 이벤트입니다</td><td>비활성</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 이벤트 유형별 동작</div>
-                            <div class="desc-note-text">
-                                • 충전 이벤트: payment-charge.html 이동<br>
-                                • 응모 이벤트: 참여 확인 모달 표시<br>
-                                • 비로그인: login.html 리다이렉트
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="7">
-                    <div class="desc-item-header">
-                        <div class="desc-number">7</div>
-                        <div class="desc-item-title">목록으로 버튼</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">이벤트 목록 페이지로 돌아가는 버튼입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>동작</th><th>이동 URL</th></tr>
-                            <tr><td>클릭</td><td>support-event.html</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>support-event.html로 이동</td></tr>
                         </table>
                     </div>
                 </div>
@@ -319,13 +94,17 @@ Response: {
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P005-01-03 선거문자 템플릿 관리 - 톡벨 화면설계서</title>
+    <title>선거문자 템플릿 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
             <div class="header-left">
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
-                    <span class="page-id-badge">FE-P005-01-03</span>
-                    <span class="page-title-header">선거문자 템플릿 관리</span>
+                    <span class="page-id-badge">FE-P005-01-02</span>
+                    <span class="page-title-header">선거문자 템플릿</span>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../template-message-election.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -36,123 +36,15 @@
                         <div class="browser-url">https://tokbell.co.kr/template-message-election.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <!-- Header -->
-                            <div class="screen-header" style="position: relative; padding: 16px 24px;">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item active">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                </div>
-                                <div class="screen-user">
-                                    <span>홍길동님</span>
-                                    <span style="color: #4361ee;">500,000P</span>
-                                </div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../template-message-election.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Body -->
-                            <div class="screen-body" style="padding: 24px;">
-                                <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 20px;">선거문자 템플릿</h2>
-
-                                <!-- Tab Menu -->
-                                <div style="display: flex; gap: 8px; margin-bottom: 20px; position: relative;">
-                                    <div class="tab-item">일반문자</div>
-                                    <div class="tab-item">광고문자</div>
-                                    <div class="tab-item active">선거문자</div>
-                                    <span style="color: #ddd; margin: 0 8px;">|</span>
-                                    <div class="tab-item">알림톡</div>
-                                    <div class="tab-item">브랜드톡</div>
-                                    <div class="marker" data-id="1" style="top: -8px; right: -8px;">1</div>
-                                </div>
-
-                                <!-- Warning Alert -->
-                                <div style="background: #fff3e0; border: 1px solid #ff9800; border-radius: 8px; padding: 16px; margin-bottom: 20px; position: relative;">
-                                    <p style="font-size: 14px; font-weight: 600; color: #e65100; margin-bottom: 8px;">⚠️ 선거문자 발송 규정 (공직선거법 준수)</p>
-                                    <ul style="font-size: 13px; color: #333; margin-left: 20px; line-height: 1.8;">
-                                        <li>선거일 180일 전부터 발송 가능</li>
-                                        <li>발송 가능 시간: 07:00~22:00</li>
-                                        <li>후보자 정보 및 책임자 연락처 필수 포함</li>
-                                        <li>발송 내역은 선관위에 자동 보고됩니다</li>
-                                    </ul>
-                                    <div class="marker" data-id="2" style="top: 8px; right: 8px;">2</div>
-                                </div>
-
-                                <!-- Filter Section -->
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative;">
-                                    <div style="display: flex; gap: 8px;">
-                                        <select class="form-select" style="width: 150px;">
-                                            <option>전체 선거구</option>
-                                            <option>국회의원</option>
-                                            <option>지방선거</option>
-                                        </select>
-                                        <input type="text" class="form-input" placeholder="템플릿명 검색" style="width: 200px;">
-                                        <button class="mock-btn mock-btn-outline mock-btn-sm">검색</button>
-                                    </div>
-                                    <button class="mock-btn mock-btn-primary mock-btn-sm">+ 새 템플릿 등록</button>
-                                    <div class="marker" data-id="3" style="top: -8px; right: -8px;">3</div>
-                                </div>
-
-                                <!-- Table -->
-                                <div style="background: white; border-radius: 12px; overflow: hidden; position: relative;">
-                                    <table class="mock-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 40px;"><input type="checkbox"></th>
-                                                <th style="width: 50px;">NO</th>
-                                                <th>템플릿명</th>
-                                                <th style="width: 100px;">선거구</th>
-                                                <th style="width: 100px;">후보자명</th>
-                                                <th style="width: 80px;">타입</th>
-                                                <th style="width: 100px;">등록일</th>
-                                                <th style="width: 120px;">관리</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><input type="checkbox"></td>
-                                                <td>1</td>
-                                                <td>제22대 총선 홍보</td>
-                                                <td>서울 강남구갑</td>
-                                                <td>홍길동</td>
-                                                <td>LMS</td>
-                                                <td>2026-01-05</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 11px;">상세</button>
-                                                    <button class="mock-btn" style="padding: 4px 8px; font-size: 11px; background: white; border: 1px solid #f44336; color: #f44336;">삭제</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="checkbox"></td>
-                                                <td>2</td>
-                                                <td>정책 공약 안내</td>
-                                                <td>서울 강남구갑</td>
-                                                <td>홍길동</td>
-                                                <td>MMS</td>
-                                                <td>2026-01-04</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline" style="padding: 4px 8px; font-size: 11px;">상세</button>
-                                                    <button class="mock-btn" style="padding: 4px 8px; font-size: 11px; background: white; border: 1px solid #f44336; color: #f44336;">삭제</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="marker" data-id="4" style="top: 16px; right: 16px;">4</div>
-                                </div>
-
-                                <!-- Footer -->
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; position: relative;">
-                                    <button class="mock-btn" style="background: white; border: 1px solid #f44336; color: #f44336; padding: 8px 16px; font-size: 12px;">선택 삭제</button>
-                                    <div class="pagination">
-                                        <div class="pagination-item">&lt;</div>
-                                        <div class="pagination-item active">1</div>
-                                        <div class="pagination-item">2</div>
-                                        <div class="pagination-item">&gt;</div>
-                                    </div>
-                                    <div class="marker" data-id="5" style="top: -8px; right: -8px;">5</div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
                             </div>
                         </div>
                     </div>
@@ -160,102 +52,46 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">template-message-election.html · 선거문자 템플릿</div>
+                <div class="desc-subtitle">template-message-election.html · 선거문자 템플릿 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">탭 메뉴</div>
+                        <div class="desc-item-title">템플릿 등록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">템플릿 유형별 탭을 전환합니다.</div>
+                        <div class="desc-text">새 선거문자 템플릿을 등록합니다.</div>
                         <table class="desc-table">
-                            <tr><th>현재 활성</th><td>선거문자 (강조)</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>템플릿 등록 모달 표시</td></tr>
                         </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 선거문자 규정</div>
+                            <div class="desc-note-text">선거운동기간에만 발송 가능하며, 후보자 정보가 필수 포함됩니다.</div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">선거문자 규정 안내</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">공직선거법에 따른 필수 규정을 안내합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>발송 시작</th><td>선거일 180일 전</td></tr>
-                            <tr><th>발송 시간</th><td>07:00~22:00</td></tr>
-                            <tr><th>필수 포함</th><td>후보자 정보, 책임자 연락처</td></tr>
-                            <tr><th>선관위 보고</th><td>자동 보고</td></tr>
-                        </table>
-                        <div class="desc-note danger">
-                            <div class="desc-note-title">⚠️ 법적 경고</div>
-                            <div class="desc-note-text">공직선거법 위반 시 형사처벌 대상입니다.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">검색 및 필터</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">선거구 필터와 템플릿명 검색을 제공합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>선거구 필터</th><td>전체/국회의원/지방선거</td></tr>
-                            <tr><th>새 템플릿</th><td>선거문자 전용 등록 모달</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 등록 시 필수 필드</div>
-                            <div class="desc-note-text">
-                                • 후보자명, 선거구<br>
-                                • 정당명 (무소속 가능)<br>
-                                • 책임자 연락처<br>
-                                • 메시지 내용
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="4">
-                    <div class="desc-item-header">
-                        <div class="desc-number">4</div>
-                        <div class="desc-item-title">템플릿 목록 테이블</div>
+                        <div class="desc-item-title">템플릿 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
                         <div class="desc-text">등록된 선거문자 템플릿 목록입니다.</div>
                         <table class="desc-table">
-                            <tr><th>표시 정보</th><td>NO, 템플릿명, 선거구, 후보자명, 타입, 등록일</td></tr>
-                            <tr><th>정렬</th><td>등록일 최신순</td></tr>
-                        </table>
-                        <div class="desc-code">GET /api/v1/templates/message/election
-Response: {
-  templates: [{ id, templateName, district, candidateName, messageType, createdAt }]
-}</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
-                        <div class="desc-item-title">하단 액션</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">선택 삭제와 페이지 이동 기능입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>선택 삭제</th><td>체크된 템플릿 일괄 삭제</td></tr>
-                            <tr><th>페이지 크기</th><td>10건/페이지</td></tr>
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS</td></tr>
+                            <tr><td>내용</td><td>템플릿 내용 미리보기</td></tr>
+                            <tr><td>등록일</td><td>등록 날짜</td></tr>
+                            <tr><td>관리</td><td>수정/삭제 버튼</td></tr>
                         </table>
                     </div>
                 </div>
@@ -263,13 +99,17 @@ Response: {
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P005-02 알림톡 템플릿 - 톡벨 화면설계서</title>
+    <title>알림톡 템플릿 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -17,27 +17,14 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../template-alimtalk.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
 
     <div class="main-container">
         <div class="mockup-panel">
-            <!-- View Toggle Controls -->
-            <div class="view-toggle-controls">
-                <button class="view-toggle-btn active" data-view="base">
-                    <span class="icon">📄</span> 바닥 페이지
-                </button>
-                <button class="view-toggle-btn" data-view="modal">
-                    <span class="icon">🔲</span> 모달 팝업
-                </button>
-            </div>
-            <div class="view-state-badge">
-                <span class="dot"></span> 바닥 페이지 보기
-            </div>
-
             <div class="mockup-canvas">
                 <div class="mockup-frame wide">
                     <div class="browser-chrome">
@@ -49,266 +36,16 @@
                         <div class="browser-url">https://tokbell.co.kr/template-alimtalk.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <div class="screen-header">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item active">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                </div>
-                                <div class="screen-user">홍길동님</div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../template-alimtalk.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Sub Navigation -->
-                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
-                                <div style="display: flex; gap: 32px;">
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">일반문자 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">광고문자 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">알림톡 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">브랜드메시지 템플릿</a>
-                                </div>
-                                <div class="marker" data-id="1" style="top: 50%; right: 20px; transform: translateY(-50%);">1</div>
-                            </div>
-
-                            <!-- Info Banner -->
-                            <div style="background: #dbeafe; padding: 16px 24px; border-bottom: 1px solid #93c5fd; position: relative;">
-                                <div style="display: flex; align-items: center; gap: 12px;">
-                                    <span style="font-size: 20px;">💡</span>
-                                    <div style="font-size: 13px; color: #1e40af;">
-                                        알림톡 템플릿은 카카오 검수 승인 후 사용 가능합니다. 검수에는 1~3 영업일이 소요됩니다.
-                                    </div>
-                                </div>
-                                <div class="marker" data-id="2" style="top: 50%; right: 20px; transform: translateY(-50%);">2</div>
-                            </div>
-
-                            <div class="screen-body">
-                                <!-- Search & Actions -->
-                                <div class="form-section" style="margin-bottom: 16px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div style="display: flex; gap: 8px;">
-                                            <select class="form-select" style="width: 120px;">
-                                                <option>전체 상태</option>
-                                                <option>등록</option>
-                                                <option>검수중</option>
-                                                <option>승인</option>
-                                                <option>반려</option>
-                                            </select>
-                                            <select class="form-select" style="width: 150px;">
-                                                <option>전체 프로필</option>
-                                                <option>@tokbell</option>
-                                            </select>
-                                            <input type="text" class="form-input" placeholder="템플릿명 검색" style="width: 200px;">
-                                            <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
-                                        </div>
-                                        <button class="mock-btn mock-btn-primary">+ 새 템플릿 등록</button>
-                                    </div>
-                                </div>
-
-                                <!-- Table -->
-                                <div class="form-section" style="padding: 0; position: relative;">
-                                    <table class="mock-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 60px;">NO</th>
-                                                <th>템플릿명</th>
-                                                <th style="width: 130px;">발신프로필</th>
-                                                <th style="width: 100px;">상태</th>
-                                                <th style="width: 100px;">등록일</th>
-                                                <th style="width: 180px;">관리</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>주문완료 안내</td>
-                                                <td>@tokbell</td>
-                                                <td><span class="status-badge success">승인</span></td>
-                                                <td>2026-01-05</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">복사</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>배송시작 안내</td>
-                                                <td>@tokbell</td>
-                                                <td><span class="status-badge warning">검수중</span></td>
-                                                <td>2026-01-04</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">상세</button>
-                                                </td>
-                                            </tr>
-                                            <tr style="background: #fef2f2;">
-                                                <td>3</td>
-                                                <td>결제완료 안내</td>
-                                                <td>@tokbell</td>
-                                                <td><span class="status-badge danger">반려</span></td>
-                                                <td>2026-01-03</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">반려사유</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>회원가입 환영</td>
-                                                <td>@tokbell</td>
-                                                <td><span class="status-badge gray">등록</span></td>
-                                                <td>2026-01-02</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">삭제</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="marker" data-id="3" style="top: 20px; right: 20px;">3</div>
-                                </div>
-
-                                <div class="pagination" style="margin-top: 16px;">
-                                    <div class="pagination-item">‹</div>
-                                    <div class="pagination-item active">1</div>
-                                    <div class="pagination-item">2</div>
-                                    <div class="pagination-item">›</div>
-                                </div>
-
-                                <!-- 상태별 설명 카드 -->
-                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; position: relative;">
-                                    <div style="background: white; border-radius: 12px; padding: 16px; border-left: 4px solid #6c757d;">
-                                        <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px;">등록</div>
-                                        <div style="font-size: 12px; color: #666;">신규 등록, 수정/삭제 가능</div>
-                                    </div>
-                                    <div style="background: white; border-radius: 12px; padding: 16px; border-left: 4px solid #ffc107;">
-                                        <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px;">검수중</div>
-                                        <div style="font-size: 12px; color: #666;">카카오 검수 진행 중</div>
-                                    </div>
-                                    <div style="background: white; border-radius: 12px; padding: 16px; border-left: 4px solid #28a745;">
-                                        <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px;">승인</div>
-                                        <div style="font-size: 12px; color: #666;">발송 사용 가능, 복사 가능</div>
-                                    </div>
-                                    <div style="background: white; border-radius: 12px; padding: 16px; border-left: 4px solid #dc3545;">
-                                        <div style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 4px;">반려</div>
-                                        <div style="font-size: 12px; color: #666;">반려사유 확인 후 수정 필요</div>
-                                    </div>
-                                    <div class="marker" data-id="4" style="top: -10px; right: -10px;">4</div>
-                                </div>
-
-                                <!-- 알림톡 템플릿 등록 모달 (토글 가능) -->
-                                <div class="modal-container">
-                                    <div class="modal-backdrop"></div>
-                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 850px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; max-height: 90%; overflow-y: auto;">
-                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
-                                            <div style="font-size: 18px; font-weight: 600; color: #333;">알림톡 템플릿 등록</div>
-                                            <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
-                                            <div class="marker" data-id="5" style="top: -8px; right: 40px;">5</div>
-                                        </div>
-
-                                        <div style="display: flex; gap: 24px;">
-                                            <!-- 좌측: 입력 폼 -->
-                                            <div style="flex: 1;">
-                                                <div class="form-row">
-                                                    <label class="form-label">발신프로필 *</label>
-                                                    <select class="form-select">
-                                                        <option>발신프로필 선택</option>
-                                                        <option>@tokbell - 톡벨 공식채널</option>
-                                                    </select>
-                                                    <div class="form-helper">활성 상태의 프로필만 선택 가능합니다.</div>
-                                                </div>
-
-                                                <div class="form-row">
-                                                    <label class="form-label">템플릿명 *</label>
-                                                    <input type="text" class="form-input" placeholder="템플릿명 입력 (최대 30자)">
-                                                </div>
-
-                                                <div class="form-row" style="position: relative;">
-                                                    <label class="form-label">카테고리 *</label>
-                                                    <select class="form-select">
-                                                        <option>카테고리 선택</option>
-                                                        <option>주문/배송</option>
-                                                        <option>결제/포인트</option>
-                                                        <option>회원 서비스</option>
-                                                        <option>예약/방문</option>
-                                                        <option>상담/문의</option>
-                                                    </select>
-                                                    <div class="marker" data-id="6" style="top: 0; right: -20px;">6</div>
-                                                </div>
-
-                                                <div class="form-row" style="position: relative;">
-                                                    <label class="form-label">메시지 내용 *</label>
-                                                    <textarea class="form-textarea" style="min-height: 150px;" placeholder="메시지 내용을 입력하세요.&#10;&#10;변수 사용 예시: #{고객명}님 주문하신 #{상품명}의 배송이 시작되었습니다."></textarea>
-                                                    <div class="form-helper" style="display: flex; justify-content: space-between;">
-                                                        <span>0 / 1,000자</span>
-                                                        <div>
-                                                            <button style="background: #f0f0f0; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-left: 4px;">#{고객명}</button>
-                                                            <button style="background: #f0f0f0; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-left: 4px;">#{상품명}</button>
-                                                            <button style="background: #f0f0f0; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-left: 4px;">#{변수추가}</button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="marker" data-id="7" style="top: 0; right: -20px;">7</div>
-                                                </div>
-
-                                                <div class="form-row" style="position: relative;">
-                                                    <label class="form-label">버튼 설정 (최대 5개)</label>
-                                                    <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                                                        <select class="form-select" style="width: 120px;">
-                                                            <option>웹 링크</option>
-                                                            <option>앱 링크</option>
-                                                            <option>봇 키워드</option>
-                                                            <option>메시지 전달</option>
-                                                        </select>
-                                                        <input type="text" class="form-input" placeholder="버튼명" style="width: 120px;">
-                                                        <input type="text" class="form-input" placeholder="URL 또는 키워드" style="flex: 1;">
-                                                    </div>
-                                                    <button style="background: #f5f5f5; border: 1px dashed #ddd; padding: 8px; border-radius: 6px; font-size: 12px; color: #666; cursor: pointer; width: 100%;">
-                                                        + 버튼 추가
-                                                    </button>
-                                                    <div class="marker" data-id="8" style="top: 0; right: -20px;">8</div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 우측: 미리보기 -->
-                                            <div style="width: 280px;">
-                                                <div style="font-size: 12px; color: #666; margin-bottom: 12px;">미리보기</div>
-                                                <div style="background: #fae100; border-radius: 24px 24px 0 0; padding: 12px; text-align: center;">
-                                                    <span style="font-weight: 600; color: #3c1e1e;">카카오톡</span>
-                                                </div>
-                                                <div style="background: #b2c7d9; padding: 16px; min-height: 320px; border-radius: 0 0 24px 24px; position: relative;">
-                                                    <div style="background: white; border-radius: 12px; padding: 16px;">
-                                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                                                            <div style="width: 36px; height: 36px; background: #fae100; border-radius: 10px;"></div>
-                                                            <div>
-                                                                <div style="font-size: 12px; font-weight: 600; color: #333;">톡벨 공식채널</div>
-                                                                <div style="font-size: 10px; color: #999;">알림톡</div>
-                                                            </div>
-                                                        </div>
-                                                        <div style="font-size: 12px; color: #333; line-height: 1.6;">
-                                                            메시지 내용이 여기에 미리보기로 표시됩니다.
-                                                        </div>
-                                                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee;">
-                                                            <button style="width: 100%; padding: 8px; background: #f5f5f5; border: none; border-radius: 6px; font-size: 12px; color: #333;">
-                                                                버튼 미리보기
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="marker" data-id="9" style="top: 16px; right: -8px;">9</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div style="display: flex; gap: 12px; margin-top: 24px; position: relative;">
-                                            <button class="mock-btn mock-btn-outline" style="flex: 1;">취소</button>
-                                            <button class="mock-btn mock-btn-outline" style="flex: 1;">임시저장</button>
-                                            <button class="mock-btn mock-btn-primary" style="flex: 2;">등록 및 검수요청</button>
-                                            <div class="marker" data-id="10" style="top: -8px; right: 50px;">10</div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
+                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
                             </div>
                         </div>
                     </div>
@@ -316,233 +53,83 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">template-alimtalk.html · 알림톡 템플릿 관리</div>
+                <div class="desc-subtitle">template-alimtalk.html · 알림톡 템플릿 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">서브 네비게이션</div>
+                        <div class="desc-item-title">템플릿 등록 신청</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">템플릿 유형별 탭입니다. 알림톡 템플릿이 활성화되어 있습니다.</div>
+                        <div class="desc-text">새 알림톡 템플릿을 등록 신청합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>템플릿 등록 페이지로 이동</td></tr>
+                        </table>
+                        <div class="desc-note warning">
+                            <div class="desc-note-title">⚠️ 승인 필요</div>
+                            <div class="desc-note-text">알림톡 템플릿은 카카오 심사 후 승인되어야 사용 가능합니다. (1-3 영업일 소요)</div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">검수 안내 배너</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">알림톡 템플릿의 카카오 검수 절차를 안내합니다.</div>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 검수 절차</div>
-                            <div class="desc-note-text">
-                                1. 템플릿 등록<br>
-                                2. 카카오 검수 요청 (자동)<br>
-                                3. 검수 진행 (1~3 영업일)<br>
-                                4. 승인 또는 반려
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-item-header">
-                        <div class="desc-number">3</div>
                         <div class="desc-item-title">템플릿 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
                         <div class="desc-text">등록된 알림톡 템플릿 목록입니다.</div>
                         <table class="desc-table">
-                            <tr><th>상태</th><th>가능 작업</th></tr>
-                            <tr><td>등록</td><td>수정, 삭제, 검수요청</td></tr>
-                            <tr><td>검수중</td><td>조회만 가능</td></tr>
-                            <tr><td>승인</td><td>발송사용, 복사</td></tr>
-                            <tr><td>반려</td><td>수정, 삭제, 반려사유확인</td></tr>
-                        </table>
-                        <div class="desc-code">GET /api/v1/templates/alimtalk
-Response: {
-  templates: [{
-    id, name, profileId, profileName,
-    status: 'REGISTERED' | 'REVIEWING' | 'APPROVED' | 'REJECTED',
-    rejectionReason?: string,
-    content, variables, buttons, createdAt
-  }]
-}</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="4">
-                    <div class="desc-item-header">
-                        <div class="desc-number">4</div>
-                        <div class="desc-item-title">상태 가이드</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">각 상태별 의미와 가능한 작업을 안내합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>상태</th><th>색상</th><th>설명</th></tr>
-                            <tr><td>등록</td><td>회색</td><td>신규 등록 완료</td></tr>
-                            <tr><td>검수중</td><td>노랑</td><td>카카오 검수 진행 중</td></tr>
-                            <tr><td>승인</td><td>초록</td><td>검수 통과, 발송 가능</td></tr>
-                            <tr><td>반려</td><td>빨강</td><td>검수 반려, 수정 필요</td></tr>
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
+                            <tr><td>템플릿코드</td><td>카카오 템플릿 코드</td></tr>
+                            <tr><td>카테고리</td><td>템플릿 카테고리</td></tr>
+                            <tr><td>상태</td><td>대기/승인/반려</td></tr>
+                            <tr><td>등록일</td><td>등록 신청일</td></tr>
                         </table>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="5">
+                <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
-                        <div class="desc-number">5</div>
+                        <div class="desc-number">3</div>
                         <div class="desc-item-title">템플릿 등록 모달</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">"새 템플릿 등록" 버튼 클릭 시 열리는 모달입니다.</div>
+                        <div class="desc-text">알림톡 템플릿 등록 폼입니다.</div>
                         <table class="desc-table">
-                            <tr><th>필드</th><th>필수</th><th>설명</th></tr>
-                            <tr><td>발신프로필</td><td><span class="desc-badge required">필수</span></td><td>활성 프로필만 선택 가능</td></tr>
-                            <tr><td>템플릿명</td><td><span class="desc-badge required">필수</span></td><td>최대 30자</td></tr>
-                            <tr><td>카테고리</td><td><span class="desc-badge required">필수</span></td><td>카카오 검수용 분류</td></tr>
-                            <tr><td>메시지 내용</td><td><span class="desc-badge required">필수</span></td><td>최대 1,000자</td></tr>
-                            <tr><td>버튼 설정</td><td><span class="desc-badge optional">선택</span></td><td>최대 5개</td></tr>
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>발신프로필</td><td>사용할 카카오 채널</td></tr>
+                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
+                            <tr><td>카테고리</td><td>템플릿 용도 분류</td></tr>
+                            <tr><td>내용</td><td>알림톡 내용</td></tr>
+                            <tr><td>버튼</td><td>링크 버튼 (선택)</td></tr>
                         </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">카테고리 선택</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">카카오 검수를 위한 템플릿 카테고리입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>카테고리</th><th>예시</th></tr>
-                            <tr><td>주문/배송</td><td>주문확인, 배송시작, 배송완료</td></tr>
-                            <tr><td>결제/포인트</td><td>결제완료, 환불완료, 포인트 적립</td></tr>
-                            <tr><td>회원 서비스</td><td>가입환영, 인증코드, 비밀번호 변경</td></tr>
-                            <tr><td>예약/방문</td><td>예약확인, 방문안내, 일정변경</td></tr>
-                            <tr><td>상담/문의</td><td>문의접수, 답변완료</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="7">
-                    <div class="desc-item-header">
-                        <div class="desc-number">7</div>
-                        <div class="desc-item-title">메시지 내용 입력</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">알림톡 메시지 본문을 작성합니다.</div>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 변수 사용</div>
-                            <div class="desc-note-text">
-                                • #{변수명} 형태로 변수 삽입 가능<br>
-                                • 변수는 발송 시 실제 값으로 치환<br>
-                                • 자주 쓰는 변수는 버튼으로 빠른 삽입
-                            </div>
-                        </div>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 검수 주의사항</div>
-                            <div class="desc-note-text">
-                                • 광고성 문구 불가<br>
-                                • 정보성 메시지만 허용<br>
-                                • 마케팅/프로모션은 브랜드메시지 사용
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="8">
-                    <div class="desc-item-header">
-                        <div class="desc-number">8</div>
-                        <div class="desc-item-title">버튼 설정</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">알림톡 하단에 표시되는 버튼을 설정합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>버튼 타입</th><th>설명</th></tr>
-                            <tr><td>웹 링크</td><td>외부 URL로 이동</td></tr>
-                            <tr><td>앱 링크</td><td>앱 스킴으로 이동</td></tr>
-                            <tr><td>봇 키워드</td><td>챗봇 키워드 전송</td></tr>
-                            <tr><td>메시지 전달</td><td>상담원 연결</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 버튼 제한</div>
-                            <div class="desc-note-text">최대 5개까지 추가 가능, 버튼명 최대 14자</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="9">
-                    <div class="desc-item-header">
-                        <div class="desc-number">9</div>
-                        <div class="desc-item-title">미리보기</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">실제 카카오톡에서 표시되는 형태를 미리봅니다.</div>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 실시간 반영</div>
-                            <div class="desc-note-text">
-                                • 메시지 입력 시 실시간 미리보기 반영<br>
-                                • 버튼 추가 시 즉시 표시<br>
-                                • 변수는 샘플 데이터로 표시
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="10">
-                    <div class="desc-item-header">
-                        <div class="desc-number">10</div>
-                        <div class="desc-item-title">등록 버튼</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">템플릿을 저장하고 검수 요청합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>버튼</th><th>동작</th></tr>
-                            <tr><td>취소</td><td>모달 닫기 (변경사항 미저장)</td></tr>
-                            <tr><td>임시저장</td><td>등록 상태로 저장 (검수요청 X)</td></tr>
-                            <tr><td>등록 및 검수요청</td><td>저장 후 카카오 검수 요청</td></tr>
-                        </table>
-                        <div class="desc-code">POST /api/v1/templates/alimtalk
-Request: {
-  profileId: string,
-  name: string,
-  category: string,
-  content: string,
-  variables: string[],
-  buttons: [{ type, name, urlOrKeyword }],
-  requestReview: boolean
-}
-Response: { id, status: 'REGISTERED' | 'REVIEWING' }</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

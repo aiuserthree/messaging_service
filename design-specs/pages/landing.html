@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P001-01 랜딩 페이지 - 톡벨 화면설계서</title>
+    <title>랜딩 페이지 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -17,8 +17,8 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../index.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,170 +33,20 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/</div>
+                        <div class="browser-url">https://tokbell.co.kr/index.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <!-- Header -->
-                            <div class="screen-header" style="position: relative; padding: 20px 40px;">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">서비스 소개</span>
-                                    <span class="screen-nav-item">요금 안내</span>
-                                    <span class="screen-nav-item">고객센터</span>
-                                </div>
-                                <div style="display: flex; gap: 12px;">
-                                    <button class="mock-btn mock-btn-outline mock-btn-sm">로그인</button>
-                                    <button class="mock-btn mock-btn-primary mock-btn-sm">회원가입</button>
-                                </div>
-                                <div class="marker" data-id="1" style="top: 50%; right: 200px; transform: translateY(-50%);">1</div>
+                        <div class="iframe-container" style="height: 800px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../index.html" style="height: 800px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Hero Section -->
-                            <div class="hero-section" style="position: relative;">
-                                <div class="hero-title">예산에 맞게, 목적에 맞게.<br>부담없이 경험해보세요</div>
-                                <div class="hero-subtitle">문자, 카카오톡, 선거문자까지 한 곳에서</div>
-                                <button class="mock-btn mock-btn-primary" style="padding: 16px 40px; font-size: 16px; border-radius: 30px;">견적 문의하기</button>
-                                <div class="marker" data-id="2" style="top: 30px; right: 30px;">2</div>
-                            </div>
-
-                            <!-- Price Tabs -->
-                            <div style="background: white; padding: 40px; position: relative;">
-                                <div class="tab-group" style="justify-content: center; margin-bottom: 24px;">
-                                    <div class="tab-item active">문자</div>
-                                    <div class="tab-item">카카오</div>
-                                    <div class="tab-item">선거문자</div>
-                                </div>
-                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 800px; margin: 0 auto;">
-                                    <div class="price-card">
-                                        <div class="price-card-title">SMS</div>
-                                        <div class="price-card-value">7.4<span class="price-card-unit">원</span></div>
-                                        <div style="font-size: 12px; color: #999; margin-top: 8px;">90byte</div>
-                                    </div>
-                                    <div class="price-card" style="border-color: #4361ee;">
-                                        <div style="background: #4361ee; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; display: inline-block; margin-bottom: 8px;">인기</div>
-                                        <div class="price-card-title">LMS</div>
-                                        <div class="price-card-value">24.5<span class="price-card-unit">원</span></div>
-                                        <div style="font-size: 12px; color: #999; margin-top: 8px;">2,000byte</div>
-                                    </div>
-                                    <div class="price-card">
-                                        <div class="price-card-title">MMS</div>
-                                        <div class="price-card-value">59.2<span class="price-card-unit">원</span></div>
-                                        <div style="font-size: 12px; color: #999; margin-top: 8px;">이미지 포함</div>
-                                    </div>
-                                </div>
-                                <div class="marker" data-id="3" style="top: 20px; right: 20px;">3</div>
-                            </div>
-
-                            <!-- Banner & Notice -->
-                            <div style="background: #f5f5f5; padding: 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 24px; position: relative;">
-                                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px; height: 200px; display: flex; align-items: center; justify-content: center; color: white;">
-                                    <div style="text-align: center;">
-                                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">신규 가입 이벤트</div>
-                                        <div style="font-size: 14px; opacity: 0.9;">가입 즉시 5,000P 지급!</div>
-                                    </div>
-                                </div>
-                                <div style="background: white; border-radius: 16px; padding: 20px;">
-                                    <div style="font-size: 14px; font-weight: 600; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
-                                        공지사항
-                                        <span style="font-size: 12px; color: #999; cursor: pointer;">더보기 →</span>
-                                    </div>
-                                    <div class="notice-item" style="padding: 12px 0; border: none;">
-                                        <span class="notice-title" style="font-size: 13px;">[안내] 시스템 점검 안내</span>
-                                        <span class="notice-date">01.05</span>
-                                    </div>
-                                    <div class="notice-item" style="padding: 12px 0; border: none;">
-                                        <span class="notice-title" style="font-size: 13px;">[공지] 설날 연휴 운영 안내</span>
-                                        <span class="notice-date">01.04</span>
-                                    </div>
-                                </div>
-                                <div class="marker" data-id="4" style="top: 20px; right: 20px;">4</div>
-                            </div>
-
-                            <!-- Service Cards -->
-                            <div style="background: white; padding: 40px; position: relative;">
-                                <div style="text-align: center; margin-bottom: 32px;">
-                                    <div style="font-size: 24px; font-weight: 700; color: #333;">서비스 소개</div>
-                                </div>
-                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
-                                    <div style="background: #f8f9fa; border-radius: 16px; padding: 24px; text-align: center;">
-                                        <div style="font-size: 32px; margin-bottom: 12px;">💬</div>
-                                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">문자 발송</div>
-                                        <div style="font-size: 12px; color: #666;">SMS, LMS, MMS<br>간편하게 발송</div>
-                                    </div>
-                                    <div style="background: #f8f9fa; border-radius: 16px; padding: 24px; text-align: center;">
-                                        <div style="font-size: 32px; margin-bottom: 12px;">💛</div>
-                                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">카카오톡</div>
-                                        <div style="font-size: 12px; color: #666;">알림톡, 브랜드톡<br>카카오 메시지</div>
-                                    </div>
-                                    <div style="background: #f8f9fa; border-radius: 16px; padding: 24px; text-align: center;">
-                                        <div style="font-size: 32px; margin-bottom: 12px;">📊</div>
-                                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">발송 관리</div>
-                                        <div style="font-size: 12px; color: #666;">발송 결과 조회<br>통계 분석</div>
-                                    </div>
-                                    <div style="background: #f8f9fa; border-radius: 16px; padding: 24px; text-align: center;">
-                                        <div style="font-size: 32px; margin-bottom: 12px;">📒</div>
-                                        <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px;">주소록</div>
-                                        <div style="font-size: 12px; color: #666;">그룹 관리<br>엑셀 업로드</div>
-                                    </div>
-                                </div>
-                                <div class="marker" data-id="5" style="top: 20px; right: 20px;">5</div>
-                            </div>
-
-                            <!-- FAQ -->
-                            <div style="background: #f5f5f5; padding: 40px; position: relative;">
-                                <div style="text-align: center; margin-bottom: 32px;">
-                                    <div style="font-size: 24px; font-weight: 700; color: #333;">자주 묻는 질문</div>
-                                </div>
-                                <div style="max-width: 800px; margin: 0 auto;">
-                                    <div class="accordion-section open">
-                                        <div class="accordion-header">
-                                            회원가입은 어떻게 하나요?
-                                            <span>▼</span>
-                                        </div>
-                                        <div class="accordion-body" style="display: block;">
-                                            상단의 '회원가입' 버튼을 클릭하여 이메일 인증 후 간단한 정보 입력만으로 가입이 완료됩니다.
-                                        </div>
-                                    </div>
-                                    <div class="accordion-section">
-                                        <div class="accordion-header">
-                                            발신번호는 어떻게 등록하나요?
-                                            <span>▼</span>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-section">
-                                        <div class="accordion-header">
-                                            포인트 충전은 어떻게 하나요?
-                                            <span>▼</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="marker" data-id="6" style="top: 20px; right: 20px;">6</div>
-                            </div>
-
-                            <!-- Footer -->
-                            <div style="background: #1a1a2e; padding: 40px; color: #999; position: relative;">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div>
-                                        <div style="font-size: 18px; font-weight: 700; color: white; margin-bottom: 16px;">톡벨</div>
-                                        <div style="font-size: 12px; line-height: 1.8;">
-                                            (주)톡벨 | 대표: 홍길동<br>
-                                            서울특별시 강남구 테헤란로 123<br>
-                                            사업자등록번호: 123-45-67890
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; gap: 40px;">
-                                        <div>
-                                            <div style="font-size: 12px; font-weight: 600; color: white; margin-bottom: 12px;">서비스</div>
-                                            <div style="font-size: 12px; line-height: 2;">문자 발송<br>카카오톡<br>선거문자</div>
-                                        </div>
-                                        <div>
-                                            <div style="font-size: 12px; font-weight: 600; color: white; margin-bottom: 12px;">고객지원</div>
-                                            <div style="font-size: 12px; line-height: 2;">FAQ<br>공지사항<br>1:1 문의</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="marker" data-id="7" style="top: 20px; right: 20px;">7</div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 80px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 250px; right: 20px;">2</div>
+                                <div class="marker" data-id="3" style="top: 500px; right: 20px;">3</div>
+                                <div class="marker" data-id="4" style="top: 700px; right: 20px;">4</div>
                             </div>
                         </div>
                     </div>
@@ -204,27 +54,23 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">index.html · 비로그인 사용자 진입 페이지</div>
+                <div class="desc-subtitle">index.html · 랜딩 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">GNB 헤더</div>
+                        <div class="desc-item-title">헤더 영역</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">비로그인 상태의 글로벌 네비게이션 바입니다.</div>
+                        <div class="desc-text">로고와 로그인/회원가입 버튼이 위치합니다.</div>
                         <table class="desc-table">
                             <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>로고</td><td>메인 페이지로 이동</td></tr>
-                            <tr><td>서비스 소개</td><td>서비스 소개 섹션으로 스크롤</td></tr>
-                            <tr><td>요금 안내</td><td>요금 섹션으로 스크롤</td></tr>
-                            <tr><td>고객센터</td><td>support-faq.html 이동</td></tr>
+                            <tr><td>로고</td><td>index.html 새로고침</td></tr>
                             <tr><td>로그인</td><td>login.html 이동</td></tr>
                             <tr><td>회원가입</td><td>signup.html 이동</td></tr>
                         </table>
@@ -238,109 +84,47 @@
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">메인 배너 영역으로, 서비스의 핵심 가치를 전달합니다.</div>
+                        <div class="desc-text">서비스 소개 및 주요 기능을 강조합니다.</div>
                         <table class="desc-table">
-                            <tr><th>요소</th><th>스타일</th></tr>
-                            <tr><td>배경</td><td>linear-gradient(#e0f2fe → #7dd3fc)</td></tr>
-                            <tr><td>제목</td><td>42px, font-weight: 700</td></tr>
-                            <tr><td>CTA 버튼</td><td>pill shape, 파란색</td></tr>
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>메인 타이틀</td><td>서비스 핵심 가치</td></tr>
+                            <tr><td>서브 타이틀</td><td>서비스 설명</td></tr>
+                            <tr><td>CTA 버튼</td><td>무료 시작하기 → signup.html</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 CTA 버튼 동작</div>
-                            <div class="desc-note-text">클릭 시 support-inquiry.html (견적 문의) 페이지로 이동</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">요금 카드 섹션</div>
+                        <div class="desc-item-title">서비스 요금</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">메시지 타입별 단가를 탭으로 구분하여 표시합니다.</div>
+                        <div class="desc-text">메시지 유형별 단가를 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>탭</th><th>카드 항목</th></tr>
-                            <tr><td>문자</td><td>SMS(7.4원), LMS(24.5원), MMS(59.2원)</td></tr>
-                            <tr><td>카카오</td><td>알림톡(6원), 브랜드메시지(15원)</td></tr>
-                            <tr><td>선거문자</td><td>SMS(7.4원), LMS(24.5원), MMS(59.2원)</td></tr>
+                            <tr><th>유형</th><th>단가</th></tr>
+                            <tr><td>SMS</td><td>9.9원</td></tr>
+                            <tr><td>LMS</td><td>30원</td></tr>
+                            <tr><td>MMS</td><td>110원</td></tr>
+                            <tr><td>알림톡</td><td>7.5원</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 인터랙션</div>
-                            <div class="desc-note-text">탭 클릭 시 해당 메시지 타입의 가격 카드로 전환됩니다.</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
-                        <div class="desc-item-title">배너 & 공지사항</div>
+                        <div class="desc-item-title">푸터 영역</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">프로모션 배너와 최신 공지사항을 표시합니다.</div>
+                        <div class="desc-text">회사 정보 및 고객센터 정보를 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>영역</th><th>설명</th></tr>
-                            <tr><td>배너 캐러셀</td><td>자동 슬라이드 (5초 간격)</td></tr>
-                            <tr><td>공지사항</td><td>최신 3건 표시, 더보기 클릭 시 이동</td></tr>
-                        </table>
-                        <div class="desc-code">GET /api/v1/notices?limit=3
-Response: { notices: [{ id, title, date }] }</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
-                        <div class="desc-item-title">서비스 카탈로그</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">톡벨의 주요 서비스를 카드 형태로 소개합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>서비스</th><th>설명</th></tr>
-                            <tr><td>문자 발송</td><td>SMS, LMS, MMS 발송</td></tr>
-                            <tr><td>카카오톡</td><td>알림톡, 브랜드메시지</td></tr>
-                            <tr><td>발송 관리</td><td>결과 조회, 통계 분석</td></tr>
-                            <tr><td>주소록</td><td>그룹 관리, 엑셀 업로드</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">FAQ 아코디언</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">자주 묻는 질문을 아코디언 형태로 표시합니다.</div>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 인터랙션</div>
-                            <div class="desc-note-text">
-                                • 질문 클릭 시 답변 토글<br>
-                                • 한 번에 하나만 열림<br>
-                                • 기본 첫 번째 항목 열림
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="7">
-                    <div class="desc-item-header">
-                        <div class="desc-number">7</div>
-                        <div class="desc-item-title">푸터</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">회사 정보 및 사이트맵을 포함한 푸터 영역입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>영역</th><th>내용</th></tr>
-                            <tr><td>회사 정보</td><td>상호, 대표, 주소, 사업자번호</td></tr>
-                            <tr><td>서비스</td><td>문자발송, 카카오톡, 선거문자</td></tr>
-                            <tr><td>고객지원</td><td>FAQ, 공지사항, 1:1문의</td></tr>
+                            <tr><th>정보</th><th>내용</th></tr>
+                            <tr><td>고객센터</td><td>1588-0000</td></tr>
+                            <tr><td>운영시간</td><td>평일 09:00~18:00</td></tr>
+                            <tr><td>이메일</td><td>support@tokbell.co.kr</td></tr>
                         </table>
                     </div>
                 </div>
@@ -348,13 +132,17 @@ Response: { notices: [{ id, title, date }] }</div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

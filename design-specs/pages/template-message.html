@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P005-01 문자 템플릿 - 톡벨 화면설계서</title>
+    <title>문자 템플릿 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -17,27 +17,14 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../template-message.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
 
     <div class="main-container">
         <div class="mockup-panel">
-            <!-- View Toggle Controls -->
-            <div class="view-toggle-controls">
-                <button class="view-toggle-btn active" data-view="base">
-                    <span class="icon">📄</span> 바닥 페이지
-                </button>
-                <button class="view-toggle-btn" data-view="modal">
-                    <span class="icon">🔲</span> 모달 팝업
-                </button>
-            </div>
-            <div class="view-state-badge">
-                <span class="dot"></span> 바닥 페이지 보기
-            </div>
-
             <div class="mockup-canvas">
                 <div class="mockup-frame wide">
                     <div class="browser-chrome">
@@ -49,194 +36,16 @@
                         <div class="browser-url">https://tokbell.co.kr/template-message.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <div class="screen-header">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item active">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                </div>
-                                <div class="screen-user">홍길동님</div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../template-message.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Sub Navigation -->
-                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
-                                <div style="display: flex; gap: 32px;">
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">일반문자 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">광고문자 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">알림톡 템플릿</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">브랜드메시지 템플릿</a>
-                                </div>
-                                <div class="marker" data-id="1" style="top: 50%; right: 20px; transform: translateY(-50%);">1</div>
-                            </div>
-
-                            <div class="screen-body">
-                                <!-- Search & Actions -->
-                                <div class="form-section" style="margin-bottom: 16px; position: relative;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div style="display: flex; gap: 8px;">
-                                            <select class="form-select" style="width: 150px;">
-                                                <option>전체 카테고리</option>
-                                                <option>주문/배송</option>
-                                                <option>이벤트/프로모션</option>
-                                                <option>공지/안내</option>
-                                            </select>
-                                            <input type="text" class="form-input" placeholder="템플릿명 검색" style="width: 200px;">
-                                            <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
-                                        </div>
-                                        <button class="mock-btn mock-btn-primary">+ 새 템플릿 등록</button>
-                                    </div>
-                                    <div class="marker" data-id="2" style="top: 50%; right: 150px; transform: translateY(-50%);">2</div>
-                                </div>
-
-                                <!-- Table -->
-                                <div class="form-section" style="padding: 0; position: relative;">
-                                    <table class="mock-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 40px;"><div class="checkbox-box"></div></th>
-                                                <th style="width: 60px;">NO</th>
-                                                <th>템플릿명</th>
-                                                <th style="width: 120px;">카테고리</th>
-                                                <th style="width: 80px;">타입</th>
-                                                <th style="width: 100px;">등록일</th>
-                                                <th style="width: 140px;">관리</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><div class="checkbox-box"></div></td>
-                                                <td>1</td>
-                                                <td>주문완료 안내</td>
-                                                <td>주문/배송</td>
-                                                <td><span class="status-badge info">SMS</span></td>
-                                                <td>2026-01-05</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">삭제</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><div class="checkbox-box"></div></td>
-                                                <td>2</td>
-                                                <td>배송시작 안내</td>
-                                                <td>주문/배송</td>
-                                                <td><span class="status-badge success">LMS</span></td>
-                                                <td>2026-01-04</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">삭제</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><div class="checkbox-box"></div></td>
-                                                <td>3</td>
-                                                <td>할인 이벤트 안내</td>
-                                                <td>이벤트/프로모션</td>
-                                                <td><span class="status-badge warning">MMS</span></td>
-                                                <td>2026-01-03</td>
-                                                <td>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm">수정</button>
-                                                    <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">삭제</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="marker" data-id="3" style="top: 20px; right: 20px;">3</div>
-                                </div>
-
-                                <!-- Bottom Actions -->
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; position: relative;">
-                                    <div style="position: relative;">
-                                        <button class="mock-btn mock-btn-outline" style="color: #f72585;">선택 삭제</button>
-                                        <div class="marker" data-id="4" style="top: -8px; right: -8px;">4</div>
-                                    </div>
-                                    <div class="pagination" style="position: relative;">
-                                        <div class="pagination-item">‹</div>
-                                        <div class="pagination-item active">1</div>
-                                        <div class="pagination-item">2</div>
-                                        <div class="pagination-item">3</div>
-                                        <div class="pagination-item">›</div>
-                                        <div class="marker" data-id="7" style="top: -8px; right: -8px;">7</div>
-                                    </div>
-                                </div>
-
-                                <!-- 등록/수정 모달 (토글 가능) -->
-                                <div class="modal-container">
-                                    <div class="modal-backdrop"></div>
-                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 600px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
-                                        <div style="font-size: 18px; font-weight: 600; color: #333;">템플릿 등록</div>
-                                        <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
-                                        <div class="marker" data-id="5" style="top: -8px; right: 40px;">5</div>
-                                    </div>
-
-                                    <div style="display: flex; gap: 24px;">
-                                        <div style="flex: 1;">
-                                            <div class="form-row">
-                                                <label class="form-label">템플릿명 *</label>
-                                                <input type="text" class="form-input" placeholder="템플릿명을 입력하세요">
-                                            </div>
-                                            <div class="form-row">
-                                                <label class="form-label">카테고리</label>
-                                                <select class="form-select">
-                                                    <option>카테고리 선택</option>
-                                                    <option>주문/배송</option>
-                                                    <option>이벤트/프로모션</option>
-                                                    <option>공지/안내</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-row" style="position: relative;">
-                                                <label class="form-label">메시지 타입 *</label>
-                                                <div class="radio-group">
-                                                    <div class="radio-item">
-                                                        <div class="radio-circle active"></div>
-                                                        <span>SMS</span>
-                                                    </div>
-                                                    <div class="radio-item">
-                                                        <div class="radio-circle"></div>
-                                                        <span>LMS</span>
-                                                    </div>
-                                                    <div class="radio-item">
-                                                        <div class="radio-circle"></div>
-                                                        <span>MMS</span>
-                                                    </div>
-                                                </div>
-                                                <div class="marker" data-id="6" style="top: 0; right: -20px;">6</div>
-                                            </div>
-                                            <div class="form-row">
-                                                <label class="form-label">메시지 내용 *</label>
-                                                <textarea class="form-textarea" style="min-height: 150px;" placeholder="메시지 내용을 입력하세요."></textarea>
-                                                <div class="form-helper">0 / 90 byte</div>
-                                            </div>
-                                        </div>
-
-                                        <!-- 미리보기 -->
-                                        <div style="width: 200px;">
-                                            <div style="font-size: 12px; color: #666; margin-bottom: 8px;">미리보기</div>
-                                            <div class="phone-mockup" style="width: 180px;">
-                                                <div class="phone-screen" style="height: 280px;">
-                                                    <div class="phone-header" style="font-size: 11px;">010-1234-5678</div>
-                                                    <div class="phone-content">
-                                                        <div class="phone-message" style="font-size: 11px;">
-                                                            메시지 미리보기가 여기에 표시됩니다.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div style="display: flex; gap: 12px; margin-top: 24px;">
-                                        <button class="mock-btn mock-btn-outline" style="flex: 1;">취소</button>
-                                        <button class="mock-btn mock-btn-primary" style="flex: 1;">저장하기</button>
-                                    </div>
-                                    </div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
+                                <div class="marker" data-id="3" style="top: 550px; right: 20px;">3</div>
                             </div>
                         </div>
                     </div>
@@ -244,28 +53,23 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">template-message.html · 문자 템플릿 관리</div>
+                <div class="desc-subtitle">template-message.html · 문자 템플릿 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">서브 네비게이션</div>
+                        <div class="desc-item-title">템플릿 등록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">템플릿 유형별 탭 네비게이션입니다.</div>
+                        <div class="desc-text">새 문자 템플릿을 등록합니다.</div>
                         <table class="desc-table">
-                            <tr><th>탭</th><th>페이지</th></tr>
-                            <tr><td>일반문자 템플릿</td><td>template-message.html</td></tr>
-                            <tr><td>광고문자 템플릿</td><td>template-message-ad.html</td></tr>
-                            <tr><td>선거문자 템플릿</td><td>template-message-election.html</td></tr>
-                            <tr><td>알림톡 템플릿</td><td>template-alimtalk.html</td></tr>
-                            <tr><td>브랜드메시지 템플릿</td><td>template-brandtalk.html</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>클릭</td><td>템플릿 등록 모달 표시</td></tr>
                         </table>
                     </div>
                 </div>
@@ -273,23 +77,6 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">검색 및 등록</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">템플릿 검색 및 신규 등록 버튼입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>기능</th><th>설명</th></tr>
-                            <tr><td>카테고리 필터</td><td>카테고리별 필터링</td></tr>
-                            <tr><td>검색</td><td>템플릿명 검색</td></tr>
-                            <tr><td>새 템플릿 등록</td><td>등록 모달 열기</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-item-header">
-                        <div class="desc-number">3</div>
                         <div class="desc-item-title">템플릿 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
@@ -297,100 +84,33 @@
                         <div class="desc-text">등록된 템플릿 목록을 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>체크박스</td><td>다중 선택 (삭제용)</td></tr>
                             <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
-                            <tr><td>카테고리</td><td>분류</td></tr>
-                            <tr><td>타입</td><td>SMS/LMS/MMS</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS</td></tr>
+                            <tr><td>내용</td><td>템플릿 내용 미리보기</td></tr>
+                            <tr><td>등록일</td><td>등록 날짜</td></tr>
                             <tr><td>관리</td><td>수정/삭제 버튼</td></tr>
                         </table>
-                        <div class="desc-code">GET /api/v1/templates/message
-Query: { category?, search?, page, limit }
-Response: {
-  templates: [{
-    id, name, category,
-    messageType, content, createdAt
-  }],
-  total: number
-}</div>
                     </div>
                 </div>
 
-                <div class="desc-item" data-id="4">
+                <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
-                        <div class="desc-number">4</div>
-                        <div class="desc-item-title">선택 삭제</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">체크박스로 선택한 템플릿을 일괄 삭제합니다.</div>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 삭제 확인</div>
-                            <div class="desc-note-text">삭제 전 확인 모달이 표시됩니다. 삭제된 템플릿은 복구할 수 없습니다.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
+                        <div class="desc-number">3</div>
                         <div class="desc-item-title">템플릿 등록/수정 모달</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">새 템플릿을 등록하거나 기존 템플릿을 수정합니다.</div>
+                        <div class="desc-text">템플릿 등록 폼입니다.</div>
                         <table class="desc-table">
-                            <tr><th>필드</th><th>필수</th><th>설명</th></tr>
-                            <tr><td>템플릿명</td><td><span class="desc-badge required">필수</span></td><td>최대 50자</td></tr>
-                            <tr><td>카테고리</td><td><span class="desc-badge optional">선택</span></td><td>분류용</td></tr>
-                            <tr><td>메시지 타입</td><td><span class="desc-badge required">필수</span></td><td>SMS/LMS/MMS</td></tr>
-                            <tr><td>메시지 내용</td><td><span class="desc-badge required">필수</span></td><td>바이트 카운터 표시</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">메시지 타입 선택</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">메시지 타입에 따라 바이트 제한이 달라집니다.</div>
-                        <table class="desc-table">
-                            <tr><th>타입</th><th>용량</th><th>이미지</th></tr>
-                            <tr><td>SMS</td><td>90 byte</td><td>불가</td></tr>
-                            <tr><td>LMS</td><td>2,000 byte</td><td>불가</td></tr>
-                            <tr><td>MMS</td><td>2,000 byte</td><td>최대 3개</td></tr>
-                        </table>
-                        <div class="desc-code">POST /api/v1/templates/message
-Request: {
-  name: string,
-  category?: string,
-  messageType: 'SMS' | 'LMS' | 'MMS',
-  content: string,
-  images?: string[]
-}
-Response: { id: string, message: '템플릿이 등록되었습니다.' }</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="7">
-                    <div class="desc-item-header">
-                        <div class="desc-number">7</div>
-                        <div class="desc-item-title">페이지네이션</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">템플릿 목록의 페이지 이동 컴포넌트입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>‹ (이전)</td><td>이전 페이지로 이동</td></tr>
-                            <tr><td>페이지 번호</td><td>해당 페이지로 이동</td></tr>
-                            <tr><td>› (다음)</td><td>다음 페이지로 이동</td></tr>
+                            <tr><th>필드</th><th>설명</th></tr>
+                            <tr><td>템플릿명</td><td>템플릿 이름</td></tr>
+                            <tr><td>유형</td><td>SMS/LMS/MMS 선택</td></tr>
+                            <tr><td>내용</td><td>메시지 내용</td></tr>
+                            <tr><td>이미지</td><td>MMS 첨부 이미지</td></tr>
                         </table>
                         <div class="desc-note">
-                            <div class="desc-note-title">💡 페이지 설정</div>
-                            <div class="desc-note-text">페이지당 10건 표시</div>
+                            <div class="desc-note-title">💡 변수 사용</div>
+                            <div class="desc-note-text">#{이름}, #{금액} 등 변수를 사용하면 발송 시 자동 치환됩니다.</div>
                         </div>
                     </div>
                 </div>
@@ -398,13 +118,17 @@ Response: { id: string, message: '템플릿이 등록되었습니다.' }</div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

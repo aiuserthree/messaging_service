@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P010-02-02 공지사항 상세 - 톡벨 화면설계서</title>
+    <title>공지사항 상세 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
             <div class="header-left">
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
-                    <span class="page-id-badge">FE-P010-02-02</span>
-                    <span class="page-title-header">공지사항 상세 페이지</span>
+                    <span class="page-id-badge">FE-P010-02-01</span>
+                    <span class="page-title-header">공지사항 상세</span>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../support-notice-detail.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -33,135 +33,18 @@
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/support-notice-detail.html?id=notice-001</div>
+                        <div class="browser-url">https://tokbell.co.kr/support-notice-detail.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <!-- Header -->
-                            <div class="screen-header" style="position: relative; padding: 16px 24px;">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                    <span class="screen-nav-item active">고객센터</span>
-                                </div>
-                                <div class="screen-user">
-                                    <span>홍길동님</span>
-                                    <span style="color: #4361ee;">500,000P</span>
-                                </div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../support-notice-detail.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Body -->
-                            <div class="screen-body" style="display: flex; gap: 0;">
-                                <!-- Sidebar -->
-                                <div class="sidebar-mock" style="position: relative;">
-                                    <div class="sidebar-title">고객센터</div>
-                                    <div class="sidebar-item">
-                                        <span class="sidebar-item-icon">❓</span>
-                                        FAQ
-                                    </div>
-                                    <div class="sidebar-item active">
-                                        <span class="sidebar-item-icon">📢</span>
-                                        공지사항
-                                    </div>
-                                    <div class="sidebar-item">
-                                        <span class="sidebar-item-icon">🎉</span>
-                                        이벤트
-                                    </div>
-                                    <div class="sidebar-item">
-                                        <span class="sidebar-item-icon">💬</span>
-                                        1:1 문의
-                                    </div>
-                                </div>
-
-                                <!-- Main Content -->
-                                <div style="flex: 1; padding: 24px; position: relative;">
-                                    <!-- Breadcrumb -->
-                                    <div style="font-size: 12px; color: #999; margin-bottom: 16px; position: relative;">
-                                        고객센터 &gt; 공지사항 &gt; 상세
-                                        <div class="marker" data-id="1" style="top: -8px; right: -8px;">1</div>
-                                    </div>
-
-                                    <!-- Notice Detail Card -->
-                                    <div style="background: white; border-radius: 12px; overflow: hidden; position: relative;">
-                                        <!-- Notice Header -->
-                                        <div style="padding: 24px; border-bottom: 1px solid #eee; position: relative;">
-                                            <div style="margin-bottom: 12px;">
-                                                <span class="status-badge info">공지</span>
-                                            </div>
-                                            <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 12px;">
-                                                서비스 정기점검 안내 (1/10 02:00~06:00)
-                                            </h2>
-                                            <div style="display: flex; gap: 16px; font-size: 13px; color: #999;">
-                                                <span>📅 2026-01-05</span>
-                                                <span>👁️ 조회수 1,234</span>
-                                            </div>
-                                            <div class="marker" data-id="2" style="top: 16px; right: 16px;">2</div>
-                                        </div>
-
-                                        <!-- Notice Body -->
-                                        <div style="padding: 24px; min-height: 300px; position: relative;">
-                                            <div style="font-size: 14px; color: #333; line-height: 1.8;">
-                                                <p>안녕하세요, 톡벨입니다.</p>
-                                                <br>
-                                                <p>서비스 안정화를 위한 정기점검이 아래 일정으로 진행됩니다.</p>
-                                                <br>
-                                                <p><strong>■ 점검 일시</strong></p>
-                                                <p>2026년 1월 10일(금) 02:00 ~ 06:00 (약 4시간)</p>
-                                                <br>
-                                                <p><strong>■ 점검 내용</strong></p>
-                                                <p style="padding-left: 16px;">- 서버 인프라 업그레이드</p>
-                                                <p style="padding-left: 16px;">- 보안 패치 적용</p>
-                                                <p style="padding-left: 16px;">- 데이터베이스 최적화</p>
-                                                <br>
-                                                <p><strong>■ 영향 범위</strong></p>
-                                                <p style="padding-left: 16px;">- 점검 시간 동안 모든 서비스 이용이 일시 중단됩니다.</p>
-                                                <p style="padding-left: 16px;">- 예약 발송은 점검 종료 후 순차적으로 발송됩니다.</p>
-                                                <br>
-                                                <p>서비스 이용에 불편을 드려 죄송합니다.</p>
-                                                <p>더 나은 서비스로 보답하겠습니다.</p>
-                                                <br>
-                                                <p>감사합니다.</p>
-                                            </div>
-                                            <div class="marker" data-id="3" style="top: 16px; right: 16px;">3</div>
-                                        </div>
-
-                                        <!-- Attachments -->
-                                        <div style="padding: 24px; background: #f8f9fa; border-top: 1px solid #eee; position: relative;">
-                                            <h4 style="font-size: 13px; font-weight: 600; color: #333; margin-bottom: 12px;">첨부파일</h4>
-                                            <div style="display: flex; align-items: center; gap: 8px; padding: 12px; background: white; border-radius: 8px; border: 1px solid #eee;">
-                                                <span>📎</span>
-                                                <a href="#" style="font-size: 13px; color: #4361ee; text-decoration: none;">점검_안내문.pdf</a>
-                                                <span style="font-size: 12px; color: #999;">(245KB)</span>
-                                            </div>
-                                            <div class="marker" data-id="4" style="top: 16px; right: 16px;">4</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Prev/Next Navigation -->
-                                    <div style="background: white; border-radius: 12px; margin-top: 16px; overflow: hidden; position: relative;">
-                                        <div style="display: flex; border-bottom: 1px solid #eee;">
-                                            <div style="flex: 1; padding: 16px 24px; border-right: 1px solid #eee;">
-                                                <span style="font-size: 12px; color: #999;">이전글</span>
-                                                <a href="#" style="display: block; font-size: 14px; color: #333; text-decoration: none; margin-top: 4px;">신규 기능 업데이트 안내 (알림톡 개선)</a>
-                                            </div>
-                                            <div style="flex: 1; padding: 16px 24px;">
-                                                <span style="font-size: 12px; color: #999;">다음글</span>
-                                                <a href="#" style="display: block; font-size: 14px; color: #333; text-decoration: none; margin-top: 4px;">2026년 새해 인사 및 혜택 안내</a>
-                                            </div>
-                                        </div>
-                                        <div class="marker" data-id="5" style="top: 16px; right: 16px;">5</div>
-                                    </div>
-
-                                    <!-- Bottom Buttons -->
-                                    <div style="margin-top: 24px; position: relative;">
-                                        <button class="mock-btn mock-btn-outline">← 목록으로</button>
-                                        <div class="marker" data-id="6" style="top: -8px; right: -8px;">6</div>
-                                    </div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 150px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 450px; right: 20px;">2</div>
                             </div>
                         </div>
                     </div>
@@ -169,7 +52,6 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
@@ -179,15 +61,18 @@
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">브레드크럼 네비게이션</div>
+                        <div class="desc-item-title">공지 내용</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">현재 페이지 위치를 계층 구조로 표시합니다.</div>
+                        <div class="desc-text">공지사항 상세 내용을 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>고객센터</td><td>support-faq.html 이동</td></tr>
-                            <tr><td>공지사항</td><td>support-notice.html 이동</td></tr>
+                            <tr><th>요소</th><th>설명</th></tr>
+                            <tr><td>제목</td><td>공지 제목</td></tr>
+                            <tr><td>분류</td><td>서비스/점검/이벤트</td></tr>
+                            <tr><td>작성일</td><td>등록 날짜</td></tr>
+                            <tr><td>조회수</td><td>열람 횟수</td></tr>
+                            <tr><td>내용</td><td>공지 상세 내용</td></tr>
                         </table>
                     </div>
                 </div>
@@ -195,107 +80,34 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">공지사항 헤더</div>
+                        <div class="desc-item-title">이전/다음 글</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">공지사항 제목, 등록일, 조회수를 표시합니다.</div>
+                        <div class="desc-text">이전 글, 다음 글로 이동합니다.</div>
                         <table class="desc-table">
-                            <tr><th>요소</th><th>설명</th></tr>
-                            <tr><td>공지 배지</td><td>isPinned: true인 경우 표시</td></tr>
-                            <tr><td>제목</td><td>20px, font-weight: 600</td></tr>
-                            <tr><td>조회수</td><td>상세 진입 시 자동 +1</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>이전 글</td><td>이전 공지로 이동</td></tr>
+                            <tr><td>다음 글</td><td>다음 공지로 이동</td></tr>
+                            <tr><td>목록</td><td>공지사항 목록으로 이동</td></tr>
                         </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">공지사항 본문</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">HTML 형식의 공지사항 내용을 렌더링합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>컨텐츠</td><td>HTML Rich Text 지원</td></tr>
-                            <tr><td>최소 높이</td><td>300px</td></tr>
-                            <tr><td>링크</td><td>새 탭에서 열림</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="4">
-                    <div class="desc-item-header">
-                        <div class="desc-number">4</div>
-                        <div class="desc-item-title">첨부파일 영역</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">첨부파일이 있는 경우에만 표시됩니다.</div>
-                        <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>표시 정보</td><td>파일명, 파일 크기</td></tr>
-                            <tr><td>지원 형식</td><td>PDF, DOC, XLS, JPG, PNG</td></tr>
-                            <tr><td>클릭 동작</td><td>파일 다운로드</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
-                        <div class="desc-item-title">이전/다음글 네비게이션</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">이전글, 다음글로 빠르게 이동할 수 있습니다.</div>
-                        <table class="desc-table">
-                            <tr><th>조건</th><th>표시</th></tr>
-                            <tr><td>이전글 없음</td><td>"이전 글이 없습니다"</td></tr>
-                            <tr><td>다음글 없음</td><td>"다음 글이 없습니다"</td></tr>
-                            <tr><td>제목 길이</td><td>30자 초과 시 말줄임</td></tr>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">목록으로 버튼</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">공지사항 목록 페이지로 돌아갑니다.</div>
-                        <table class="desc-table">
-                            <tr><th>동작</th><th>URL</th></tr>
-                            <tr><td>클릭</td><td>support-notice.html</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 상태 유지</div>
-                            <div class="desc-note-text">이전 목록의 필터/페이지 상태가 유지됩니다.</div>
-                        </div>
-                        <div class="desc-code">GET /api/v1/support/notices/:id
-Response: {
-  id, title, content, isPinned, viewCount,
-  attachments: [{ fileName, fileSize, downloadUrl }],
-  prevNotice: { id, title },
-  nextNotice: { id, title }
-}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

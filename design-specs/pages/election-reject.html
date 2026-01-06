@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELEC-03 선거문자 수신거부 관리 - 톡벨 화면설계서</title>
+    <title>선거 수신거부 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
             <div class="header-left">
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
-                    <span class="page-id-badge">ELEC-03</span>
-                    <span class="page-title-header">선거문자 수신거부 관리</span>
+                    <span class="page-id-badge">FE-P003-05</span>
+                    <span class="page-title-header">선거 수신거부</span>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../election-reject.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -36,106 +36,15 @@
                         <div class="browser-url">https://tokbell.co.kr/election-reject.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <div class="screen-header">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자발송</span>
-                                    <span class="screen-nav-item active">선거문자</span>
-                                    <span class="screen-nav-item">카카오톡 발송</span>
-                                    <span class="screen-nav-item">발송 관리</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                </div>
-                                <div class="screen-user">홍길동님</div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../election-reject.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Sub Navigation -->
-                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
-                                <div style="display: flex; gap: 32px; position: relative;">
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 발송</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 주소록</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">수신거부 관리</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">선거문자 템플릿</a>
-                                    <div class="marker" data-id="1" style="top: 8px; right: -20px;">1</div>
-                                </div>
-                            </div>
-
-                            <div class="screen-body" style="padding: 24px;">
-                                <!-- 통계 카드 -->
-                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; position: relative;">
-                                    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #eee;">
-                                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">전체 수신거부</div>
-                                        <div style="font-size: 28px; font-weight: 700; color: #ef4444;">123</div>
-                                    </div>
-                                    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #eee;">
-                                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">이번 달 추가</div>
-                                        <div style="font-size: 28px; font-weight: 700; color: #f59e0b;">12</div>
-                                    </div>
-                                    <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #eee;">
-                                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">해제된 번호</div>
-                                        <div style="font-size: 28px; font-weight: 700; color: #10b981;">5</div>
-                                    </div>
-                                    <div class="marker" data-id="2" style="top: 8px; right: 8px;">2</div>
-                                </div>
-
-                                <!-- 검색 및 액션 -->
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative;">
-                                    <div style="display: flex; gap: 8px;">
-                                        <input type="text" class="form-input" placeholder="전화번호 검색" style="width: 250px;">
-                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
-                                    </div>
-                                    <div style="display: flex; gap: 8px;">
-                                        <button class="mock-btn mock-btn-outline mock-btn-sm">📥 엑셀 업로드</button>
-                                        <button class="mock-btn mock-btn-primary mock-btn-sm">+ 수신거부 등록</button>
-                                    </div>
-                                    <div class="marker" data-id="3" style="top: -8px; right: 0;">3</div>
-                                </div>
-
-                                <!-- 테이블 -->
-                                <div style="background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; position: relative;">
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                                        <thead>
-                                            <tr style="background: #f8f9fa;">
-                                                <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee; width: 40px;">
-                                                    <input type="checkbox">
-                                                </th>
-                                                <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">전화번호</th>
-                                                <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">등록 경로</th>
-                                                <th style="padding: 14px 16px; text-align: left; font-weight: 600; border-bottom: 1px solid #eee;">등록일</th>
-                                                <th style="padding: 14px 16px; text-align: center; font-weight: 600; border-bottom: 1px solid #eee; width: 100px;">관리</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr style="border-bottom: 1px solid #f0f0f0;">
-                                                <td style="padding: 14px 16px;"><input type="checkbox"></td>
-                                                <td style="padding: 14px 16px; font-weight: 500;">010-1234-5678</td>
-                                                <td style="padding: 14px 16px;"><span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 12px;">수동 등록</span></td>
-                                                <td style="padding: 14px 16px; color: #999;">2025-01-01</td>
-                                                <td style="padding: 14px 16px; text-align: center;">
-                                                    <button class="mock-btn mock-btn-danger mock-btn-xs">해제</button>
-                                                </td>
-                                            </tr>
-                                            <tr style="border-bottom: 1px solid #f0f0f0;">
-                                                <td style="padding: 14px 16px;"><input type="checkbox"></td>
-                                                <td style="padding: 14px 16px; font-weight: 500;">010-2345-6789</td>
-                                                <td style="padding: 14px 16px;"><span style="background: #fff3e0; color: #e65100; padding: 4px 8px; border-radius: 4px; font-size: 12px;">유권자 요청</span></td>
-                                                <td style="padding: 14px 16px; color: #999;">2025-01-02</td>
-                                                <td style="padding: 14px 16px; text-align: center;">
-                                                    <button class="mock-btn mock-btn-danger mock-btn-xs">해제</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="marker" data-id="4" style="top: 8px; right: 8px;">4</div>
-                                </div>
-
-                                <!-- 페이지네이션 -->
-                                <div style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px;">
-                                    <button class="mock-btn mock-btn-outline mock-btn-sm">이전</button>
-                                    <span style="padding: 8px 12px; background: #4361ee; color: white; border-radius: 6px; font-size: 13px;">1</span>
-                                    <span style="padding: 8px 12px; color: #666; font-size: 13px; cursor: pointer;">2</span>
-                                    <button class="mock-btn mock-btn-outline mock-btn-sm">다음</button>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 350px; right: 20px;">2</div>
                             </div>
                         </div>
                     </div>
@@ -144,56 +53,41 @@
         </div>
 
         <div class="description-panel">
-            <div class="description-header">
-                <h2>화면 설명</h2>
-                <span class="page-type-badge">메인</span>
+            <div class="desc-header">
+                <div class="desc-title">화면 설명서</div>
+                <div class="desc-subtitle">election-reject.html · 선거 수신거부 페이지</div>
             </div>
-
-            <div class="description-content">
-                <div class="desc-item" data-id="1">
-                    <div class="desc-number">1</div>
-                    <div class="desc-text">
-                        <strong>서브 네비게이션</strong>
-                        <p>선거문자 섹션의 하위 메뉴입니다.</p>
+            <div class="desc-content">
+                <div class="desc-item expanded" data-id="1">
+                    <div class="desc-item-header">
+                        <div class="desc-number">1</div>
+                        <div class="desc-item-title">수신거부 등록</div>
+                        <span class="desc-toggle">▼</span>
+                    </div>
+                    <div class="desc-item-body">
+                        <div class="desc-text">선거문자 수신거부 번호를 등록합니다.</div>
+                        <table class="desc-table">
+                            <tr><th>방법</th><th>설명</th></tr>
+                            <tr><td>직접등록</td><td>개별 번호 등록</td></tr>
+                            <tr><td>엑셀업로드</td><td>대량 등록</td></tr>
+                        </table>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
-                    <div class="desc-number">2</div>
-                    <div class="desc-text">
-                        <strong>통계 카드</strong>
-                        <p>수신거부 현황을 한눈에 보여줍니다.</p>
-                        <ul>
-                            <li>전체 수신거부 건수</li>
-                            <li>이번 달 추가된 건수</li>
-                            <li>해제된 번호 건수</li>
-                        </ul>
+                    <div class="desc-item-header">
+                        <div class="desc-number">2</div>
+                        <div class="desc-item-title">수신거부 목록</div>
+                        <span class="desc-toggle">▼</span>
                     </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-number">3</div>
-                    <div class="desc-text">
-                        <strong>검색 및 액션 버튼</strong>
-                        <p>수신거부 번호 관리 기능입니다.</p>
-                        <ul>
-                            <li>전화번호 검색</li>
-                            <li>엑셀 업로드: 대량 수신거부 등록</li>
-                            <li>수신거부 등록: 개별 번호 등록 모달</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="4">
-                    <div class="desc-number">4</div>
-                    <div class="desc-text">
-                        <strong>수신거부 목록 테이블</strong>
-                        <p>수신거부 등록된 번호 목록입니다.</p>
-                        <ul>
-                            <li>전화번호, 등록 경로, 등록일 표시</li>
-                            <li>등록 경로: 수동 등록 / 유권자 요청</li>
-                            <li>해제 버튼: 수신거부 해제</li>
-                        </ul>
+                    <div class="desc-item-body">
+                        <div class="desc-text">등록된 선거문자 수신거부 목록입니다.</div>
+                        <table class="desc-table">
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>전화번호</td><td>수신거부 번호</td></tr>
+                            <tr><td>등록일</td><td>등록 날짜</td></tr>
+                            <tr><td>관리</td><td>삭제 버튼</td></tr>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -201,5 +95,16 @@
     </div>
 
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

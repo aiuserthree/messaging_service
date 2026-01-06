@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P007-01 발송결과 - 톡벨 화면설계서</title>
+    <title>발송결과 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -17,27 +17,14 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../send-result.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
 
     <div class="main-container">
         <div class="mockup-panel">
-            <!-- View Toggle Controls -->
-            <div class="view-toggle-controls">
-                <button class="view-toggle-btn active" data-view="base">
-                    <span class="icon">📄</span> 바닥 페이지
-                </button>
-                <button class="view-toggle-btn" data-view="modal">
-                    <span class="icon">🔲</span> 모달 팝업
-                </button>
-            </div>
-            <div class="view-state-badge">
-                <span class="dot"></span> 바닥 페이지 보기
-            </div>
-
             <div class="mockup-canvas">
                 <div class="mockup-frame wide">
                     <div class="browser-chrome">
@@ -49,221 +36,17 @@
                         <div class="browser-url">https://tokbell.co.kr/send-result.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <div class="screen-header">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item active">발송관리</span>
-                                </div>
-                                <div class="screen-user">홍길동님</div>
+                        <div class="iframe-container" style="height: 800px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../send-result.html" style="height: 800px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Sub Navigation -->
-                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
-                                <div style="display: flex; gap: 32px;">
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">발송결과</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">예약내역</a>
-                                </div>
-                                <div class="marker" data-id="1" style="top: 50%; right: 24px; transform: translateY(-50%);">1</div>
-                            </div>
-
-                            <div class="screen-body">
-                                <!-- 검색 필터 -->
-                                <div class="form-section" style="margin-bottom: 16px; position: relative;">
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span style="font-size: 13px; color: #666;">기간</span>
-                                        <input type="date" class="form-input" style="width: 140px;" value="2026-01-01">
-                                        <span>~</span>
-                                        <input type="date" class="form-input" style="width: 140px;" value="2026-01-06">
-                                        <select class="form-select" style="width: 120px;">
-                                            <option>전체 타입</option>
-                                            <option>SMS</option>
-                                            <option>LMS</option>
-                                            <option>MMS</option>
-                                            <option>알림톡</option>
-                                        </select>
-                                        <select class="form-select" style="width: 120px;">
-                                            <option>전체 구분</option>
-                                            <option>일반</option>
-                                            <option>광고</option>
-                                            <option>선거</option>
-                                        </select>
-                                        <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
-                                    </div>
-                                    <div class="marker" data-id="2" style="top: 50%; right: 80px; transform: translateY(-50%);">2</div>
-                                </div>
-
-                                <!-- 통계 카드 -->
-                                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; position: relative;">
-                                    <div class="stat-card">
-                                        <div class="stat-card-value">1,234</div>
-                                        <div class="stat-card-label">전체</div>
-                                    </div>
-                                    <div class="stat-card" style="border-left: 4px solid #28ca42;">
-                                        <div class="stat-card-value" style="color: #28ca42;">1,200</div>
-                                        <div class="stat-card-label">성공</div>
-                                    </div>
-                                    <div class="stat-card" style="border-left: 4px solid #f72585;">
-                                        <div class="stat-card-value" style="color: #f72585;">34</div>
-                                        <div class="stat-card-label">실패</div>
-                                    </div>
-                                    <div class="stat-card" style="border-left: 4px solid #ffd166;">
-                                        <div class="stat-card-value" style="color: #ffd166;">0</div>
-                                        <div class="stat-card-label">대기</div>
-                                    </div>
-                                    <div class="marker" data-id="3" style="top: -10px; right: -10px;">3</div>
-                                </div>
-
-                                <!-- 테이블 -->
-                                <div class="form-section" style="padding: 0; position: relative;">
-                                    <table class="mock-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 60px;">NO</th>
-                                                <th>발송일시</th>
-                                                <th style="width: 80px;">타입</th>
-                                                <th style="width: 80px;">구분</th>
-                                                <th style="width: 100px;">수신번호</th>
-                                                <th style="width: 80px;">성공</th>
-                                                <th style="width: 80px;">실패</th>
-                                                <th style="width: 100px;">비용</th>
-                                                <th style="width: 100px;">상세</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>2026-01-05 14:32</td>
-                                                <td><span class="status-badge info">SMS</span></td>
-                                                <td>일반</td>
-                                                <td>100건</td>
-                                                <td style="color: #28ca42; cursor: pointer; text-decoration: underline;">95</td>
-                                                <td style="color: #f72585; cursor: pointer; text-decoration: underline; font-weight: 600;">5 ▼</td>
-                                                <td>703P</td>
-                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
-                                            </tr>
-                                            <!-- 아코디언 펼침 영역 (실패 숫자 클릭 시) -->
-                                            <tr style="position: relative;">
-                                                <td colspan="9" style="padding: 0; background: #fef2f2;">
-                                                    <div style="padding: 16px 24px;">
-                                                        <div style="font-size: 12px; font-weight: 600; color: #991b1b; margin-bottom: 12px;">📋 실패 내역 (5건)</div>
-                                                        <table style="width: 100%; font-size: 12px; border-collapse: collapse;">
-                                                            <tr style="background: #fee2e2;">
-                                                                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #fca5a5;">수신번호</th>
-                                                                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #fca5a5;">실패 사유</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca;">010-****-1234</td>
-                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca; color: #dc2626;">수신거부</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca;">010-****-5678</td>
-                                                                <td style="padding: 8px; border-bottom: 1px solid #fecaca; color: #dc2626;">번호 없음</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td style="padding: 8px;">010-****-9012</td>
-                                                                <td style="padding: 8px; color: #dc2626;">통신사 오류</td>
-                                                            </tr>
-                                                        </table>
-                                                        <div style="text-align: center; margin-top: 8px;">
-                                                            <span style="font-size: 11px; color: #999;">+ 2건 더 있음 (상세 버튼에서 전체 보기)</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="marker" data-id="7" style="top: 16px; right: 16px;">7</div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>2026-01-04 10:15</td>
-                                                <td><span class="status-badge success">LMS</span></td>
-                                                <td>광고</td>
-                                                <td>50건</td>
-                                                <td style="color: #28ca42;">48</td>
-                                                <td style="color: #f72585; cursor: pointer; text-decoration: underline;">2</td>
-                                                <td>1,176P</td>
-                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>2026-01-03 09:45</td>
-                                                <td><span class="status-badge warning">알림톡</span></td>
-                                                <td>일반</td>
-                                                <td>200건</td>
-                                                <td style="color: #28ca42;">198</td>
-                                                <td style="color: #f72585; cursor: pointer; text-decoration: underline;">2</td>
-                                                <td>1,188P</td>
-                                                <td><button class="mock-btn mock-btn-outline mock-btn-sm">상세</button></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="marker" data-id="4" style="top: 20px; right: 20px;">4</div>
-                                </div>
-
-                                <div class="pagination" style="margin-top: 16px; position: relative;">
-                                    <div class="pagination-item">‹</div>
-                                    <div class="pagination-item active">1</div>
-                                    <div class="pagination-item">2</div>
-                                    <div class="pagination-item">3</div>
-                                    <div class="pagination-item">›</div>
-                                    <div class="marker" data-id="6" style="top: -8px; right: -8px;">6</div>
-                                </div>
-
-                                <!-- 상세 모달 (토글 가능) -->
-                                <div class="modal-container">
-                                    <div class="modal-backdrop"></div>
-                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 16px; padding: 32px; width: 700px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 70; max-height: 80%; overflow-y: auto;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative;">
-                                        <div style="font-size: 18px; font-weight: 600; color: #333;">발송 상세</div>
-                                        <button style="background: none; border: none; font-size: 20px; cursor: pointer; color: #999;">✕</button>
-                                        <div class="marker" data-id="5" style="top: -8px; right: 40px;">5</div>
-                                    </div>
-
-                                    <!-- 탭 -->
-                                    <div class="tab-group" style="margin-bottom: 16px;">
-                                        <div class="tab-item">성공 (95)</div>
-                                        <div class="tab-item active">실패 (5)</div>
-                                    </div>
-
-                                    <table class="mock-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 40px;"><div class="checkbox-box"></div></th>
-                                                <th>수신번호</th>
-                                                <th>상태</th>
-                                                <th>실패 사유</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><div class="checkbox-box"></div></td>
-                                                <td>010-****-1234</td>
-                                                <td><span class="status-badge danger">실패</span></td>
-                                                <td style="color: #f72585;">수신거부</td>
-                                            </tr>
-                                            <tr>
-                                                <td><div class="checkbox-box"></div></td>
-                                                <td>010-****-5678</td>
-                                                <td><span class="status-badge danger">실패</span></td>
-                                                <td style="color: #f72585;">번호 없음</td>
-                                            </tr>
-                                            <tr>
-                                                <td><div class="checkbox-box"></div></td>
-                                                <td>010-****-9012</td>
-                                                <td><span class="status-badge danger">실패</span></td>
-                                                <td style="color: #f72585;">통신사 오류</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
-                                        <button class="mock-btn mock-btn-primary">선택 재발송</button>
-                                    </div>
-                                    </div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 250px; right: 20px;">2</div>
+                                <div class="marker" data-id="3" style="top: 450px; right: 20px;">3</div>
+                                <div class="marker" data-id="4" style="top: 600px; right: 20px;">4</div>
                             </div>
                         </div>
                     </div>
@@ -271,25 +54,25 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">send-result.html · 발송결과 조회</div>
+                <div class="desc-subtitle">send-result.html · 발송결과 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">서브 네비게이션</div>
+                        <div class="desc-item-title">검색 필터</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">발송관리의 탭 네비게이션입니다.</div>
+                        <div class="desc-text">발송 결과를 조회하기 위한 필터입니다.</div>
                         <table class="desc-table">
-                            <tr><th>탭</th><th>설명</th></tr>
-                            <tr><td>발송결과</td><td>발송 완료된 내역 조회</td></tr>
-                            <tr><td>예약내역</td><td>예약 발송 내역 관리</td></tr>
+                            <tr><th>필터</th><th>옵션</th></tr>
+                            <tr><td>기간</td><td>오늘, 1주일, 1개월, 직접입력</td></tr>
+                            <tr><td>메시지유형</td><td>전체, SMS, LMS, MMS, 알림톡, 브랜드톡</td></tr>
+                            <tr><td>상태</td><td>전체, 성공, 실패, 대기</td></tr>
                         </table>
                     </div>
                 </div>
@@ -297,34 +80,44 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">검색 필터</div>
+                        <div class="desc-item-title">발송결과 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">기간, 메시지 타입, 발송 구분으로 검색합니다.</div>
+                        <div class="desc-text">발송된 메시지 결과를 테이블로 표시합니다.</div>
                         <table class="desc-table">
-                            <tr><th>필터</th><th>옵션</th></tr>
-                            <tr><td>기간</td><td>시작일 ~ 종료일</td></tr>
-                            <tr><td>타입</td><td>SMS, LMS, MMS, 알림톡, 브랜드메시지</td></tr>
-                            <tr><td>구분</td><td>일반, 광고, 선거</td></tr>
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>발송일시</td><td>메시지 발송 시간</td></tr>
+                            <tr><td>메시지유형</td><td>SMS/LMS/MMS/알림톡 등</td></tr>
+                            <tr><td>발송수</td><td>총 발송 건수</td></tr>
+                            <tr><td>성공</td><td>성공 건수 (클릭 시 아코디언 펼침)</td></tr>
+                            <tr><td>실패</td><td>실패 건수 (클릭 시 아코디언 펼침)</td></tr>
+                            <tr><td>상세</td><td>상세 보기 버튼 (클릭 시 모달 팝업)</td></tr>
                         </table>
+                        <div class="desc-note">
+                            <div class="desc-note-title">💡 인터랙션</div>
+                            <div class="desc-note-text">
+                                • 성공/실패 건수(숫자) 클릭 → 해당 행 아래로 아코디언 펼침<br>
+                                • 상세 버튼 클릭 → 발송 상세 모달 팝업
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">통계 요약 카드</div>
+                        <div class="desc-item-title">아코디언 상세 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">조회 기간 내 발송 통계를 요약 표시합니다.</div>
+                        <div class="desc-text">성공/실패 건수 클릭 시 펼쳐지는 상세 목록입니다.</div>
                         <table class="desc-table">
-                            <tr><th>항목</th><th>설명</th></tr>
-                            <tr><td>전체</td><td>총 발송 건수</td></tr>
-                            <tr><td>성공</td><td>발송 성공 건수 (초록)</td></tr>
-                            <tr><td>실패</td><td>발송 실패 건수 (빨강)</td></tr>
-                            <tr><td>대기</td><td>발송 대기 건수 (노랑)</td></tr>
+                            <tr><th>컬럼</th><th>설명</th></tr>
+                            <tr><td>수신번호</td><td>수신자 전화번호</td></tr>
+                            <tr><td>발송시간</td><td>개별 발송 시간</td></tr>
+                            <tr><td>결과</td><td>성공/실패 상태</td></tr>
+                            <tr><td>사유</td><td>실패 시 실패 사유</td></tr>
                         </table>
                     </div>
                 </div>
@@ -332,125 +125,34 @@
                 <div class="desc-item" data-id="4">
                     <div class="desc-item-header">
                         <div class="desc-number">4</div>
-                        <div class="desc-item-title">발송결과 목록</div>
+                        <div class="desc-item-title">발송 상세 모달</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">발송 내역을 목록으로 표시합니다.</div>
+                        <div class="desc-text">상세 버튼 클릭 시 표시되는 모달입니다.</div>
                         <table class="desc-table">
-                            <tr><th>컬럼</th><th>설명</th><th>클릭 동작</th></tr>
-                            <tr><td>발송일시</td><td>발송 일자와 시간</td><td>-</td></tr>
-                            <tr><td>타입</td><td>메시지 유형</td><td>-</td></tr>
-                            <tr><td>구분</td><td>일반/광고/선거</td><td>-</td></tr>
-                            <tr><td>성공 (숫자)</td><td>발송 성공 건수</td><td><strong>아코디언 펼침</strong></td></tr>
-                            <tr><td>실패 (숫자)</td><td>발송 실패 건수</td><td><strong>아코디언 펼침</strong></td></tr>
-                            <tr><td>비용</td><td>사용된 포인트</td><td>-</td></tr>
-                            <tr><td>상세 버튼</td><td>전체 발송 상세</td><td><strong>모달 팝업</strong></td></tr>
+                            <tr><th>정보</th><th>설명</th></tr>
+                            <tr><td>발송 정보</td><td>발송일시, 유형, 발신번호</td></tr>
+                            <tr><td>메시지 내용</td><td>발송된 메시지 전문</td></tr>
+                            <tr><td>발송 결과</td><td>성공/실패 통계</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 성공/실패 숫자 클릭</div>
-                            <div class="desc-note-text">성공 또는 실패 숫자를 클릭하면 해당 행 아래로 아코디언이 펼쳐지며 수신번호 목록이 표시됩니다.</div>
-                        </div>
-                        <div class="desc-code">GET /api/v1/send-results
-Query: { startDate, endDate, messageType?, sendType?, page, limit }
-Response: {
-  results: [{
-    id, sentAt, messageType, sendType,
-    totalCount, successCount, failCount,
-    cost
-  }],
-  summary: { total, success, fail, pending }
-}</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
-                        <div class="desc-item-title">상세 모달 (상세 버튼 클릭)</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text"><strong>"상세" 버튼 클릭</strong> 시 모달 팝업으로 전체 발송 상세 내역을 표시합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>탭</th><th>내용</th></tr>
-                            <tr><td>성공 내역</td><td>성공한 수신번호 전체 목록</td></tr>
-                            <tr><td>실패 내역</td><td>실패한 수신번호 + 사유 + 재발송 버튼</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 재발송 기능</div>
-                            <div class="desc-note-text">실패 내역에서 선택한 번호로 재발송이 가능합니다. 문자 발송 페이지로 수신번호가 자동 입력됩니다.</div>
-                        </div>
-                        <div class="desc-code">POST /api/v1/messages/resend
-Request: { resultId: string, phoneNumbers: string[] }
-Response: { sendId: string }</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="7">
-                    <div class="desc-item-header">
-                        <div class="desc-number">7</div>
-                        <div class="desc-item-title">아코디언 (성공/실패 숫자 클릭)</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text"><strong>성공/실패 숫자 클릭</strong> 시 해당 행 아래로 아코디언이 펼쳐집니다.</div>
-                        <table class="desc-table">
-                            <tr><th>클릭 대상</th><th>펼침 내용</th></tr>
-                            <tr><td>성공 숫자 (초록)</td><td>성공한 수신번호 일부 표시 (최대 10건)</td></tr>
-                            <tr><td>실패 숫자 (빨강)</td><td>실패한 수신번호 + 실패 사유 (최대 10건)</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 아코디언 vs 모달</div>
-                            <div class="desc-note-text">
-                                • <strong>아코디언 (숫자 클릭):</strong> 빠른 미리보기, 일부 데이터만 표시<br>
-                                • <strong>모달 (상세 버튼):</strong> 전체 목록 조회, 재발송 기능 제공
-                            </div>
-                        </div>
-                        <div class="desc-code">GET /api/v1/send-results/{id}/recipients
-Query: { status: 'SUCCESS' | 'FAIL', limit: 10 }
-Response: {
-  recipients: [{
-    phone: '010-****-1234',
-    status: 'SUCCESS' | 'FAIL',
-    failReason?: string
-  }],
-  hasMore: boolean
-}</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">페이지네이션</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">발송결과 목록의 페이지 이동 컴포넌트입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>‹ (이전)</td><td>이전 페이지로 이동</td></tr>
-                            <tr><td>페이지 번호</td><td>해당 페이지로 이동</td></tr>
-                            <tr><td>› (다음)</td><td>다음 페이지로 이동</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 페이지 설정</div>
-                            <div class="desc-note-text">페이지당 10건 표시 (설정 불가)</div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

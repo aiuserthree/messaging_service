@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P004-03-02 브랜드톡 발송 (템플릿 미등록) - 톡벨 화면설계서</title>
+    <title>브랜드톡 발송 전 확인 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -12,13 +12,13 @@
             <div class="header-left">
                 <a href="../index.html" class="back-btn">← 목록으로</a>
                 <div class="page-info">
-                    <span class="page-id-badge">FE-P004-03-02</span>
-                    <span class="page-title-header">브랜드톡 발송 (템플릿 미등록 상태)</span>
+                    <span class="page-id-badge">FE-P004-03-01</span>
+                    <span class="page-title-header">브랜드톡 발송 전 확인</span>
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../kakao-send-brandtalk-before.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -26,67 +26,25 @@
     <div class="main-container">
         <div class="mockup-panel">
             <div class="mockup-canvas">
-                <div class="mockup-frame medium">
+                <div class="mockup-frame wide">
                     <div class="browser-chrome">
                         <div class="browser-dots">
                             <div class="browser-dot red"></div>
                             <div class="browser-dot yellow"></div>
                             <div class="browser-dot green"></div>
                         </div>
-                        <div class="browser-url">https://tokbell.co.kr/kakao-send-brandtalk.html</div>
+                        <div class="browser-url">https://tokbell.co.kr/kakao-send-brandtalk-before.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <!-- Header -->
-                            <div class="screen-header" style="position: relative; padding: 16px 24px;">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item active">카카오톡</span>
-                                    <span class="screen-nav-item">템플릿</span>
-                                    <span class="screen-nav-item">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                </div>
-                                <div class="screen-user">
-                                    <span>홍길동님</span>
-                                    <span style="color: #4361ee;">500,000P</span>
-                                </div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../kakao-send-brandtalk-before.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Body -->
-                            <div class="screen-body" style="padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px;">
-                                <!-- Empty State -->
-                                <div style="text-align: center; position: relative;">
-                                    <div style="font-size: 64px; margin-bottom: 24px;">💬</div>
-                                    <h2 style="font-size: 20px; font-weight: 600; color: #333; margin-bottom: 12px;">등록된 브랜드톡 템플릿이 없습니다</h2>
-                                    <p style="font-size: 14px; color: #666; margin-bottom: 24px; line-height: 1.6;">
-                                        브랜드톡을 발송하려면 먼저 카카오 비즈니스 채널에서<br>
-                                        승인된 템플릿을 등록해야 합니다.
-                                    </p>
-                                    <div class="marker" data-id="1" style="top: -8px; right: -8px;">1</div>
-                                </div>
-
-                                <!-- Action Buttons -->
-                                <div style="display: flex; gap: 12px; position: relative;">
-                                    <button class="mock-btn mock-btn-outline" style="padding: 14px 28px;">템플릿 등록 방법 안내</button>
-                                    <button class="mock-btn mock-btn-primary" style="padding: 14px 28px;">템플릿 등록하기</button>
-                                    <div class="marker" data-id="2" style="top: -8px; right: -8px;">2</div>
-                                </div>
-
-                                <!-- Info Box -->
-                                <div style="background: #fff9c4; border-radius: 12px; padding: 24px; margin-top: 32px; max-width: 500px; position: relative;">
-                                    <h4 style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 12px;">💛 브랜드톡이란?</h4>
-                                    <p style="font-size: 13px; color: #666; line-height: 1.8; margin-bottom: 12px;">
-                                        브랜드톡은 카카오톡 친구에게 발송하는 마케팅 메시지입니다.<br>
-                                        알림톡과 달리 광고성 메시지 발송이 가능합니다.
-                                    </p>
-                                    <ul style="font-size: 12px; color: #999; margin-left: 16px; line-height: 1.8;">
-                                        <li>카카오톡 채널 친구 대상 발송</li>
-                                        <li>이미지, 버튼 등 다양한 형식 지원</li>
-                                        <li>수신 동의한 친구에게만 발송 가능</li>
-                                    </ul>
-                                    <div class="marker" data-id="3" style="top: 8px; right: 8px;">3</div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 200px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 450px; right: 20px;">2</div>
                             </div>
                         </div>
                     </div>
@@ -94,25 +52,26 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">kakao-send-brandtalk.html · 템플릿 미등록 상태</div>
+                <div class="desc-subtitle">kakao-send-brandtalk-before.html · 브랜드톡 발송 전 확인 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">Empty State 안내</div>
+                        <div class="desc-item-title">발송 정보 확인</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">브랜드톡 템플릿이 없을 때 표시되는 빈 상태 화면입니다.</div>
+                        <div class="desc-text">발송 전 정보를 최종 확인합니다.</div>
                         <table class="desc-table">
-                            <tr><th>표시 조건</th><td>등록된 브랜드톡 템플릿 0건</td></tr>
-                            <tr><th>아이콘</th><td>💬 (말풍선 이모지)</td></tr>
-                            <tr><th>안내 문구</th><td>템플릿 등록 필요성 설명</td></tr>
+                            <tr><th>항목</th><th>설명</th></tr>
+                            <tr><td>발신프로필</td><td>선택된 카카오 채널</td></tr>
+                            <tr><td>템플릿</td><td>선택된 템플릿명</td></tr>
+                            <tr><td>수신자</td><td>발송 대상 수</td></tr>
+                            <tr><td>예상 비용</td><td>발송 예상 금액</td></tr>
                         </table>
                     </div>
                 </div>
@@ -120,51 +79,33 @@
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">액션 버튼</div>
+                        <div class="desc-item-title">발송 버튼</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">사용자가 다음 단계로 진행할 수 있는 버튼입니다.</div>
+                        <div class="desc-text">최종 발송을 실행합니다.</div>
                         <table class="desc-table">
-                            <tr><th>등록 방법 안내</th><td>브랜드톡 등록 가이드</td></tr>
-                            <tr><th>템플릿 등록하기</th><td>template-brandtalk.html 이동</td></tr>
+                            <tr><th>동작</th><th>설명</th></tr>
+                            <tr><td>이전</td><td>발송 화면으로 돌아감</td></tr>
+                            <tr><td>발송</td><td>브랜드톡 발송 실행</td></tr>
                         </table>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="3">
-                    <div class="desc-item-header">
-                        <div class="desc-number">3</div>
-                        <div class="desc-item-title">브랜드톡 설명</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">브랜드톡 서비스에 대한 설명을 제공합니다.</div>
-                        <table class="desc-table">
-                            <tr><th>대상</th><td>카카오톡 채널 친구</td></tr>
-                            <tr><th>특징</th><td>광고성 메시지 발송 가능</td></tr>
-                            <tr><th>제한</th><td>수신 동의 친구만 발송</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 알림톡 vs 브랜드톡</div>
-                            <div class="desc-note-text">
-                                • 알림톡: 정보성 메시지 (배송, 예약 등)<br>
-                                • 브랜드톡: 광고/마케팅 메시지
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>

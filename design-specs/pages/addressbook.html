@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FE-P006-01 주소록 관리 - 톡벨 화면설계서</title>
+    <title>주소록 관리 - 톡벨 화면설계서</title>
     <link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
@@ -17,8 +17,8 @@
                 </div>
             </div>
             <div class="header-right">
-                <button class="btn btn-secondary">📋 복사</button>
-                <button class="btn btn-secondary">📥 내보내기</button>
+                <button class="btn btn-secondary" onclick="window.open('../../addressbook.html', '_blank')">🔗 실제 페이지</button>
+                <button class="btn btn-secondary" onclick="reloadIframe()">🔄 새로고침</button>
             </div>
         </div>
     </header>
@@ -36,135 +36,16 @@
                         <div class="browser-url">https://tokbell.co.kr/addressbook.html</div>
                     </div>
                     <div class="mockup-content">
-                        <div class="screen-mock">
-                            <div class="screen-header">
-                                <div class="screen-logo">톡벨</div>
-                                <div class="screen-nav">
-                                    <span class="screen-nav-item">문자 발송</span>
-                                    <span class="screen-nav-item">카카오톡</span>
-                                    <span class="screen-nav-item">템플릿</span>
-                                    <span class="screen-nav-item active">주소록</span>
-                                    <span class="screen-nav-item">발송관리</span>
-                                </div>
-                                <div class="screen-user">홍길동님</div>
+                        <div class="iframe-container" style="height: 700px;">
+                            <iframe id="pageIframe" class="page-iframe" src="../../addressbook.html" style="height: 700px;" onload="hideLoading()"></iframe>
+                            <div class="iframe-loading" id="iframeLoading">
+                                <div class="iframe-loading-spinner"></div>
+                                <div>로딩 중...</div>
                             </div>
-
-                            <!-- Sub Navigation -->
-                            <div style="background: white; border-bottom: 1px solid #eee; padding: 0 24px; position: relative;">
-                                <div style="display: flex; gap: 32px; position: relative;">
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #4361ee; text-decoration: none; border-bottom: 2px solid #4361ee; font-weight: 600;">주소록 관리</a>
-                                    <a href="#" style="padding: 16px 0; font-size: 14px; color: #666; text-decoration: none;">수신거부 관리</a>
-                                    <div class="marker" data-id="1" style="top: 8px; right: -20px;">1</div>
-                                </div>
-                                <div style="position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #666;">
-                                    전체: <strong style="color: #4361ee;">1,234</strong>명
-                                </div>
-                            </div>
-
-                            <div class="screen-body" style="display: flex; gap: 0; padding: 0;">
-                                <!-- 좌측 그룹 목록 -->
-                                <div style="width: 260px; background: white; border-right: 1px solid #eee; padding: 16px; position: relative;">
-                                    <div style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 16px;">그룹 목록</div>
-                                    <div style="display: flex; flex-direction: column; gap: 4px;">
-                                        <div style="padding: 12px; border-radius: 8px; background: #4361ee; color: white; font-size: 13px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                                            <span>📁 전체</span>
-                                            <span>1,234</span>
-                                        </div>
-                                        <div style="padding: 12px; border-radius: 8px; font-size: 13px; color: #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                                            <span>📁 VIP 고객</span>
-                                            <span style="color: #999;">50</span>
-                                        </div>
-                                        <div style="padding: 12px; border-radius: 8px; font-size: 13px; color: #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                                            <span>📁 일반 고객</span>
-                                            <span style="color: #999;">100</span>
-                                        </div>
-                                        <div style="padding: 12px; border-radius: 8px; font-size: 13px; color: #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                                            <span>📁 신규 고객</span>
-                                            <span style="color: #999;">84</span>
-                                        </div>
-                                    </div>
-                                    <button style="width: 100%; margin-top: 16px; padding: 12px; background: #f5f5f5; border: 1px dashed #ddd; border-radius: 8px; font-size: 13px; color: #666; cursor: pointer;">
-                                        + 그룹 추가
-                                    </button>
-                                    <div class="marker" data-id="2" style="top: 16px; right: 16px;">2</div>
-                                </div>
-
-                                <!-- 우측 주소록 목록 -->
-                                <div style="flex: 1; padding: 24px;">
-                                    <!-- 검색 및 액션 -->
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative;">
-                                        <div style="display: flex; gap: 8px;">
-                                            <input type="text" class="form-input" placeholder="이름 또는 전화번호 검색" style="width: 250px;">
-                                            <button class="mock-btn mock-btn-primary mock-btn-sm">검색</button>
-                                        </div>
-                                        <div style="display: flex; gap: 8px;">
-                                            <button class="mock-btn mock-btn-outline mock-btn-sm">📤 엑셀 업로드</button>
-                                            <button class="mock-btn mock-btn-outline mock-btn-sm">📥 엑셀 다운로드</button>
-                                            <button class="mock-btn mock-btn-primary mock-btn-sm">💬 문자 발송</button>
-                                        </div>
-                                        <div class="marker" data-id="3" style="top: -10px; right: 200px;">3</div>
-                                    </div>
-
-                                    <!-- 테이블 -->
-                                    <div style="background: white; border-radius: 12px; overflow: hidden; position: relative;">
-                                        <table class="mock-table">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 40px;"><div class="checkbox-box"></div></th>
-                                                    <th>이름</th>
-                                                    <th>전화번호</th>
-                                                    <th>그룹</th>
-                                                    <th>메모</th>
-                                                    <th style="width: 100px;">관리</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><div class="checkbox-box"></div></td>
-                                                    <td>홍길동</td>
-                                                    <td>010-****-1234</td>
-                                                    <td><span class="status-badge info">VIP 고객</span></td>
-                                                    <td style="color: #999;">단골 고객</td>
-                                                    <td><button class="mock-btn mock-btn-outline mock-btn-sm">수정</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><div class="checkbox-box"></div></td>
-                                                    <td>김철수</td>
-                                                    <td>010-****-5678</td>
-                                                    <td><span class="status-badge gray">일반 고객</span></td>
-                                                    <td style="color: #999;"></td>
-                                                    <td><button class="mock-btn mock-btn-outline mock-btn-sm">수정</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><div class="checkbox-box"></div></td>
-                                                    <td>이영희</td>
-                                                    <td>010-****-9012</td>
-                                                    <td><span class="status-badge success">신규 고객</span></td>
-                                                    <td style="color: #999;">신규 가입</td>
-                                                    <td><button class="mock-btn mock-btn-outline mock-btn-sm">수정</button></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="marker" data-id="4" style="top: 20px; right: 20px;">4</div>
-                                    </div>
-
-                                    <!-- 하단 액션 -->
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px; position: relative;">
-                                        <div style="display: flex; gap: 8px;">
-                                            <button class="mock-btn mock-btn-outline mock-btn-sm" style="color: #f72585;">선택 삭제</button>
-                                            <button class="mock-btn mock-btn-outline mock-btn-sm">선택 그룹이동</button>
-                                        </div>
-                                        <div class="pagination" style="position: relative;">
-                                            <div class="pagination-item">‹</div>
-                                            <div class="pagination-item active">1</div>
-                                            <div class="pagination-item">2</div>
-                                            <div class="pagination-item">3</div>
-                                            <div class="pagination-item">›</div>
-                                            <div class="marker" data-id="6" style="top: -8px; right: -8px;">6</div>
-                                        </div>
-                                        <div class="marker" data-id="5" style="top: -10px; left: 100px;">5</div>
-                                    </div>
-                                </div>
+                            <div class="marker-overlay" id="markerOverlay">
+                                <div class="marker" data-id="1" style="top: 120px; right: 20px;">1</div>
+                                <div class="marker" data-id="2" style="top: 200px; right: 20px;">2</div>
+                                <div class="marker" data-id="3" style="top: 400px; right: 20px;">3</div>
                             </div>
                         </div>
                     </div>
@@ -172,162 +53,77 @@
             </div>
         </div>
 
-        <!-- Description Panel -->
         <div class="description-panel">
             <div class="desc-header">
                 <div class="desc-title">화면 설명서</div>
-                <div class="desc-subtitle">addressbook.html · 주소록 관리</div>
+                <div class="desc-subtitle">addressbook.html · 주소록 관리 페이지</div>
             </div>
             <div class="desc-content">
                 <div class="desc-item expanded" data-id="1">
                     <div class="desc-item-header">
                         <div class="desc-number">1</div>
-                        <div class="desc-item-title">서브 네비게이션 탭</div>
+                        <div class="desc-item-title">그룹 관리</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">주소록 관련 기능 탭 및 전체 건수를 표시합니다.</div>
+                        <div class="desc-text">주소록 그룹을 생성하고 관리합니다.</div>
                         <table class="desc-table">
-                            <tr><th>탭</th><th>페이지</th></tr>
-                            <tr><td>주소록 관리</td><td>addressbook.html (현재)</td></tr>
-                            <tr><td>수신거부 관리</td><td>addressbook-reject.html</td></tr>
+                            <tr><th>기능</th><th>설명</th></tr>
+                            <tr><td>그룹 추가</td><td>새 그룹 생성</td></tr>
+                            <tr><td>그룹 수정</td><td>그룹명 변경</td></tr>
+                            <tr><td>그룹 삭제</td><td>그룹 및 연락처 삭제</td></tr>
                         </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 전체 건수</div>
-                            <div class="desc-note-text">우측에 현재 선택된 그룹의 총 주소록 수 표시</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="2">
                     <div class="desc-item-header">
                         <div class="desc-number">2</div>
-                        <div class="desc-item-title">그룹 목록</div>
+                        <div class="desc-item-title">연락처 등록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">주소록을 분류하는 그룹 목록입니다.</div>
+                        <div class="desc-text">연락처를 등록합니다.</div>
                         <table class="desc-table">
-                            <tr><th>기능</th><th>설명</th></tr>
-                            <tr><td>그룹 선택</td><td>해당 그룹의 주소록만 표시</td></tr>
-                            <tr><td>그룹 추가</td><td>새 그룹 생성 모달</td></tr>
-                            <tr><td>그룹 더보기</td><td>수정/삭제 메뉴</td></tr>
+                            <tr><th>방법</th><th>설명</th></tr>
+                            <tr><td>직접등록</td><td>개별 연락처 등록</td></tr>
+                            <tr><td>엑셀업로드</td><td>대량 등록 (xlsx, csv)</td></tr>
                         </table>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 그룹 삭제 시</div>
-                            <div class="desc-note-text">삭제 시 해당 그룹의 주소록을 다른 그룹으로 이동하거나 함께 삭제 선택</div>
-                        </div>
                     </div>
                 </div>
 
                 <div class="desc-item" data-id="3">
                     <div class="desc-item-header">
                         <div class="desc-number">3</div>
-                        <div class="desc-item-title">검색 및 일괄 작업</div>
+                        <div class="desc-item-title">연락처 목록</div>
                         <span class="desc-toggle">▼</span>
                     </div>
                     <div class="desc-item-body">
-                        <div class="desc-text">주소록 검색 및 엑셀 업로드/다운로드, 문자 발송 기능입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>기능</th><th>설명</th></tr>
-                            <tr><td>엑셀 업로드</td><td>XLSX 파일로 주소록 일괄 등록 (최대 10,000건)</td></tr>
-                            <tr><td>엑셀 다운로드</td><td>현재 그룹 주소록 다운로드</td></tr>
-                            <tr><td>문자 발송</td><td>선택/전체 대상 문자 발송 페이지 이동</td></tr>
-                        </table>
-                        <div class="desc-code">// 엑셀 업로드 형식
-컬럼: 이름, 전화번호, 메모(선택)
-최대 건수: 10,000건
-형식: XLSX</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="4">
-                    <div class="desc-item-header">
-                        <div class="desc-number">4</div>
-                        <div class="desc-item-title">주소록 목록 테이블</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">주소록 목록을 테이블 형태로 표시합니다.</div>
+                        <div class="desc-text">등록된 연락처 목록을 표시합니다.</div>
                         <table class="desc-table">
                             <tr><th>컬럼</th><th>설명</th></tr>
-                            <tr><td>체크박스</td><td>다중 선택</td></tr>
                             <tr><td>이름</td><td>연락처 이름</td></tr>
-                            <tr><td>전화번호</td><td>마스킹 처리 (가운데 4자리)</td></tr>
+                            <tr><td>전화번호</td><td>휴대폰 번호</td></tr>
                             <tr><td>그룹</td><td>소속 그룹</td></tr>
-                            <tr><td>메모</td><td>메모 내용</td></tr>
-                            <tr><td>관리</td><td>수정 버튼</td></tr>
+                            <tr><td>등록일</td><td>등록 날짜</td></tr>
                         </table>
-                        <div class="desc-code">GET /api/v1/addressbook
-Query: { groupId?, search?, page, limit }
-Response: {
-  contacts: [{
-    id, name, phone, groupId, groupName, memo, createdAt
-  }],
-  total: number
-}</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="5">
-                    <div class="desc-item-header">
-                        <div class="desc-number">5</div>
-                        <div class="desc-item-title">일괄 작업 버튼</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">선택한 주소록에 대한 일괄 작업입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>기능</th><th>동작</th></tr>
-                            <tr><td>선택 삭제</td><td>삭제 확인 모달 후 선택 주소록 삭제</td></tr>
-                            <tr><td>선택 그룹이동</td><td>그룹 선택 모달 표시 후 이동</td></tr>
-                        </table>
-                        <div class="desc-note warning">
-                            <div class="desc-note-title">⚠️ 선택 필수</div>
-                            <div class="desc-note-text">체크된 항목이 없으면 버튼 비활성화</div>
-                        </div>
-                        <div class="desc-code">DELETE /api/v1/addressbook
-Request: { contactIds: string[] }
-
-PUT /api/v1/addressbook/move
-Request: { contactIds: string[], targetGroupId: string }</div>
-                    </div>
-                </div>
-
-                <div class="desc-item" data-id="6">
-                    <div class="desc-item-header">
-                        <div class="desc-number">6</div>
-                        <div class="desc-item-title">페이지네이션</div>
-                        <span class="desc-toggle">▼</span>
-                    </div>
-                    <div class="desc-item-body">
-                        <div class="desc-text">주소록 목록 페이지 이동 컴포넌트입니다.</div>
-                        <table class="desc-table">
-                            <tr><th>요소</th><th>동작</th></tr>
-                            <tr><td>‹ (이전)</td><td>이전 페이지로 이동</td></tr>
-                            <tr><td>페이지 번호</td><td>해당 페이지로 이동</td></tr>
-                            <tr><td>› (다음)</td><td>다음 페이지로 이동</td></tr>
-                        </table>
-                        <div class="desc-note">
-                            <div class="desc-note-title">💡 페이지 설정</div>
-                            <div class="desc-note-text">
-                                • 페이지당 표시: 20건 (설정 가능)<br>
-                                • 첫/마지막 페이지에서 이전/다음 비활성
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="zoom-controls">
-        <button class="zoom-btn" id="zoomOut">−</button>
-        <span class="zoom-level" id="zoomLevel">100%</span>
-        <button class="zoom-btn" id="zoomIn">+</button>
-        <button class="zoom-btn" id="zoomReset">⟲</button>
-    </div>
-
     <script src="../assets/common.js"></script>
+    <script>
+        function hideLoading() {
+            document.getElementById('iframeLoading').style.display = 'none';
+        }
+        
+        function reloadIframe() {
+            const iframe = document.getElementById('pageIframe');
+            document.getElementById('iframeLoading').style.display = 'block';
+            iframe.src = iframe.src;
+        }
+    </script>
 </body>
 </html>
